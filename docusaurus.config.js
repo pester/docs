@@ -21,7 +21,8 @@ module.exports = {
         src: 'img/logo.svg',
       },
       links: [
-        {to: 'docs/doc1', label: 'Docs', position: 'left'},
+        {to: 'docs/doc1', label: 'Docs', position: 'right'},
+        {to: 'docs/commands/Add-AssertionOperator', label: 'Commands', position: 'right'},
         {
           href: 'https://github.com/pester/pester',
           label: 'GitHub',
