@@ -22,7 +22,6 @@ module.exports = {
       },
       links: [
         {to: 'docs/doc1', label: 'Docs', position: 'left'},
-        {to: 'blog', label: 'Blog', position: 'left'},
         {
           href: 'https://github.com/pester/pester',
           label: 'GitHub',
