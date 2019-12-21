@@ -6,6 +6,45 @@ sidebar_label: Style Guide
 
 You can write content using [GitHub-flavored Markdown syntax](https://github.github.com/gfm/).
 
+## Powershell Syntax Highlighting
+
+```powershell
+function Add-Numbers($a, $b) {
+    return $a + $b
+}
+
+Describe "Add-Numbers" {
+    It "adds positive numbers" {
+        $sum = Add-Numbers 2 3
+        $sum | Should -Be 5
+    }
+
+    It "adds negative numbers" {
+        $sum = Add-Numbers (-2) (-2)
+        $sum | Should -Be (-4)
+    }
+
+    It "adds one negative number to positive number" {
+        $sum = Add-Numbers (-2) 2
+        $sum | Should -Be 0
+    }
+
+    It "concatenates strings if given strings" {
+        $sum = Add-Numbers two three
+        $sum | Should -Be "twothree"
+    }
+}
+
+$tests = Invoke-Pester -ExcludeTag 'Disabled' -PassThru
+
+Describe -Tag 'Disabled' "Add-Numbers" {
+    It "adds positive numbers" {
+        $sum = Add-Numbers 2 3
+        $sum | Should -Be 5
+    }
+}
+```
+
 ## Markdown Syntax
 
 To serve as an example page when styling markdown based Docusaurus sites.
