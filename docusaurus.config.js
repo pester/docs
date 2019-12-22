@@ -40,6 +40,10 @@ module.exports = {
               label: 'Docs',
               to: 'docs/quick-start',
             },
+            {
+              label: 'Commands',
+              to: 'docs/commands/Add-AssertionOperator',
+            },
           ],
         },
         {
@@ -54,6 +58,10 @@ module.exports = {
         {
           title: 'Social',
           items: [
+            {
+              label: 'Github',
+              href: 'https://github.com/pester/pester',
+            }
           ],
         },
       ],
