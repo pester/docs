@@ -1,7 +1,6 @@
 ---
 id: Add-AssertionOperator
 title: Add-AssertionOperator
-custom_edit_url: https://github.com/pester/Pester/blob/master/Functions/Add-AssertionOperator.ps1
 ---
 
 ## SYNOPSIS
@@ -21,37 +20,36 @@ This function allows you to create custom Should assertions.
 
 ### EXAMPLE 1
 ```powershell
-function BeAwesome($ActualValue, [switch] $Negate)
+function BeAwesome($ActualValue, [switch] $Negate) {
 ```
 
-{
+\[bool\] $succeeded = $ActualValue -eq 'Awesome'
+	if ($Negate) { $succeeded = -not $succeeded }
 
-    \[bool\] $succeeded = $ActualValue -eq 'Awesome'
-    if ($Negate) { $succeeded = -not $succeeded }
+	if (-not $succeeded)
+	{
+		if ($Negate)
+		{
+			$failureMessage = "{$ActualValue} is Awesome"
+		}
+		else
+		{
+			$failureMessage = "{$ActualValue} is not Awesome"
+		}
+	}
 
-    if (-not $succeeded)
-    {
-        if ($Negate)
-        {
-            $failureMessage = "{$ActualValue} is Awesome"
-        }
-        else
-        {
-            $failureMessage = "{$ActualValue} is not Awesome"
-        }
-    }
-
-    return New-Object psobject -Property @{
-        Succeeded      = $succeeded
-        FailureMessage = $failureMessage
-    }
+	return New-Object psobject -Property @{
+		Succeeded      = $succeeded
+		FailureMessage = $failureMessage
+	}
 }
 
 Add-AssertionOperator -Name  BeAwesome `
-                    -Test  $function:BeAwesome `
-                    -Alias 'BA'
+					-Test  $function:BeAwesome `
+					-Alias 'BA'
 
 PS C:\\\> "bad" | should -BeAwesome
+
 {bad} is not Awesome
 
 ## PARAMETERS
