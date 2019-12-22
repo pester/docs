@@ -24,8 +24,36 @@ const commands = require("./docs/commands/docusaurus.sidebar.js");
 
 module.exports = {
   docs: {
-    Docusaurus: ["doc1", "doc2", "doc3"],
-    Features: ["mdx"],
+    Introduction: [
+      "quick-start",
+      "introduction/installation",
+      "introduction/powershell-core-limitations",
+    ],
+    Usage: [
+      "usage/assertions",
+      "usage/mocking",
+      "usage/modules",
+      "usage/testdrive",
+      "usage/testregistry",
+      "usage/test-results",
+      "usage/code-coverage",
+    ],
+    "Migration Guides": [
+      "migrations/v3-to-v4",
+    ],
+    "Additional Resources": [
+      "additional-resources/articles",
+      "additional-resources/courses",
+      "additional-resources/misc",
+      "additional-resources/articles",
+      "additional-resources/videos",
+    ],
+    "Contributing": [
+      "contributing/introduction",
+      "contributing/reporting-issues",
+      "contributing/feature-requests",
+      "contributing/pull-requests",
+    ],
     "Command Reference": commands
   }
 };
