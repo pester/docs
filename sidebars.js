@@ -45,7 +45,7 @@ module.exports = {
       "additional-resources/articles",
       "additional-resources/courses",
       "additional-resources/misc",
-      "additional-resources/articles",
+      "additional-resources/projects",
       "additional-resources/videos",
     ],
     "Contributing": [
