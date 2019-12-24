@@ -37,25 +37,29 @@ have not been invoked, an exception will be thrown.
 ### EXAMPLE 1
 ```powershell
 Mock Set-Content {} -Verifiable -ParameterFilter {$Path -eq "some_path" -and $Value -eq "Expected Value"}
-```
 
 { ...some code that never calls Set-Content some_path -Value "Expected Value"...
 }
 
 Assert-VerifiableMock
 
+```
+
 This will throw an exception and cause the test to fail.
 
 ### EXAMPLE 2
 ```powershell
 Mock Set-Content {} -Verifiable -ParameterFilter {$Path -eq "some_path" -and $Value -eq "Expected Value"}
-```
 
 Set-Content some_path -Value "Expected Value"
 
 Assert-VerifiableMock
 
+```
+
 This will not throw an exception because the mock was invoked.
+
+
 
 ## PARAMETERS
 

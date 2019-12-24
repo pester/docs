@@ -29,7 +29,6 @@ This function allows you to create custom Should assertions.
 ### EXAMPLE 1
 ```powershell
 function BeAwesome($ActualValue, [switch] $Negate) {
-```
 
 \[bool\] $succeeded = $ActualValue -eq 'Awesome'
 	if ($Negate) { $succeeded = -not $succeeded }
@@ -59,6 +58,8 @@ Add-AssertionOperator -Name  BeAwesome `
 PS C:\\\> "bad" | should -BeAwesome
 
 {bad} is not Awesome
+```
+
 
 ## PARAMETERS
 

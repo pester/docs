@@ -68,6 +68,7 @@ Each module's mock maintains a separate call history and verified status.
 ### EXAMPLE 1
 ```powershell
 Mock Get-ChildItem { return @{FullName = "A_File.TXT"} }
+
 ```
 
 Using this Mock, all calls to Get-ChildItem will return a hashtable with a
@@ -76,6 +77,7 @@ FullName property returning "A_File.TXT"
 ### EXAMPLE 2
 ```powershell
 Mock Get-ChildItem { return @{FullName = "A_File.TXT"} } -ParameterFilter { $Path -and $Path.StartsWith($env:temp) }
+
 ```
 
 This Mock will only be applied to Get-ChildItem calls within the user's temp directory.
@@ -83,6 +85,7 @@ This Mock will only be applied to Get-ChildItem calls within the user's temp dir
 ### EXAMPLE 3
 ```powershell
 Mock Set-Content {} -Verifiable -ParameterFilter { $Path -eq "some_path" -and $Value -eq "Expected Value" }
+
 ```
 
 When this mock is used, if the Mock is never invoked and Assert-VerifiableMock is called, an exception will be thrown.
@@ -91,10 +94,11 @@ The command behavior will do nothing since the ScriptBlock is empty.
 ### EXAMPLE 4
 ```powershell
 Mock Get-ChildItem { return @{FullName = "A_File.TXT"} } -ParameterFilter { $Path -and $Path.StartsWith($env:temp\1) }
-```
 
 Mock Get-ChildItem { return @{FullName = "B_File.TXT"} } -ParameterFilter { $Path -and $Path.StartsWith($env:temp\2) }
 Mock Get-ChildItem { return @{FullName = "C_File.TXT"} } -ParameterFilter { $Path -and $Path.StartsWith($env:temp\3) }
+
+```
 
 Multiple mocks of the same command may be used.
 The parameter filter determines which is invoked.
@@ -103,11 +107,12 @@ Here, if Get-ChildItem is called on the "2" directory of the temp folder, then B
 ### EXAMPLE 5
 ```powershell
 Mock Get-ChildItem { return @{FullName="B_File.TXT"} } -ParameterFilter { $Path -eq "$env:temp\me" }
-```
 
 Mock Get-ChildItem { return @{FullName="A_File.TXT"} } -ParameterFilter { $Path -and $Path.StartsWith($env:temp) }
 
 Get-ChildItem $env:temp\me
+
+```
 
 Here, both mocks could apply since both filters will pass.
 A_File.TXT will be returned because it was the most recent Mock created.
@@ -115,11 +120,12 @@ A_File.TXT will be returned because it was the most recent Mock created.
 ### EXAMPLE 6
 ```powershell
 Mock Get-ChildItem { return @{FullName = "B_File.TXT"} } -ParameterFilter { $Path -eq "$env:temp\me" }
-```
 
 Mock Get-ChildItem { return @{FullName = "A_File.TXT"} }
 
 Get-ChildItem c:\windows
+
+```
 
 Here, A_File.TXT will be returned.
 Since no filter was specified, it will apply to any call to Get-ChildItem that does not pass another filter.
@@ -127,11 +133,12 @@ Since no filter was specified, it will apply to any call to Get-ChildItem that d
 ### EXAMPLE 7
 ```powershell
 Mock Get-ChildItem { return @{FullName = "B_File.TXT"} } -ParameterFilter { $Path -eq "$env:temp\me" }
-```
 
 Mock Get-ChildItem { return @{FullName = "A_File.TXT"} }
 
 Get-ChildItem $env:temp\me
+
+```
 
 Here, B_File.TXT will be returned.
 Even though the filterless mock was created more recently.
@@ -140,6 +147,7 @@ This illustrates that filterless Mocks are always evaluated last regardless of t
 ### EXAMPLE 8
 ```powershell
 Mock Get-ChildItem { return @{FullName = "A_File.TXT"} } -ModuleName MyTestModule
+
 ```
 
 Using this Mock, all calls to Get-ChildItem from within the MyTestModule module
@@ -148,7 +156,6 @@ will return a hashtable with a FullName property returning "A_File.TXT"
 ### EXAMPLE 9
 ```powershell
 Get-Module -Name ModuleMockExample | Remove-Module
-```
 
 New-Module -Name ModuleMockExample  -ScriptBlock {
     function Hidden { "Internal Module Function" }
@@ -173,8 +180,12 @@ Describe "ModuleMockExample" {
     }
 }
 
+```
+
 This example shows how calls to commands made from inside a module can be
 mocked by using the -ModuleName parameter.
+
+
 
 ## PARAMETERS
 

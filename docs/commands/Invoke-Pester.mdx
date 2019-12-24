@@ -77,6 +77,7 @@ repository, see https://github.com/Pester.
 ### EXAMPLE 1
 ```powershell
 Invoke-Pester
+
 ```
 
 This command runs all *.Tests.ps1 files in the current directory and its subdirectories.
@@ -84,6 +85,7 @@ This command runs all *.Tests.ps1 files in the current directory and its subdire
 ### EXAMPLE 2
 ```powershell
 Invoke-Pester -Script .\Util*
+
 ```
 
 This commands runs all *.Tests.ps1 files in subdirectories with names that begin
@@ -92,6 +94,7 @@ with 'Util' and their subdirectories.
 ### EXAMPLE 3
 ```powershell
 Invoke-Pester -Script D:\MyModule, @{ Path = '.\Tests\Utility\ModuleUnit.Tests.ps1'; Parameters = @{ Name = 'User01' }; Arguments = srvNano16  }
+
 ```
 
 This command runs all *.Tests.ps1 files in D:\MyModule and its subdirectories.
@@ -101,6 +104,7 @@ parameters: .\Tests\Utility\ModuleUnit.Tests.ps1 srvNano16 -Name User01
 ### EXAMPLE 4
 ```powershell
 Invoke-Pester -Script @{Script = $scriptText}
+
 ```
 
 This command runs all tests passed as string in $scriptText variable with no aditional parameters and arguments.
@@ -112,6 +116,7 @@ This command can be used when tests and scripts are stored not on the FileSystem
 ### EXAMPLE 5
 ```powershell
 Invoke-Pester -TestName "Add Numbers"
+
 ```
 
 This command runs only the tests in the Describe block named "Add Numbers".
@@ -119,7 +124,6 @@ This command runs only the tests in the Describe block named "Add Numbers".
 ### EXAMPLE 6
 ```powershell
 $results = Invoke-Pester -Script D:\MyModule -PassThru -Show None
-```
 
 $failed = $results.TestResult | where Result -eq 'Failed'
 
@@ -159,6 +163,8 @@ The third command gets the names of the failing results.
 The result name is the
 name of the It block that contains the test.
 
+```
+
 The fourth command uses an array index to get the first failing result.
 The
 property values describe the test, the expected result, the actual result, and
@@ -167,6 +173,7 @@ useful values, including a stack trace.
 ### EXAMPLE 7
 ```powershell
 Invoke-Pester -EnableExit -OutputFile ".\artifacts\TestResults.xml" -OutputFormat NUnitXml
+
 ```
 
 This command runs all tests in the current directory and its subdirectories.
@@ -178,6 +185,7 @@ test returns an exit code equal to the number of test failures.
 ### EXAMPLE 8
 ```powershell
 Invoke-Pester -CodeCoverage 'ScriptUnderTest.ps1'
+
 ```
 
 Runs all *.Tests.ps1 scripts in the current directory, and generates a coverage
@@ -186,6 +194,7 @@ report for all commands in the "ScriptUnderTest.ps1" file.
 ### EXAMPLE 9
 ```powershell
 Invoke-Pester -CodeCoverage @{ Path = 'ScriptUnderTest.ps1'; Function = 'FunctionUnderTest' }
+
 ```
 
 Runs all *.Tests.ps1 scripts in the current directory, and generates a coverage
@@ -194,6 +203,7 @@ report for all commands in the "FunctionUnderTest" function in the "ScriptUnderT
 ### EXAMPLE 10
 ```powershell
 Invoke-Pester -CodeCoverage 'ScriptUnderTest.ps1' -CodeCoverageOutputFile '.\artifacts\TestOutput.xml'
+
 ```
 
 Runs all *.Tests.ps1 scripts in the current directory, and generates a coverage
@@ -203,6 +213,7 @@ file using the JaCoCo XML Report DTD.
 ### EXAMPLE 11
 ```powershell
 Invoke-Pester -CodeCoverage @{ Path = 'ScriptUnderTest.ps1'; StartLine = 10; EndLine = 20 }
+
 ```
 
 Runs all *.Tests.ps1 scripts in the current directory, and generates a coverage
@@ -211,12 +222,15 @@ report for all commands on lines 10 through 20 in the "ScriptUnderTest.ps1" file
 ### EXAMPLE 12
 ```powershell
 Invoke-Pester -Script C:\Tests -Tag UnitTest, Newest -ExcludeTag Bug
+
 ```
 
 This command runs *.Tests.ps1 files in C:\Tests and its subdirectories.
 In those
 files, it runs only tests that have UnitTest or Newest tags, unless the test
 also has a Bug tag.
+
+
 
 ## PARAMETERS
 
