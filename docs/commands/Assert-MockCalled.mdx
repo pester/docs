@@ -40,55 +40,58 @@ passed to Assert-MockCalled, Assert-MockCalled will throw an exception.
 ### EXAMPLE 1
 ```powershell
 Mock Set-Content {}
-```
 
 {...
 Some Code ...}
 
 C:\PS\>Assert-MockCalled Set-Content
 
+```
+
 This will throw an exception and cause the test to fail if Set-Content is not called in Some Code.
 
 ### EXAMPLE 2
 ```powershell
 Mock Set-Content -parameterFilter {$path.StartsWith("$env:temp\")}
-```
 
 {...
 Some Code ...}
 
 C:\PS\>Assert-MockCalled Set-Content 2 { $path -eq "$env:temp\test.txt" }
 
+```
+
 This will throw an exception if some code calls Set-Content on $path=$env:temp\test.txt less than 2 times
 
 ### EXAMPLE 3
 ```powershell
 Mock Set-Content {}
-```
 
 {...
 Some Code ...}
 
 C:\PS\>Assert-MockCalled Set-Content 0
 
+```
+
 This will throw an exception if some code calls Set-Content at all
 
 ### EXAMPLE 4
 ```powershell
 Mock Set-Content {}
-```
 
 {...
 Some Code ...}
 
 C:\PS\>Assert-MockCalled Set-Content -Exactly 2
 
+```
+
 This will throw an exception if some code does not call Set-Content Exactly two times.
 
 ### EXAMPLE 5
 ```powershell
 Describe 'Assert-MockCalled Scope behavior' {
-```
 
 Mock Set-Content { }
 
@@ -100,12 +103,13 @@ Some Code ...}
     }
 }
 
+```
+
 Checks for calls only within the current It block.
 
 ### EXAMPLE 6
 ```powershell
 Describe 'Describe' {
-```
 
 Mock -ModuleName SomeModule Set-Content { }
 
@@ -117,6 +121,8 @@ Some Code ...}
     }
 }
 
+```
+
 Checks for calls to the mock within the SomeModule module. 
 Note that both the Mock
 and Assert-MockCalled commands use the same module name.
@@ -124,11 +130,14 @@ and Assert-MockCalled commands use the same module name.
 ### EXAMPLE 7
 ```powershell
 Assert-MockCalled Get-ChildItem -ExclusiveFilter { $Path -eq 'C:\' }
+
 ```
 
 Checks to make sure that Get-ChildItem was called at least one time with
 the -Path parameter set to 'C:\', and that it was not called at all with
 the -Path parameter set to any other value.
+
+
 
 ## PARAMETERS
 

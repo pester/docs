@@ -54,7 +54,6 @@ command as the first tested statement in the It block.
 ### EXAMPLE 1
 ```powershell
 function Add-Numbers($a, $b) {
-```
 
 return $a + $b
 }
@@ -80,11 +79,10 @@ Describe "Add-Numbers" {
         $sum | Should -Be "twothree"
     }
 }
-
+```
 ### EXAMPLE 2
 ```powershell
 function Add-Numbers($a, $b) {
-```
 
 return $a + $b
 }
@@ -104,6 +102,8 @@ Describe "Add-Numbers" {
         $sum | Should -Be $expectedResult
     }
 }
+```
+
 
 ## PARAMETERS
 

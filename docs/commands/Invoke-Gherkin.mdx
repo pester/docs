@@ -43,6 +43,7 @@ Optionally, Pester can generate a report of how much code is covered by the test
 ### EXAMPLE 1
 ```powershell
 Invoke-Gherkin
+
 ```
 
 This will find all *.feature specifications and execute their tests.
@@ -51,6 +52,7 @@ No exit code will be returned and no log file will be saved.
 ### EXAMPLE 2
 ```powershell
 Invoke-Gherkin -Path ./tests/Utils*
+
 ```
 
 This will run all *.feature specifications under ./Tests that begin with Utils.
@@ -58,6 +60,7 @@ This will run all *.feature specifications under ./Tests that begin with Utils.
 ### EXAMPLE 3
 ```powershell
 Invoke-Gherkin -ScenarioName "Add Numbers"
+
 ```
 
 This will only run the Scenario named "Add Numbers"
@@ -65,6 +68,7 @@ This will only run the Scenario named "Add Numbers"
 ### EXAMPLE 4
 ```powershell
 Invoke-Gherkin -EnableExit -OutputXml "./artifacts/TestResults.xml"
+
 ```
 
 This runs all tests from the current directory downwards and writes the results according to the NUnit schema to artifacts/TestResults.xml just below the current directory.
@@ -73,6 +77,7 @@ The test run will return an exit code equal to the number of test failures.
 ### EXAMPLE 5
 ```powershell
 Invoke-Gherkin -CodeCoverage 'ScriptUnderTest.ps1'
+
 ```
 
 Runs all *.feature specifications in the current directory, and generates a coverage report for all commands in the "ScriptUnderTest.ps1" file.
@@ -80,6 +85,7 @@ Runs all *.feature specifications in the current directory, and generates a cove
 ### EXAMPLE 6
 ```powershell
 Invoke-Gherkin -CodeCoverage @{ Path = 'ScriptUnderTest.ps1'; Function = 'FunctionUnderTest' }
+
 ```
 
 Runs all *.feature specifications in the current directory, and generates a coverage report for all commands in the "FunctionUnderTest" function in the "ScriptUnderTest.ps1" file.
@@ -87,9 +93,12 @@ Runs all *.feature specifications in the current directory, and generates a cove
 ### EXAMPLE 7
 ```powershell
 Invoke-Gherkin -CodeCoverage @{ Path = 'ScriptUnderTest.ps1'; StartLine = 10; EndLine = 20 }
+
 ```
 
 Runs all *.feature specifications in the current directory, and generates a coverage report for all commands on lines 10 through 20 in the "ScriptUnderTest.ps1" file.
+
+
 
 ## PARAMETERS
 

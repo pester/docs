@@ -31,12 +31,15 @@ The result of New-PesterOption need to be assigned to the parameter 'PesterOptio
 ### EXAMPLE 1
 ```powershell
 $Options = New-PesterOption -TestSuiteName "Tests - Set A"
-```
 
 PS \> Invoke-Pester -PesterOption $Options -Outputfile ".\Results-Set-A.xml" -OutputFormat NUnitXML
 
+```
+
 The result of commands will be execution of tests and saving results of them in a NUnitMXL file where the root "test-suite"
 will be named "Tests - Set A".
+
+
 
 ## PARAMETERS
 
