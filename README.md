@@ -35,7 +35,7 @@ To submit an update:
 1. update the markdown (`.mdx`) files
 2. submit a Pull Request
 
-> Please note that we are NOT accepting Pull Requests for the `Command Reference`
+> 🔥 Please note that we are NOT accepting Pull Requests for the `Command Reference`
 > as these pages are auto-generated using the Pester Get-Help documentation.
 
 ## Website Customization
