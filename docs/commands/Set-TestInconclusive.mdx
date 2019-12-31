@@ -12,6 +12,7 @@ hide_table_of_contents: false
 ---
 
 ## SYNOPSIS
+
 Deprecated.
 Use `Set-ItResult -Inconclusive` instead
 
@@ -22,31 +23,35 @@ Set-TestInconclusive [[-Message] <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
+
 Set-TestInconclusive was used inside an It block to mark the test as inconclusive.
 If you need this functionality please use the new Set-ItResult command.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
+
 ```powershell
 Describe "Example" {
 
-It "My test" {
+    It "My test" {
         Set-TestInconclusive -Message "we forced it to be inconclusive"
     }
 
 }
+```
 
 The test result.
 
-Describing Example
-    \[?\] My test, is inconclusive because we forced it to be inconclusive 58ms
 ```
-
+Describing Example
+    [?] My test, is inconclusive because we forced it to be inconclusive 58ms
+```
 
 ## PARAMETERS
 
 ### -Message
+
 Value assigned to the Message parameter will be displayed in the the test result.
 
 ```yaml
@@ -62,6 +67,7 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
+
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS

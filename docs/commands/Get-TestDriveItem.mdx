@@ -12,6 +12,7 @@ hide_table_of_contents: false
 ---
 
 ## SYNOPSIS
+
 The Get-TestDriveItem cmdlet gets the item in Pester test drive.
 
 ## SYNTAX
@@ -21,6 +22,7 @@ Get-TestDriveItem [[-Path] <String>]
 ```
 
 ## DESCRIPTION
+
 The Get-TestDriveItem cmdlet gets the item in Pester test drive.
 It does not
 get the contents of the item at the location unless you use a wildcard
@@ -33,19 +35,18 @@ and will be deleted in the next major version of Pester.
 ## EXAMPLES
 
 ### EXAMPLE 1
+
 ```powershell
 Get-TestDriveItem MyTestFolder\MyTestFile.txt
-
 ```
 
 This command returns the file MyTestFile.txt located in the folder MyTestFolder
 what is located under TestDrive.
 
-
-
 ## PARAMETERS
 
 ### -Path
+
 Specifies the path to an item.
 The path need to be relative to TestDrive:.
 This cmdlet gets the item at the specified location.
