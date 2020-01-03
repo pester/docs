@@ -2,16 +2,40 @@
 id: videos
 title: Videos
 sidebar_label: Videos
+custom_edit_url: null
 ---
 
-(Sort order - date of publication)
+<!-- the power of mdx: straight javascript inside markdown -->
+import { PesterDataTable, PesterDataButton } from "../../src/components/PesterDataTable";
+import { videos } from "./videos.data";
 
-| Title | Author | Date |
-|:------|:-------|------|
-| [Pester in Action - series](https://www.youtube.com/playlist?list=PLOcTmsj9WHDo2_FfKePLaq_mJTcnW_fEJ) | Kevin Marquett | 2015-11-11 |
-| [Automate your PowerShell tests with Appveyor, Git and Pester!](https://flynnbundy.com/2016/04/03/automate-your-powershell-tests-with-appveyor-git-and-pester)| Flynn Bundy | 2016-04-03 |
-| [Test-Driven Development with Pester](https://www.youtube.com/watch?v=gssAtCeMOoo) | June Blender | 2016-05-21 |
-| [Testing PowerShell with Pester](https://www.pluralsight.com/courses/powershell-testing-pester)  | Robert Cain | 2016-06-18 | [https://www.pluralsight.com/courses/powershell-testing-pester]|
-| [Pester the Tester PowerShell Bugs Beware](https://www.youtube.com/watch?v=o4ihc7atwYQ) | Robert Cain | 2016-06-14 |
-| [Introduction to testing with Pester](https://www.youtube.com/watch?v=F3oOk0BC9B4) | Jakub Jares | 2017-04-08 |
-| [Mastering PowerShell testing with Pester](https://www.youtube.com/watch?v=BbOiQCgDDR8) | Mark Wragg | 2018-10-10 |
+<PesterDataTable
+  data={ videos }
+  columns={
+    [
+      {
+        Header: "Title",
+        accessor: "title",
+        className: "pester-data-table left",
+        Cell: ({ cell: { value }, row: { original } }) => (
+          <a href={`${original.url}`} target="blank" rel="noreferrer noopener">{value}</a>
+        )
+      },
+      {
+        Header: "Author",
+        accessor: "author",
+        className: "pester-data-table left"
+      },
+      {
+        Header: "Date",
+        accessor: "date",
+        className: "pester-data-table"
+      }
+    ]
+  }
+/>
+
+<PesterDataButton
+  text="Suggest New Video"
+  editUrl="https://github.com/pester/docs/blob/master/docs/additional-resources/videos.data.js"
+/>
