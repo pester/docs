@@ -1,9 +1,9 @@
 ---
-title: Found Broken Links
+title: Website Contains Broken Links
 labels: housekeeping
 assignees: ''
 ---
 
-## Found Broken Links
+The Broken Link Checker found :coffin: links on the pester.dev website.
 
-Please review and fix.
+[View results](https://github.com/pester/docs/commit/{{sha}}//checks)
