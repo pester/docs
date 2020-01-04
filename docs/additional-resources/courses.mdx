@@ -2,11 +2,18 @@
 id: courses
 title: Courses
 sidebar_label: Courses
+custom_edit_url: null
 ---
 
-(Sort order - ?)
+import { PesterDataTable, PesterDataButton } from "../../src/components/PesterDataTable";
+import { columns, courses } from "./courses.table";
 
-| Name | Author |
-|:-----|:-------|
-| [Testing PowerShell with Pester](https://mva.microsoft.com/en-US/training-courses/17650?l=mg8oBM9vD_8811787177) | Ashley McGlone, Adam Bertram |
-| [PSKoans - A simple, fun, and interactive way to learn the PowerShell language through Pester unit testing.](https://github.com/vexx32/PSKoans) | Joel Sallow and a Community |
+<PesterDataTable
+  columns={ columns }
+  data={ courses }
+/>
+
+<PesterDataButton
+  text="Suggest New Course"
+  editUrl="https://github.com/pester/docs/blob/master/docs/additional-resources/courses.table.js"
+/>
