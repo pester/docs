@@ -6,34 +6,13 @@ custom_edit_url: null
 ---
 
 import { PesterDataTable, PesterDataButton } from "../../src/components/PesterDataTable";
-import { integrations, books } from "./misc.table";
+import { columns, integrations, books } from "./misc.table";
 
 ## Integrations
 
 <PesterDataTable
+  columns={ columns }
   data={ integrations }
-  columns={
-    [
-      {
-        Header: "Title",
-        accessor: "title",
-        className: "pester-data-table left",
-        Cell: ({ cell: { value }, row: { original } }) => (
-          <a href={`${original.url}`} target="blank" rel="noreferrer noopener">{value}</a>
-        )
-      },
-      {
-        Header: "Author",
-        accessor: "author",
-        className: "pester-data-table left"
-      },
-      {
-        Header: "Date",
-        accessor: "date",
-        className: "pester-data-table"
-      }
-    ]
-  }
 />
 
 ## Paid resources
@@ -41,29 +20,8 @@ import { integrations, books } from "./misc.table";
 ### Books
 
 <PesterDataTable
+  columns={ columns }
   data={ books }
-  columns={
-    [
-      {
-        Header: "Title",
-        accessor: "title",
-        className: "pester-data-table left",
-        Cell: ({ cell: { value }, row: { original } }) => (
-          <a href={`${original.url}`} target="blank" rel="noreferrer noopener">{value}</a>
-        )
-      },
-      {
-        Header: "Author",
-        accessor: "author",
-        className: "pester-data-table left"
-      },
-      {
-        Header: "Date",
-        accessor: "date",
-        className: "pester-data-table"
-      }
-    ]
-  }
 />
 
 ## TBD
@@ -75,5 +33,5 @@ Waiting to be re-read and added
 
 <PesterDataButton
   text="Suggest New Entry"
-  editUrl="https://github.com/pester/docs/blob/master/docs/additional-resources/misc.data.js"
+  editUrl="https://github.com/pester/docs/blob/master/docs/additional-resources/misc.table.js"
 />

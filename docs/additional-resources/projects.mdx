@@ -6,30 +6,14 @@ custom_edit_url: null
 ---
 
 import { PesterDataTable, PesterDataButton } from "../../src/components/PesterDataTable";
-import { projects } from "./projects.table";
+import { columns, projects } from "./projects.table";
 
 <PesterDataTable
+  columns={ columns }
   data={ projects }
-  columns={
-    [
-      {
-        Header: "Title",
-        accessor: "title",
-        className: "pester-data-table left",
-        Cell: ({ cell: { value }, row: { original } }) => (
-          <a href={`${original.url}`} target="blank" rel="noreferrer noopener">{value}</a>
-        )
-      },
-      {
-        Header: "Author",
-        accessor: "author",
-        className: "pester-data-table left"
-      },
-    ]
-  }
 />
 
 <PesterDataButton
   text="Suggest New Project"
-  editUrl="https://github.com/pester/docs/blob/master/docs/additional-resources/projects.data.js"
+  editUrl="https://github.com/pester/docs/blob/master/docs/additional-resources/projects.table.js"
 />

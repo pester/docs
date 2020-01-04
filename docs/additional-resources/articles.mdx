@@ -6,68 +6,21 @@ custom_edit_url: null
 ---
 
 import { PesterDataTable, PesterDataButton } from "../../src/components/PesterDataTable";
-import { articles, moduleTests } from "./articles.table";
+import { columns, articles, moduleTests } from "./articles.table";
 
 <PesterDataTable
+  columns={columns}
   data={ articles }
-  columns={
-    [
-      {
-        Header: "Title",
-        accessor: "title",
-        className: "pester-data-table left",
-        Cell: ({ cell: { value }, row: { original } }) => (
-          <a href={`${original.url}`} target="blank" rel="noreferrer noopener">{value}</a>
-        )
-      },
-      {
-        Header: "Author",
-        accessor: "author",
-        className: "pester-data-table left"
-      },
-      {
-        Header: "Date",
-        accessor: "date",
-        className: "pester-data-table"
-      }
-    ]
-  }
 />
-
-
-
-
 
 ### Test your module with Pester
 
 <PesterDataTable
+  columns={columns}
   data={ moduleTests }
-  columns={
-    [
-      {
-        Header: "Title",
-        accessor: "title",
-        className: "pester-data-table left",
-        Cell: ({ cell: { value }, row: { original } }) => (
-          <a href={`${original.url}`} target="blank" rel="noreferrer noopener">{value}</a>
-        )
-      },
-      {
-        Header: "Author",
-        accessor: "author",
-        className: "pester-data-table left"
-      },
-      {
-        Header: "Date",
-        accessor: "date",
-        className: "pester-data-table"
-      }
-    ]
-  }
 />
-
 
 <PesterDataButton
   text="Suggest New Article"
-  editUrl="https://github.com/pester/docs/blob/master/docs/additional-resources/articles.data.js"
+  editUrl="https://github.com/pester/docs/blob/master/docs/additional-resources/articles.table.js"
 />
