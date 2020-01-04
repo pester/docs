@@ -1,0 +1,33 @@
+# -----------------------------------------------------------------------------
+# Checks https://pester.dev production for dead links every 1st day of the
+# month AND creates a Github issue using the template if the check fails.
+# Please note that we are deliberately not running this action "on push" to
+# prevent alienating contributors and to prevent mixed content in PRs.
+#
+# - uses: https://github.com/stevenvachon/broken-link-checker
+# - uses: https://github.com/marketplace/actions/create-an-issue
+# - cron: https://crontab.guru/#0_1_1_*_*
+# -----------------------------------------------------------------------------
+
+name: Broken Links Checker
+on: [push, pull_request]
+# on:
+#   schedule:
+#     - cron:  '*/0 1 1 * *'
+env:
+  WEBSITE_URL: "https://pester.dev"
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check Live Website
+      run: npx broken-link-checker $WEBSITE_URL --ordered --recursive
+
+    - uses: JasonEtco/create-an-issue@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        filename: .github/workflows/check-broken-links.md
+      if: failure()
