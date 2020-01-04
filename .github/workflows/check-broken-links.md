@@ -1,11 +1,9 @@
 ---
-name: Some Name
-title: Some Title
-about: Some About
+title: Found Broken Links
 labels: housekeeping
 assignees: ''
 ---
 
-## Broken Links Detected
+## Found Broken Links
 
-Please review and fix broken links.
+Please review and fix.
