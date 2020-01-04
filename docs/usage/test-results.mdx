@@ -47,7 +47,7 @@ Write-Output "##teamcity[buildStatisticValue key='CodeCoverageAbsLTotal' value='
 Write-Output "##teamcity[buildStatisticValue key='CodeCoverageAbsLCovered' value='$($testResults.CodeCoverage.NumberOfCommandsExecuted)']"
 ```
 
-## [AppVeyor](appveyor.com)
+## [AppVeyor](https://appveyor.com)
 
 The concept is the same: you serialize test results as `NUnitXml` and then upload them to the CI test reporting system.
 

@@ -35,13 +35,6 @@ export const videos = [
     url: "https://www.youtube.com/watch?v=gssAtCeMOoo",
   },
   {
-    // this link is dead
-    title: "Automate your PowerShell tests with Appveyor, Git and Pester!",
-    author: "Flynn Bundy",
-    date: "2016-04-03",
-    url: "https://flynnbundy.com/2016/04/03/automate-your-powershell-tests-with-appveyor-git-and-pester",
-  },
-  {
     title: "Pester in  Action - series",
     author: "Kevin Marquett",
     date: "2015-11-11",

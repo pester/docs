@@ -63,7 +63,7 @@ Describe "Clean" {
 
 With this skeleton of a function called "Clean" and a failing test, Test-Driven Development activities can start.
 
-Pester test script filenames _must_ end with `.Tests.ps1` suffix in order for [Invoke-Pester](../commands/New-Pester)
+Pester test script filenames _must_ end with `.Tests.ps1` suffix in order for [Invoke-Pester](./commands/Invoke-Pester)
 to discover and run them. (eg. MyScript.Tests.ps1).
 
 Test scripts named with or without this suffix can be run manually using -Script parameter.
@@ -72,7 +72,7 @@ Test scripts named with or without this suffix can be run manually using -Script
 Invoke-Pester -Script .\Test-ScriptWithPesterTest.ps1
 ```
 
-In addition to filename discovery of the `\*.Tests.ps1` pattern by the [Invoke-Pester](../commands/New-Pester)
+In addition to filename discovery of the `\*.Tests.ps1` pattern by the [Invoke-Pester](./commands/Invoke-Pester)
 command, Pester discovers `Describe` blocks (logical groupings of tests) within the test file
 (see [Describe](../commands/Describe)).
 
