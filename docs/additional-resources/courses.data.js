@@ -1,5 +1,5 @@
 // ----------------------------------------------------------------------------
-// Please respect chronological (date) order when adding new entries.
+// Please respect alphabetical (title) order when adding new entries.
 // ----------------------------------------------------------------------------
 export const courses = [
   {
