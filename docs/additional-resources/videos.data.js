@@ -1,5 +1,5 @@
 // ----------------------------------------------------------------------------
-// Please respect the chronological date order when adding new videos.
+// Please respect chronological (date) order when adding new entries.
 // ----------------------------------------------------------------------------
 export const videos = [
   {
