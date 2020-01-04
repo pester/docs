@@ -84,6 +84,12 @@ export const articles = [
     url: "https://4sysops.com/archives/unit-tests-versus-integration-tests-in-pester/#integration-tests",
   },
   {
+    title: "A Boilerplate for Unit testing DSC resources with Pester",
+    author: "Mathieu Buisson",
+    date: "2016-07-12",
+    url: "https://mathieubuisson.github.io/unit-testing-dsc-resources/",
+  },
+  {
     title: "Pester, Jenkins, Remote & ExitCode",
     author: "Fabien Dibot",
     date: "2016-07-02",
@@ -95,24 +101,6 @@ export const articles = [
     date: "2016-06-27",
     url:
       "http://blogs.blackmarble.co.uk/blogs/rfennell/post/2016/06/21/Using-Visual-Studio-Code-to-develop-VSTS-Build-Tasks-with-PowerShell-and-Pester-tests",
-  },
-  {
-    title: "The Pester Pipeline",
-    author: "Christopher Hunt",
-    date: "2016-06-21",
-    url: "https://www.automatedops.com/blog/2016/06/21/the-pester-pipeline/",
-  },
-  {
-    title: "Remediating vSphere Configuration Drift with PowerShell Pester Tests",
-    author: "Chris Wahl",
-    date: "2016-06-17",
-    url: "http://wahlnetwork.com/2016/06/16/remediating-vsphere-configuration-drift-powershell-pester-tests/",
-  },
-  {
-    title: "Constructing Private Test Credentials for Pester Testing",
-    author: "Chris Wahl",
-    date: "2016-04-27",
-    url: "http://wahlnetwork.com/2016/04/27/private-test-credentials-pester-testing/",
   },
   {
     title: "Visualizing Operational Tests with Jenkins and Pester",
@@ -127,10 +115,29 @@ export const articles = [
     url: "https://www.sapien.com/blog/2016/06/24/testing-pester-code-coverage/",
   },
   {
+    title: "The Pester Pipeline",
+    author: "Christopher Hunt",
+    date: "2016-06-21",
+    url: "https://www.automatedops.com/blog/2016/06/21/the-pester-pipeline/",
+  },
+  {
     title: "How to Pass Parameters to a Pester Test Script",
     author: "June Blender",
     date: "2016-06-17",
     url: "https://www.sapien.com/blog/2016/06/17/how-to-pass-parameters-to-a-pester-test-script/",
+  },
+
+  {
+    title: "Remediating vSphere Configuration Drift with PowerShell Pester Tests",
+    author: "Chris Wahl",
+    date: "2016-06-17",
+    url: "http://wahlnetwork.com/2016/06/16/remediating-vsphere-configuration-drift-powershell-pester-tests/",
+  },
+  {
+    title: "Generic Pester Tests",
+    author: "Nicholas M. Getchell",
+    date: "2016-06-16",
+    url: "https://powershell.getchell.org/2016/05/16/generic-pester-tests/",
   },
   {
     title: "Invoke-Pester: Running Selected Tests",
@@ -182,10 +189,24 @@ export const articles = [
     url: "http://bentaylor.work/2016/05/powershell-pester-and-invoke-scriptanalyzer/",
   },
   {
-    title: "[PowerShell Pester assertions – Testing with the should command",
+    title:
+      "Creating a set of simple Pester Tests for existing or old PowerShell Modules & making them easier to update in future.",
+    author: "Ryan Yates",
+    date: "2016-05-24",
+    url:
+      "http://blog.kilasuit.org/2016/05/24/creating-a-set-of-simple-pester-tests-for-existing-or-old-powershell-modules-making-them-easier-to-update-in-future",
+  },
+  {
+    title: "PowerShell Pester assertions – Testing with the should command",
     author: "Adam Bertram",
     date: "2016-05-24",
     url: "https://4sysops.com/archives/powershell-pester-assertions-testing-with-the-should-command",
+  },
+  {
+    title: "How To Test PowerShell Modules with Pester",
+    author: "Adam Bertram",
+    date: "2016-05-19",
+    url: "http://mattmcnabb.github.io/Pester-For-PowerShell-Gallery",
   },
   {
     title: "Download Free Pester Cheat Sheet",
@@ -194,10 +215,64 @@ export const articles = [
     url: "https://kajbonfils.com/2016/05/download-free-pester-cheat-sheet",
   },
   {
+    title: "Testing Your Module Manifest With Pester - Revisited",
+    author: "Matt McNabb",
+    date: "2016-05-18",
+    url: "http://mattmcnabb.github.io/Pester-For-PowerShell-Gallery",
+  },
+  {
+    title: "Using Pester to test your Manifest File",
+    author: "Francois-Xavier Cat",
+    date: "2016-05-11",
+    url: "http://www.lazywinadmin.com/2016/05/using-pester-to-test-your-manifest-file.html",
+  },
+  {
+    title: "Using Pester to test your Comment Based Help",
+    author: "Francois-Xavier Cat",
+    date: "2016-05-10",
+    url: "http://www.lazywinadmin.com/2016/05/using-pester-to-test-your-comment-based.html",
+  },
+  {
     title: "Mocking SQL Results in Pester",
     author: "Nick Hudacin",
     date: "2016-04-28",
     url: "https://nickhudacin.wordpress.com/2016/04/28/mocking-sql-results-in-pester/",
+  },
+  {
+    title: "Constructing Private Test Credentials for Pester Testing",
+    author: "Chris Wahl",
+    date: "2016-04-27",
+    url: "http://wahlnetwork.com/2016/04/27/private-test-credentials-pester-testing/",
+  },
+  {
+    title: "Write Dynamic Unit Tests for your PowerShell Code with Pester",
+    author: "Mike F Robbins",
+    date: "2016-04-14",
+    url: "http://mikefrobbins.com/2016/04/14/write-dynamic-unit-tests-for-your-powershell-code-with-pester",
+  },
+  {
+    title: "Building a Simple Release Pipeline in PowerShell Using psake, Pester, and PSDeploy",
+    author: "Brandon Olin",
+    date: "2016-04-06",
+    url: "https://devblackops.io/building-a-simple-release-pipeline-in-powershell-using-psake-pester-and-psdeploy/",
+  },
+  {
+    title: "Invoking PSScriptAnalyzer in Pester Tests for each Rule",
+    author: "Ryan Yates",
+    date: "2016-03-29",
+    url: "http://blog.kilasuit.org/2016/03/29/invoking-psscriptanalyzer-in-pester-tests-for-each-rule/",
+  },
+  {
+    title: "An Easier Way to Control Pester Tests",
+    author: "Adam Bertram",
+    date: "2016-03-24",
+    url: "http://www.adamtheautomator.com/easier-way-control-pester-tests",
+  },
+  {
+    title: "Testing Script Modules with Pester",
+    author: "Dave Wyatt",
+    date: "2015-12-17",
+    url: "https://blogs.technet.microsoft.com/heyscriptingguy/2015/12/17/testing-script-modules-with-pester",
   },
   {
     title: "Testing Script Modules with Pester - series",
@@ -322,86 +397,6 @@ export const articles = [
     author: "Scott Muc",
     date: "2011-03-11",
     url: "http://scottmuc.com/blog/development/pester-bdd-for-the-system-administrator/",
-  },
-];
-
-// ----------------------------------------------------------------------------
-// Please respect chronological (date) order when adding new entries.
-// ----------------------------------------------------------------------------
-export const moduleTests = [
-  {
-    title: "A Boilerplate for Unit testing DSC resources with Pester",
-    author: "Mathieu Buisson",
-    date: "2016-07-12",
-    url: "https://mathieubuisson.github.io/unit-testing-dsc-resources/",
-  },
-  {
-    title: "Generic Pester Tests",
-    author: "Nicholas M. Getchell",
-    date: "2016-06-16",
-    url: "https://powershell.getchell.org/2016/05/16/generic-pester-tests/",
-  },
-  {
-    title:
-      "Creating a set of simple Pester Tests for existing or old PowerShell Modules & making them easier to update in future.",
-    author: "Ryan Yates",
-    date: "2016-05-24",
-    url:
-      "http://blog.kilasuit.org/2016/05/24/creating-a-set-of-simple-pester-tests-for-existing-or-old-powershell-modules-making-them-easier-to-update-in-future",
-  },
-  {
-    title: "How To Test PowerShell Modules with Pester",
-    author: "Adam Bertram",
-    date: "2016-05-19",
-    url: "http://mattmcnabb.github.io/Pester-For-PowerShell-Gallery",
-  },
-  {
-    title: "Testing Your Module Manifest With Pester - Revisited",
-    author: "Matt McNabb",
-    date: "2016-05-18",
-    url: "http://mattmcnabb.github.io/Pester-For-PowerShell-Gallery",
-  },
-  {
-    title: "Using Pester to test your Manifest File",
-    author: "Francois-Xavier Cat",
-    date: "2016-05-11",
-    url: "http://www.lazywinadmin.com/2016/05/using-pester-to-test-your-manifest-file.html",
-  },
-  {
-    title: "Using Pester to test your Comment Based Help",
-    author: "Francois-Xavier Cat",
-    date: "2016-05-10",
-    url: "http://www.lazywinadmin.com/2016/05/using-pester-to-test-your-comment-based.html",
-  },
-  {
-    title: "Write Dynamic Unit Tests for your PowerShell Code with Pester",
-    author: "Mike F Robbins",
-    date: "2016-04-14",
-    url: "http://mikefrobbins.com/2016/04/14/write-dynamic-unit-tests-for-your-powershell-code-with-pester",
-  },
-  {
-    title: "Building a Simple Release Pipeline in PowerShell Using psake, Pester, and PSDeploy",
-    author: "Brandon Olin",
-    date: "2016-04-06",
-    url: "https://devblackops.io/building-a-simple-release-pipeline-in-powershell-using-psake-pester-and-psdeploy/",
-  },
-  {
-    title: "Invoking PSScriptAnalyzer in Pester Tests for each Rule",
-    author: "Ryan Yates",
-    date: "2016-03-29",
-    url: "http://blog.kilasuit.org/2016/03/29/invoking-psscriptanalyzer-in-pester-tests-for-each-rule/",
-  },
-  {
-    title: "An Easier Way to Control Pester Tests",
-    author: "Adam Bertram",
-    date: "2016-03-24",
-    url: "http://www.adamtheautomator.com/easier-way-control-pester-tests",
-  },
-  {
-    title: "Testing Script Modules with Pester",
-    author: "Dave Wyatt",
-    date: "2015-12-17",
-    url: "https://blogs.technet.microsoft.com/heyscriptingguy/2015/12/17/testing-script-modules-with-pester",
   },
 ];
 
