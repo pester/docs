@@ -15,14 +15,9 @@ export const projects = [
     url: "https://github.com/equelin/Format-Pester",
   },
   {
-    title: "Pester Test Runner Build Task for VSTS",
-    author: "Richard Fennell",
-    url: "https://marketplace.visualstudio.com/items?itemName=richardfennellBM.BM-VSTS-PesterRunner-Task",
-  },
-  {
     title: "PesterHelpers",
-    author: "https://github.com/PowerShellModules/PesterHelpers",
-    url: "Ryan Yates",
+    author: "Ryan Yates",
+    url: "https://github.com/PowerShellModules/PesterHelpers",
   },
   {
     title: "PowershellGuard",
