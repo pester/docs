@@ -10,7 +10,7 @@ Pester creates a temporary, randomly named (a guid), registry key in the current
 
 ## Scoping
 
-Basic scoping rules are implemented for the TestRegistry in a similar way to [[TestDrive]]. A clean TestRegistry is created on entry to every Describe block and all the keys and values created by your tests are available during the lifetime of that Describe scope. One important difference from [[TestDrive]] is that registry keys and values persist within the Describe block and any changes to the registry in the scope of an It or Context block remain until the scope of the Describe block ends. When the Describe block is finished the temporary registry key is deleted and all the subkeys and values with it.
+Basic scoping rules are implemented for the TestRegistry in a similar way to [TestDrive](./testdrive). A clean TestRegistry is created on entry to every Describe block and all the keys and values created by your tests are available during the lifetime of that Describe scope. One important difference from [TestDrive](./testdrive) is that registry keys and values persist within the Describe block and any changes to the registry in the scope of an It or Context block remain until the scope of the Describe block ends. When the Describe block is finished the temporary registry key is deleted and all the subkeys and values with it.
 
 ## Example
 
