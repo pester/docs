@@ -22,8 +22,8 @@ Runs Pester tests
 ```powershell
 Invoke-Pester [[-Script] <Object[]>] [[-TestName] <String[]>] [-EnableExit] [[-Tag] <String[]>]
  [-ExcludeTag <String[]>] [-PassThru] [-CodeCoverage <Object[]>] [-CodeCoverageOutputFile <String>]
- [-CodeCoverageOutputFileFormat <String>] [-Strict] [-Quiet] [-PesterOption <Object>] [-Show <OutputTypes>]
- [<CommonParameters>]
+ [-CodeCoverageOutputFileEncoding <String>] [-CodeCoverageOutputFileFormat <String>] [-Strict] [-Quiet]
+ [-PesterOption <Object>] [-Show <OutputTypes>] [<CommonParameters>]
 ```
 
 ### NewOutputSet
@@ -31,8 +31,9 @@ Invoke-Pester [[-Script] <Object[]>] [[-TestName] <String[]>] [-EnableExit] [[-T
 ```powershell
 Invoke-Pester [[-Script] <Object[]>] [[-TestName] <String[]>] [-EnableExit] [[-Tag] <String[]>]
  [-ExcludeTag <String[]>] [-PassThru] [-CodeCoverage <Object[]>] [-CodeCoverageOutputFile <String>]
- [-CodeCoverageOutputFileFormat <String>] [-Strict] -OutputFile <String> [-OutputFormat <String>] [-Quiet]
- [-PesterOption <Object>] [-Show <OutputTypes>] [<CommonParameters>]
+ [-CodeCoverageOutputFileEncoding <String>] [-CodeCoverageOutputFileFormat <String>] [-Strict]
+ -OutputFile <String> [-OutputFormat <String>] [-Quiet] [-PesterOption <Object>] [-Show <OutputTypes>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -496,6 +497,27 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -CodeCoverageOutputFileEncoding
+
+The encoding in which Invoke-Pester will save the code coverage results file
+as.
+Defaults to 'utf8'.
+
+Supported encodings in the respective PowerShell version are the same as
+those supported by the cmdlet Out-File in that PowerShell version.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: Utf8
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -CodeCoverageOutputFileFormat
 
 The name of a code coverage report file format.
@@ -662,8 +684,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## NOTES
 
 ## RELATED LINKS
-
-[https://pester.dev/docs/commands/Invoke-Pester](https://pester.dev/docs/commands/Invoke-Pester)
 
 [https://pester.dev/docs/commands/Describe](https://pester.dev/docs/commands/Describe)
 
