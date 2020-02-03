@@ -1,11 +1,4 @@
 /**
- * Copyright (c) 2017-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-/**
  * CSS files with the .module.css suffix will be treated as CSS modules
  * and scoped locally.
  */
@@ -15,6 +8,8 @@
   text-align: center;
   position: relative;
   overflow: hidden;
+  background: rgb(16, 117, 189);
+  background: linear-gradient(145deg, rgba(16, 117, 189, 1) 0%, rgba(2, 127, 194, 1) 93%);
 }
 
 @media screen and (max-width: 966px) {
@@ -37,6 +32,19 @@
 }
 
 .featureImage {
-  height: 200px;
-  width: 200px;
+  align-items: center;
+  display: flex;
+  height: 100%;
+}
+
+.featureImageSecond {
+  order: 2;
+}
+
+.openCollective {
+  border: 1px solid #dadde1;
+  border-radius: 16px;
+  margin-bottom: 20px;
+  padding-left: 20px;
+  text-align: center;
 }
