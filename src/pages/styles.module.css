@@ -4,12 +4,13 @@
  */
 
 .heroBanner {
-  padding: 4rem 0;
+  padding: 8rem 0;
   text-align: center;
   position: relative;
   overflow: hidden;
   background: rgb(16, 117, 189);
   background: linear-gradient(145deg, rgba(16, 117, 189, 1) 0%, rgba(2, 127, 194, 1) 93%);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 6vw), 0 100%);
 }
 
 @media screen and (max-width: 966px) {

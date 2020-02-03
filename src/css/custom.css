@@ -5,48 +5,65 @@
  */
 
 @font-face {
-  font-family: SegoeUI;
-  src: local('Segoe UI Light'),
-    url(//c.s-microsoft.com/static/fonts/segoe-ui/west-european/light/latest.woff2) format('woff2'),
-    url(//c.s-microsoft.com/static/fonts/segoe-ui/west-european/light/latest.woff) format('woff'),
-    url(//c.s-microsoft.com/static/fonts/segoe-ui/west-european/light/latest.ttf) format('truetype');
-  font-weight: 100;
+  font-family: 'Segoe UI';
+  src: url('/fonts/SegoeUI/SegoeUI-Light.eot');
+  src: local('Segoe UI Light'), local('SegoeUI-Light'),
+    url('/fonts/SegoeUI/SegoeUI-Light.eot?#iefix') format('embedded-opentype'),
+    url('/fonts/SegoeUI/SegoeUI-Light.woff') format('woff'), url('/fonts/SegoeUI/SegoeUI-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
 }
 
 @font-face {
-  font-family: SegoeUI;
-  src: local('Segoe UI Semilight'),
-    url(//c.s-microsoft.com/static/fonts/segoe-ui/west-european/semilight/latest.woff2) format('woff2'),
-    url(//c.s-microsoft.com/static/fonts/segoe-ui/west-european/semilight/latest.woff) format('woff'),
-    url(//c.s-microsoft.com/static/fonts/segoe-ui/west-european/semilight/latest.ttf) format('truetype');
-  font-weight: 200;
+  font-family: 'Segoe UI';
+  src: url('/fonts/SegoeUI/SegoeUI-BoldItalic.eot');
+  src: local('Segoe UI Bold Italic'), local('SegoeUI-BoldItalic'),
+    url('/fonts/SegoeUI/SegoeUI-BoldItalic.eot?#iefix') format('embedded-opentype'),
+    url('/fonts/SegoeUI/SegoeUI-BoldItalic.woff') format('woff'),
+    url('/fonts/SegoeUI/SegoeUI-BoldItalic.ttf') format('truetype');
+  font-weight: bold;
+  font-style: italic;
 }
 
 @font-face {
-  font-family: SegoeUI;
-  src: local('Segoe UI'),
-    url(//c.s-microsoft.com/static/fonts/segoe-ui/west-european/normal/latest.woff2) format('woff2'),
-    url(//c.s-microsoft.com/static/fonts/segoe-ui/west-european/normal/latest.woff) format('woff'),
-    url(//c.s-microsoft.com/static/fonts/segoe-ui/west-european/normal/latest.ttf) format('truetype');
-  font-weight: 400;
-}
-
-@font-face {
-  font-family: SegoeUI;
-  src: local('Segoe UI Bold'),
-    url(//c.s-microsoft.com/static/fonts/segoe-ui/west-european/bold/latest.woff2) format('woff2'),
-    url(//c.s-microsoft.com/static/fonts/segoe-ui/west-european/bold/latest.woff) format('woff'),
-    url(//c.s-microsoft.com/static/fonts/segoe-ui/west-european/bold/latest.ttf) format('truetype');
+  font-family: 'Segoe UI';
+  src: url('/fonts/SegoeUI/SegoeUI-SemiBold.eot');
+  src: local('Segoe UI Semibold'), local('SegoeUI-SemiBold'),
+    url('/fonts/SegoeUI/SegoeUI-SemiBold.eot?#iefix') format('embedded-opentype'),
+    url('/fonts/SegoeUI/SegoeUI-SemiBold.woff') format('woff'),
+    url('/fonts/SegoeUI/SegoeUI-SemiBold.ttf') format('truetype');
   font-weight: 600;
+  font-style: normal;
 }
 
 @font-face {
-  font-family: SegoeUI;
-  src: local('Segoe UI Semibold'),
-    url(//c.s-microsoft.com/static/fonts/segoe-ui/west-european/semibold/latest.woff2) format('woff2'),
-    url(//c.s-microsoft.com/static/fonts/segoe-ui/west-european/semibold/latest.woff) format('woff'),
-    url(//c.s-microsoft.com/static/fonts/segoe-ui/west-european/semibold/latest.ttf) format('truetype');
-  font-weight: 700;
+  font-family: 'Segoe UI';
+  src: url('/fonts/SegoeUI/SegoeUI.eot');
+  src: local('Segoe UI'), local('SegoeUI'), url('/fonts/SegoeUI/SegoeUI.eot?#iefix') format('embedded-opentype'),
+    url('/fonts/SegoeUI/SegoeUI.woff') format('woff'), url('/fonts/SegoeUI/SegoeUI.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Segoe UI';
+  src: url('/fonts/SegoeUI/SegoeUI-Bold.eot');
+  src: local('Segoe UI Bold'), local('SegoeUI-Bold'),
+    url('/fonts/SegoeUI/SegoeUI-Bold.eot?#iefix') format('embedded-opentype'),
+    url('/fonts/SegoeUI/SegoeUI-Bold.woff') format('woff'), url('/fonts/SegoeUI/SegoeUI-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Segoe UI';
+  src: url('/fonts/SegoeUI/SegoeUI-Italic.eot');
+  src: local('Segoe UI Italic'), local('SegoeUI-Italic'),
+    url('/fonts/SegoeUI/SegoeUI-Italic.eot?#iefix') format('embedded-opentype'),
+    url('/fonts/SegoeUI/SegoeUI-Italic.woff') format('woff'),
+    url('/fonts/SegoeUI/SegoeUI-Italic.ttf') format('truetype');
+  font-weight: normal;
+  font-style: italic;
 }
 
 /* You can override the default Infima variables here. */
@@ -59,12 +76,13 @@
   --ifm-color-primary-lighter: #0083e4;
   --ifm-color-primary-lightest: #0294ff;
   --ifm-navbar-background-color: #004880;
+  --ifm-container-width: 900px;
   --ifm-navbar-link-color: #fff;
-  --ifm-navbar-link-hover-color: var(--ifm-color-primary-lightest);
+  --ifm-navbar-link-hover-color: #5ab3dd;
   --ifm-code-font-size: 95%;
   --ifm-font-weight-semibold: 600;
   --ifm-font-size-base: 16px;
-  --ifm-font-family-base: 'SegoeUI', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --ifm-font-family-base: 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 .docusaurus-highlight-code-line {

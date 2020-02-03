@@ -92,8 +92,8 @@ function Home() {
         <div className="container">
           <div className="row">
             <div className="col col--9">
-              <h1 className="hero__title">{siteConfig.title}</h1>
-              <p className="hero__subtitle">{siteConfig.tagline}</p>
+              <h1 className="hero__title">The test framework for Powershell</h1>
+              <p className="hero__subtitle">Pester is the ubiquitous test and mock framework for PowerShell</p>
 
               <div className={styles.buttons}>
                 <Link
@@ -105,7 +105,7 @@ function Home() {
             </div>
 
             <div className="col text--center">
-              <img alt="" src={logo} width="55%" />
+              <img alt="" src={logo} width="65%" />
             </div>
           </div>
         </div>
