@@ -8,48 +8,21 @@ import styles from './styles.module.css';
 
 const features = [
   {
-    title: <>Easy to Use</>,
-    imageUrl: 'img/undraw_docusaurus_mountain.svg',
+    title: 'Improved Code Confidence',
+    imageUrl: 'img/features/expertise-symbol-tdd.svg',
     imagePosition: 'left',
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and used to get your website up and running
-        quickly.
+        Adding Pester tests to Powershell code will enhance code quality and allows you to start creating predictable
+        changes.
       </>
     ),
   },
   {
-    title: <>Focus on What Matters</>,
-    imageUrl: 'img/undraw_docusaurus_tree.svg',
+    title: 'Optimized Development',
+    imageUrl: 'img/features/visual-studio-code.svg',
     imagePosition: 'right',
-    description: (
-      <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go ahead and move your docs into the{' '}
-        <code>docs</code> directory.
-      </>
-    ),
-  },
-  {
-    title: <>Powered by React</>,
-    imageUrl: 'img/undraw_docusaurus_react.svg',
-    imagePosition: 'left',
-    description: (
-      <>
-        Extend or customize your website layout by reusing React. Docusaurus can be extended while reusing the same
-        header and footer.
-      </>
-    ),
-  },
-  {
-    title: <>Focus on What Matters</>,
-    imageUrl: 'img/undraw_docusaurus_tree.svg',
-    imagePosition: 'right',
-    description: (
-      <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go ahead and move your docs into the{' '}
-        <code>docs</code> directory.
-      </>
-    ),
+    description: <>Visual Studio comes with full support for Pester allowing you to create tests quick.</>,
   },
 ];
 
@@ -69,7 +42,7 @@ function Feature({ imagePosition, imageUrl, title, description }) {
       </div>
 
       <div
-        className={classnames('col col--5 padding-vert--xl', {
+        className={classnames('col col--5 padding-vert--xl', styles.featureDescCol, {
           'col--offset-2': imagePosition === 'left',
         })}>
         <h2>{title}</h2>
@@ -91,7 +64,7 @@ function Home() {
       <header className={classnames('hero hero--primary', styles.heroBanner)}>
         <div className="container">
           <div className="row">
-            <div className="col col--9">
+            <div className={classnames('col col--9', styles.heroContent)}>
               <h1 className="hero__title">The test framework for Powershell</h1>
               <p className="hero__subtitle">Pester is the ubiquitous test and mock framework for PowerShell</p>
 
@@ -104,8 +77,8 @@ function Home() {
               </div>
             </div>
 
-            <div className="col text--center">
-              <img alt="" src={logo} width="65%" />
+            <div className={classnames('col text--center', styles.heroLogo)}>
+              <img alt="" src={logo} />
             </div>
           </div>
         </div>
@@ -124,15 +97,14 @@ function Home() {
           )}
 
           <section className={classnames(styles.openCollective, 'padding-vert--lg padding-horiz--md')}>
-            <h2>Support us on Open Collective!</h2>
+            <h2>Financial Contributors</h2>
 
-            <p>
-              Open Collective is an initiative that allows community members an easy and transparent way to donate to
-              open source projects. <br />
-            </p>
+            <p>Pester is sponsored by all the great folks on OpenCollective, GutHub and the DevOps Collective.</p>
+
+            <p>Become a financial contributor and help us sustain our community.</p>
 
             <div className="backers-section">
-              <h3>Individuals</h3>
+              <h3>Individual Backers</h3>
 
               <a href="https://opencollective.com/pester#backers" target="_blank">
                 <img src="https://opencollective.com/pester/backers.svg?width=695" />
@@ -146,12 +118,6 @@ function Home() {
                 <img src="https://opencollective.com/pester/sponsors.svg" />
               </a>
             </div>
-
-            <br />
-
-            <a href="https://opencollective.com/pester/donate" target="_blank" rel="nofollow noopener noreferrer">
-              <img alt="open-collective" src="https://opencollective.com/pester/contribute/button.png?color=blue" />
-            </a>
           </section>
         </div>
       </main>

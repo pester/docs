@@ -75,7 +75,8 @@
   --ifm-color-primary-light: #007dda;
   --ifm-color-primary-lighter: #0083e4;
   --ifm-color-primary-lightest: #0294ff;
-  --ifm-navbar-background-color: #004880;
+  --ifm-navbar-background-color: #0072c6;
+  --ifm-navbar-shadow: none;
   --ifm-container-width: 900px;
   --ifm-navbar-link-color: #fff;
   --ifm-navbar-link-hover-color: #5ab3dd;
@@ -90,4 +91,15 @@
   display: block;
   margin: 0 calc(-1 * var(--ifm-pre-padding));
   padding: 0 var(--ifm-pre-padding);
+}
+
+.navbar__brand {
+  font-size: 17px;
+}
+
+@media only screen and (max-width: 768px) {
+  .hero .hero__title {
+    font-size: 36px;
+    text-align: center;
+  }
 }

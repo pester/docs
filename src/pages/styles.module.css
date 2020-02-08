@@ -8,14 +8,29 @@
   text-align: center;
   position: relative;
   overflow: hidden;
-  background: rgb(16, 117, 189);
-  background: linear-gradient(145deg, rgba(16, 117, 189, 1) 0%, rgba(2, 127, 194, 1) 93%);
+  background: #0072c6;
   clip-path: polygon(0 0, 100% 0, 100% calc(100% - 6vw), 0 100%);
+}
+
+html[data-theme='dark'] .heroBanner {
+  color: #000;
+}
+
+.heroLogo img {
+  width: 86%;
 }
 
 @media screen and (max-width: 966px) {
   .heroBanner {
     padding: 2rem;
+  }
+
+  .heroContent {
+    order: 1;
+  }
+
+  .heroLogo img {
+    width: initial;
   }
 }
 
@@ -34,12 +49,19 @@
 
 .featureImage {
   align-items: center;
+  justify-content: center;
   display: flex;
   height: 100%;
 }
 
 .featureImageSecond {
   order: 2;
+}
+
+@media (max-width: 996px) {
+  .featureDescCol {
+    order: 2;
+  }
 }
 
 .openCollective {

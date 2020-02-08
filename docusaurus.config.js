@@ -11,7 +11,7 @@ module.exports = {
       title: 'Pester',
       logo: {
         alt: 'Pester Logo',
-        src: 'img/logo.png',
+        src: 'img/logo_white.svg',
       },
       links: [
         { to: 'docs/quick-start', label: 'Docs', position: 'right' },
