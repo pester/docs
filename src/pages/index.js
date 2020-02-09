@@ -13,8 +13,8 @@ const features = [
     imagePosition: 'left',
     description: (
       <>
-        Adding Pester tests to Powershell code will enhance code quality and allows you to start creating predictable
-        changes.
+        Adding Pester tests to Powershell code will enhance code quality and and allows you to start creating
+        predictable changes.
       </>
     ),
   },
@@ -23,6 +23,17 @@ const features = [
     imageUrl: 'img/features/visual-studio-code.svg',
     imagePosition: 'right',
     description: <>Visual Studio comes with full support for Pester allowing you to create tests quick.</>,
+  },
+  {
+    title: 'Build Server Integration',
+    imageUrl: 'img/features/cicd.svg',
+    imagePosition: 'left',
+    description: (
+      <>
+        Pester integrates nicely with TFS, Azure, Github, Jenkins and other CI servers,
+        allowing you to fully automate your development lifecycle.
+      </>
+    ),
   },
 ];
 
