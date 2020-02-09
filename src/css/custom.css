@@ -75,6 +75,7 @@
   --ifm-color-primary-light: #007dda;
   --ifm-color-primary-lighter: #0083e4;
   --ifm-color-primary-lightest: #0294ff;
+  --ifm-menu-color: #fff;
   --ifm-navbar-background-color: #0072c6;
   --ifm-navbar-shadow: none;
   --ifm-container-width: 900px;
@@ -94,7 +95,7 @@
 }
 
 .navbar__brand {
-  font-size: 17px;
+  font-size: 19px;
 }
 
 @media only screen and (max-width: 768px) {
@@ -111,4 +112,14 @@ table {
 .menu__link,
 .navbar__brand strong {
   font-weight: 400;
+}
+
+.navbar__toggle {
+  color: #ffffff;
+}
+
+@media (max-width: 996px) {
+  .footer .row .col.col.col {
+    flex: 1 0 !important;
+  }
 }

@@ -20,11 +20,7 @@ html[data-theme='dark'] .heroBanner {
   width: 86%;
 }
 
-@media screen and (max-width: 966px) {
-  .heroBanner {
-    padding: 2rem;
-  }
-
+@media screen and (max-width: 996px) {
   .heroContent {
     order: 1;
   }
