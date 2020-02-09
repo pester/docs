@@ -5,6 +5,6 @@
   "jsxBracketSameLine": true,
   "printWidth": 120,
   "proseWrap": "never",
-  "singleQuote": false,
+  "singleQuote": true,
   "trailingComma": "all"
 }

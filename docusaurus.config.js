@@ -1,13 +1,6 @@
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
 module.exports = {
   title: 'Pester',
-  tagline: 'The ubiquitous test and mock framework for PowerShell.',
+  tagline: 'The ubiquitous test and mock framework for PowerShell',
   url: 'https://pester-docs.netlify.com',
   baseUrl: '/',
   favicon: 'img/favicon.ico',
@@ -18,11 +11,11 @@ module.exports = {
       title: 'Pester',
       logo: {
         alt: 'Pester Logo',
-        src: 'img/logo.svg',
+        src: 'img/logo_white.svg',
       },
       links: [
-        {to: 'docs/quick-start', label: 'Docs', position: 'right'},
-        {to: 'docs/commands/Add-AssertionOperator', label: 'Commands', position: 'right'},
+        { to: 'docs/quick-start', label: 'Docs', position: 'right' },
+        { to: 'docs/commands/Add-AssertionOperator', label: 'Commands', position: 'right' },
         {
           href: 'https://github.com/pester/pester',
           label: 'GitHub',
@@ -50,26 +43,42 @@ module.exports = {
           title: 'Community',
           items: [
             {
-              label: 'Discord',
-              href: 'https://discordapp.com/invite/docusaurus',
+              label: 'Twitter',
+              href: 'https://twitter.com/PSPester',
+            },
+            {
+              label: 'Stack Overflow',
+              href: 'https://stackoverflow.com/questions/tagged/pester',
+            },
+            {
+              label: 'Slack',
+              href: 'https://powershell.slack.com/messages/C03QKTUCS',
+            },
+            {
+              label: 'Gitter',
+              href:
+                'https://gitter.im/pester/Pester?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge',
+            },
+            {
+              label: 'PowerShell.org',
+              href: 'https://powershell.org/forums/forum/pester/',
             },
           ],
         },
         {
-          title: 'Social',
+          title: 'More',
           items: [
             {
-              label: 'Github',
+              label: 'GitHub',
               href: 'https://github.com/pester/pester',
-            }
+            },
+            {
+              label: 'Open Collective',
+              href: 'https://opencollective.com/pester/donate',
+            },
           ],
         },
       ],
-      logo: {
-        alt: 'Facebook Open Source Logo',
-        src: 'https://docusaurus.io/img/oss_logo.png',
-        href: 'https://opensource.facebook.com/',
-      },
       copyright: `Copyright © 2019-present Pester Team.`,
     },
   },

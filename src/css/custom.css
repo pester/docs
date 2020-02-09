@@ -1,26 +1,92 @@
 /**
- * Copyright (c) 2017-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-/**
  * Any CSS included here will be global. The classic template
  * bundles Infima by default. Infima is a CSS framework designed to
  * work well for content-centric websites.
  */
 
+@font-face {
+  font-family: 'Segoe UI';
+  src: url('/fonts/SegoeUI/SegoeUI-Light.eot');
+  src: local('Segoe UI Light'), local('SegoeUI-Light'),
+    url('/fonts/SegoeUI/SegoeUI-Light.eot?#iefix') format('embedded-opentype'),
+    url('/fonts/SegoeUI/SegoeUI-Light.woff') format('woff'), url('/fonts/SegoeUI/SegoeUI-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Segoe UI';
+  src: url('/fonts/SegoeUI/SegoeUI-BoldItalic.eot');
+  src: local('Segoe UI Bold Italic'), local('SegoeUI-BoldItalic'),
+    url('/fonts/SegoeUI/SegoeUI-BoldItalic.eot?#iefix') format('embedded-opentype'),
+    url('/fonts/SegoeUI/SegoeUI-BoldItalic.woff') format('woff'),
+    url('/fonts/SegoeUI/SegoeUI-BoldItalic.ttf') format('truetype');
+  font-weight: bold;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Segoe UI';
+  src: url('/fonts/SegoeUI/SegoeUI-SemiBold.eot');
+  src: local('Segoe UI Semibold'), local('SegoeUI-SemiBold'),
+    url('/fonts/SegoeUI/SegoeUI-SemiBold.eot?#iefix') format('embedded-opentype'),
+    url('/fonts/SegoeUI/SegoeUI-SemiBold.woff') format('woff'),
+    url('/fonts/SegoeUI/SegoeUI-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Segoe UI';
+  src: url('/fonts/SegoeUI/SegoeUI.eot');
+  src: local('Segoe UI'), local('SegoeUI'), url('/fonts/SegoeUI/SegoeUI.eot?#iefix') format('embedded-opentype'),
+    url('/fonts/SegoeUI/SegoeUI.woff') format('woff'), url('/fonts/SegoeUI/SegoeUI.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Segoe UI';
+  src: url('/fonts/SegoeUI/SegoeUI-Bold.eot');
+  src: local('Segoe UI Bold'), local('SegoeUI-Bold'),
+    url('/fonts/SegoeUI/SegoeUI-Bold.eot?#iefix') format('embedded-opentype'),
+    url('/fonts/SegoeUI/SegoeUI-Bold.woff') format('woff'), url('/fonts/SegoeUI/SegoeUI-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Segoe UI';
+  src: url('/fonts/SegoeUI/SegoeUI-Italic.eot');
+  src: local('Segoe UI Italic'), local('SegoeUI-Italic'),
+    url('/fonts/SegoeUI/SegoeUI-Italic.eot?#iefix') format('embedded-opentype'),
+    url('/fonts/SegoeUI/SegoeUI-Italic.woff') format('woff'),
+    url('/fonts/SegoeUI/SegoeUI-Italic.ttf') format('truetype');
+  font-weight: normal;
+  font-style: italic;
+}
+
 /* You can override the default Infima variables here. */
 :root {
-  --ifm-color-primary: #25c2a0;
-  --ifm-color-primary-dark: rgb(33, 175, 144);
-  --ifm-color-primary-darker: rgb(31, 165, 136);
-  --ifm-color-primary-darkest: rgb(26, 136, 112);
-  --ifm-color-primary-light: rgb(70, 203, 174);
-  --ifm-color-primary-lighter: rgb(102, 212, 189);
-  --ifm-color-primary-lightest: rgb(146, 224, 208);
+  --ifm-color-primary: #0072c6;
+  --ifm-color-primary-dark: #0067b2;
+  --ifm-color-primary-darker: #0061a8;
+  --ifm-color-primary-darkest: #00508b;
+  --ifm-color-primary-light: #007dda;
+  --ifm-color-primary-lighter: #0083e4;
+  --ifm-color-primary-lightest: #0294ff;
+  --ifm-navbar-background-color: #0072c6;
+  --ifm-navbar-shadow: none;
+  --ifm-navbar-link-color: #fff;
+  --ifm-navbar-link-hover-color: #5ab3dd;
   --ifm-code-font-size: 95%;
+  --ifm-font-weight-semibold: 600;
+  --ifm-font-size-base: 16px;
+  --ifm-font-family-base: 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.navbar-sidebar .menu__link {
+  color: #fff;
 }
 
 .docusaurus-highlight-code-line {
@@ -28,4 +94,34 @@
   display: block;
   margin: 0 calc(-1 * var(--ifm-pre-padding));
   padding: 0 var(--ifm-pre-padding);
+}
+
+.navbar__brand {
+  font-size: 19px;
+}
+
+@media only screen and (max-width: 768px) {
+  .hero .hero__title {
+    font-size: 36px;
+    text-align: center;
+  }
+}
+
+table {
+  display: table;
+}
+
+.menu__link,
+.navbar__brand strong {
+  font-weight: 400;
+}
+
+.navbar__toggle {
+  color: #ffffff;
+}
+
+@media (max-width: 996px) {
+  .footer .row .col.col.col {
+    flex: 1 0 !important;
+  }
 }

@@ -29,7 +29,15 @@ const PesterDataTable = ({
   } = useTable(
     {
       columns,
-      data
+      data,
+      initialState: {
+        sortBy: [
+          {
+            id: columns[0].accessor,
+            desc: true,
+          },
+        ],
+      },
     },
     useSortBy
   );
@@ -53,6 +61,7 @@ const PesterDataTable = ({
                 ])}
               >
                 {column.render("Header")}
+                <span>{column.isSorted ? (column.isSortedDesc ? ' ▼' : ' ▲') : ''}</span>
               </th>
             ))}
           </tr>

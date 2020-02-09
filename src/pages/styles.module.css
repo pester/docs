@@ -1,25 +1,36 @@
 /**
- * Copyright (c) 2017-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-/**
  * CSS files with the .module.css suffix will be treated as CSS modules
  * and scoped locally.
  */
 
+.container {
+  --ifm-container-width: 900px;
+}
+
 .heroBanner {
-  padding: 4rem 0;
+  padding: 8rem 0;
   text-align: center;
   position: relative;
   overflow: hidden;
+  background: #0072c6;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 6vw), 0 100%);
 }
 
-@media screen and (max-width: 966px) {
-  .heroBanner {
-    padding: 2rem;
+html[data-theme='dark'] .heroBanner {
+  color: #000;
+}
+
+.heroLogo img {
+  width: 86%;
+}
+
+@media screen and (max-width: 996px) {
+  .heroContent {
+    order: 1;
+  }
+
+  .heroLogo img {
+    width: initial;
   }
 }
 
@@ -37,6 +48,26 @@
 }
 
 .featureImage {
-  height: 200px;
-  width: 200px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  height: 100%;
+}
+
+.featureImageSecond {
+  order: 2;
+}
+
+@media (max-width: 996px) {
+  .featureDescCol {
+    order: 2;
+  }
+}
+
+.openCollective {
+  border: 1px solid #dadde1;
+  border-radius: 16px;
+  margin-bottom: 20px;
+  padding-left: 20px;
+  text-align: center;
 }
