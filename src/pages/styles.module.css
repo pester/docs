@@ -58,16 +58,25 @@ html[data-theme='dark'] .heroBanner {
   order: 2;
 }
 
+.openCollective {
+  border: 1px solid #dadde1;
+  border-radius: 16px;
+  margin-bottom: 5rem;
+  padding-left: 20px;
+  text-align: center;
+}
+
+/*
+ * CSS overrides for mobile
+ */
 @media (max-width: 996px) {
   .featureDescCol {
     order: 2;
   }
+
+  .openCollective {
+    margin-bottom: 3rem;
+  }
 }
 
-.openCollective {
-  border: 1px solid #dadde1;
-  border-radius: 16px;
-  margin-bottom: 20px;
-  padding-left: 20px;
-  text-align: center;
-}
+

@@ -97,9 +97,9 @@ function Home() {
           )}
 
           <section className={classnames(styles.openCollective, 'padding-vert--lg padding-horiz--md')}>
-            <h2>Financial Contributors</h2>
+            <h2>Meet Our Sponsors</h2>
 
-            <p>Pester is sponsored by all the great folks on OpenCollective, GutHub and the DevOps Collective.</p>
+            <p>Pester is sponsored by all the great folks on OpenCollective, GitHub and the DevOps Collective.</p>
 
             <p>Become a financial contributor and help us sustain our community.</p>
 
