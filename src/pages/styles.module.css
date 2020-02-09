@@ -72,6 +72,8 @@ html[data-theme='dark'] .heroBanner {
 @media (max-width: 996px) {
   .featureDescCol {
     order: 2;
+    padding-bottom: 2.5rem !important;
+    padding-top: 2.5rem !important;
   }
 
   .openCollective {
