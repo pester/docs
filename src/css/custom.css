@@ -75,7 +75,6 @@
   --ifm-color-primary-light: #007dda;
   --ifm-color-primary-lighter: #0083e4;
   --ifm-color-primary-lightest: #0294ff;
-  --ifm-menu-color: #fff;
   --ifm-navbar-background-color: #0072c6;
   --ifm-navbar-shadow: none;
   --ifm-container-width: 900px;
@@ -85,6 +84,10 @@
   --ifm-font-weight-semibold: 600;
   --ifm-font-size-base: 16px;
   --ifm-font-family-base: 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+html[data-theme=''] {
+  --ifm-menu-color: #fff;
 }
 
 .docusaurus-highlight-code-line {
