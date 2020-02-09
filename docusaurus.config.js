@@ -83,7 +83,7 @@ module.exports = {
           ],
         },
       ],
-      copyright: `Copyright © 2019-present Pester Team.`,
+      copyright: `Copyright Pester Team © 2019-present`,
     },
   },
   presets: [
