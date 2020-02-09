@@ -86,8 +86,8 @@
   --ifm-font-family-base: 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
-html[data-theme=''] {
-  --ifm-menu-color: #fff;
+.navbar-sidebar .menu__link {
+  color: #fff;
 }
 
 .docusaurus-highlight-code-line {
