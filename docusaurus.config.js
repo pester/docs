@@ -66,7 +66,7 @@ module.exports = {
           ],
         },
         {
-          title: 'More',
+          title: 'Sponsoring',
           items: [
             {
               label: 'GitHub',
