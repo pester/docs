@@ -62,7 +62,7 @@ function Home() {
       title={`${siteConfig.title} - The ubiquitous test and mock framework for PowerShell`}
       description="Description will go into a meta tag in <head />">
       <header className={classnames('hero hero--primary', styles.heroBanner)}>
-        <div className="container">
+        <div className={classnames('container', styles.container)}>
           <div className="row">
             <div className={classnames('col col--9', styles.heroContent)}>
               <h1 className="hero__title">The test framework for Powershell</h1>
@@ -85,10 +85,10 @@ function Home() {
       </header>
 
       <main>
-        <div className="container">
+        <div className={classnames('container', styles.container)}>
           {features && features.length && (
             <section className={styles.features}>
-              <div className="container">
+              <div className={classnames('container', styles.container)}>
                 {features.map((props, idx) => (
                   <Feature key={idx} {...props} />
                 ))}

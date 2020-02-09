@@ -3,6 +3,10 @@
  * and scoped locally.
  */
 
+.container {
+  --ifm-container-width: 900px;
+}
+
 .heroBanner {
   padding: 8rem 0;
   text-align: center;
