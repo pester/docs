@@ -1,3 +1,7 @@
+/**
+ * Please note that the syntax highlighting theme CANNOT be configured here,
+ * it MUST be configured in swizzled shadow component `/src/theme/index.js`
+*/
 module.exports = {
   title: 'Pester',
   tagline: 'The ubiquitous test and mock framework for PowerShell',
@@ -27,14 +31,18 @@ module.exports = {
       style: 'dark',
       links: [
         {
-          title: 'Docs',
+          title: 'Documentation',
           items: [
             {
-              label: 'Docs',
+              label: 'Quick Start',
               to: 'docs/quick-start',
             },
             {
-              label: 'Commands',
+              label: 'Installation',
+              to: 'docs/introduction/installation',
+            },
+            {
+              label: 'Command Reference',
               to: 'docs/commands/Add-AssertionOperator',
             },
           ],
@@ -43,30 +51,30 @@ module.exports = {
           title: 'Community',
           items: [
             {
-              label: 'Twitter',
-              href: 'https://twitter.com/PSPester',
+              label: 'Gitter',
+              href:
+                'https://gitter.im/pester/Pester',
             },
             {
-              label: 'Stack Overflow',
-              href: 'https://stackoverflow.com/questions/tagged/pester',
+              label: 'PowerShell.org',
+              href: 'https://powershell.org/forums/forum/pester/',
             },
             {
               label: 'Slack',
               href: 'https://powershell.slack.com/messages/C03QKTUCS',
             },
             {
-              label: 'Gitter',
-              href:
-                'https://gitter.im/pester/Pester?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge',
+              label: 'Stack Overflow',
+              href: 'https://stackoverflow.com/questions/tagged/pester',
             },
             {
-              label: 'PowerShell.org',
-              href: 'https://powershell.org/forums/forum/pester/',
+              label: 'Twitter',
+              href: 'https://twitter.com/PSPester',
             },
           ],
         },
         {
-          title: 'More',
+          title: 'Sponsoring',
           items: [
             {
               label: 'GitHub',
@@ -79,7 +87,7 @@ module.exports = {
           ],
         },
       ],
-      copyright: `Copyright © 2019-present Pester Team.`,
+      copyright: `Copyright Pester Team © 2019-present`,
     },
   },
   presets: [

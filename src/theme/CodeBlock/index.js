@@ -14,7 +14,7 @@
 import React, {useEffect, useState, useRef} from 'react';
 import classnames from 'classnames';
 import Highlight, {defaultProps} from 'prism-react-renderer';
-import defaultTheme from 'prism-react-renderer/themes/palenight';
+import defaultTheme from 'prism-react-renderer/themes/github'; // syntax highlighting theme
 import Clipboard from 'clipboard';
 import rangeParser from 'parse-numeric-range';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
