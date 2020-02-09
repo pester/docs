@@ -27,14 +27,18 @@ module.exports = {
       style: 'dark',
       links: [
         {
-          title: 'Docs',
+          title: 'Documentation',
           items: [
             {
-              label: 'Docs',
+              label: 'Quick Start',
               to: 'docs/quick-start',
             },
             {
-              label: 'Commands',
+              label: 'Installation',
+              to: 'docs/introduction/installation',
+            },
+            {
+              label: 'Command Reference',
               to: 'docs/commands/Add-AssertionOperator',
             },
           ],
