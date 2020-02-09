@@ -43,18 +43,6 @@ module.exports = {
           title: 'Community',
           items: [
             {
-              label: 'Twitter',
-              href: 'https://twitter.com/PSPester',
-            },
-            {
-              label: 'Stack Overflow',
-              href: 'https://stackoverflow.com/questions/tagged/pester',
-            },
-            {
-              label: 'Slack',
-              href: 'https://powershell.slack.com/messages/C03QKTUCS',
-            },
-            {
               label: 'Gitter',
               href:
                 'https://gitter.im/pester/Pester?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge',
@@ -62,6 +50,18 @@ module.exports = {
             {
               label: 'PowerShell.org',
               href: 'https://powershell.org/forums/forum/pester/',
+            },
+            {
+              label: 'Slack',
+              href: 'https://powershell.slack.com/messages/C03QKTUCS',
+            },
+            {
+              label: 'Stack Overflow',
+              href: 'https://stackoverflow.com/questions/tagged/pester',
+            },
+            {
+              label: 'Twitter',
+              href: 'https://twitter.com/PSPester',
             },
           ],
         },
