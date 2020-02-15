@@ -71,7 +71,7 @@ function Home() {
   return (
     <Layout
       title={`${siteConfig.title} - The ubiquitous test and mock framework for PowerShell`}
-      description="Description will go into a meta tag in <head />">
+      description="Pester is the ubiquitous test and mock framework for PowerShell">
       <header className={classnames('hero hero--primary', styles.heroBanner)}>
         <div className={classnames('container', styles.container)}>
           <div className="row">
