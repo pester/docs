@@ -79,10 +79,11 @@
   --ifm-navbar-shadow: none;
   --ifm-navbar-link-color: #fff;
   --ifm-navbar-link-hover-color: #5ab3dd;
-  --ifm-code-font-size: 95%;
+  --ifm-code-font-size: 90%;
   --ifm-font-weight-semibold: 600;
   --ifm-font-size-base: 16px;
   --ifm-font-family-base: 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --ifm-heading-font-weight: 600;
 }
 
 .navbar-sidebar .menu__link {
