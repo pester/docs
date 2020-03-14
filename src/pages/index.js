@@ -13,7 +13,7 @@ const features = [
     imagePosition: 'left',
     description: (
       <>
-        Adding Pester tests to Powershell code will enhance code quality and and allows you to start creating
+        Adding Pester tests to Powershell code will enhance code quality and allows you to start creating
         predictable changes.
       </>
     ),
