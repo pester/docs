@@ -112,7 +112,7 @@ Import-Module Pester
 Invoke-Pester -CodeCoverage '$(System.DefaultWorkingDirectory)\TheScript.ps1' -CodeCoverageOutputFile '$(System.DefaultWorkingDirectory)\Pester-Coverage.xml' -CodeCoverageOutputFileFormat JaCoCo
 ```
 
-Then, add a Publish Code Coverage Result task to your pipeline. it is important to set the Path To Source Files option so that Azure DevOps to will auto-create HTML reports that can be ingested and displayed by the pipeline.
+Then, add a Publish Code Coverage Result task to your pipeline. It is important to set the Path To Source Files option so that Azure DevOps to will auto-create HTML reports that can be ingested and displayed by the pipeline.
 
 ```yaml
 
