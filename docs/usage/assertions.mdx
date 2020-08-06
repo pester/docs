@@ -280,10 +280,12 @@ Checks if an exception was thrown in the input ScriptBlock. Takes an optional ar
 { throw "bar" } | Should -Throw "This is a test" # Test will fail
 ```
 
-Note: The exception message match is a substring match, so the following assertion will pass:
+Note: The exception message match is a `-like` 
+[wildcard match](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_comparison_operators?view=powershell-7#matching-operators),
+so the following assertion will pass:
 
 ```powershell
-{throw "foo bar baz"} | Should -Throw "bar" # Test will pass
+{throw "foo bar baz"} | Should -Throw "*bar*" # Test will pass
 ```
 
 **Warning:** The input object must be a ScriptBlock, otherwise it is processed outside of the assertion.
