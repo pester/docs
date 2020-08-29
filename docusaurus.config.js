@@ -17,7 +17,7 @@ module.exports = {
         alt: 'Pester Logo',
         src: 'img/logo_white.svg',
       },
-      links: [
+      items: [
         { to: 'docs/quick-start', label: 'Docs', position: 'right' },
         { to: 'docs/commands/Add-AssertionOperator', label: 'Commands', position: 'right' },
         {
