@@ -10,6 +10,7 @@ module.exports = {
   favicon: 'img/favicon.ico',
   organizationName: 'pester', // Usually your GitHub org/user name.
   projectName: 'docs', // Usually your repo name.
+  onBrokenLinks: 'warn',
   themeConfig: {
     navbar: {
       title: 'Pester',
