@@ -103,6 +103,15 @@ module.exports = {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
           editUrl: 'https://github.com/pester/docs/edit/master',
+          lastVersion: "current",
+          includeCurrentVersion: true,
+          disableVersioning: false,
+          versions: {
+            current: {
+              label: "v5",
+              path: "",
+            }
+          },
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),

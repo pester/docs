@@ -1,0 +1,250 @@
+{
+  "version-v4/docs": [
+    {
+      "collapsed": true,
+      "type": "category",
+      "label": "Introduction",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-v4/quick-start"
+        },
+        {
+          "type": "doc",
+          "id": "version-v4/introduction/installation"
+        },
+        {
+          "type": "doc",
+          "id": "version-v4/introduction/powershell-core-limitations"
+        }
+      ]
+    },
+    {
+      "collapsed": true,
+      "type": "category",
+      "label": "Usage",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-v4/usage/assertions"
+        },
+        {
+          "type": "doc",
+          "id": "version-v4/usage/mocking"
+        },
+        {
+          "type": "doc",
+          "id": "version-v4/usage/modules"
+        },
+        {
+          "type": "doc",
+          "id": "version-v4/usage/testdrive"
+        },
+        {
+          "type": "doc",
+          "id": "version-v4/usage/testregistry"
+        },
+        {
+          "type": "doc",
+          "id": "version-v4/usage/test-results"
+        },
+        {
+          "type": "doc",
+          "id": "version-v4/usage/code-coverage"
+        }
+      ]
+    },
+    {
+      "collapsed": true,
+      "type": "category",
+      "label": "Migration Guides",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-v4/migrations/v3-to-v4"
+        }
+      ]
+    },
+    {
+      "collapsed": true,
+      "type": "category",
+      "label": "Additional Resources",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-v4/additional-resources/articles"
+        },
+        {
+          "type": "doc",
+          "id": "version-v4/additional-resources/courses"
+        },
+        {
+          "type": "doc",
+          "id": "version-v4/additional-resources/misc"
+        },
+        {
+          "type": "doc",
+          "id": "version-v4/additional-resources/projects"
+        },
+        {
+          "type": "doc",
+          "id": "version-v4/additional-resources/videos"
+        }
+      ]
+    },
+    {
+      "collapsed": true,
+      "type": "category",
+      "label": "Contributing",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-v4/contributing/introduction"
+        },
+        {
+          "type": "doc",
+          "id": "version-v4/contributing/reporting-issues"
+        },
+        {
+          "type": "doc",
+          "id": "version-v4/contributing/feature-requests"
+        },
+        {
+          "type": "doc",
+          "id": "version-v4/contributing/pull-requests"
+        }
+      ]
+    },
+    {
+      "collapsed": true,
+      "type": "category",
+      "label": "Command Reference",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-v4/commands/Add-AssertionOperator"
+        },
+        {
+          "type": "doc",
+          "id": "version-v4/commands/AfterAll"
+        },
+        {
+          "type": "doc",
+          "id": "version-v4/commands/AfterEach"
+        },
+        {
+          "type": "doc",
+          "id": "version-v4/commands/AfterEachFeature"
+        },
+        {
+          "type": "doc",
+          "id": "version-v4/commands/AfterEachScenario"
+        },
+        {
+          "type": "doc",
+          "id": "version-v4/commands/Assert-MockCalled"
+        },
+        {
+          "type": "doc",
+          "id": "version-v4/commands/Assert-VerifiableMock"
+        },
+        {
+          "type": "doc",
+          "id": "version-v4/commands/Assert-VerifiableMocks"
+        },
+        {
+          "type": "doc",
+          "id": "version-v4/commands/BeforeAll"
+        },
+        {
+          "type": "doc",
+          "id": "version-v4/commands/BeforeEach"
+        },
+        {
+          "type": "doc",
+          "id": "version-v4/commands/BeforeEachFeature"
+        },
+        {
+          "type": "doc",
+          "id": "version-v4/commands/BeforeEachScenario"
+        },
+        {
+          "type": "doc",
+          "id": "version-v4/commands/Context"
+        },
+        {
+          "type": "doc",
+          "id": "version-v4/commands/Describe"
+        },
+        {
+          "type": "doc",
+          "id": "version-v4/commands/Find-GherkinStep"
+        },
+        {
+          "type": "doc",
+          "id": "version-v4/commands/Get-ShouldOperator"
+        },
+        {
+          "type": "doc",
+          "id": "version-v4/commands/Get-TestDriveItem"
+        },
+        {
+          "type": "doc",
+          "id": "version-v4/commands/GherkinStep"
+        },
+        {
+          "type": "doc",
+          "id": "version-v4/commands/In"
+        },
+        {
+          "type": "doc",
+          "id": "version-v4/commands/InModuleScope"
+        },
+        {
+          "type": "doc",
+          "id": "version-v4/commands/Invoke-Gherkin"
+        },
+        {
+          "type": "doc",
+          "id": "version-v4/commands/Invoke-Pester"
+        },
+        {
+          "type": "doc",
+          "id": "version-v4/commands/It"
+        },
+        {
+          "type": "doc",
+          "id": "version-v4/commands/Mock"
+        },
+        {
+          "type": "doc",
+          "id": "version-v4/commands/New-Fixture"
+        },
+        {
+          "type": "doc",
+          "id": "version-v4/commands/New-MockObject"
+        },
+        {
+          "type": "doc",
+          "id": "version-v4/commands/New-PesterOption"
+        },
+        {
+          "type": "doc",
+          "id": "version-v4/commands/Set-ItResult"
+        },
+        {
+          "type": "doc",
+          "id": "version-v4/commands/Set-TestInconclusive"
+        },
+        {
+          "type": "doc",
+          "id": "version-v4/commands/Setup"
+        },
+        {
+          "type": "doc",
+          "id": "version-v4/commands/Should"
+        }
+      ]
+    }
+  ]
+}
