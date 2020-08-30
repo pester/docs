@@ -1,7 +1,7 @@
 ---
-id: Add-AssertionOperator
-title: Add-AssertionOperator
-description: Help page for the Powershell Pester "Add-AssertionOperator" command
+id: Add-ShouldOperator
+title: Add-ShouldOperator
+description: Help page for the Powershell Pester "Add-ShouldOperator" command
 keywords:
   - Powershell
   - Pester
@@ -9,17 +9,16 @@ keywords:
   - Documentation
 hide_title: false
 hide_table_of_contents: false
-custom_edit_url: null
 ---
 
 ## SYNOPSIS
 
-Register an Assertion Operator with Pester
+Register a Should Operator with Pester
 
 ## SYNTAX
 
 ```powershell
-Add-AssertionOperator [-Name] <String> [-Test] <ScriptBlock> [[-Alias] <String[]>] [[-InternalName] <String>]
+Add-ShouldOperator [-Name] <String> [-Test] <ScriptBlock> [[-Alias] <String[]>] [[-InternalName] <String>]
  [-SupportsArrayInput] [<CommonParameters>]
 ```
 
@@ -33,6 +32,8 @@ This function allows you to create custom Should assertions.
 
 ```powershell
 function BeAwesome($ActualValue, [switch] $Negate)
+```
+
 {
 
     [bool] $succeeded = $ActualValue -eq 'Awesome'
@@ -56,13 +57,12 @@ function BeAwesome($ActualValue, [switch] $Negate)
     }
 }
 
-Add-AssertionOperator -Name  BeAwesome `
+Add-ShouldOperator -Name  BeAwesome `
                     -Test  $function:BeAwesome `
                     -Alias 'BA'
 
 PS C:\> "bad" | should -BeAwesome
 {bad} is not Awesome
-```
 
 ## PARAMETERS
 
@@ -160,7 +160,3 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## NOTES
 
 ## RELATED LINKS
-
-## EDIT THIS PAGE
-
-This page was auto-generated using Pester's comment based help. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.

@@ -1,7 +1,7 @@
 ---
-id: BeforeAll
-title: BeforeAll
-description: Help page for the Powershell Pester "BeforeAll" command
+id: ConvertTo-Pester4Result
+title: ConvertTo-Pester4Result
+description: Help page for the Powershell Pester "ConvertTo-Pester4Result" command
 keywords:
   - Powershell
   - Pester
@@ -13,20 +13,17 @@ hide_table_of_contents: false
 
 ## SYNOPSIS
 
-Defines a series of steps to perform at the beginning of the current Context
-or Describe block.
+{{ Fill in the Synopsis }}
 
 ## SYNTAX
 
 ```powershell
-BeforeAll [-Scriptblock] <ScriptBlock> [<CommonParameters>]
+ConvertTo-Pester4Result [-PesterResult] <Object> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
 
-BeforeEach, AfterEach, BeforeAll, and AfterAll are unique in that they apply
-to the entire Context or Describe block, regardless of the order of the
-statements in the Context or Describe.
+{{ Fill in the Description }}
 
 ## EXAMPLES
 
@@ -40,19 +37,19 @@ PS C:\> {{ Add example code here }}
 
 ## PARAMETERS
 
-### -Scriptblock
+### -PesterResult
 
-the scriptblock to execute
+{{ Fill PesterResult Description }}
 
 ```yaml
-Type: ScriptBlock
+Type: Object
 Parameter Sets: (All)
 Aliases:
 
 Required: True
-Position: 2
+Position: 0
 Default value: None
-Accept pipeline input: False
+Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 
@@ -62,10 +59,12 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## INPUTS
 
+### System.Object
+
 ## OUTPUTS
+
+### System.Object
 
 ## NOTES
 
 ## RELATED LINKS
-
-[https://github.com/pester/Pester/wiki/BeforeEach-and-AfterEach](https://github.com/pester/Pester/wiki/BeforeEach-and-AfterEach)

@@ -9,7 +9,6 @@ keywords:
   - Documentation
 hide_title: false
 hide_table_of_contents: false
-custom_edit_url: null
 ---
 
 ## SYNOPSIS
@@ -54,7 +53,7 @@ Mocks can be marked Verifiable.
 If so, the Assert-VerifiableMock command
 can be used to check if all Verifiable mocks were actually called.
 If any
-verifiable mock is not called, Assert-VerifiableMock will throw an
+verifiable mock is not called, Should -InvokeVerifiable will throw an
 exception and indicate all mocks not called.
 
 If you wish to mock commands that are called from inside a script module,
@@ -91,16 +90,17 @@ This Mock will only be applied to Get-ChildItem calls within the user's temp dir
 Mock Set-Content {} -Verifiable -ParameterFilter { $Path -eq "some_path" -and $Value -eq "Expected Value" }
 ```
 
-When this mock is used, if the Mock is never invoked and Assert-VerifiableMock is called, an exception will be thrown.
+When this mock is used, if the Mock is never invoked and Should -InvokeVerifiable is called, an exception will be thrown.
 The command behavior will do nothing since the ScriptBlock is empty.
 
 ### EXAMPLE 4
 
 ```powershell
 Mock Get-ChildItem { return @{FullName = "A_File.TXT"} } -ParameterFilter { $Path -and $Path.StartsWith($env:temp\1) }
+```
+
 Mock Get-ChildItem { return @{FullName = "B_File.TXT"} } -ParameterFilter { $Path -and $Path.StartsWith($env:temp\2) }
 Mock Get-ChildItem { return @{FullName = "C_File.TXT"} } -ParameterFilter { $Path -and $Path.StartsWith($env:temp\3) }
-```
 
 Multiple mocks of the same command may be used.
 The parameter filter determines which is invoked.
@@ -110,10 +110,11 @@ Here, if Get-ChildItem is called on the "2" directory of the temp folder, then B
 
 ```powershell
 Mock Get-ChildItem { return @{FullName="B_File.TXT"} } -ParameterFilter { $Path -eq "$env:temp\me" }
+```
+
 Mock Get-ChildItem { return @{FullName="A_File.TXT"} } -ParameterFilter { $Path -and $Path.StartsWith($env:temp) }
 
 Get-ChildItem $env:temp\me
-```
 
 Here, both mocks could apply since both filters will pass.
 A_File.TXT will be returned because it was the most recent Mock created.
@@ -122,10 +123,11 @@ A_File.TXT will be returned because it was the most recent Mock created.
 
 ```powershell
 Mock Get-ChildItem { return @{FullName = "B_File.TXT"} } -ParameterFilter { $Path -eq "$env:temp\me" }
+```
+
 Mock Get-ChildItem { return @{FullName = "A_File.TXT"} }
 
 Get-ChildItem c:\windows
-```
 
 Here, A_File.TXT will be returned.
 Since no filter was specified, it will apply to any call to Get-ChildItem that does not pass another filter.
@@ -134,10 +136,11 @@ Since no filter was specified, it will apply to any call to Get-ChildItem that d
 
 ```powershell
 Mock Get-ChildItem { return @{FullName = "B_File.TXT"} } -ParameterFilter { $Path -eq "$env:temp\me" }
+```
+
 Mock Get-ChildItem { return @{FullName = "A_File.TXT"} }
 
 Get-ChildItem $env:temp\me
-```
 
 Here, B_File.TXT will be returned.
 Even though the filterless mock was created more recently.
@@ -156,6 +159,8 @@ will return a hashtable with a FullName property returning "A_File.TXT"
 
 ```powershell
 Get-Module -Name ModuleMockExample | Remove-Module
+```
+
 New-Module -Name ModuleMockExample  -ScriptBlock {
     function Hidden { "Internal Module Function" }
     function Exported { Hidden }
@@ -178,7 +183,6 @@ Describe "ModuleMockExample" {
         Exported | Should -Be "Mocked"
     }
 }
-```
 
 This example shows how calls to commands made from inside a module can be
 mocked by using the -ModuleName parameter.
@@ -217,14 +221,14 @@ Aliases:
 
 Required: False
 Position: 2
-Default value: { }
+Default value: {}
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -Verifiable
 
-When this is set, the mock will be checked when Assert-VerifiableMock is
+When this is set, the mock will be checked when Should -InvokeVerifiable is
 called.
 
 ```yaml
@@ -255,7 +259,7 @@ Aliases:
 
 Required: False
 Position: 3
-Default value: { $True }
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -282,17 +286,7 @@ Accept wildcard characters: False
 
 ### -RemoveParameterType
 
-Optional parameter that removes a type of a parameter in the fuction
-declaration.
-This is useful when you are testing a function that has a
-strongly typed parameter but you are not able to create an object of the
-required type.
-
-This parameter applies only to the first definintion of a mock within the
-current scope.
-If there are multiple mocks with the same name, any subsequent
-configuration of parameters will be ingored, including parameter validation
-described below.
+{{ Fill RemoveParameterType Description }}
 
 ```yaml
 Type: String[]
@@ -308,16 +302,7 @@ Accept wildcard characters: False
 
 ### -RemoveParameterValidation
 
-Optional parameter that removes validation from a parameter in the fuction
-declaration.
-This is useful when you are testing a function that validates
-it's input, but you are unable to satisfy the validation.
-
-This parameter applies only to the first definintion of a mock within the
-current scope.
-If there are multiple mocks with the same name, any subsequent
-configuration of parameters will be ingored, including parameter types described
-above.
+{{ Fill RemoveParameterValidation Description }}
 
 ```yaml
 Type: String[]
@@ -343,20 +328,11 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[https://pester.dev/docs/commands/Assert-MockCalled](https://pester.dev/docs/commands/Assert-MockCalled)
+[Should
+Describe
+Context
+It
+about_Should
+about_Mocking
 
-[https://pester.dev/docs/commands/Assert-VerifiableMock](https://pester.dev/docs/commands/Assert-VerifiableMock)
-
-[https://pester.dev/docs/commands/Describe](https://pester.dev/docs/commands/Describe)
-
-[https://pester.dev/docs/commands/Context](https://pester.dev/docs/commands/Context)
-
-[https://pester.dev/docs/commands/It](https://pester.dev/docs/commands/It)
-
-[https://pester.dev/docs/commands/Should](https://pester.dev/docs/commands/Should)
-
-[https://pester.dev/docs/usage/mocking](https://pester.dev/docs/usage/mocking)
-
-## EDIT THIS PAGE
-
-This page was auto-generated using Pester's comment based help. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.
+ Mock]()

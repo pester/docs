@@ -9,13 +9,14 @@ keywords:
   - Documentation
 hide_title: false
 hide_table_of_contents: false
-custom_edit_url: null
 ---
 
 ## SYNOPSIS
 
-Checks if any Verifiable Mock has not been invoked.
-If so, this will throw an exception.
+Checks if all verifiable Mocks has been called at least once.
+
+THIS COMMAND IS OBSOLETE AND WILL BE REMOVED SOMEWHERE DURING v5 LIFETIME,
+USE Should -InvokeVerifiable INSTEAD.
 
 ## SYNTAX
 
@@ -25,42 +26,17 @@ Assert-VerifiableMock [<CommonParameters>]
 
 ## DESCRIPTION
 
-This can be used in tandem with the -Verifiable switch of the Mock
-function.
-Mock can be used to mock the behavior of an existing command
-and optionally take a -Verifiable switch.
-When Assert-VerifiableMock
-is called, it checks to see if any Mock marked Verifiable has not been
-invoked.
-If any mocks have been found that specified -Verifiable and
-have not been invoked, an exception will be thrown.
+{{ Fill in the Description }}
 
 ## EXAMPLES
 
-### EXAMPLE 1
+### Example 1
 
 ```powershell
-Mock Set-Content {} -Verifiable -ParameterFilter {$Path -eq "some_path" -and $Value -eq "Expected Value"}
-
-{ ...some code that never calls Set-Content some_path -Value "Expected Value"...
-}
-
-Assert-VerifiableMock
+PS C:\> {{ Add example code here }}
 ```
 
-This will throw an exception and cause the test to fail.
-
-### EXAMPLE 2
-
-```powershell
-Mock Set-Content {} -Verifiable -ParameterFilter {$Path -eq "some_path" -and $Value -eq "Expected Value"}
-
-Set-Content some_path -Value "Expected Value"
-
-Assert-VerifiableMock
-```
-
-This will not throw an exception because the mock was invoked.
+{{ Add example description here }}
 
 ## PARAMETERS
 
@@ -75,7 +51,3 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## NOTES
 
 ## RELATED LINKS
-
-## EDIT THIS PAGE
-
-This page was auto-generated using Pester's comment based help. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.
