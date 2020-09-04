@@ -20,6 +20,10 @@ module.exports = {
       },
       items: [
         { to: 'docs/quick-start', label: 'Docs', position: 'right' },
+        {
+          type: 'docsVersionDropdown',
+          position: 'left',
+        },
         { to: 'docs/commands/Add-AssertionOperator', label: 'Commands', position: 'right' },
         {
           href: 'https://github.com/pester/pester',
