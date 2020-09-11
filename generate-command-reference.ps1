@@ -20,6 +20,7 @@ $arguments = @{
   Module = "Pester"
   DocsFolder = "./docs"
   SideBar = "commands"
+  EditUrl = "null" # prevent the `Edit this Page` button from appearing
   Exclude = @(
     "Get-MockDynamicParameter"
     "Invoke-Mock"
@@ -33,6 +34,7 @@ $arguments = @{
       "Help"
       "Documentation"
   )
+  AppendMarkdown = "## EDIT THIS PAGE`nThis page was auto-generated using Pester's comment based help. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information."
 }
 
 Write-Host "Removing existing files" -ForegroundColor Magenta
