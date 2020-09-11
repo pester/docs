@@ -24,7 +24,7 @@ module.exports = {
           type: 'docsVersionDropdown',
           position: 'left',
         },
-        { to: 'docs/commands/Add-AssertionOperator', label: 'Commands', position: 'right' },
+        { to: 'docs/commands/Add-ShouldOperator', label: 'Commands', position: 'right' },
         {
           href: 'https://github.com/pester/pester',
           label: 'GitHub',
@@ -54,7 +54,7 @@ module.exports = {
             },
             {
               label: 'Command Reference',
-              to: 'docs/commands/Add-AssertionOperator',
+              to: 'docs/commands/Add-ShouldOperator',
             },
           ],
         },
