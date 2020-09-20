@@ -19,7 +19,7 @@ Provides logical grouping of It blocks within a single Describe block.
 ## SYNTAX
 
 ```powershell
-Context [-Name] <String> [-Tag <String[]>] [[-Fixture] <ScriptBlock>] [<CommonParameters>]
+Context [-Name] <String> [-Tag <String[]>] [[-Fixture] <ScriptBlock>] [-Skip] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -111,6 +111,22 @@ Aliases:
 Required: False
 Position: 2
 Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Skip
+
+[Switch] $Focus,
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

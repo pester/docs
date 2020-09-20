@@ -18,167 +18,176 @@ Should is a keyword what is used to define an assertion inside It block.
 
 ## SYNTAX
 
-### Legacy (Default)
-
-```powershell
-Should [[-__LegacyArg1] <Object>] [[-__LegacyArg2] <Object>] [[-__LegacyArg3] <Object>] [-ActualValue <Object>]
- [<CommonParameters>]
-```
-
 ### Be
 
 ```powershell
-Should [-ActualValue <Object>] [-Be] [-Not] [-ExpectedValue <Object>] [-Because <Object>] [<CommonParameters>]
+Should [[-ActualValue] <Object>] [-Be] [-Not] [-ExpectedValue <Object>] [-Because <Object>]
+ [<CommonParameters>]
 ```
 
 ### BeExactly
 
 ```powershell
-Should [-ActualValue <Object>] [-Not] [-ExpectedValue <Object>] [-Because <Object>] [-BeExactly]
+Should [[-ActualValue] <Object>] [-Not] [-ExpectedValue <Object>] [-Because <Object>] [-BeExactly]
  [<CommonParameters>]
 ```
 
 ### BeGreaterThan
 
 ```powershell
-Should [-ActualValue <Object>] [-Not] [-ExpectedValue <Object>] [-Because <Object>] [-BeGreaterThan]
+Should [[-ActualValue] <Object>] [-Not] [-ExpectedValue <Object>] [-Because <Object>] [-BeGreaterThan]
  [<CommonParameters>]
 ```
 
 ### BeLessOrEqual
 
 ```powershell
-Should [-ActualValue <Object>] [-Not] [-ExpectedValue <Object>] [-Because <Object>] [-BeLessOrEqual]
+Should [[-ActualValue] <Object>] [-Not] [-ExpectedValue <Object>] [-Because <Object>] [-BeLessOrEqual]
  [<CommonParameters>]
 ```
 
 ### BeIn
 
 ```powershell
-Should [-ActualValue <Object>] [-Not] [-ExpectedValue <Object>] [-Because <Object>] [-BeIn]
+Should [[-ActualValue] <Object>] [-Not] [-ExpectedValue <Object>] [-Because <Object>] [-BeIn]
  [<CommonParameters>]
 ```
 
 ### BeLessThan
 
 ```powershell
-Should [-ActualValue <Object>] [-Not] [-ExpectedValue <Object>] [-Because <Object>] [-BeLessThan]
+Should [[-ActualValue] <Object>] [-Not] [-ExpectedValue <Object>] [-Because <Object>] [-BeLessThan]
  [<CommonParameters>]
 ```
 
 ### BeGreaterOrEqual
 
 ```powershell
-Should [-ActualValue <Object>] [-Not] [-ExpectedValue <Object>] [-Because <Object>] [-BeGreaterOrEqual]
+Should [[-ActualValue] <Object>] [-Not] [-ExpectedValue <Object>] [-Because <Object>] [-BeGreaterOrEqual]
  [<CommonParameters>]
 ```
 
 ### BeLike
 
 ```powershell
-Should [-ActualValue <Object>] [-Not] [-ExpectedValue <Object>] [-Because <Object>] [-BeLike]
+Should [[-ActualValue] <Object>] [-Not] [-ExpectedValue <Object>] [-Because <Object>] [-BeLike]
  [<CommonParameters>]
 ```
 
 ### BeLikeExactly
 
 ```powershell
-Should [-ActualValue <Object>] [-Not] [-ExpectedValue <Object>] [-Because <Object>] [-BeLikeExactly]
+Should [[-ActualValue] <Object>] [-Not] [-ExpectedValue <Object>] [-Because <Object>] [-BeLikeExactly]
  [<CommonParameters>]
 ```
 
 ### BeNullOrEmpty
 
 ```powershell
-Should [-ActualValue <Object>] [-Not] [-Because <Object>] [-BeNullOrEmpty] [<CommonParameters>]
+Should [[-ActualValue] <Object>] [-Not] [-Because <Object>] [-BeNullOrEmpty] [<CommonParameters>]
 ```
 
 ### BeOfType
 
 ```powershell
-Should [-ActualValue <Object>] [-Not] [-Because <Object>] [-BeOfType] [-ExpectedType <Object>]
+Should [[-ActualValue] <Object>] [-Not] [-Because <Object>] [-BeOfType] [-ExpectedType <Object>]
  [<CommonParameters>]
 ```
 
 ### BeTrue
 
 ```powershell
-Should [-ActualValue <Object>] [-Not] [-Because <Object>] [-BeTrue] [<CommonParameters>]
+Should [[-ActualValue] <Object>] [-Not] [-Because <Object>] [-BeTrue] [<CommonParameters>]
 ```
 
 ### BeFalse
 
 ```powershell
-Should [-ActualValue <Object>] [-Not] [-Because <Object>] [-BeFalse] [<CommonParameters>]
+Should [[-ActualValue] <Object>] [-Not] [-Because <Object>] [-BeFalse] [<CommonParameters>]
 ```
 
 ### Contain
 
 ```powershell
-Should [-ActualValue <Object>] [-Not] [-ExpectedValue <Object>] [-Because <Object>] [-Contain]
+Should [[-ActualValue] <Object>] [-Not] [-ExpectedValue <Object>] [-Because <Object>] [-Contain]
  [<CommonParameters>]
 ```
 
 ### Exist
 
 ```powershell
-Should [-ActualValue <Object>] [-Not] [-Because <Object>] [-Exist] [<CommonParameters>]
+Should [[-ActualValue] <Object>] [-Not] [-Because <Object>] [-Exist] [<CommonParameters>]
 ```
 
 ### FileContentMatch
 
 ```powershell
-Should [-ActualValue <Object>] [-Not] [-Because <Object>] [-FileContentMatch] [-ExpectedContent <Object>]
+Should [[-ActualValue] <Object>] [-Not] [-Because <Object>] [-FileContentMatch] [-ExpectedContent <Object>]
  [<CommonParameters>]
 ```
 
 ### FileContentMatchExactly
 
 ```powershell
-Should [-ActualValue <Object>] [-Not] [-Because <Object>] [-ExpectedContent <Object>]
+Should [[-ActualValue] <Object>] [-Not] [-Because <Object>] [-ExpectedContent <Object>]
  [-FileContentMatchExactly] [<CommonParameters>]
 ```
 
 ### FileContentMatchMultiline
 
 ```powershell
-Should [-ActualValue <Object>] [-Not] [-Because <Object>] [-ExpectedContent <Object>]
+Should [[-ActualValue] <Object>] [-Not] [-Because <Object>] [-ExpectedContent <Object>]
  [-FileContentMatchMultiline] [<CommonParameters>]
 ```
 
 ### HaveCount
 
 ```powershell
-Should [-ActualValue <Object>] [-Not] [-ExpectedValue <Object>] [-Because <Object>] [-HaveCount]
+Should [[-ActualValue] <Object>] [-Not] [-ExpectedValue <Object>] [-Because <Object>] [-HaveCount]
  [<CommonParameters>]
 ```
 
 ### HaveParameter
 
 ```powershell
-Should [-ActualValue <Object>] [-Not] [-Because <Object>] [-HaveParameter] [-ParameterName <Object>]
- [-Type <Object>] [-DefaultValue <Object>] [-Mandatory] [-HasArgumentCompleter] [<CommonParameters>]
+Should [[-ActualValue] <Object>] [-Not] [-Because <Object>] [-HaveParameter] [-ParameterName <Object>]
+ [-Type <Object>] [-DefaultValue <Object>] [-Mandatory] [-HasArgumentCompleter] [-Alias <Object>]
+ [<CommonParameters>]
 ```
 
 ### Match
 
 ```powershell
-Should [-ActualValue <Object>] [-Not] [-Because <Object>] [-Match] [-RegularExpression <Object>]
+Should [[-ActualValue] <Object>] [-Not] [-Because <Object>] [-Match] [-RegularExpression <Object>]
  [<CommonParameters>]
 ```
 
 ### MatchExactly
 
 ```powershell
-Should [-ActualValue <Object>] [-Not] [-Because <Object>] [-RegularExpression <Object>] [-MatchExactly]
+Should [[-ActualValue] <Object>] [-Not] [-Because <Object>] [-RegularExpression <Object>] [-MatchExactly]
  [<CommonParameters>]
 ```
 
 ### Throw
 
 ```powershell
-Should [-ActualValue <Object>] [-Not] [-Because <Object>] [-Throw] [-ExpectedMessage <Object>]
+Should [[-ActualValue] <Object>] [-Not] [-Because <Object>] [-Throw] [-ExpectedMessage <Object>]
  [-ErrorId <Object>] [-ExceptionType <Object>] [-PassThru] [<CommonParameters>]
+```
+
+### InvokeVerifiable
+
+```powershell
+Should [[-ActualValue] <Object>] [-Not] [-InvokeVerifiable] [<CommonParameters>]
+```
+
+### Invoke
+
+```powershell
+Should [[-ActualValue] <Object>] [-Not] [-Because <Object>] [-Invoke] [-CommandName <Object>] [-Times <Object>]
+ [-ParameterFilter <Object>] [-ExclusiveFilter <Object>] [-ModuleName <Object>] [-Scope <Object>] [-Exactly]
+ [-CallerSessionState <Object>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -205,54 +214,6 @@ PS C:\> {{ Add example code here }}
 
 ## PARAMETERS
 
-### -__LegacyArg1
-
-{{ Fill __LegacyArg1 Description }}
-
-```yaml
-Type: Object
-Parameter Sets: Legacy
-Aliases:
-
-Required: False
-Position: 1
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -__LegacyArg2
-
-{{ Fill __LegacyArg2 Description }}
-
-```yaml
-Type: Object
-Parameter Sets: Legacy
-Aliases:
-
-Required: False
-Position: 2
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -__LegacyArg3
-
-{{ Fill __LegacyArg3 Description }}
-
-```yaml
-Type: Object
-Parameter Sets: Legacy
-Aliases:
-
-Required: False
-Position: 3
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -ActualValue
 
 {{ Fill ActualValue Description }}
@@ -263,9 +224,25 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: Named
+Position: 1
 Default value: None
 Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
+
+### -Alias
+
+{{ Fill Alias Description }}
+
+```yaml
+Type: Object
+Parameter Sets: HaveParameter
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
@@ -291,7 +268,7 @@ Accept wildcard characters: False
 
 ```yaml
 Type: Object
-Parameter Sets: Be, BeExactly, BeGreaterThan, BeLessOrEqual, BeIn, BeLessThan, BeGreaterOrEqual, BeLike, BeLikeExactly, BeNullOrEmpty, BeOfType, BeTrue, BeFalse, Contain, Exist, FileContentMatch, FileContentMatchExactly, FileContentMatchMultiline, HaveCount, HaveParameter, Match, MatchExactly, Throw
+Parameter Sets: Be, BeExactly, BeGreaterThan, BeLessOrEqual, BeIn, BeLessThan, BeGreaterOrEqual, BeLike, BeLikeExactly, BeNullOrEmpty, BeOfType, BeTrue, BeFalse, Contain, Exist, FileContentMatch, FileContentMatchExactly, FileContentMatchMultiline, HaveCount, HaveParameter, Match, MatchExactly, Throw, Invoke
 Aliases:
 
 Required: False
@@ -493,6 +470,38 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -CallerSessionState
+
+{{ Fill CallerSessionState Description }}
+
+```yaml
+Type: Object
+Parameter Sets: Invoke
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -CommandName
+
+{{ Fill CommandName Description }}
+
+```yaml
+Type: Object
+Parameter Sets: Invoke
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -Contain
 
 {{ Fill Contain Description }}
@@ -541,6 +550,22 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -Exactly
+
+{{ Fill Exactly Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Invoke
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -ExceptionType
 
 {{ Fill ExceptionType Description }}
@@ -548,6 +573,22 @@ Accept wildcard characters: False
 ```yaml
 Type: Object
 Parameter Sets: Throw
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ExclusiveFilter
+
+{{ Fill ExclusiveFilter Description }}
+
+```yaml
+Type: Object
+Parameter Sets: Invoke
 Aliases:
 
 Required: False
@@ -733,6 +774,38 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -Invoke
+
+{{ Fill Invoke Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Invoke
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -InvokeVerifiable
+
+{{ Fill InvokeVerifiable Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: InvokeVerifiable
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -Mandatory
 
 {{ Fill Mandatory Description }}
@@ -781,13 +854,45 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -ModuleName
+
+{{ Fill ModuleName Description }}
+
+```yaml
+Type: Object
+Parameter Sets: Invoke
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -Not
 
 {{ Fill Not Description }}
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: Be, BeExactly, BeGreaterThan, BeLessOrEqual, BeIn, BeLessThan, BeGreaterOrEqual, BeLike, BeLikeExactly, BeNullOrEmpty, BeOfType, BeTrue, BeFalse, Contain, Exist, FileContentMatch, FileContentMatchExactly, FileContentMatchMultiline, HaveCount, HaveParameter, Match, MatchExactly, Throw
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ParameterFilter
+
+{{ Fill ParameterFilter Description }}
+
+```yaml
+Type: Object
+Parameter Sets: Invoke
 Aliases:
 
 Required: False
@@ -845,6 +950,22 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -Scope
+
+{{ Fill Scope Description }}
+
+```yaml
+Type: Object
+Parameter Sets: Invoke
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -Throw
 
 {{ Fill Throw Description }}
@@ -855,6 +976,22 @@ Parameter Sets: Throw
 Aliases:
 
 Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Times
+
+{{ Fill Times Description }}
+
+```yaml
+Type: Object
+Parameter Sets: Invoke
+Aliases:
+
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -888,6 +1025,8 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## NOTES
 
 ## RELATED LINKS
+
+[https://github.com/pester/Pester/wiki/Should](https://github.com/pester/Pester/wiki/Should)
 
 ## EDIT THIS PAGE
 

@@ -1,7 +1,7 @@
 ---
-id: AfterEachFeature
-title: AfterEachFeature
-description: Help page for the Powershell Pester "AfterEachFeature" command
+id: Export-NUnitReport
+title: Export-NUnitReport
+description: Help page for the Powershell Pester "Export-NUnitReport" command
 keywords:
   - Powershell
   - Pester
@@ -14,28 +14,17 @@ custom_edit_url: null
 
 ## SYNOPSIS
 
-Defines a ScriptBlock hook to run at the very end of a test run
+{{ Fill in the Synopsis }}
 
 ## SYNTAX
 
-### All (Default)
-
 ```powershell
-AfterEachFeature [-Script] <ScriptBlock> [<CommonParameters>]
-```
-
-### Tags
-
-```powershell
-AfterEachFeature [-Tags] <String[]> [-Script] <ScriptBlock> [<CommonParameters>]
+Export-NUnitReport [-Result] <Object> [-Path] <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
 
-AfterEachFeature hooks are run after each feature that is in (or above) the folder where the hook is defined.
-
-This is a convenience method, provided because unlike traditional RSpec Pester,
-there is not a simple test script where you can put setup and clean up.
+{{ Fill in the Description }}
 
 ## EXAMPLES
 
@@ -49,29 +38,12 @@ PS C:\> {{ Add example code here }}
 
 ## PARAMETERS
 
-### -Tags
+### -Path
 
-Optional tags.
-If set, this hook only runs for features with matching tags.
-
-```yaml
-Type: String[]
-Parameter Sets: Tags
-Aliases:
-
-Required: True
-Position: 1
-Default value: @()
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Script
-
-The ScriptBlock to run for the hook
+{{ Fill Path Description }}
 
 ```yaml
-Type: ScriptBlock
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -82,23 +54,37 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -Result
+
+{{ Fill Result Description }}
+
+```yaml
+Type: Object
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 0
+Default value: None
+Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
+
 ### CommonParameters
 
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
+### System.Object
+
 ## OUTPUTS
+
+### System.Object
 
 ## NOTES
 
 ## RELATED LINKS
-
-[https://pester.dev/docs/commands/BeforeEachFeature](https://pester.dev/docs/commands/BeforeEachFeature)
-
-[https://pester.dev/docs/commands/BeforeEachScenario](https://pester.dev/docs/commands/BeforeEachScenario)
-
-[https://pester.dev/docs/commands/AfterEachScenario](https://pester.dev/docs/commands/AfterEachScenario)
 
 ## EDIT THIS PAGE
 

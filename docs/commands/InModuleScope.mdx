@@ -20,7 +20,8 @@ scope of a PowerShell script module.
 ## SYNTAX
 
 ```powershell
-InModuleScope [-ModuleName] <String> [-ScriptBlock] <ScriptBlock> [<CommonParameters>]
+InModuleScope [-ModuleName] <String> [-ScriptBlock] <ScriptBlock> [[-Parameters] <Hashtable>]
+ [[-ArgumentList] <Object>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -104,6 +105,38 @@ Aliases:
 
 Required: True
 Position: 2
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Parameters
+
+{{ Fill Parameters Description }}
+
+```yaml
+Type: Hashtable
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 3
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ArgumentList
+
+{{ Fill ArgumentList Description }}
+
+```yaml
+Type: Object
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 4
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False

@@ -1,7 +1,7 @@
 ---
-id: BeforeEachScenario
-title: BeforeEachScenario
-description: Help page for the Powershell Pester "BeforeEachScenario" command
+id: BeforeEachFeature
+title: BeforeEachFeature
+description: Help page for the Powershell Pester "BeforeEachFeature" command
 keywords:
   - Powershell
   - Pester
@@ -14,27 +14,25 @@ custom_edit_url: null
 
 ## SYNOPSIS
 
-Defines a ScriptBlock hook to run before each scenario to set up the test environment
+Defines a ScriptBlock hook to run before each feature to set up the test environment
 
 ## SYNTAX
 
 ### All (Default)
 
 ```powershell
-BeforeEachScenario [-Script] <ScriptBlock> [<CommonParameters>]
+BeforeEachFeature [-Script] <ScriptBlock> [<CommonParameters>]
 ```
 
 ### Tags
 
 ```powershell
-BeforeEachScenario [-Tags] <String[]> [-Script] <ScriptBlock> [<CommonParameters>]
+BeforeEachFeature [-Tags] <String[]> [-Script] <ScriptBlock> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
 
-BeforeEachScenario hooks are run before each scenario that is in (or above) the folder where the hook is defined.
-
-You should not normally need this, because it overlaps significantly with the "Background" feature in the gherkin language.
+BeforeEachFeature hooks are run before each feature that is in (or above) the folder where the hook is defined.
 
 This is a convenience method, provided because unlike traditional RSpec Pester,
 there is not a simple test script where you can put setup and clean up.
@@ -96,11 +94,11 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[https://pester.dev/docs/commands/AfterEachScenario](https://pester.dev/docs/commands/AfterEachScenario)
+[https://pester.dev/docs/v4/commands/AfterEachFeature](https://pester.dev/docs/v4/commands/AfterEachFeature)
 
-[https://pester.dev/docs/commands/BeforeEachFeature](https://pester.dev/docs/commands/BeforeEachFeature)
+[https://pester.dev/docs/v4/commands/BeforeEachScenario](https://pester.dev/docs/v4/commands/BeforeEachScenario)
 
-[https://pester.dev/docs/commands/AfterEachFeature](https://pester.dev/docs/commands/AfterEachFeature)
+[https://pester.dev/docs/v4/commands/AfterEachScenario](https://pester.dev/docs/v4/commands/AfterEachScenario)
 
 ## EDIT THIS PAGE
 

@@ -1,0 +1,146 @@
+---
+id: Context
+title: Context
+description: Help page for the Powershell Pester "Context" command
+keywords:
+  - Powershell
+  - Pester
+  - Help
+  - Documentation
+hide_title: false
+hide_table_of_contents: false
+custom_edit_url: null
+---
+
+## SYNOPSIS
+
+Provides logical grouping of It blocks within a single Describe block.
+
+## SYNTAX
+
+```powershell
+Context [-Name] <String> [-Tag <String[]>] [[-Fixture] <ScriptBlock>] [<CommonParameters>]
+```
+
+## DESCRIPTION
+
+Provides logical grouping of It blocks within a single Describe block.
+Any Mocks defined inside a Context are removed at the end of the Context scope,
+as are any files or folders added to the TestDrive during the Context block's
+execution.
+Any BeforeEach or AfterEach blocks defined inside a Context also only
+apply to tests within that Context .
+
+## EXAMPLES
+
+### EXAMPLE 1
+
+```powershell
+function Add-Numbers($a, $b) {
+    return $a + $b
+
+}
+
+Describe "Add-Numbers" {
+
+    Context "when root does not exist" {
+         It "..." { ...
+}
+    }
+
+    Context "when root does exist" {
+        It "..." { ...
+}
+        It "..." { ...
+}
+        It "..." { ...
+}
+    }
+}
+```
+
+## PARAMETERS
+
+### -Name
+
+The name of the Context.
+This is a phrase describing a set of tests within a describe.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Tag
+
+Optional parameter containing an array of strings.
+When calling Invoke-Pester,
+it is possible to specify a -Tag parameter which will only execute Context blocks
+containing the same Tag.
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases: Tags
+
+Required: False
+Position: Named
+Default value: @()
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Fixture
+
+Script that is executed.
+This may include setup specific to the context
+and one or more It blocks that validate the expected outcomes.
+
+```yaml
+Type: ScriptBlock
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 2
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### CommonParameters
+
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+## INPUTS
+
+## OUTPUTS
+
+## NOTES
+
+## RELATED LINKS
+
+[https://pester.dev/docs/v4/commands/Describe](https://pester.dev/docs/v4/commands/Describe)
+
+[https://pester.dev/docs/v4/commands/It](https://pester.dev/docs/v4/commands/It)
+
+[https://pester.dev/docs/v4/commands/BeforeEach](https://pester.dev/docs/v4/commands/BeforeEach)
+
+[https://pester.dev/docs/v4/commands/AfterEach](https://pester.dev/docs/v4/commands/AfterEach)
+
+[https://pester.dev/docs/v4/commands/Should](https://pester.dev/docs/v4/commands/Should)
+
+[https://pester.dev/docs/v4/usage/mocking](https://pester.dev/docs/v4/usage/mocking)
+
+[https://pester.dev/docs/v4/usage/testdrive](https://pester.dev/docs/v4/usage/testdrive)
+
+## EDIT THIS PAGE
+
+This page was auto-generated using Pester's comment based help. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.

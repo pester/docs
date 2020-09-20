@@ -43,27 +43,13 @@ By default such tests would typically fail and produce a big red message.
 Using Set-ItResult it is possible to set the result from the inside of the It script
 block to either inconclusive, pending or skipped.
 
+As of Pester 5, there is no "Inconclusive" or "Pending" test state, so all tests will now go to state skipped,
+however the test result notes will include information about being inconclusive or testing to keep this command
+backwards compatible
+
 ## EXAMPLES
 
 ### EXAMPLE 1
-
-```powershell
-Describe "Example" {
-    It "Inconclusive result test" {
-        Set-ItResult -Inconclusive -Because "we want it to be inconclusive"
-    }
-}
-```
-
-the output should be
-
-```
-[?] Inconclusive result test, is inconclusive, because we want it to be inconclusive
-Tests completed in 0ms
-Tests Passed: 0, Failed: 0, Skipped: 0, Pending: 0, Inconclusive 1
-```
-
-### EXAMPLE 2
 
 ```powershell
 Describe "Example" {
@@ -76,7 +62,7 @@ Describe "Example" {
 the output should be
 
 ```
-[!] Skipped test, is skipped, because we want it to be skipped
+[!] Skipped test is skipped, because we want it to be skipped
 Tests completed in 0ms
 Tests Passed: 0, Failed: 0, Skipped: 0, Pending: 0, Inconclusive 1
 ```
@@ -85,7 +71,7 @@ Tests Passed: 0, Failed: 0, Skipped: 0, Pending: 0, Inconclusive 1
 
 ### -Inconclusive
 
-Sets the test result to inconclusive.
+**DEPRECATED** Sets the test result to inconclusive.
 Cannot be used at the same time as -Pending or -Skipped
 
 ```yaml
@@ -102,7 +88,7 @@ Accept wildcard characters: False
 
 ### -Pending
 
-Sets the test result to pending.
+**DEPRECATED** Sets the test result to pending.
 Cannot be used at the same time as -Inconclusive or -Skipped
 
 ```yaml

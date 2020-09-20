@@ -10,6 +10,7 @@ module.exports = {
   favicon: 'img/favicon.ico',
   organizationName: 'pester', // Usually your GitHub org/user name.
   projectName: 'docs', // Usually your repo name.
+  onBrokenLinks: 'warn',
   themeConfig: {
     navbar: {
       title: 'Pester',
@@ -17,9 +18,13 @@ module.exports = {
         alt: 'Pester Logo',
         src: 'img/logo_white.svg',
       },
-      links: [
+      items: [
         { to: 'docs/quick-start', label: 'Docs', position: 'right' },
-        { to: 'docs/commands/Add-AssertionOperator', label: 'Commands', position: 'right' },
+        {
+          type: 'docsVersionDropdown',
+          position: 'left',
+        },
+        { to: 'docs/commands/Add-ShouldOperator', label: 'Commands', position: 'right' },
         {
           href: 'https://github.com/pester/pester',
           label: 'GitHub',
@@ -49,7 +54,7 @@ module.exports = {
             },
             {
               label: 'Command Reference',
-              to: 'docs/commands/Add-AssertionOperator',
+              to: 'docs/commands/Add-ShouldOperator',
             },
           ],
         },
@@ -103,6 +108,15 @@ module.exports = {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
           editUrl: 'https://github.com/pester/docs/edit/master',
+          lastVersion: "current",
+          includeCurrentVersion: true,
+          disableVersioning: false,
+          versions: {
+            current: {
+              label: "v5",
+              path: "",
+            }
+          },
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
