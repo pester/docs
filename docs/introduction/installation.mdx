@@ -6,9 +6,20 @@ sidebar_label: Installation
 
 ## Compatibility
 
-Pester is compatible with every version of Windows that can run at least PowerShell 2. That is *Windows 10, 8, 7, Vista, XP*, and their respective Server versions *2016, 2012 R2, 2012, 2008 R2, 2008,* and *2003*.
+Pester is compatible with every version of Windows, Linux and MacOS, it works on PowerShell, PowerShell Core and Windows PowerShell. That is on version PowerShell 7, 6, 5, 4 and 3. Version 2 is not supported.
 
-## Installing from PSGallery Windows 10 or Windows Server 2016
+## Installing from PSGallery on MacOS or Linux
+
+PowerShell Gallery makes installing modules extremely simple. Just run:
+
+```powershell
+Install-Module -Name Pester
+Import-Module Pester
+```
+
+And the latest version of Pester will be installed.
+
+## Installing from PSGallery on Windows 10 or Windows Server 2016
 
 Windows 10 and Windows Server 2016 make installing and updating PowerShell modules extremely simple by providing `Install-Module` and `Update-Module` cmdlets. Unfortunately there are some complications specific to Pester, that we cannot avoid.
 
@@ -16,10 +27,11 @@ Pester version 3.4.0 ships as part of Windows 10 and Windows server 2016, and th
 
 Instead you need to perform a new side-by-side installation of Pester, because `Install-Module` detects the current installation of Pester is signed with a different signature than the one you are installing.
 
-Here's the command you need to run _as administrator_ in order to get the latest version of Pester:
+Here's the command you need to run in order to get the latest version of Pester:
 
 ```powershell
 Install-Module -Name Pester -Force
+Import-Module Pester
 ```
 
 Installing the module may result in this message:
@@ -27,29 +39,15 @@ Installing the module may result in this message:
 ```powershell
 WARNING: Module 'Pester' version '3.4.0' published by
 'CN=Microsoft Windows, O=Microsoft Corporation, L=Redmond, S=Washington, C=US'
-will be superceded by version '4.4.3' published by 'CN=Jakub Jareš, O=Jakub Jareš,
+will be superceded by version '5.0.4' published by 'CN=Jakub Jareš, O=Jakub Jareš,
 L=Praha, C=CZ'. If you do not trust the new publisher, uninstall the module.
 ```
 
-This is because the module is signed by a different certificate than the version that Microsoft shipped with Windows.
+This is because the module is signed by a different certificate than the version that Microsoft shipped with Windows. This warning might look scary, but it is still signed by a valid certificate that proves the identity of the publisher (me). This is more than most of the modules out there can say, because they are not signed by anyone.
 
-In Windows 10 v1809 and higher, you first need to cleanup the default Pester module and only then you can proceed with the installation of higher version of Pester module
+You can also delete the built-in Pester. See [Uninstall-Pester](https://gist.github.com/nohwnd/5c07fe62c861ee563f69c9ee1f7c9688), and run it as administrator.
 
-```
-$module = "C:\Program Files\WindowsPowerShell\Modules\Pester"
-takeown /F $module /A /R
-icacls $module /reset
-icacls $module /grant "*S-1-5-32-544:F" /inheritance:d /T
-Remove-Item -Path $module -Recurse -Force -Confirm:$false
 
-Install-Module -Name Pester -Force
-```
-
-For any subsequent update it is enough to run:
-
-```powershell
-Update-Module -Name Pester
-```
 
 ## Installing from PSGallery on other versions of Windows
 
@@ -90,20 +88,6 @@ Or to update:
 
 ```powershell
 Update-Module -Name Pester
-```
-
-### PowerShell 2
-
-On PowerShell 2 you can use an alternative to PowerShellGet called PSGet. See installation [instructions here](http://psget.net/). When you have the package manager installed, please start a new _administrator_ PowerShell window and use:
-
-```powershell
-Install-Module -Module Pester
-```
-
-Or to update:
-
-```powershell
-Update-Module -Module Pester
 ```
 
 ## Installing from sources
