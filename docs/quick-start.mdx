@@ -39,7 +39,7 @@ ModuleType Version    PreRelease Name
 Script     5.0.4                 Pester
 ```
 
-Full installation guide is available in [installation](installation).
+Full installation guide is available in [installation](introduction/installation).
 
 ## Creating a Pester Test
 
@@ -50,24 +50,24 @@ uses a naming convention, all `*.Tests.ps1` files will be inspected for tests.
 Inside of the file paste this code:
 
 ```powershell
-Describe 'Get-Planet' {
-    BeforeAll { 
-        function Get-Planet ([string]$Name = '*') {
-            $planets = @(
-                @{ Name = 'Mercury' }
-                @{ Name = 'Venus'   }
-                @{ Name = 'Earth'   }
-                @{ Name = 'Mars'    }
-                @{ Name = 'Jupiter' }
-                @{ Name = 'Saturn'  }
-                @{ Name = 'Uranus'  }
-                @{ Name = 'Neptune' }
-            ) | ForEach-Object { [PSCustomObject] $_ }
+BeforeAll { 
+    function Get-Planet ([string]$Name = '*') {
+        $planets = @(
+            @{ Name = 'Mercury' }
+            @{ Name = 'Venus'   }
+            @{ Name = 'Earth'   }
+            @{ Name = 'Mars'    }
+            @{ Name = 'Jupiter' }
+            @{ Name = 'Saturn'  }
+            @{ Name = 'Uranus'  }
+            @{ Name = 'Neptune' }
+        ) | ForEach-Object { [PSCustomObject] $_ }
 
-            $planets | Where-Object { $_.Name -like $Name }
-        }
+        $planets | Where-Object { $_.Name -like $Name }
     }
+}
 
+Describe 'Get-Planet' {
     It 'Given no parameters, it lists all 8 planets' {
         $allPlanets = Get-Planet
         $allPlanets.Count | Should -Be 8
@@ -130,23 +130,126 @@ It 'Pluto is not part of our Solar System' {
 It 'Planets have this order: Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune' {
     $allPlanets = Get-Planet
     $planetsInOrder = $allPlanets.Name -join ', ' 
-    $planetsInOrder | Should -Be "Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune"
+    $planetsInOrder | Should -Be 'Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune'
 } 
 ```
 
-# <<<< continue writing here >>>>
+Try adding those tests into your `Get-Planet.Tests.ps1` file. Put them under the other `It` block, but make sure they are placed within the curly braces associated with `Describe`.
 
-### Breaking our test
+### Breaking our test, by breaking the tested function
 
 In the previous run, our test passed, and if you run it again it will pass again. That is the beauty of automated testing. This is because using the `Should` keyword we are saying:
 
-> There should be 8 items in `$allPlanets`.
+> 👉 There should be 8 items in `$allPlanets`.
 
- And there are. 
+And there are. 
 
- There would be multiple other ways to 
- 
- Now let's make the test fail. One way to do that is to set a false assumption, for example that there is just 1 planet in our Solar system. W  (Or more precisely, I want 8 items )   let's break it. Change the `$allPlanets.Count | Should -Be 8` to `$allPlanets.Count | Should -Be 7`. Like this: 
+To understand why the test passes, let's try to break it. 
+
+There are few ways to break the test, one of them is adding Pluto back into our Solar System.
+
+```powershell
+$planets = @(
+    @{ Name = 'Mercury' }
+    @{ Name = 'Venus'   }
+    @{ Name = 'Earth'   }
+    @{ Name = 'Mars'    }
+    @{ Name = 'Jupiter' }
+    @{ Name = 'Saturn'  }
+    @{ Name = 'Uranus'  }
+    @{ Name = 'Neptune' }
+    @{ Name = 'Pluto'   }
+) | ForEach-Object { [PSCustomObject] $_ }
+```
+
+This will break the assertion that we have in our test, we no longer return 8 items from the tested function. Instead we now return 9. Running the test, it will no longer pass: 
+
+```shell
+Invoke-Pester -Output Detailed C:\t\Planets\Get-Planet.Tests.ps1
+
+
+Starting discovery in 1 files.
+Discovering in C:\t\Planets\Get-Planet.Tests.ps1.
+Found 1 tests. 9ms
+Discovery finished in 21ms.
+
+Running tests from 'C:\t\Planets\Get-Planet.Tests.ps1'
+Describing Get-Planet
+  [-] Given no parameters, it lists all 8 planets 19ms (12ms|7ms)
+   Expected 8, but got 9.
+   at $allPlanets.Count | Should -Be 8, C:\t\Planets\Get-Planet.Tests.ps1:22
+   at <ScriptBlock>, C:\t\Planets\Get-Planet.Tests.ps1:22
+Tests completed in 183ms
+Tests Passed: 0, Failed: 1, Skipped: 0 NotRun: 0
+```
+
+The error is: `Expected 8, but got 9.`, this exactly reflects the change that we made to the tested function, we added one more item to the collection of planets, and the test confirms that the function no longer does what we expect. 
+
+### Breaking our test, by breaking the test expectation
+
+The change that we just did is not the only change that we can make to break the test. There are other ways to do it. We can change the expected count to be 1, saying that there is just one planet orbiting the Sun, by changing the `Should` to `$allPlanets.Count | Should -Be 1`. This will also break the test: 
+
+```shell
+Describing Get-Planet
+  [-] Given no parameters, it lists all 8 planets 25ms (21ms|4ms)
+   Expected 1, but got 8.
+   at $allPlanets.Count | Should -Be 1, C:\t\Planets\Get-Planet.Tests.ps1:21
+   at <ScriptBlock>, C:\t\Planets\Get-Planet.Tests.ps1:21
+Tests completed in 195ms
+```
+
+The error is: `Expected 1, but got 8.`, this again reflects exactly what we did in the test, but it no longer reflects the real world. 
+
+### How tests break
+
+If you look closer on how we broke the test, you can see that there are two distinct ways to break it. 
+- The first was that the tested function did not work correctly, this is a good way to break the test. 
+- The second one is when the function works correctly, but the test is incorrect. This it a bad way to break the test. 
+
+Being able to distinguish between those two is important, when your test breaks keep in mind that either the function, or the tests might be broken. What you usually do is that you look at what changed more recently. If the test is new, and the function existed for a while, you first blame the test. When the test was passing before, but it is not anymore, you first blame the tested function.
+
+
+## Other keywords
+
+Now that we know about It, and Should. We can quickly look at the rest of the Pester keywords that we used. 
+
+### Describe 
+
+This keyword allows you to group tests (represented by `It` blocks) into groups. You can have one or more `Describe`s per file. You can also nest `Describe`s into each other to give your test suite more structure. 
+
+A similar keyword to `Describe` is `Context`. In almost all cases `Context` can be used interchangeably with `Describe`. Typically the top-level block is a `Describe` that is named after the function that is being tested. And then, if needed, `Context` blocks are used inside of the `Describe` to group tests based on what aspect of the function you are testing. 
+
+Like this: 
+
+```powershell
+Describe 'Get-Planet' {
+    Context 'no parameters' {
+        It 'lists all 8 planets' {
+            # ..
+        }
+
+        It 'lists them in the correct order' { 
+            # ...
+        }
+    }
+
+    Context "with -Filter" { 
+        It 'filters based on planet Name' {
+            # ...
+        }
+    }
+}
+```
+### BeforeAll
+
+Now that we split the tests into groups we might want to share some common code among those tests. This code can be run before the test, to set the tests up. Or it can run after the tests, to clean up after them. To do this we have few special blocks. One of them is `BeforeAll`, which runs code at the start of the given `Describe`. In our example we used it to define the tested function. `BeforeAll` will run once, before the block it is placed in
+
+There is also `BeforeEach
+
+
+
+
+Now let's make the test fail. One way to do that is to set a false assumption, for example that there is just 1 planet in our Solar system. W  (Or more precisely, I want 8 items )   let's break it. Change the `$allPlanets.Count | Should -Be 8` to `$allPlanets.Count | Should -Be 7`. Like this: 
 
  ```powershell
  It 'Given no parameters, it lists all 8 planets' {
