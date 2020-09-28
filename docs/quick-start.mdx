@@ -4,6 +4,8 @@ title: Quick Start
 sidebar_label: Quick Start
 ---
 
+> **tl;dr:** Here is a [summary.](#summary)
+
 ## What is Pester?
 
 Pester is a testing and mocking framework for PowerShell.
@@ -28,7 +30,7 @@ results in CI pipeline.
 
 ## Installing Pester
 
-To install Pester it is usually enough to just do `Install-Module Pester -Force` followed by 
+To install Pester it is usually enough to just do `Install-Module Pester -Force`. And then follow it by  
 `Import-Module Pester -PassThru`. This is the output you should see in the console: 
 
 ```shell
@@ -138,14 +140,6 @@ Try adding those tests into your `Get-Planet.Tests.ps1` file. Put them under the
 
 ### Breaking our test, by breaking the tested function
 
-In the previous run, our test passed, and if you run it again it will pass again. That is the beauty of automated testing. This is because using the `Should` keyword we are saying:
-
-> 👉 There should be 8 items in `$allPlanets`.
-
-And there are. 
-
-To understand why the test passes, let's try to break it. 
-
 There are few ways to break the test, one of them is adding Pluto back into our Solar System.
 
 ```powershell
@@ -162,7 +156,7 @@ $planets = @(
 ) | ForEach-Object { [PSCustomObject] $_ }
 ```
 
-This will break the assertion that we have in our test, we no longer return 8 items from the tested function. Instead we now return 9. Running the test, it will no longer pass: 
+This will break the assertion that we have in our test, because we no longer return 8 items from the tested function. Instead we now return 9. Running the test, it will no longer pass: 
 
 ```shell
 Invoke-Pester -Output Detailed C:\t\Planets\Get-Planet.Tests.ps1
@@ -183,7 +177,7 @@ Tests completed in 183ms
 Tests Passed: 0, Failed: 1, Skipped: 0 NotRun: 0
 ```
 
-The error is: `Expected 8, but got 9.`, this exactly reflects the change that we made to the tested function, we added one more item to the collection of planets, and the test confirms that the function no longer does what we expect. 
+The error is: `Expected 8, but got 9.`, this exactly reflects the change that we made to the tested function. We added one more item to the collection of planets, and the test confirms that the function is now broken. 
 
 ### Breaking our test, by breaking the test expectation
 
@@ -211,7 +205,7 @@ Being able to distinguish between those two is important, when your test breaks 
 
 ## Other keywords
 
-Now that we know about It, and Should. We can quickly look at the rest of the Pester keywords that we used. 
+Now that we know about `It`, and `Should`. We can quickly look at the rest of the Pester keywords that we used. 
 
 ### Describe 
 
@@ -242,137 +236,107 @@ Describe 'Get-Planet' {
 ```
 ### BeforeAll
 
-Now that we split the tests into groups we might want to share some common code among those tests. This code can be run before the test, to set the tests up. Or it can run after the tests, to clean up after them. To do this we have few special blocks. One of them is `BeforeAll`, which runs code at the start of the given `Describe`. In our example we used it to define the tested function. `BeforeAll` will run once, before the block it is placed in
+Now that we split the tests into groups we might want to share some common code among those tests. To do this we `BeforeAll` block that will run at the start of the block that contains it, or at the start of the file if not contained in any block. In our example we used it to define the tested function. 
 
-There is also `BeforeEach
-
-
+There is also `AfterAll` block that will run at the end of the block, and `BeforeEach / AfterEach` that will run before every test in the given block.
 
 
-Now let's make the test fail. One way to do that is to set a false assumption, for example that there is just 1 planet in our Solar system. W  (Or more precisely, I want 8 items )   let's break it. Change the `$allPlanets.Count | Should -Be 8` to `$allPlanets.Count | Should -Be 7`. Like this: 
+## Splitting to tests and function
 
- ```powershell
- It 'Given no parameters, it lists all 8 planets' {
-    $allPlanets = Get-Planet
-    $allPlanets.Count | Should -Be 8
+Until now we had just a single file that contained both our tests and the function that's being tested. In real life you want the tested function to be separated from its tests. This way you can run the function, without running the tests with it.
+
+To move the function out of the test we will move it to a separate file, and will [dot-source](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_scripts?view=powershell-7#script-scope-and-dot-sourcing) it back into the `BeforeAll`. To do this create a new file in the same directory as `Get-Planet.Tests.ps1` and call it `Get-Planet.ps1`. Then cut the function from the test file and paste it into the other file: 
+
+```powershell
+# in file Get-Planet.ps1
+function Get-Planet ([string]$Name = '*') {
+    $planets = @(
+        @{ Name = 'Mercury' }
+        @{ Name = 'Venus'   }
+        @{ Name = 'Earth'   }
+        @{ Name = 'Mars'    }
+        @{ Name = 'Jupiter' }
+        @{ Name = 'Saturn'  }
+        @{ Name = 'Uranus'  }
+        @{ Name = 'Neptune' }
+    ) | ForEach-Object { [PSCustomObject] $_ }
+
+    $planets | Where-Object { $_.Name -like $Name }
 }
 ```
 
-Spend some time inspecting the code of our first test. Some of it should be familiar, and some of it will look a 
-bit foreign. 
-
-`Describe`, `BeforeAll`, `It` and `Should` are Pester keywords. They each have a different function, and we will 
-go over all of them shortly. 
-
-But now we are most interested in `It` and `Should`. `It` represents a single test,
- such test can either pass or fail. 
-
-
-
-
-both a new implementation function and a test function. New-Fixture assumes that you will be testing
-the contents of a `.ps1` file (not a `.psm1` file, or Script Module), that the test script should be
-in the same directory as the script under test, and that the name of the test script should be
-`<Name of Script Under Test>.Tests.ps1`.
-
-To scaffold a new project, use the script below to generate a placeholder function script and test script.
-
 ```powershell
-New-Fixture deploy Clean
-
-<#
-Creates two files:
-./deploy/Clean.ps1
-#>
-
-function Clean {
+# in file Get-Planet.Tests.ps1
+BeforeAll { 
 
 }
 
-# ./deploy/Clean.Tests.ps1
-
-$here = Split-Path -Parent $MyInvocation.MyCommand.Path
-$sut = (Split-Path -Leaf $MyInvocation.MyCommand.Path) -replace '\.Tests\.', '.'
-. "$here\$sut"
-
-Describe "Clean" {
-    It "does something useful" {
-        $true | Should Be $false
+Describe 'Get-Planet' {
+    It 'Given no parameters, it lists all 8 planets' {
+        $allPlanets = Get-Planet
+        $allPlanets.Count | Should -Be 8
     }
 }
 ```
 
-With this skeleton of a function called "Clean" and a failing test, Test-Driven Development activities can start.
+If we now run the test, we will see that it breaks, because the function is no longer reachable from the test: 
 
-Pester test script filenames _must_ end with `.Tests.ps1` suffix in order for [Invoke-Pester](./commands/Invoke-Pester)
-to discover and run them. (eg. MyScript.Tests.ps1).
+```shell
+Starting discovery in 1 files.
+Discovering in C:\t\Planets\Get-Planet.Tests.ps1.
+Found 1 tests. 14ms
+Discovery finished in 36ms.
 
-Test scripts named with or without this suffix can be run manually using -Script parameter.
+Running tests from 'C:\t\Planets\Get-Planet.Tests.ps1'
+Describing Get-Planet
+  [-] Given no parameters, it lists all 8 planets 40ms (37ms|3ms)
+   CommandNotFoundException: The term 'Get-Planet' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+   at <ScriptBlock>, C:\t\Planets\Get-Planet.Tests.ps1:7
+Tests completed in 214ms
+Tests Passed: 0, Failed: 1, Skipped: 0 NotRun: 0
+```
+
+The error is `CommandNotFoundException: The term 'Get-Planet' is not recognized as the name of a cmdlet, function, script file, or operable program.`. This is because the function is not defined, and we need to make it available to the test. 
+
+> 🤷‍♀ If your test still works, try starting a clean PowerShell session, chances are, you played around with the code, and the tested function is still defined in your scope. Starting a new PowerShell window will clean that up.
+
+To get the function back to scope we will dot-source (import) the file inside of `BeforeAll`: 
 
 ```powershell
-Invoke-Pester -Script .\Test-ScriptWithPesterTest.ps1
+BeforeAll { 
+    . $PSScriptRoot/Get-Planet.ps1
+}
+
+Describe 'Get-Planet' {
+    It 'Given no parameters, it lists all 8 planets' {
+        $allPlanets = Get-Planet
+        $allPlanets.Count | Should -Be 8
+    }
+}
 ```
 
-In addition to filename discovery of the `\*.Tests.ps1` pattern by the [Invoke-Pester](./commands/Invoke-Pester)
-command, Pester discovers `Describe` blocks (logical groupings of tests) within the test file
-(see [Describe](./commands/Describe)).
+```shell
+Invoke-Pester -Output Detailed C:\t\Planets\Get-Planet.Tests.ps1
 
-The `Describe` block can contain several behavior validations expressed in [It](./commands/It) blocks (see [It](./commands/It)).
-Each [It](./commands/It) block should test one thing and throw an exception if the test fails. Pester will consider any
- [It](./commands/It) block that throws an exception to be a failed test.
 
-Pester provides a command called [Should](./commands/Should) that can perform various comparisons between the values emitted
-or altered by a command and an expected value (see [Should](./commands/Should)).
+Starting discovery in 1 files.
+Discovering in C:\t\Planets\Get-Planet.Tests.ps1.
+Found 1 tests. 19ms
+Discovery finished in 31ms.
 
-## Running a Pester test
-
-Use the [Invoke-Pester](./commands/Invoke-Pester) command to run tests (see [Invoke-Pester](./commands/Invoke-Pester)). [Invoke-Pester](./commands/Invoke-Pester) can be run against all the
-`\*.Tests.ps1` files in an entire tree of directories or it can zero in on just one test group (`Describe` block)
-using `-TestName` parameter. The `-Tag` parameter in the [Describe](./commands/Describe) block can also be used for targeted testing,
-categorization and filtering of tests.
-
-As of Pester version 3.0, direct execution of any `.Tests.ps1` script file is available without using
-[Invoke-Pester](./commands/Invoke-Pester) test harness; with test output written to the console. By running tests directly, many
-of the benefits of the test framework are unavailable.
-
-Benefits to running from [Invoke-Pester](./commands/Invoke-Pester) test framework include the following:
-
-- Produce NUnit XML files or other output objects
-- Code Coverage analysis.
-- Exit codes from PowerShell.exe
-- Filtering of tests to execute
-- Status summary of tests executed / failed when test run is complete.
-
-## Pester and Continuous Integration (CI)
-
-Pester integrates with almost any build automation solution. See [Showing Test Results in CI (TeamCity, AppVeyor, Azure DevOps)](./usage/test-results)
-
-An example of a PowerShell script to run against a single pester test file using an Azure Devops Inline Powershell script task.
-
-```powershell
-# This updates pester not always necessary but worth noting
-Install-Module -Name Pester -Force -SkipPublisherCheck
-
-Import-Module Pester
-
-Invoke-Pester -Script $(System.DefaultWorkingDirectory)\MyFirstModule.test.ps1 -OutputFile $(System.DefaultWorkingDirectory)\Test-Pester.XML -OutputFormat NUnitXML
+Running tests from 'C:\t\Planets\Get-Planet.Tests.ps1'
+Describing Get-Planet
+  [+] Given no parameters, it lists all 8 planets 10ms (5ms|5ms)
+Tests completed in 189ms
+Tests Passed: 1, Failed: 0, Skipped: 0 NotRun: 0
 ```
 
-An example of an MSBuild target that calls Pester's convenience helper Batch file to run a suite of tests:
+## Summary
 
-```xml
-<Target Name="Tests">
-    <Exec Command="cmd /c $(baseDir)pester\bin\pester.bat" />
-</Target>
-```
+Pester uses a file naming convention `*.Tests.ps1` for test files. Those files are typically named after the tested function, and are placed next to a file that contains the function. The function file is imported via dot-sourcing in the `BeforeAll` on top of the file. And `$PSScriptRoot` is typically used to provide a relative path to the function file.
 
-The MSBuild example will start a PowerShell session, import the Pester Module and call [Invoke-Pester](./commands/Invoke-Pester)
-within the current directory. If any test fails, it will return an exit code equal to the number of failed
-tests and all test results will be saved to Test.xml using NUnit's Schema. This file can be published as
-test results as part of the build into most build systems like Azure Devops, CruiseControl, TeamCity, TFS
-or Jenkins. See [Showing Test Results in CI (TeamCity, AppVeyor, Azure DevOps)](./usage/test-results)
+Tests are written into `It` blocks and grouped by `Describe` or `Context` into groups. `Should` is used to express what is being tested, and it will fail the test if the condition is not true.
 
-## Other Examples
+`Invoke-Pester` can then be used to run the tests in a given test file, and `-Output Detailed` can be used to show every test in the output, no matter if it passed or failed. Otherwise only failed tests, or whole files (when everything passed) are shown.
 
-- Pester's own Test [Examples](https://github.com/pester/Pester/tree/master/Examples). See all files in the Pester Functions folder containing `.Tests.ps1`
-- Chocolatey tests. Chocolatey is a popular PowerShell-based Windows package management system. It uses Pester tests to validate its own functionality.
+To learn more, for example how to run multiple test files in one run, continue to the [Usage](usage) section.
