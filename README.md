@@ -36,7 +36,8 @@ To submit an update:
 2. submit a Pull Request
 
 > 🔥 Please note that we are NOT accepting Pull Requests for the `Command Reference`
-> as these pages are auto-generated using the Pester Get-Help documentation.
+> in this repository, as these pages are auto-generated using the Pester Get-Help documentation.
+> To improve the command documentation, make a PR in [pester/Pester](https://github.com/pester/Pester) repository instead.
 
 ## Website Customization
 
