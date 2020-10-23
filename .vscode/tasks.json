@@ -1,0 +1,16 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Start Docusaurus with polling",
+			"command": "yarn",
+			"type": "process",
+			// Polling for devcontainer support
+			"args": [
+				"start",
+				"--poll"
+			],
+			"problemMatcher": []
+		}
+	]
+}
