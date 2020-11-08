@@ -100,7 +100,30 @@ Covered 100.00 % of 1 analyzed command in 1 file.
 #>
 ```
 
+## Publishing Code Coverage Metrics In An [Azure DevOps](https://azure.microsoft.com/en-us/solutions/devops/) Pipeline
+
+Note: This functionality is not available in Pester version 3.4.0
+
+To publish code coverage reports in an Azure DevOps pipeline, you'll first need to output the coverage results to an XML file in JaCoCo format.
+
+```powershell
+Import-Module Pester
+
+Invoke-Pester -CodeCoverage '$(System.DefaultWorkingDirectory)\TheScript.ps1' -CodeCoverageOutputFile '$(System.DefaultWorkingDirectory)\Pester-Coverage.xml' -CodeCoverageOutputFileFormat JaCoCo
+```
+
+Then, add a Publish Code Coverage Result task to your pipeline. It is important to set the Path To Source Files option so that Azure DevOps to will auto-create HTML reports that can be ingested and displayed by the pipeline.
+
+```yaml
+
+- task: PublishCodeCoverageResults@1
+  inputs:
+    codeCoverageTool: 'JaCoCo'
+    summaryFileLocation: '**/Pester-Coverage.xml'
+    pathToSources: '$(System.DefaultWorkingDirectory)'
+```
 ---
+
 A quick note on the "analyzed commands" numbers.  You may have noticed that even though CoverageTest.ps1 is 17 lines long, Pester reports that only 5 commands are being analyzed for coverage.  This is a limitation of the current implementation of the coverage analysis, which uses PSBreakpoints to track which commands are executed.  Breakpoints can only be triggered by _commands_ in PowerShell, which includes both calls to functions, Cmdlets and programs, as well as expressions and variable assignments.  Breakpoints are not triggered by keywords such as `else`, `try`, or `finally`, or on opening or closing braces, but breakpoints can be triggered by expressions passed to certain keywords, such as the conditions evaluated by `if` statements and the various loop constructs, `throw` and `return` statements which are passed a value, and so on.  In the example script, the 5 analyzed commands are the expression evaluated by the `if` statement in FunctionOne, and the expressions after each of the four `return` statements.  (Note that the `return` keyword itself does not trigger the breakpoint, so Pester would not report coverage analysis for a `return` statement which is not passed a value.)
 
 In practice, these limitations don't matter much.  There are enough commands in a PowerShell script to trigger breakpoints and make it clear which branches and edge cases have been tested, even if not every line is capable of being part of the analysis.
