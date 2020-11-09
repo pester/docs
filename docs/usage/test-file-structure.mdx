@@ -32,7 +32,7 @@ See [Discovery and Run](discovery-and-run).
 ::: 
 ## More complex file
 
-In this file we are using more features of Pester and organize our tests into more groups based on what we are testing. Each group is represented by a `Describe` or `Context` block. Within those groups we are specifying distinct setups represented by `BeforeAll` that will run at the start of the `Describe` (or `Context`) that contains them. Specifically we use the setup to run the tested function only once per group of tests. And to ensure that the whole group uses the same filter. This avoids typos and copy paste errors. 
+In this file we are using more features of Pester and organize our tests into more groups based on what we are testing. Each group is represented by a `Describe` or `Context` block. Within those groups we are specifying distinct setups represented by `BeforeAll` that will run at the start of the `Describe` (or `Context`) that contains them. Specifically we use the setup to run the tested function once per group of tests to ensure that the whole group uses the same filter. This avoids typos and copy paste errors. 
 
 ```powershell
 # file Get-Emoji.Tests.ps1
@@ -73,7 +73,7 @@ Describe "Get-Emoji" {
 
         Context "by contains" {
             BeforeAll { 
-                $emojis = Get-Emoji -Name *happy*
+                $emojis = Get-Emoji -Name *smiling*
             }
 
             It "Returns 🙂 (slightly smiling face)" {
@@ -142,7 +142,7 @@ Describe "Get-Emoji" {
 
         Context "by contains" {
             BeforeAll { 
-                $emojis = Get-Emoji -Name *happy*
+                $emojis = Get-Emoji -Name *smiling*
             }
 
             It "Returns <expected> (<name>)" -TestCases @(
@@ -212,4 +212,3 @@ In Pester5 the mantra is to put all code in Pester controlled blocks. No code sh
 There is a special block called `BeforeDiscovery` that shows intent when you need to put code directly in the script, or directly in `Describe` or `Context` block. This is useful when generating tests.
 
 See [Generating tests](generating-tests).
-
