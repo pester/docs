@@ -22,7 +22,7 @@ const features = [
     title: 'Optimized Development',
     imageUrl: 'img/features/visual-studio-code.svg',
     imagePosition: 'right',
-    description: <>Visual Studio comes with full support for Pester allowing you to create tests quick.</>,
+    description: <>Visual Studio Code comes with full support for Pester allowing you to create tests quick.</>,
   },
   {
     title: 'Build Server Integration',
