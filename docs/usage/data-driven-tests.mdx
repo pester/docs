@@ -91,13 +91,12 @@ Describe "Get-Emoji cactus" {
     }
 }
 
-Describe "Get-Emoji" {
+Describe "Get-Emoji giraffe" {
     It "Returns 🦒" {
         Get-Emoji -Name giraffe | Should -Be '🦒'
     }
 
-
-    It "Has kind" {
+    It "Has kind Animal" {
         Get-Emoji -Name giraffe | Should -Be 'Animal'
     }
 }
