@@ -121,7 +121,7 @@ Describe "Get-Emoji" {
             @{ Name = "cactus"; Expected = '🌵'}
             @{ Name = "giraffe"; Expected = '🦒'}
         ) {
-            Get-Emoji -Name cactus | Should -Be $expected
+            Get-Emoji -Name $name | Should -Be $expected
         }
     }
 
@@ -157,7 +157,7 @@ Describe "Get-Emoji" {
 }
 ```
 
-See [Test cases](test-cases).
+See [Data driven tests](data-driven-tests).
 
 ## Even more complex file
 
@@ -180,7 +180,7 @@ Describe "File <file> is not empty" {
     # ...
 }
 ```
-See [Generating tests](generating-tests).
+See [Data driven tests](data-driven-tests).
 
 
 ### Expanding data to generate `Describe` and `Context` blocks
@@ -202,13 +202,13 @@ Describe "function <_> has help" -ForEach $files {
 
 This can be paired with the test script parameters to generate tests based on external data.
 
-See [Generating tests](generating-tests).
+See [Data driven tests](data-driven-tests).
 
 
 ### `BeforeDiscovery`  
 
 In Pester5 the mantra is to put all code in Pester controlled blocks. No code should be directly in the script, or directly in `Describe` or `Context` block without wrapping it in some other block.
 
-There is a special block called `BeforeDiscovery` that shows intent when you need to put code directly in the script, or directly in `Describe` or `Context` block. This is useful when generating tests.
+There is a special block called `BeforeDiscovery` that shows intent when you need to put code directly in the script, or directly in `Describe` or `Context` block. This is useful when Data driven tests.
 
-See [Generating tests](generating-tests).
+See [Data driven tests](data-driven-tests).

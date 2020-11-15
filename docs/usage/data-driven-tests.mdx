@@ -1,0 +1,639 @@
+﻿---
+title: Data driven tests
+---
+
+> Migrating from Pester v4? Jump to [Migrating from Pester v4](#migrating-from-pester-v4).
+
+Pester can generate tests based on data. This can range from providing multiple examples on a single `It`, to generating whole set of tests based on an external configuration file. 
+
+## Using `-ForEach` & `-TestCases` with hashtable
+
+The most common usage of data driven tests is providing multiple examples to a single `It`. This way we reuse the body of the test. And decorate the test with examples of its usage. This is superior to copy-pasting tests for each example, because the amount of code to maintain is reduced, the amount of typos is reduced, and it is very easy to add more examples.
+
+To define examples for a test, use `-ForEach` on an `It` block. On `It` block the parameter is also aliased `-TestCases` for backwards compatibility. 
+
+The data are provided as an array of hashtables: 
+```
+Describe "Get-Emoji" {
+    It "Returns <expected> (<name>)" -ForEach @(
+        @{ Name = "cactus"; Expected = '🌵'}
+        @{ Name = "giraffe"; Expected = '🦒'}
+    ) {
+        Get-Emoji -Name $name | Should -Be $expected
+    }
+}
+```
+
+`@()` is an array. One test will be generated for each item in the array. 
+
+Inside of the `@()` array, a hashtable is provided `@{}`. This hashtable can have multiple keys, here it is `Name` and `Expected`, and each one of those keys will be defined as a variable in the test. These variables can be used in the test, and also in the `<>` templates, described below. 
+
+The code above will generate tests that are equivalent to this: 
+
+```powershell
+Describe "Get-Emoji" {
+    It "Returns 🌵 (cactus)" {
+        Get-Emoji -Name cactus | Should -Be '🌵'
+    }
+
+    It "Returns 🦒 (giraffe)" {
+        Get-Emoji -Name giraffe | Should -Be '🦒'
+    }
+}
+```
+
+Using `-ForEach` (or `-TestCases`) we can now very easily provide more examples just by adding more data: 
+
+```powershell
+Describe "Get-Emoji" {
+    It "Returns <expected> (<name>)" -ForEach @(
+        @{ Name = "cactus"; Expected = '🌵'}
+        @{ Name = "giraffe"; Expected = '🦒'}
+        @{ Name = "apple"; Expected = '🍎'}
+        @{ Name = "pencil"; Expected = '✏️'}
+        @{ Name = "penguin"; Expected = '🐧'}
+        @{ Name = "smiling face with smiling eyes"; Expected = '😊'}
+    ) {
+        Get-Emoji -Name $name | Should -Be $expected
+    }
+}
+```
+
+#### `-ForEach` on `Describe` and `Context`
+
+The same `-ForEach` syntax is used on `Describe` (or `Context`) to generate those blocks from the provided data:
+
+```powershell
+Describe "Get-Emoji <name>" -ForEach @(
+    @{ Name = "cactus"; Symbol = '🌵'; Kind = 'Plant' }
+    @{ Name = "giraffe"; Symbol = '🦒'; Kind = 'Animal' }
+) {
+    It "Returns <symbol>"  {
+        Get-Emoji -Name $name | Should -Be $symbol
+    }
+
+    It "Has kind <kind>" { 
+        Get-Emoji -Name $name | Get-EmojiKind | Should -Be $kind
+    }
+}
+```
+
+Which is equivalent to writing: 
+
+```powershell
+Describe "Get-Emoji cactus" {
+    It "Returns 🌵" {
+        Get-Emoji -Name cactus | Should -Be '🌵'
+    }
+
+    It "Has kind Plant" {
+        Get-Emoji -Name cactus | Should -Be 'Plant'
+    }
+}
+
+Describe "Get-Emoji" {
+    It "Returns 🦒" {
+        Get-Emoji -Name giraffe | Should -Be '🦒'
+    }
+
+
+    It "Has kind" {
+        Get-Emoji -Name giraffe | Should -Be 'Animal'
+    }
+}
+```
+
+#### Choosing a subset of data
+
+The provided data will be available in both `Discovery` and `Run`, which allows us to generate tests based on the current data. Here for example we generate tests in a `Context`, based on the data provided to the `Describe`: 
+
+```powershell
+Describe "Get-Emoji <name>" -ForEach @(
+    @{ 
+        Name = "cactus"; 
+        Symbol = '🌵';
+        Kind = 'Plant'
+        Runes = @(
+            @{ Index = 0; Rune = 127797 }
+        )
+    }
+    @{
+        Name = "pencil"
+        Symbol = '✏️'
+        Kind = 'Animal'
+        Runes = @(
+            @{ Index = 0; Rune = 9999 }
+            @{ Index = 1; Rune = 65039 }
+        ) 
+    }
+) {
+    It "Returns <symbol>"  {
+        Get-Emoji -Name $name | Should -Be $symbol
+    }
+
+    It "Has kind <kind>" { 
+        Get-Emoji -Name $name | Get-EmojiKind | Should -Be $kind
+    }
+
+    Context "Runes (each character in multibyte emoji)" -ForEach $runes {
+        It "Has rune <rune> on index <index>" {
+            $actual = @((Get-Emoji -Name $name).EnumerateRunes())
+            $actual[$index].Value | Should -Be $rune
+        }
+    }
+}
+```
+
+
+
+## Using `-ForEach` & `-TestCases` with an array
+
+`-ForEach` is most powerful when used with an array of hashtables, but it can take any array. In that case it will define `$_` variable, representing the current item. This approach can be used on `Describe`, `Context` and `It`:
+
+```powershell
+Describe "Get-FruitBasket" {
+    It "Contains <_>" -ForEach '🍎','🍌','🥝','🥑','🍇','🍐' {
+        Get-FruitBasket | Should -Contain $_
+    }
+}
+
+Describe "Get-FruitBasket" {
+    Context "Fruit <_>" -ForEach '🍎','🍌','🥝','🥑','🍇','🍐' {
+    It "Contains <_> by default" {
+        Get-FruitBasket | Should -Contain $_
+    }
+
+    It "Can remove <_> from the basket" { 
+        Remove-FruitBasket -Item $_
+        Get-FruitBasket | Should -NotContain $_
+    }
+}
+```
+
+:::tip
+`-ForEach` defines the `$_` variable even when used with an array of hashtables. In that case `$_` will be set to the current hashtable.
+:::
+
+## Using `<>` templates
+
+Test and block names can contain values surrounded by `<>` in their name. Those will be considered a template, and will be expanded. Any variable available in scope can be expanded using this syntax, not just the data from `-ForEach`: 
+
+```powershell
+BeforeAll {
+    $apple = '🍎'
+}
+
+Describe "<apple>" {
+    It "<apple> <animal>" -ForEach @(
+        @{ Animal = "🐛" }
+        @{ Animal = "🐶" }
+    ) {
+        # ...
+    }
+}
+```
+```
+Describing 🍎
+  [+] 🍎 🐛 5ms (3ms|2ms)
+  [+] 🍎 🐶 2ms (1ms|1ms)
+```
+
+Additionally, the expansion of the string is postponed after the setup for the current block or test. This enables you to expand variables defined in `BeforeAll`, and `BeforeEach` of the current block, even though the code is visually below the name of the block: 
+
+```powershell
+Describe "<banana>" {
+    BeforeAll { 
+       $banana = '🍌'
+    }
+
+    BeforeEach {
+        $giraffe = '🦒'
+    }
+
+    It "<banana> <giraffe> <animal>" {
+        # ...
+    }
+}
+```
+
+```
+Describing 🍌
+  [+] 🍌 🦒  7ms (5ms|3ms)
+```
+
+#### `<_>` in template 
+
+The current item in the provided array is represented by `$_` and can be expanded by using `<_>` template. 
+
+```powershell
+Describe "Animals " {
+    It "<_>" -ForEach @("🐛", "🐶") {
+        # ...
+    }
+}
+```
+```
+Describing Animals 
+  [+] 🐛 7ms (2ms|5ms)
+  [+] 🐶 2ms (1ms|1ms)
+```
+
+### Using dot-navigation in `<>` template
+
+The `<>` templates allow to navigate through the provided object by using dot-notation. This is useful when the data are not just a flat structure: 
+
+```powershell
+Describe "Animals" {
+    It "A <animal.emoji> (<name>) goes <animal.sound>" -ForEach @(
+        @{ 
+            Name = "cow"
+            Animal = @{
+                Sound = "Mooo"
+                Emoji = "🐄"
+            }
+        }
+
+        @{ 
+            Name = "fox"
+            Animal = @{
+                Sound = "Ring-ding-ding-ding-dingeringeding!"
+                Emoji = "🦊"
+            }
+        }
+    ) {
+        # ...
+    }
+}
+```
+```
+Describing Animals
+  [+] A 🐄 (cow) goes Mooo 12ms (1ms|11ms)
+  [+] A 🦊 (fox) goes Ring-ding-ding-ding-dingeringeding! 2ms (1ms|1ms)
+```
+
+
+### Escaping
+
+Before the template string is expanded every `$` and `` ` `` in the text is escaped. This allows you to put literals, such as `$null` in your test names, and still use the template to expand the value: 
+
+```powershell
+Describe "Fruit" -ForEach "🍎", "🍐" {
+    # with single quoted string
+    It 'Getting <_> returns $null' {
+        # ...
+    }
+
+    # with double quoted string
+    It "Getting <_> returns `$null" {
+        # ...
+    }
+}
+```
+```
+Describing Fruit
+  [+] Getting 🍎 returns $null 3ms (1ms|2ms)
+  [+] Getting 🍎 returns $null 2ms (1ms|1ms)
+
+Describing Fruit
+  [+] Getting 🍐 returns $null 3ms (1ms|3ms)
+  [+] Getting 🍐 returns $null 1ms (1ms|1ms)
+```
+
+To avoid a `<` from being considered a template use  `` `< `` to escape it. This allows you to put greater than and less than in your test names. Or to wrap values in `<>`:
+
+```powershell
+# with single quoted string
+Describe 'When x `< 4, x: <_>' -ForEach @(1..4) {
+    It 'x: `<<_>`>' {
+        # ...
+    }
+}
+
+# with double quoted string
+Describe "When x ``< 4, x: <_>" -ForEach @(1..4) {
+    It "x: ``<<_>``>" {
+        # ...
+    }
+}
+```
+```
+Describing When x < 4, x: 1
+  [+] x: <1> 3ms (1ms|3ms)
+
+Describing When x < 4, x: 2
+  [+] x: <2> 6ms (0ms|6ms)
+
+Describing When x < 4, x: 3
+  [+] x: <3> 5ms (1ms|5ms)
+
+Describing When x < 4, x: 4
+  [+] x: <4> 4ms (0ms|4ms)
+```
+
+#### Internals
+
+The value in the string is escaped by adding `` ` `` before every `$` and `` ` ``. Every template is prefixed by `$`, and then the string is expanded: 
+
+```
+"<x> should not be `$null"
+
+# because this is double quoted string it will be 
+# expanded by powershell to
+
+<x> should not be $null
+
+# then escaped by us to
+<x> should not be `$null
+
+# template is replaced
+$x should not be `$null
+
+# and then it is evaluated in the appropriate script scope
+$x = 1
+& { "$x should not be `$null" }
+
+# giving the final text 
+1 should not be $null
+```
+
+####
+
+## Providing external data to tests
+
+`.Tests.ps1` script is a PowerShell script as any other and you can use the `param` block in it. This is very useful when reusing a single test file with multiple data sets. For example when writing a generic test suite that ensures that correct style is used in a given script file: 
+
+```
+# in CodingStyle.Tests.ps1
+
+param (
+    [Parameter(Mandatory)]
+    [string] $File
+)
+
+BeforeAll {
+    $content = Get-Content $File
+}
+
+Describe "File - <file>" {
+    Context "Whitespace" {
+        It "There is no extra whitespace following a line" { 
+            # ...
+        }
+
+        It "File ends with an empty line" {
+            # ...
+        }
+    }
+}
+```
+
+The external data are then provided to the test by `-Data` parameter on `New-PesterContainer`, in the same manner `-ForEach` would be used on `Describe` or `It`: 
+
+```powershell
+$container = New-PesterContainer -Path 'CodingStyle.Tests.ps1' -Data @{ File = "Get-Emoji.ps1" }
+Invoke-Pester -Container $container -Output Detailed
+```
+
+```
+Running tests from 'C:\p\style\CodingStyle.Tests.ps1'
+Describing File - Get-Emoji.ps1
+ Context Whitespace
+   [+] There is no extra whitespace following a line 30ms (1ms|30ms)
+   [+] File ends with an empty line 2ms (1ms|1ms)
+Tests completed in 445ms
+Tests Passed: 2, Failed: 0, Skipped: 0 NotRun: 0
+```
+
+#### Re-using the same test file
+
+In the scenario above we tested just a single file, but changes are we want to run those style tests for every file in the repository. This can be achieved by generating one data item for each file: 
+
+```powershell
+$files = 'Get-Emoji.ps1', 'Get-Planet.ps1'
+$containers = $files | ForEach-Object {
+    New-PesterContainer -Path 'CodingStyle.Tests.ps1' -Data @{ File = $_ }
+}
+
+Invoke-Pester -Container $containers -Output Detailed
+```
+
+This will run the test file twice, once for each file. You could even grab all `.ps1` files in the current Path and test them, just by using `$files = Get-ChildItem -Filter '*.ps1' -Recurse`.
+
+The `-Data` parameter takes an array of hashtables. As an alternative to the code above, you also attach all the test data to a single container: 
+
+```powershell
+$files = 'Get-Emoji.ps1', 'Get-Planet.ps1'
+$data = $files | ForEach-Object {
+    @{ File = $_ }
+}
+
+$container = New-PesterContainer -Path 'CodingStyle.Tests.ps1' -Data $data
+Invoke-Pester -Container $container -Output Detailed
+```
+
+There is no advantage in using one over the other, choose the one that suits your needs better.
+
+#### Re-using the same data set
+
+In the example above we had a single test file, and multiple different data sets. We can also have the opposite. A single data set used by multiple test files:
+
+```powershell
+$data =  @{ File = "Get-Emoji.ps1" }
+$containers = @(
+    (New-PesterContainer -Path 'CodingStyle.Tests.ps1' -Data $data)
+    (New-PesterContainer -Path 'BadWords.Tests.ps1' -Data $data)
+)
+Invoke-Pester -Container $containers -Output Detailed
+
+# or simply
+
+$data =  @{ File = "Get-Emoji.ps1" }
+$container = New-PesterContainer -Path 'CodingStyle.Tests.ps1', 'BadWords.Tests.ps1' -Data $data
+Invoke-Pester -Container $container -Output Detailed
+```
+
+#### Wildcards
+
+`New-PesterContainer` resolves the `-Path` parameter the same way `Invoke-Pester` does. You can use it to provide a wildcard path to run all files matching the pattern. For example to run all *Style tests against all files in the current directory:
+
+```powershell 
+$files = Get-ChildItem -Filter '*.ps1' -Recurse
+$data = $files | ForEach-Object {
+    @{ File = $_.FullName }
+}
+
+
+$containers = New-PesterContainer -Path '*Style.Tests.ps1' -Data $data
+Invoke-Pester -Container $containers -Output Detailed
+```
+
+## Migrating from Pester v4
+
+There are two main things to take into account when Data driven tests in Pester v5: The execution is not top down. And variables from `Discovery` are not available in `Run`, unless you explicitly attach them to a `Describe`, `Context` or `It`.
+
+This has big impact the classic pattern of using `foreach` to generate tests. 
+
+### Execution is not top down
+
+Pester v5 introduces a new two phase execution. In the first phase called `Discovery`, it will run your whole test script from top to bottom. It will also run all ScriptBlocks that you provided to any `Describe`, `Context` and `BeforeDiscovery`. It will collect the ScriptBlocks you provided to `It`, `BeforeAll`, `BeforeEach`, `AfterEach` and `AfterAll`, but won't run them until later.
+
+In simple terms this means that the script below will run until the last line during `Discovery`. But no test will be executed:
+
+```powershell
+Write-Host "We are starting with discovery."
+Describe "d" {
+    Write-Host "We are finding tests in this describe."
+    It "i" { 
+        Write-Host "I am running!"
+    }
+
+    Write-Host "We are leaving this describe."
+}
+
+Write-Host "We are done with discovery!"
+```
+
+```
+Starting discovery in 1 files.
+Discovering in C:\p\g.Tests.ps1.
+We are starting with discovery.
+We are finding tests in this describe.
+We are leaving this describe.
+We are done with discovery!
+Found 1 tests. 35ms
+Discovery finished in 43ms.
+
+Running tests from 'C:\p\g.Tests.ps1'
+Describing d
+I am running!
+  [+] i 5ms (2ms|3ms)
+Tests completed in 256ms
+```
+
+Notice that "We are done with discovery!" is placed at the end of the script, but is printed before "I am running!". This is because we postpone the execution of `It` until the `Run` phase.
+
+### Variables defined during `Discovery` are not available in `Run`
+
+Defining a variable directly in the body of the script, will make it available during `Discovery`, but it won't be available during `Run`. You can see that the test failed because `$name` is not defined. 
+
+```powershell
+$name = "Jakub" 
+
+Describe "d" {
+    It "My name is: $name" { 
+        $name | Should -be "Jakub"
+    }
+}
+```
+```
+Starting discovery in 1 files.
+Discovering in C:\p\g.Tests.ps1.
+Found 1 tests. 21ms
+Discovery finished in 65ms.
+
+Running tests from 'C:\p\g.Tests.ps1'
+Describing d
+  [-] My name is: Jakub 106ms (103ms|3ms)
+   Expected 'Jakub', but got $null.
+   at $name | Should -be "Jakub", C:\p\g.Tests.ps1:5
+   at <ScriptBlock>, C:\p\g.Tests.ps1:5
+Tests completed in 436ms
+Tests Passed: 0, Failed: 1, Skipped: 0 NotRun: 0
+```
+
+This is especially confusing because `$name` was correctly expanded in the name of the test. But if you think about it, it is logical. The script is running till the end, so the string `"My name is: $name"` is expanded during `Discovery` where the `$name` variable *is* available.
+
+### Moving away from `foreach` 
+
+Those two limitations mean that this pattern, is difficult to use: 
+
+```powershell
+$files = Get-ChildItem "../src/*.ps1" -Recurse
+foreach ($file in $files) { 
+    Describe "$file" {
+        It "$file - has help" {
+            $content = Get-Content $file
+            # ...
+        }
+    }
+}
+```
+
+The `$file` variable won't be defined in the `It` and the test will fail. You can work around this problem by specifying a single item `-ForEach` to attach the value to the block. `-ForEach` (and `-TestCases`) will inspect the provided value, and if it is a hashtable, it will define a variable for each key in that hashtable. 
+
+```powershell
+$files = Get-ChildItem "../src/*.ps1" -Recurse
+foreach ($file in $files) { 
+    Describe "$file" -ForEach { File = $file } { 
+        It "$file - has help" { 
+            $content = Get-Content $file
+            # ...
+        }
+    }
+}
+```
+
+This will take the value of `$file` during `Discovery` and attach it to that `Describe` block, and then during `Run` it will define a new variable `$file` with the same value.
+
+Next step is to move to `-ForEach` functionality entirely:
+
+```powershell
+BeforeDiscovery {
+    $files = Get-ChildItem "../src/*.ps1" -Recurse
+}
+
+Describe "<file>" -ForEach $files { 
+    BeforeAll {
+        # Renaming the automatic $_ variable to $file
+        # to make it easier to work with
+        $file = $_
+    }
+    It "<file> - has help" { 
+        $content = Get-Content $file
+        # ...
+    }
+}
+```
+
+There are three notable changes: 
+
+- `$files` are defined inside of `BeforeDiscovery` block, to show that this code is running in `Discovery` intentionally, and not by accident
+- `$files` is provided directly to `-ForEach`. This will generate one `Describe` for each item in `$file`, and will define the current item as `$_` which is available in both `Discovery` and `Run`. 
+
+- The names of tests are using the `<>` template to expand the variable `$file` during `Run`. Any variable in scope can be used for that expansion, including the variables defined in the `BeforeAll` that is contained directly inside of the current `Describe`.
+
+### Another variation on `foreach`
+
+One more common approach is to put common test setup is directly in the `Describe` block to ensure that the file will be loaded only once:
+
+```powershell
+$files = Get-ChildItem "../src/*.ps1" -Recurse
+foreach ($file in $files) { 
+    Describe "$file" {
+        $content = Get-Content $file
+        It "$file - has help" {
+            # ...
+        }
+    }
+}
+```
+
+This approach can still be easily converted to Pester v5:
+
+```powershell
+BeforeDiscovery {
+    $files = Get-ChildItem "../src/*.ps1" -Recurse
+}
+
+Describe "<file>" -ForEach $files { 
+    BeforeAll {
+        # Renaming the automatic $_ variable to $file
+        # to make it easier to work with
+        $file = $_
+        $content = Get-Content $file
+    }
+    It "<file> - has help" { 
+        # ...
+    }
+}
+```
