@@ -1,0 +1,21 @@
+---
+title: File placement and naming
+---
+
+## Common convention
+
+Pester considers all files named `.Tests.ps1` to be test files. This is the default naming convention that is used by almost all projects. 
+
+Test files are placed in the same directory as the code that they test. Each file is called as the function it tests. This means that for a function `Get-Emoji` we would have `Get-Emoji.Tests.ps1` and `Get-Emoji.ps1` in the same directory. 
+
+## Custom conventions
+
+The convention above is the default that most projects use, but Pester is not prescriptive about how you should name or place your files. The default extension can be customized by setting the `Run.TestExtension` configuration option. The relative position of files can be then adjusted by changing the code you use to code files into tests. See [Importing tested functions](importing-tested-functions).
+
+However the convention above is the default and is recommended to be used, especially when you are starting with Pester.
+
+## Categorizing tests
+
+There can be many tests in one file, but in bigger projects you might want to distinguish, Unit, and Acceptance tests (or whatever are the categories of tests you have). This is typically approached by using tags. But another way is to split the tests in separate files and name them accordingly `Get-Emoji.Unit.Tests.ps1`, `Get-Emoji.Acceptance.Tests.ps1`. This keeps your Acceptance test and Unit test code separate, which might be a good idea as Acceptance tests are usually more complex, and require more dependencies.
+
+You can then use the `Run.TestExtension` configuration option to customize the file extension convention to run only `*.Unit.Tests.ps1`, only `*.Acceptance.Tests.ps1` or keep the default to run all `*.Tests.ps1`. Even more fine-grained control is possible by using the `-ExcludePath` parameter, or by using `Get-ChildItem` to filter all paths and then provide them to `-Path` parameter.
