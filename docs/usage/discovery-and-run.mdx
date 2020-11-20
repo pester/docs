@@ -50,10 +50,14 @@ This is what happens step by step when you run `Get-Emoji.Tests.ps1`:
 - The script file `Get-Emoji.Tests.ps1` is invoked
 - `BeforeAll` function runs. It saves the ScriptBlock provided to it, but does not execute it yet.
 - `Describe` function runs. It **invokes** the ScriptBlock provided to it, to be able to collect information about the tests contained inside of that scriptblock. `Describe` and `Context` scriptblocks are the only scriptblocks that are invoked during `Discovery`.
-- `It` function is about to be run, all its parameters need to be evaluated first, 
-    - `-Name` is evaluated
-    - `-TestCases` are evaluated
-- `It` function runs. It saves the ScriptBlock provided to it, but does not execute it yet. One `It` is generated for each item in the `-TestCases` array.
+- All parameters provided to `It` are evaluated by PowerShell: 
+    - `-Name` is evaluated:
+        - if double quoted string is used (`""`) all variables and sub-expressions in the string are expanded
+        - if single quotes string is used (`''`) it is taken as it is
+    - `-TestCases` are evaluated:
+       - all `""` strings are expanded
+       - all commands are executed, if any are used
+- `It` function runs. The ScriptBlock provided (the body of the test) is saved but not executed yet. Two tests are generated.  One for each item in `-TestCases` array.
 - `Write-Host` runs and prints "Discovery done."
 
 At this point we are done with `Discovery`. As you can see discovery is just a "trick". We run the whole script to the end, but don't invoke any ScriptBlock, except for the one associated with `Describe`.
