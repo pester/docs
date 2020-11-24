@@ -495,13 +495,27 @@ Describe "File - <_>" -ForEach $files {
 
 ## Migrating from Pester v4
 
-There are two main things to take into account when Data driven tests in Pester v5: The execution is not top down. And variables from `Discovery` are not available in `Run`, unless you explicitly attach them to a `Describe`, `Context` or `It`.
+There are two main things to take into account when Data driven tests in Pester v5: The [execution is not top down](#execution-is-not-top-down) like in V4 but done in two phases `Discovery` and `Run`. Variables from `Discovery` are not available in `Run`, unless you explicitly attach them to a `Describe`, `Context` or `It` using `Foreach` or `TestCases`
 
-This has big impact the classic pattern of using `foreach` to generate tests. 
+This has big impact the classic pattern of using `foreach` to generate tests.
 
 ### Execution is not top down
 
 Pester v5 introduces a new two phase execution. In the first phase called `Discovery`, it will run your whole test script from top to bottom. It will also run all ScriptBlocks that you provided to any `Describe`, `Context` and `BeforeDiscovery`. It will collect the ScriptBlocks you provided to `It`, `BeforeAll`, `BeforeEach`, `AfterEach` and `AfterAll`, but won't run them until later.
+
+|Phase|V4 |V5 Discovery |V5 Run|
+|:-|:-|:-|:-|
+|`BeforeAll`| ✔️| ❌| ✔️
+|`BeforeEach`| ✔️|❌ | ✔️
+|`It`| ✔️ |❌ | ✔️
+|`AfterEach`| ✔️|❌ | ✔️
+|`AfterAll`| ✔️|❌ | ✔️
+|`BeforeDiscovery`| N/A | ✔️ | ❌
+|`Describe` |✔️| ✔️ |❌
+|`Context` |✔️|✔️|❌
+| Other | ✔️|✔️|❌
+
+Other, is any script outside of `It`, `BeforeAll`, `BeforeEach`, `AfterEach` and `AfterAll`. You see that this code behaves like the new `BeforeDiscovery` block and thus for clarity on when script will be run its advised to use the `BeforeDiscovery`.
 
 In simple terms this means that the script below will run until the last line during `Discovery`. But no test will be executed:
 
