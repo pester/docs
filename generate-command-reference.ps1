@@ -1,11 +1,16 @@
 #Requires -Modules @{ ModuleName="Alt3.Docusaurus.Powershell"; ModuleVersion="1.0.13" }
-#requires -Module PlatyPS
-#Requires -Modules @{ ModuleName="Pester"; ModuleVersion="5.0.3" }
+#Requires -Module PlatyPS
 
 <#
     .SYNOPSIS
       Example script to show how to (CI/CD) re-generate the Command Reference
 #>
+param (
+  [string] $PesterVersion = "5.1.0"
+)
+
+Import-Module -Name Pester -RequiredVersion $PesterVersion -Force | Out-Null
+
 $PSDefaultParameterValues['*:ErrorAction'] = "Stop" # full script stop on first error
 
 Push-Location $PSScriptRoot
