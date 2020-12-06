@@ -21,20 +21,20 @@ Validates the results of a test inside of a Describe block.
 ### Normal (Default)
 
 ```powershell
-It [-Name] <String> [[-Test] <ScriptBlock>] [-TestCases <IDictionary[]>] [-Tag <String[]>] [<CommonParameters>]
+It [-Name] <String> [[-Test] <ScriptBlock>] [-TestCases <Object[]>] [-Tag <String[]>] [<CommonParameters>]
 ```
 
 ### Pending
 
 ```powershell
-It [-Name] <String> [[-Test] <ScriptBlock>] [-TestCases <IDictionary[]>] [-Tag <String[]>] [-Pending]
+It [-Name] <String> [[-Test] <ScriptBlock>] [-TestCases <Object[]>] [-Tag <String[]>] [-Pending]
  [<CommonParameters>]
 ```
 
 ### Skip
 
 ```powershell
-It [-Name] <String> [[-Test] <ScriptBlock>] [-TestCases <IDictionary[]>] [-Tag <String[]>] [-Skip]
+It [-Name] <String> [[-Test] <ScriptBlock>] [-TestCases <Object[]>] [-Tag <String[]>] [-Skip]
  [<CommonParameters>]
 ```
 
@@ -63,9 +63,7 @@ command as the first tested statement in the It block.
 
 ```powershell
 function Add-Numbers($a, $b) {
-```
-
-return $a + $b
+    return $a + $b
 
 }
 
@@ -90,14 +88,13 @@ Describe "Add-Numbers" {
         $sum | Should -Be "twothree"
     }
 }
+```
 
 ### EXAMPLE 2
 
 ```powershell
 function Add-Numbers($a, $b) {
-```
-
-return $a + $b
+    return $a + $b
 
 }
 
@@ -116,6 +113,7 @@ Describe "Add-Numbers" {
         $sum | Should -Be $expectedResult
     }
 }
+```
 
 ## PARAMETERS
 
@@ -149,26 +147,26 @@ Aliases:
 
 Required: False
 Position: 2
-Default value: {}
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -TestCases
 
-Optional array of hashtable (or any IDictionary) objects.
+Optional array of hashtable (or any IDictionary) objects. 
 If this parameter is used,
 Pester will call the test script block once for each table in the TestCases array,
-splatting the dictionary to the test script block as input.
+splatting the dictionary to the test script block as input. 
 If you want the name of
 the test to appear differently for each test case, you can embed tokens into the Name
 parameter with the syntax 'Adds numbers \<A\> and \<B\>' (assuming you have keys named A and B
 in your TestCases hashtables.)
 
 ```yaml
-Type: IDictionary[]
+Type: Object[]
 Parameter Sets: (All)
-Aliases:
+Aliases: ForEach
 
 Required: False
 Position: Named
@@ -179,7 +177,9 @@ Accept wildcard characters: False
 
 ### -Tag
 
-{{ Fill Tag Description }}
+Optional parameter containing an array of strings.
+When calling Invoke-Pester,
+it is possible to include or exclude tests containing the same Tag.
 
 ```yaml
 Type: String[]
@@ -245,8 +245,14 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[https://github.com/pester/Pester/wiki/It](https://github.com/pester/Pester/wiki/It)
+[https://pester.dev/docs/commands/It](https://pester.dev/docs/commands/It)
+
+[https://pester.dev/docs/commands/Describe](https://pester.dev/docs/commands/Describe)
+
+[https://pester.dev/docs/commands/Context](https://pester.dev/docs/commands/Context)
+
+[https://pester.dev/docs/commands/Set-ItResult](https://pester.dev/docs/commands/Set-ItResult)
 
 ## EDIT THIS PAGE
 
-This page was auto-generated using Pester's comment based help. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.
+This page was auto-generated using the comment based help in Pester 5.1.0. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.

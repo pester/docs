@@ -25,28 +25,50 @@ BeforeEach [-Scriptblock] <ScriptBlock> [<CommonParameters>]
 
 ## DESCRIPTION
 
-BeforeEach, AfterEach, BeforeAll, and AfterAll are unique in that they apply
-to the entire Context or Describe block, regardless of the order of the
-statements in the Context or Describe.
-For a full description of this
-behavior, as well as how multiple BeforeEach or AfterEach blocks interact
-with each other, please refer to the about_BeforeEach_AfterEach help file.
+BeforeEach runs once before every test in the current or any child blocks.
+Typically this is used to create all the prerequisites for the current test,
+such as writing content to a file.
+
+BeforeEach and AfterEach are unique in that they apply to the entire Context
+or Describe block, regardless of the order of the statements in the
+Context or Describe.
 
 ## EXAMPLES
 
-### Example 1
+### EXAMPLE 1
 
 ```powershell
-PS C:\> {{ Add example code here }}
+Describe "File parsing" {
+    BeforeEach {
+        # randomized path, to get fresh file for each test
+
+        $file = "$([IO.Path]::GetTempPath())/$([Guid]::NewGuid())_form.xml"
+        Copy-Item -Source $template -Destination $file -Force | Out-Null
+    }
+
+    It "Writes username" {
+        Write-XmlForm -Path $file -Field "username" -Value "nohwnd"
+        $content = Get-Content $file
+        # ...
+
+    }
+
+    It "Writes name" {
+        Write-XmlForm -Path $file -Field "name" -Value "Jakub"
+        $content = Get-Content $file
+        # ...
+
+    }
+}
 ```
 
-{{ Add example description here }}
+The example uses BeforeEach to ensure a clean sample-file is used for each test.
 
 ## PARAMETERS
 
 ### -Scriptblock
 
-the scriptblock to execute
+A scriptblock with steps to be executed during setup.
 
 ```yaml
 Type: ScriptBlock
@@ -72,8 +94,10 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[https://github.com/pester/Pester/wiki/BeforeEach-and-AfterEach](https://github.com/pester/Pester/wiki/BeforeEach-and-AfterEach)
+[https://pester.dev/docs/commands/BeforeEach](https://pester.dev/docs/commands/BeforeEach)
+
+[https://pester.dev/docs/usage/setup-and-teardown](https://pester.dev/docs/usage/setup-and-teardown)
 
 ## EDIT THIS PAGE
 
-This page was auto-generated using Pester's comment based help. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.
+This page was auto-generated using the comment based help in Pester 5.1.0. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.

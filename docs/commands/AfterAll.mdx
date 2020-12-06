@@ -14,8 +14,8 @@ custom_edit_url: null
 
 ## SYNOPSIS
 
-Defines a series of steps to perform at the end of the current Context
-or Describe block.
+Defines a series of steps to perform at the end of the current container,
+Context or Describe block.
 
 ## SYNTAX
 
@@ -25,25 +25,53 @@ AfterAll [-Scriptblock] <ScriptBlock> [<CommonParameters>]
 
 ## DESCRIPTION
 
-BeforeEach, AfterEach, BeforeAll, and AfterAll are unique in that they apply
-to the entire Context or Describe block, regardless of the order of the
-statements in the Context or Describe.
+AfterAll is used to share teardown after all the tests in a container, Describe
+or Context including all child blocks and tests.
+AfterAll runs during Run phase
+and runs only once in the current block.
+It's guaranteed to run even if tests
+fail.
+
+The typical usage is to clean up state or temporary used in tests.
+
+BeforeAll and AfterAll are unique in that they apply to the entire container,
+Context or Describe block regardless of the order of the statements compared to
+other Context or Describe blcoks at the same level.
 
 ## EXAMPLES
 
-### Example 1
+### EXAMPLE 1
 
 ```powershell
-PS C:\> {{ Add example code here }}
+Describe "Validate important file" {
+    BeforeAll {
+        $samplePath = "$([IO.Path]::GetTempPath())/$([Guid]::NewGuid()).txt"
+        Write-Host $samplePath
+        1..100 | Set-Content -Path $samplePath
+    }
+
+    It "File Contains 100 lines" {
+        @(Get-Content $samplePath).Count | Should -Be 100
+    }
+
+    It "First ten lines should be 1 -\> 10" {
+        @(Get-Content $samplePath -TotalCount 10) | Should -Be @(1..10)
+    }
+
+    AfterAll {
+        Remove-Item -Path $samplePath
+    }
+}
 ```
 
-{{ Add example description here }}
+This example uses AfterAll to clean up a sample-file generated only for
+the tests in the Describe-block.
 
 ## PARAMETERS
 
 ### -Scriptblock
 
-the scriptblock to execute
+A scriptblock with steps to be executed during teardown.
 
 ```yaml
 Type: ScriptBlock
@@ -69,8 +97,10 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[https://github.com/pester/Pester/wiki/BeforeEach-and-AfterEach](https://github.com/pester/Pester/wiki/BeforeEach-and-AfterEach)
+[https://pester.dev/docs/commands/AfterAll](https://pester.dev/docs/commands/AfterAll)
+
+[https://pester.dev/docs/usage/setup-and-teardown](https://pester.dev/docs/usage/setup-and-teardown)
 
 ## EDIT THIS PAGE
 
-This page was auto-generated using Pester's comment based help. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.
+This page was auto-generated using the comment based help in Pester 5.1.0. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.

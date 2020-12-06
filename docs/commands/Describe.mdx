@@ -19,7 +19,8 @@ Creates a logical group of tests.
 ## SYNTAX
 
 ```powershell
-Describe [-Name] <String> [-Tag <String[]>] [[-Fixture] <ScriptBlock>] [-Skip] [<CommonParameters>]
+Describe [-Name] <String> [-Tag <String[]>] [[-Fixture] <ScriptBlock>] [-Skip] [-ForEach <Object>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -37,9 +38,7 @@ block may contain any number of Context and It blocks.
 
 ```powershell
 function Add-Numbers($a, $b) {
-```
-
-return $a + $b
+    return $a + $b
 
 }
 
@@ -64,6 +63,7 @@ Describe "Add-Numbers" {
         $sum | Should -Be "twothree"
     }
 }
+```
 
 ## PARAMETERS
 
@@ -142,6 +142,26 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -ForEach
+
+Allows data driven tests to be written.
+Takes an array of data and generates one block for each item in the array, and makes the item
+available as $_ in all child blocks.
+When the array is an array of hashtables, it additionally
+defines each key in the hashatble as variable.
+
+```yaml
+Type: Object
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### CommonParameters
 
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
@@ -154,6 +174,14 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
+[https://pester.dev/docs/commands/Describe](https://pester.dev/docs/commands/Describe)
+
+[https://pester.dev/docs/commands/It](https://pester.dev/docs/commands/It)
+
+[https://pester.dev/docs/commands/Context](https://pester.dev/docs/commands/Context)
+
+[https://pester.dev/docs/commands/Invoke-Pester](https://pester.dev/docs/commands/Invoke-Pester)
+
 ## EDIT THIS PAGE
 
-This page was auto-generated using Pester's comment based help. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.
+This page was auto-generated using the comment based help in Pester 5.1.0. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.

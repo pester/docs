@@ -14,7 +14,7 @@ custom_edit_url: null
 
 ## SYNOPSIS
 
-{{ Fill in the Synopsis }}
+Converts a Pester result-object to an NUnit 2.5-compatible XML-report
 
 ## SYNTAX
 
@@ -24,23 +24,67 @@ ConvertTo-NUnitReport [-Result] <Object> [-AsString] [<CommonParameters>]
 
 ## DESCRIPTION
 
-{{ Fill in the Description }}
+Pester can generate a result-object containing information about all
+tests that are processed in a run.
+This objects can then be converted to an
+NUnit-compatible XML-report using this function.
+The report is generated
+using the NUnit 2.5-schema.
+
+The function can convert to both XML-object or a string containing the XML.
+This can be useful for further processing or publishing of test results,
+e.g.
+as part of a CI/CD pipeline.
 
 ## EXAMPLES
 
-### Example 1
+### EXAMPLE 1
 
 ```powershell
-PS C:\> {{ Add example code here }}
+$p = Invoke-Pester -Passthru
 ```
 
-{{ Add example description here }}
+$p | ConvertTo-NUnitReport
+
+This example runs Pester using the Passthru option to retrieve the result-object and
+converts it to an NUnit 2.5-compatible XML-report.
+The report is returned as an XML-object.
+
+### EXAMPLE 2
+
+```powershell
+$p = Invoke-Pester -Passthru
+```
+
+$p | ConvertTo-NUnitReport -AsString
+
+This example runs Pester using the Passthru option to retrieve the result-object and
+converts it to an NUnit 2.5-compatible XML-report.
+The returned object is a string.
 
 ## PARAMETERS
 
+### -Result
+
+Result object from a Pester-run.
+This can be retrieved using Invoke-Pester
+-Passthru or by using the Run.PassThru configuration-option.
+
+```yaml
+Type: Object
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 1
+Default value: None
+Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
+
 ### -AsString
 
-{{ Fill AsString Description }}
+Returns the XML-report as a string.
 
 ```yaml
 Type: SwitchParameter
@@ -49,24 +93,8 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Result
-
-{{ Fill Result Description }}
-
-```yaml
-Type: Object
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: 0
-Default value: None
-Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 
@@ -76,16 +104,16 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## INPUTS
 
-### System.Object
-
 ## OUTPUTS
-
-### System.Object
 
 ## NOTES
 
 ## RELATED LINKS
 
+[https://pester.dev/docs/commands/ConvertTo-NUnitReport](https://pester.dev/docs/commands/ConvertTo-NUnitReport)
+
+[https://pester.dev/docs/commands/Invoke-Pester](https://pester.dev/docs/commands/Invoke-Pester)
+
 ## EDIT THIS PAGE
 
-This page was auto-generated using Pester's comment based help. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.
+This page was auto-generated using the comment based help in Pester 5.1.0. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.

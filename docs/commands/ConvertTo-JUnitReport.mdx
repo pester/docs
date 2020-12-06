@@ -1,7 +1,7 @@
 ---
-id: Export-NUnitReport
-title: Export-NUnitReport
-description: Help page for the Powershell Pester "Export-NUnitReport" command
+id: ConvertTo-JUnitReport
+title: ConvertTo-JUnitReport
+description: Help page for the Powershell Pester "ConvertTo-JUnitReport" command
 keywords:
   - Powershell
   - Pester
@@ -14,23 +14,24 @@ custom_edit_url: null
 
 ## SYNOPSIS
 
-Exports a Pester result-object to an NUnit-compatible XML-report
+Converts a Pester result-object to an JUnit-compatible XML report
 
 ## SYNTAX
 
 ```powershell
-Export-NUnitReport [-Result] <Object> [-Path] <String> [<CommonParameters>]
+ConvertTo-JUnitReport [-Result] <Object> [-AsString] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
 
 Pester can generate a result-object containing information about all
 tests that are processed in a run.
-This object can then be exported to an
+This objects can then be converted to an
 NUnit-compatible XML-report using this function.
 The report is generated
-using the NUnit 2.5-schema.
+using the JUnit 4-schema.
 
+The function can convert to both XML-object or a string containing the XML.
 This can be useful for further processing or publishing of test results,
 e.g.
 as part of a CI/CD pipeline.
@@ -43,10 +44,23 @@ as part of a CI/CD pipeline.
 $p = Invoke-Pester -Passthru
 ```
 
-$p | Export-NUnitReport -Path TestResults.xml
+$p | ConvertTo-JUnitReport
 
 This example runs Pester using the Passthru option to retrieve the result-object and
-exports it as an NUnit 2.5-compatible XML-report.
+converts it to an JUnit 4-compatible XML-report.
+The report is returned as an XML-object.
+
+### EXAMPLE 2
+
+```powershell
+$p = Invoke-Pester -Passthru
+```
+
+$p | ConvertTo-JUnitReport -AsString
+
+This example runs Pester using the Passthru option to retrieve the result-object and
+converts it to an JUnit 4-compatible XML-report.
+The returned object is a string.
 
 ## PARAMETERS
 
@@ -68,18 +82,18 @@ Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 
-### -Path
+### -AsString
 
-The path where the XML-report should  to the ou the XML report as string.
+Returns the XML-report as a string.
 
 ```yaml
-Type: String
+Type: SwitchParameter
 Parameter Sets: (All)
 Aliases:
 
-Required: True
-Position: 2
-Default value: None
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -96,7 +110,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[https://pester.dev/docs/commands/Export-NUnitReport](https://pester.dev/docs/commands/Export-NUnitReport)
+[https://pester.dev/docs/commands/ConvertTo-JUnitReport](https://pester.dev/docs/commands/ConvertTo-JUnitReport)
 
 [https://pester.dev/docs/commands/Invoke-Pester](https://pester.dev/docs/commands/Invoke-Pester)
 
