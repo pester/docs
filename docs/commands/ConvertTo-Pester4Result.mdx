@@ -14,7 +14,7 @@ custom_edit_url: null
 
 ## SYNOPSIS
 
-{{ Fill in the Synopsis }}
+Converts a Pester 5 result-object to an Pester 4-compatible object
 
 ## SYNTAX
 
@@ -24,23 +24,34 @@ ConvertTo-Pester4Result [-PesterResult] <Object> [<CommonParameters>]
 
 ## DESCRIPTION
 
-{{ Fill in the Description }}
+Pester 5 uses a new format for it's result-object compared to previous
+versions of Pester.
+This function is provided as a way to convert the
+result-object into an object using the previous format.
+This can be
+useful as a temporary measure to easier migrate to Pester 5 without
+having to redesign compelx CI/CD-pipelines.
 
 ## EXAMPLES
 
-### Example 1
+### EXAMPLE 1
 
 ```powershell
-PS C:\> {{ Add example code here }}
+$pester5Result = Invoke-Pester -Passthru
 ```
 
-{{ Add example description here }}
+$pester4Result = $pester5Result | ConvertTo-Pester4Result
+
+This example runs Pester using the Passthru option to retrieve a result-object
+in the Pester 5 format and converts it to a new Pester 4-compatible result-object.
 
 ## PARAMETERS
 
 ### -PesterResult
 
-{{ Fill PesterResult Description }}
+Result object from a Pester 5-run.
+This can be retrieved using Invoke-Pester
+-Passthru or by using the Run.PassThru configuration-option.
 
 ```yaml
 Type: Object
@@ -48,7 +59,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: True
-Position: 0
+Position: 1
 Default value: None
 Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
@@ -60,16 +71,16 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## INPUTS
 
-### System.Object
-
 ## OUTPUTS
-
-### System.Object
 
 ## NOTES
 
 ## RELATED LINKS
 
+[https://pester.dev/docs/commands/ConvertTo-Pester4Result](https://pester.dev/docs/commands/ConvertTo-Pester4Result)
+
+[https://pester.dev/docs/commands/Invoke-Pester](https://pester.dev/docs/commands/Invoke-Pester)
+
 ## EDIT THIS PAGE
 
-This page was auto-generated using Pester's comment based help. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.
+This page was auto-generated using the comment based help in Pester 5.1.0. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.

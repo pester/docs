@@ -74,8 +74,7 @@ Each module's mock maintains a separate call history and verified status.
 Mock Get-ChildItem { return @{FullName = "A_File.TXT"} }
 ```
 
-Using this Mock, all calls to Get-ChildItem will return a hashtable with a
-FullName property returning "A_File.TXT"
+Using this Mock, all calls to Get-ChildItem will return a hashtable with a FullName property returning "A_File.TXT"
 
 ### EXAMPLE 2
 
@@ -111,11 +110,10 @@ Here, if Get-ChildItem is called on the "2" directory of the temp folder, then B
 
 ```powershell
 Mock Get-ChildItem { return @{FullName="B_File.TXT"} } -ParameterFilter { $Path -eq "$env:temp\me" }
-```
-
 Mock Get-ChildItem { return @{FullName="A_File.TXT"} } -ParameterFilter { $Path -and $Path.StartsWith($env:temp) }
 
 Get-ChildItem $env:temp\me
+```
 
 Here, both mocks could apply since both filters will pass.
 A_File.TXT will be returned because it was the most recent Mock created.
@@ -124,11 +122,10 @@ A_File.TXT will be returned because it was the most recent Mock created.
 
 ```powershell
 Mock Get-ChildItem { return @{FullName = "B_File.TXT"} } -ParameterFilter { $Path -eq "$env:temp\me" }
-```
-
 Mock Get-ChildItem { return @{FullName = "A_File.TXT"} }
 
 Get-ChildItem c:\windows
+```
 
 Here, A_File.TXT will be returned.
 Since no filter was specified, it will apply to any call to Get-ChildItem that does not pass another filter.
@@ -137,11 +134,10 @@ Since no filter was specified, it will apply to any call to Get-ChildItem that d
 
 ```powershell
 Mock Get-ChildItem { return @{FullName = "B_File.TXT"} } -ParameterFilter { $Path -eq "$env:temp\me" }
-```
-
 Mock Get-ChildItem { return @{FullName = "A_File.TXT"} }
 
 Get-ChildItem $env:temp\me
+```
 
 Here, B_File.TXT will be returned.
 Even though the filterless mock was created more recently.
@@ -160,8 +156,6 @@ will return a hashtable with a FullName property returning "A_File.TXT"
 
 ```powershell
 Get-Module -Name ModuleMockExample | Remove-Module
-```
-
 New-Module -Name ModuleMockExample  -ScriptBlock {
     function Hidden { "Internal Module Function" }
     function Exported { Hidden }
@@ -184,6 +178,7 @@ Describe "ModuleMockExample" {
         Exported | Should -Be "Mocked"
     }
 }
+```
 
 This example shows how calls to commands made from inside a module can be
 mocked by using the -ModuleName parameter.
@@ -287,7 +282,11 @@ Accept wildcard characters: False
 
 ### -RemoveParameterType
 
-{{ Fill RemoveParameterType Description }}
+Optional list of parameter names that should use Object as the parameter
+type instead of the parameter type defined by the function.
+This relaxes the
+type requirements and allows some strongly typed functions to be mocked
+more easily.
 
 ```yaml
 Type: String[]
@@ -303,7 +302,11 @@ Accept wildcard characters: False
 
 ### -RemoveParameterValidation
 
-{{ Fill RemoveParameterValidation Description }}
+Optional list of parameter names in the original command
+that should not have any validation rules applied.
+This relaxes the 
+validation requirements, and allows functions that are strict about their
+parameter validation to be mocked more easily.
 
 ```yaml
 Type: String[]
@@ -329,15 +332,16 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[Should
-Describe
-Context
-It
-about_Should
-about_Mocking
+[https://pester.dev/docs/commands/Mock](https://pester.dev/docs/commands/Mock)
 
- Mock]()
+[https://pester.dev/docs/usage/mocking
+
+
+ Mock](https://pester.dev/docs/usage/mocking
+
+
+ Mock)
 
 ## EDIT THIS PAGE
 
-This page was auto-generated using Pester's comment based help. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.
+This page was auto-generated using the comment based help in Pester 5.1.0. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.

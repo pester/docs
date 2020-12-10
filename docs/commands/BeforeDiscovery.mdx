@@ -1,7 +1,7 @@
 ---
-id: New-MockObject
-title: New-MockObject
-description: Help page for the Powershell Pester "New-MockObject" command
+id: BeforeDiscovery
+title: BeforeDiscovery
+description: Help page for the Powershell Pester "BeforeDiscovery" command
 keywords:
   - Powershell
   - Pester
@@ -14,38 +14,52 @@ custom_edit_url: null
 
 ## SYNOPSIS
 
-This function instantiates a .NET object from a type.
+Runs setup code that is used during Discovery phase.
 
 ## SYNTAX
 
 ```powershell
-New-MockObject [-Type] <Type> [<CommonParameters>]
+BeforeDiscovery [-ScriptBlock] <ScriptBlock> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
 
-Using the New-MockObject you can mock an object based on .NET type.
-
-An .NET assembly for the particular type must be available in the system and loaded.
+Runs your code as is, in the place where this function is defined.
+This is a semantic block to allow you
+to be explicit about code that you need to run during Discovery, instead of just
+putting code directly inside of Describe / Context.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 
 ```powershell
-$obj = New-MockObject -Type 'System.Diagnostics.Process'
-$obj.GetType().FullName
-    System.Diagnostics.Process
+PS \> BeforeDiscovery {
+    $files = "file1.txt", "file2.txt"
+}
+
+Describe "File tests" {
+    foreach ($file in $files) {
+        It "test" {
+            # ...
+
+test code
+        }
+    }
+}
 ```
+
+The result of commands will be execution of tests and saving results of them in a NUnitMXL file where the root "test-suite"
+will be named "Tests - Set A".
 
 ## PARAMETERS
 
-### -Type
+### -ScriptBlock
 
-The .NET type to create an object based on.
+The ScritpBlock to run.
 
 ```yaml
-Type: Type
+Type: ScriptBlock
 Parameter Sets: (All)
 Aliases:
 
@@ -67,10 +81,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## NOTES
 
 ## RELATED LINKS
-
-[https://pester.dev/docs/commands/New-MockObject](https://pester.dev/docs/commands/New-MockObject)
-
-[https://pester.dev/docs/usage/mocking](https://pester.dev/docs/usage/mocking)
 
 ## EDIT THIS PAGE
 
