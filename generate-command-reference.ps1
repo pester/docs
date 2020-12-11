@@ -25,12 +25,13 @@ Write-Host "Generating MDX files for website Command Reference" -BackgroundColor
 # -----------------------------------------------------------------------------
 # Fetch module versions from PSGallery
 # -----------------------------------------------------------------------------
-$modules = @{}
+$modules = @{ }
 
 Write-Host "Fetching module versions from PSGallery..."
 if ($PesterVersion) {
   $modules.Pester = $PesterVersion
-} else {
+}
+else {
   $modules.Pester = (Find-Module -Name Pester).Version
 }
 
@@ -43,13 +44,26 @@ $modules.PlatyPS = (Find-Module -Name PlatyPS).Version
 $modules.GetEnumerator() | ForEach-Object {
   Write-Host "Requires $($_.Name) $($_.Value)"
 
-  if ((Get-Module -ListAvailable $_.Name).Version -contains $_.Value) {
-    Write-Host "=> already installed"
-  } else {
-    Write-Host "=> installing"
+  $installed = Get-Module -ListAvailable $_.Name
+
+  if (-not $installed) {
+    Write-Host "=> no versions installed: installing $($_.Value)"
     Install-Module $_.Name -RequiredVersion $_.Value -Force -SkipPublisherCheck -AllowClobber -Scope CurrentUser
+    Write-Host "=> importing"
+    Import-Module -Name $_.Name -RequiredVersion $_.Value -Force
+
+    return
   }
 
+  if ($installed.Version -contains $_.Value) {
+    Write-Host "=> required version already installed"
+    Import-Module -Name $_.Name -RequiredVersion $_.Value -Force
+
+    return
+  }
+
+  Write-Host "=> no matching version installed: installing $($_.Value)"
+  Install-Module $_.Name -RequiredVersion $_.Value -Force -SkipPublisherCheck -AllowClobber -Scope CurrentUser
   Write-Host "=> importing"
   Import-Module -Name $_.Name -RequiredVersion $_.Value -Force
 }
@@ -75,7 +89,7 @@ $docusaurusOptions = @{
     "Help"
     "Documentation"
   )
-  AppendMarkdown = "## EDIT THIS PAGE`nThis page was auto-generated using the comment based help in Pester $($modules.Pester). To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information."
+  AppendMarkdown  = "## EDIT THIS PAGE`nThis page was auto-generated using the comment based help in Pester $($modules.Pester). To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information."
 }
 
 # -----------------------------------------------------------------------------
