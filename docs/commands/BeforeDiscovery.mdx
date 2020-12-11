@@ -34,23 +34,27 @@ putting code directly inside of Describe / Context.
 ### EXAMPLE 1
 
 ```powershell
-PS \> BeforeDiscovery {
-    $files = "file1.txt", "file2.txt"
+BeforeDiscovery {
+    $files = Get-ChildItem -Path $PSScriptRoot -Filter '*.ps1' -Recurse
 }
 
-Describe "File tests" {
-    foreach ($file in $files) {
-        It "test" {
+Describe "File - \<_\>" -ForEach $files {
+    Context "Whitespace" {
+        It "There is no extra whitespace following a line" {
             # ...
 
-test code
+        }
+
+        It "File ends with an empty line" {
+            # ...
+
         }
     }
 }
 ```
 
-The result of commands will be execution of tests and saving results of them in a NUnitMXL file where the root "test-suite"
-will be named "Tests - Set A".
+BeforeDiscovery is used to gather a list of script-files during Discovery-phase to
+dynamically create a Describe-block and tests for each file found.
 
 ## PARAMETERS
 
@@ -82,6 +86,10 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
+[https://pester.dev/docs/commands/BeforeDiscovery](https://pester.dev/docs/commands/BeforeDiscovery)
+
+[https://pester.dev/docs/usage/data-driven-tests](https://pester.dev/docs/usage/data-driven-tests)
+
 ## EDIT THIS PAGE
 
-This page was auto-generated using the comment based help in Pester 5.1.0. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.
+This page was auto-generated using the comment based help in Pester 5.1.1. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.

@@ -97,10 +97,9 @@ The command behavior will do nothing since the ScriptBlock is empty.
 
 ```powershell
 Mock Get-ChildItem { return @{FullName = "A_File.TXT"} } -ParameterFilter { $Path -and $Path.StartsWith($env:temp\1) }
-```
-
 Mock Get-ChildItem { return @{FullName = "B_File.TXT"} } -ParameterFilter { $Path -and $Path.StartsWith($env:temp\2) }
 Mock Get-ChildItem { return @{FullName = "C_File.TXT"} } -ParameterFilter { $Path -and $Path.StartsWith($env:temp\3) }
+```
 
 Multiple mocks of the same command may be used.
 The parameter filter determines which is invoked.
@@ -304,7 +303,7 @@ Accept wildcard characters: False
 
 Optional list of parameter names in the original command
 that should not have any validation rules applied.
-This relaxes the 
+This relaxes the
 validation requirements, and allows functions that are strict about their
 parameter validation to be mocked more easily.
 
@@ -344,4 +343,4 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## EDIT THIS PAGE
 
-This page was auto-generated using the comment based help in Pester 5.1.0. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.
+This page was auto-generated using the comment based help in Pester 5.1.1. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.

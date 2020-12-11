@@ -50,9 +50,8 @@ able to re-use a lot of test-code.
 
 ```powershell
 $container = New-PesterContainer -Path 'CodingStyle.Tests.ps1' -Data @{ File = "Get-Emoji.ps1" }
-```
-
 Invoke-Pester -Container $container
+```
 
 This example runs Pester using a generated ContainerInfo-object referencing a file and
 required parameters that's provided to the test-file during execution.
@@ -61,9 +60,7 @@ required parameters that's provided to the test-file during execution.
 
 ```powershell
 $sb = {
-```
-
-Describe 'Testing New-PesterContainer' {
+    Describe 'Testing New-PesterContainer' {
         It 'Useless test' {
             "foo" | Should -Not -Be "bar"
         }
@@ -71,6 +68,7 @@ Describe 'Testing New-PesterContainer' {
 }
 $container = New-PesterContainer -ScriptBlock $sb
 Invoke-Pester -Container $container
+```
 
 This example runs Pester agianst a scriptblock.
 New-PesterContainer is used to genreated
@@ -148,4 +146,4 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## EDIT THIS PAGE
 
-This page was auto-generated using the comment based help in Pester 5.1.0. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.
+This page was auto-generated using the comment based help in Pester 5.1.1. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.
