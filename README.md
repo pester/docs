@@ -63,7 +63,7 @@ simply update the correlating `.json` configuration file as can be seen in
 To upgrade docusaurus to a more recent version:
 
 1. edit `package.json`
-2. update the version number of these dependency pacakges:
+2. update the version number of these dependency packages:
     ```json
     @docusaurus/core": "^2.0.0-alpha.62",
     @docusaurus/preset-classic": "^2.0.0-alpha.62",
