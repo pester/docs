@@ -5,10 +5,10 @@
 
 This repository contains the source files used to generate the [pester.dev](https://pester.dev) website.
 
-The website pages are written in markdown files using the `.mdx` format, located in the `/docs` folder.
+The website pages are written in markdown files using the `.mdx` format and are located in the `/docs` folder.
 
 🔥 **One exception**: the pages in the "Command Reference" section are auto-generated using Pester's
-[Comment Based Help](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_comment_based_help?view=powershell-7.1). Therefore, please do not create pull requests for these command reference pages here but instead fix the corresponding
+[Comment Based Help](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_comment_based_help?view=powershell-7.1). Therefore, please do not create pull requests for these command reference pages here but instead, fix the corresponding
 Pester Powershell source code (as found inside the [pester/pester](https://github.com/pester/pester)
 repository).
 
