@@ -62,13 +62,14 @@ simply update the correlating `.json` configuration file as can be seen in
 
 To upgrade docusaurus to a more recent version:
 
-1. edit `package.json`
-2. update the version number of these dependency packages:
+1. Edit `package.json`
+2. Manually bump the version number of these dependency packages:
     ```json
     @docusaurus/core": "^2.0.0-alpha.62",
     @docusaurus/preset-classic": "^2.0.0-alpha.62",
     ```
-3. submit a pull request with (only) these updated files:
+3. Run `yarn install`
+4. Submit a pull request with (only) these updated files:
    - `package.json`
    - `yarn.lock`
 
