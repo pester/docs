@@ -105,3 +105,8 @@ New-DocusaurusHelp @docusaurusOptions
 
 Write-Host "Render completed successfully" -BackgroundColor DarkGreen
 Pop-Location
+
+if ($ENV:GITHUB_ACTIONS) {
+  # Output Workflow information
+  Write-Host "::set-output name=pester-version::$($ModuleList.Item('Pester'))"
+}
