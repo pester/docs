@@ -1,18 +1,18 @@
 <#
-    .SYNOPSIS
-      Generates the MDX files used for the website's "Command Reference" pages.
+  .SYNOPSIS
+    Generates the MDX files used for the website's "Command Reference" pages.
 
-    .NOTES
-      Uses the latest Pester version unless a specific -PesterVersion is given.
+  .NOTES
+    Uses the latest Pester version unless a specific -PesterVersion is given.
 
-    .EXAMPLE
-      .\generate-command-reference.ps1
+  .EXAMPLE
+    .\generate-command-reference.ps1
 
-    .EXAMPLE
-      .\generate-command-reference.ps1 -PesterVersion 4.10.1
+  .EXAMPLE
+    .\generate-command-reference.ps1 -PesterVersion 4.10.1
 
-    .LINK
-      https://docusaurus-powershell.netlify.app/docs/faq/ci-cd
+  .LINK
+    https://docusaurus-powershell.netlify.app/docs/faq/ci-cd
 #>
 param (
   [Parameter(Mandatory = $False)][string] $PesterVersion
