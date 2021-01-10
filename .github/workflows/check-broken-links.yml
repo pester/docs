@@ -34,7 +34,7 @@ jobs:
     - uses: actions/checkout@v2
       if: failure()
 
-    - uses: JasonEtco/create-an-issue@master
+    - uses: JasonEtco/create-an-issue@main
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
