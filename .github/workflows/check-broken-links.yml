@@ -15,7 +15,7 @@
 # => npx broken-link-checker https://pester.dev --ordered --recursive
 # -----------------------------------------------------------------------------
 
-name: Broken Links Checker
+name: Links Checker
 on:
   schedule:
     - cron:  '0 1 1 * *'
