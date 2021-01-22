@@ -5,10 +5,22 @@ import React from "react";
 // ----------------------------------------------------------------------------
 export const videos = [
   {
+    title: "Beyond Pester 102: Acceptance testing with PowerShell",
+    author: "Glenn Sarti",
+    date: "2019-05-18",
+    url: "https://www.youtube.com/watch?v=L-1nXtaQ6YM",
+  },
+  {
     title: "Mastering PowerShell testing with Pester",
     author: "Mark Wragg",
     date: "2018-10-10",
     url: "https://www.youtube.com/watch?v=BbOiQCgDDR8",
+  },
+  {
+    title: "Beyond Pester 101: Applying testing principles to PowerShell",
+    author: "Glenn Sarti",
+    date: "2018-05-03",
+    url: "https://www.youtube.com/watch?v=NrUxgSaFvtk",
   },
   {
     title: "Introduction to testing with Pester",
