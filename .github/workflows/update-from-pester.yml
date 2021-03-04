@@ -1,0 +1,33 @@
+name: update-from-pester
+
+on:
+  workflow_dispatch:
+    inputs:
+      pester-version:
+        description: 'The version of the Pester to use for the update'
+        required: false
+        default: ''
+
+jobs:
+  update:
+    name: Update documentation from Pester
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Run generate-command-reference
+        id: generate
+        shell: pwsh
+        run: |
+          ./generate-command-reference.ps1 -PesterVersion '${{ github.event.inputs.pester-version }}' -Verbose
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v3.6.0
+        with:
+          commit-message: Automatic update for Pester ${{ steps.generate.outputs.pester-version }}
+          author: GitHub Actions <actions@github.com>
+          branch-suffix: short-commit-hash
+          base: master
+          title: Automatic update for Pester ${{ steps.generate.outputs.pester-version }}
+          body: Automatic update for Pester ${{ steps.generate.outputs.pester-version }} created by the update-from-pester workflow
