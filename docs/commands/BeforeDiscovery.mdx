@@ -1,0 +1,95 @@
+---
+id: BeforeDiscovery
+title: BeforeDiscovery
+description: Help page for the Powershell Pester "BeforeDiscovery" command
+keywords:
+  - Powershell
+  - Pester
+  - Help
+  - Documentation
+hide_title: false
+hide_table_of_contents: false
+custom_edit_url: null
+---
+
+## SYNOPSIS
+
+Runs setup code that is used during Discovery phase.
+
+## SYNTAX
+
+```powershell
+BeforeDiscovery [-ScriptBlock] <ScriptBlock> [<CommonParameters>]
+```
+
+## DESCRIPTION
+
+Runs your code as is, in the place where this function is defined.
+This is a semantic block to allow you
+to be explicit about code that you need to run during Discovery, instead of just
+putting code directly inside of Describe / Context.
+
+## EXAMPLES
+
+### EXAMPLE 1
+
+```powershell
+BeforeDiscovery {
+    $files = Get-ChildItem -Path $PSScriptRoot -Filter '*.ps1' -Recurse
+}
+
+Describe "File - \<_\>" -ForEach $files {
+    Context "Whitespace" {
+        It "There is no extra whitespace following a line" {
+            # ...
+
+        }
+
+        It "File ends with an empty line" {
+            # ...
+
+        }
+    }
+}
+```
+
+BeforeDiscovery is used to gather a list of script-files during Discovery-phase to
+dynamically create a Describe-block and tests for each file found.
+
+## PARAMETERS
+
+### -ScriptBlock
+
+The ScritpBlock to run.
+
+```yaml
+Type: ScriptBlock
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### CommonParameters
+
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+## INPUTS
+
+## OUTPUTS
+
+## NOTES
+
+## RELATED LINKS
+
+[https://pester.dev/docs/commands/BeforeDiscovery](https://pester.dev/docs/commands/BeforeDiscovery)
+
+[https://pester.dev/docs/usage/data-driven-tests](https://pester.dev/docs/usage/data-driven-tests)
+
+## EDIT THIS PAGE
+
+This page was auto-generated using the comment based help in Pester 5.1.1. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.

@@ -1,16 +1,29 @@
-# Pester Docs
-
 [![Netlify](https://img.shields.io/netlify/40fe79e6-b973-4855-b0c7-f1ab101d1f0f?label=Netlify&style=flat-square)](https://app.netlify.com/sites/pester-docs/deploys/40fe79e6-b973-4855-b0c7-f1ab101d1f0f)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg?style=flat-square)](https://www.contributor-covenant.org/version/2/0/code_of_conduct)
 
-This repository contains the source files for the [pester.dev](https://pester.dev) website.
+# Pester Docs
+
+This repository contains the source files used to generate the [pester.dev](https://pester.dev) website.
+
+The website pages are written in markdown files using the `.mdx` format and are located in the `/docs` folder.
+
+🔥 **One exception**: the pages in the "Command Reference" section are auto-generated from Pester's
+[Comment Based Help](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_comment_based_help?view=powershell-7.1). Please do not create pull requests for these command reference pages here, but instead fix the corresponding
+Pester PowerShell source code in [pester/Pester](https://github.com/pester/pester) repository. For example to change [Invoke-Pester command reference](https://pester.dev/docs/commands/Invoke-Pester), you need to change the help [in this file](https://github.com/pester/Pester/blob/v5.0/src/Pester.ps1#L258-L276).
+
+## Contributing
+
+To submit an update:
+
+1. update the markdown `.mdx` file(s)
+2. submit a pull request
+
+## Local Development
 
 The website is built using:
 
 - [Docusaurus 2](https://v2.docusaurus.io/), a modern static website generator written in React
 - [Alt3.Docusaurus.Powershell](https://docusaurus-powershell.netlify.com/), a Powershell Get-Help to markdown generator
-
-## Local Development
 
 ### Requirements
 
@@ -19,35 +32,45 @@ The website is built using:
 
 ### Installation
 
-To install all required dependencies and start a local development server with live-reload:
+To install all required dependencies and start a local development server:
 
 ```bash
 yarn
 yarn start
 ```
 
-## Contributing
-
-All website pages are written in markdown and can be located in the `/docs` folder.
-
-To submit an update:
-
-1. update the markdown (`.mdx`) files
-2. submit a Pull Request
-
-> 🔥 Please note that we are NOT accepting Pull Requests for the `Command Reference`
-> in this repository, as these pages are auto-generated using the Pester Get-Help documentation.
-> To improve the command documentation, make a PR in [pester/Pester](https://github.com/pester/Pester) repository instead.
-
 ## Website Customization
 
-All sources (except the `Command Reference`) are plain Docusaurus so
-please:
+Because the website is using Docusaurus as the underlying technology:
 
-- refer to the [Docusaurus 2 Documentation](https://v2.docusaurus.io/) for technical information
-- report issues at the [Docusaurus Repository](https://github.com/facebook/docusaurus/issues)
+- please refer to the [Docusaurus 2 Documentation](https://v2.docusaurus.io/) for usage information
+  and available customization options
+- please report technical issues at the [Docusaurus Repository](https://github.com/facebook/docusaurus/issues)
 
-> The global CSS overrides for the Pester website are found in `src/css/custom.css`
+### Styling
+
+The global CSS overrides for the Pester website are found in `src/css/custom.css`
+
+### Tables
+
+The Pester website uses interactive React tables. To change the content of the tables,
+simply update the correlating `.json` configuration file as can be seen in
+[this example](https://github.com/pester/docs/blob/master/docs/additional-resources/articles.table.js).
+
+### Bumping Docusaurus
+
+To upgrade docusaurus to a more recent version:
+
+1. Edit `package.json`
+2. Manually bump the version number of these dependency packages:
+    ```json
+    @docusaurus/core": "^2.0.0-alpha.62",
+    @docusaurus/preset-classic": "^2.0.0-alpha.62",
+    ```
+3. Run `yarn install`
+4. Submit a pull request with (only) these updated files:
+   - `package.json`
+   - `yarn.lock`
 
 ## Code of Conduct
 

@@ -15,7 +15,7 @@
 # => npx broken-link-checker https://pester.dev --ordered --recursive
 # -----------------------------------------------------------------------------
 
-name: Broken Links Checker
+name: Link Checker
 on:
   schedule:
     - cron:  '0 1 1 * *'
@@ -29,12 +29,12 @@ jobs:
 
     steps:
     - name: Run Broken Links Checker
-      run: npx broken-link-checker $WEBSITE_URL --ordered --recursive
+      run: npx broken-link-checker $WEBSITE_URL --ordered --recursive --exclude https://twitter.com
 
     - uses: actions/checkout@v2
       if: failure()
 
-    - uses: JasonEtco/create-an-issue@master
+    - uses: JasonEtco/create-an-issue@main
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:

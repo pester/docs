@@ -14,7 +14,7 @@ custom_edit_url: null
 
 ## SYNOPSIS
 
-Should is a keyword what is used to define an assertion inside It block.
+Should is a keyword that is used to define an assertion inside an It block.
 
 ## SYNTAX
 
@@ -192,31 +192,104 @@ Should [[-ActualValue] <Object>] [-Not] [-Because <Object>] [-Invoke] [-CommandN
 
 ## DESCRIPTION
 
-Should is a keyword what is used to define an assertion inside the It block.
-Should provides assertion methods for verify assertion e.g.
+Should is a keyword that is used to define an assertion inside an It block.
+Should provides assertion methods to verify assertions e.g.
 comparing objects.
-If assertion is not met the test fails and an exception is throwed up.
+If assertion is not met the test fails and an exception is thrown.
 
 Should can be used more than once in the It block if more than one assertion
 need to be verified.
-Each Should keywords need to be located in a new line.
+Each Should keyword needs to be on a separate line.
 Test will be passed only when all assertion will be met (logical conjuction).
 
 ## EXAMPLES
 
-### Example 1
+### EXAMPLE 1
 
 ```powershell
-PS C:\> {{ Add example code here }}
+Describe "d1" {
+    BeforeEach { $be = 1 }
+    It "i1" {
+        $be = 2
+    }
+    AfterEach { Write-Host "AfterEach: $be" }
+}
 ```
 
-{{ Add example description here }}
+### EXAMPLE 2
+
+```powershell
+Describe "d1" {
+    It "i1" {
+        $user = Get-User
+        $user | Should -NotBeNullOrEmpty -ErrorAction Stop
+        $user |
+            Should -HaveProperty Name -Value "Jakub" |
+            Should -HaveProperty Age  -Value 30
+    }
+}
+```
+
+### EXAMPLE 3
+
+```powershell
+Describe "d1" {
+    It "i1" {
+        Mock Get-Command { }
+        Get-Command -CommandName abc
+        Should -Invoke Get-Command -Times 1 -Exactly
+    }
+}
+```
+
+### EXAMPLE 4
+
+```powershell
+Describe "d1" {
+    It "i1" {
+        Mock Get-Command { }
+        Get-Command -CommandName abc
+        Should -Invoke Get-Command -Times 1 -Exactly
+    }
+}
+```
+
+### EXAMPLE 5
+
+```powershell
+$true | Should -BeFalse
+```
+
+### EXAMPLE 6
+
+```powershell
+$a | Should -Be 10
+```
+
+### EXAMPLE 7
+
+```powershell
+Should -Invoke Get-Command -Times 1 -Exactly
+```
+
+### EXAMPLE 8
+
+```powershell
+$user | Should -NotBeNullOrEmpty -ErrorAction Stop
+```
+
+### EXAMPLE 9
+
+```powershell
+$planets.Name | Should -Be $Expected
+```
 
 ## PARAMETERS
 
 ### -ActualValue
 
-{{ Fill ActualValue Description }}
+The actual value that was obtained in the test which should be verified against
+a expected value.
 
 ```yaml
 Type: Object
@@ -255,7 +328,7 @@ Type: SwitchParameter
 Parameter Sets: Be
 Aliases: EQ
 
-Required: True
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -287,7 +360,7 @@ Type: SwitchParameter
 Parameter Sets: BeExactly
 Aliases: CEQ
 
-Required: True
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -303,7 +376,7 @@ Type: SwitchParameter
 Parameter Sets: BeFalse
 Aliases:
 
-Required: True
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -319,7 +392,7 @@ Type: SwitchParameter
 Parameter Sets: BeGreaterOrEqual
 Aliases: GE
 
-Required: True
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -335,7 +408,7 @@ Type: SwitchParameter
 Parameter Sets: BeGreaterThan
 Aliases: GT
 
-Required: True
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -351,7 +424,7 @@ Type: SwitchParameter
 Parameter Sets: BeIn
 Aliases:
 
-Required: True
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -367,7 +440,7 @@ Type: SwitchParameter
 Parameter Sets: BeLessOrEqual
 Aliases: LE
 
-Required: True
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -383,7 +456,7 @@ Type: SwitchParameter
 Parameter Sets: BeLessThan
 Aliases: LT
 
-Required: True
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -399,7 +472,7 @@ Type: SwitchParameter
 Parameter Sets: BeLike
 Aliases:
 
-Required: True
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -415,7 +488,7 @@ Type: SwitchParameter
 Parameter Sets: BeLikeExactly
 Aliases:
 
-Required: True
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -431,7 +504,7 @@ Type: SwitchParameter
 Parameter Sets: BeNullOrEmpty
 Aliases:
 
-Required: True
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -447,7 +520,7 @@ Type: SwitchParameter
 Parameter Sets: BeOfType
 Aliases: HaveType
 
-Required: True
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -463,7 +536,7 @@ Type: SwitchParameter
 Parameter Sets: BeTrue
 Aliases:
 
-Required: True
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -511,7 +584,7 @@ Type: SwitchParameter
 Parameter Sets: Contain
 Aliases:
 
-Required: True
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -607,7 +680,7 @@ Type: SwitchParameter
 Parameter Sets: Exist
 Aliases:
 
-Required: True
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -687,7 +760,7 @@ Type: SwitchParameter
 Parameter Sets: FileContentMatch
 Aliases:
 
-Required: True
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -703,7 +776,7 @@ Type: SwitchParameter
 Parameter Sets: FileContentMatchExactly
 Aliases:
 
-Required: True
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -719,7 +792,7 @@ Type: SwitchParameter
 Parameter Sets: FileContentMatchMultiline
 Aliases:
 
-Required: True
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -751,7 +824,7 @@ Type: SwitchParameter
 Parameter Sets: HaveCount
 Aliases:
 
-Required: True
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -767,7 +840,7 @@ Type: SwitchParameter
 Parameter Sets: HaveParameter
 Aliases:
 
-Required: True
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -783,7 +856,7 @@ Type: SwitchParameter
 Parameter Sets: Invoke
 Aliases:
 
-Required: True
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -799,7 +872,7 @@ Type: SwitchParameter
 Parameter Sets: InvokeVerifiable
 Aliases:
 
-Required: True
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -831,7 +904,7 @@ Type: SwitchParameter
 Parameter Sets: Match
 Aliases:
 
-Required: True
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -847,7 +920,7 @@ Type: SwitchParameter
 Parameter Sets: MatchExactly
 Aliases: CMATCH
 
-Required: True
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -975,7 +1048,7 @@ Type: SwitchParameter
 Parameter Sets: Throw
 Aliases:
 
-Required: True
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -1026,8 +1099,10 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[https://github.com/pester/Pester/wiki/Should](https://github.com/pester/Pester/wiki/Should)
+[https://pester.dev/docs/commands/Should](https://pester.dev/docs/commands/Should)
+
+[https://pester.dev/docs/usage/assertions](https://pester.dev/docs/usage/assertions)
 
 ## EDIT THIS PAGE
 
-This page was auto-generated using Pester's comment based help. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.
+This page was auto-generated using the comment based help in Pester 5.1.1. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.

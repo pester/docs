@@ -27,9 +27,14 @@ module.exports = {
     Introduction: [
       "quick-start",
       "introduction/installation",
-      "introduction/powershell-core-limitations",
     ],
     Usage: [
+      "usage/file-placement-and-naming",
+      "usage/importing-tested-functions",
+      "usage/test-file-structure",
+      "usage/discovery-and-run",
+      "usage/data-driven-tests",
+      "usage/setup-and-teardown",
       "usage/assertions",
       "usage/mocking",
       "usage/modules",

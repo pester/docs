@@ -25,28 +25,52 @@ AfterEach [-Scriptblock] <ScriptBlock> [<CommonParameters>]
 
 ## DESCRIPTION
 
-BeforeEach, AfterEach, BeforeAll, and AfterAll are unique in that they apply
-to the entire Context or Describe block, regardless of the order of the
-statements in the Context or Describe.
-For a full description of this
-behavior, as well as how multiple BeforeEach or AfterEach blocks interact
-with each other, please refer to the about_BeforeEach_AfterEach help file.
+AfterEach runs once after every test in the current or any child blocks.
+Typically this is used to clean up resources created by the test or its setups.
+AfterEach runs in a finally block, and is guaranteed to run even if the test
+(or setup) fails.
+
+BeforeEach and AfterEach are unique in that they apply to the entire Context
+or Describe block, regardless of the order of the statements in the
+Context or Describe.
 
 ## EXAMPLES
 
-### Example 1
+### EXAMPLE 1
 
 ```powershell
-PS C:\> {{ Add example code here }}
+Describe "Testing export formats" {
+    BeforeAll {
+        $filePath = "$([IO.Path]::GetTempPath())/$([Guid]::NewGuid())"
+    }
+    It "Test Export-CSV" {
+        Get-ChildItem | Export-CSV -Path $filePath -NoTypeInformation
+        $dir = Import-CSV -Path $filePath
+        # ...
+
+    }
+    It "Test Export-Clixml" {
+        Get-ChildItem | Export-Clixml -Path $filePath
+        $dir = Import-Clixml -Path $filePath
+        # ...
+
+    }
+
+    AfterEach {
+        if (Test-Path $file) {
+            Remove-Item $file -Force
+        }
+    }
+}
 ```
 
-{{ Add example description here }}
+The example uses AfterEach to remove a temporary file after each test.
 
 ## PARAMETERS
 
 ### -Scriptblock
 
-the scriptblock to execute
+A scriptblock with steps to be executed during teardown.
 
 ```yaml
 Type: ScriptBlock
@@ -72,8 +96,10 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[https://github.com/pester/Pester/wiki/BeforeEach-and-AfterEach](https://github.com/pester/Pester/wiki/BeforeEach-and-AfterEach)
+[https://pester.dev/docs/commands/AfterEach](https://pester.dev/docs/commands/AfterEach)
+
+[https://pester.dev/docs/usage/setup-and-teardown](https://pester.dev/docs/usage/setup-and-teardown)
 
 ## EDIT THIS PAGE
 
-This page was auto-generated using Pester's comment based help. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.
+This page was auto-generated using the comment based help in Pester 5.1.1. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.

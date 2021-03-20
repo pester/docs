@@ -1,0 +1,149 @@
+---
+id: New-PesterContainer
+title: New-PesterContainer
+description: Help page for the Powershell Pester "New-PesterContainer" command
+keywords:
+  - Powershell
+  - Pester
+  - Help
+  - Documentation
+hide_title: false
+hide_table_of_contents: false
+custom_edit_url: null
+---
+
+## SYNOPSIS
+
+Generates ContainerInfo-objects used as for Invoke-Pester -Container
+
+## SYNTAX
+
+### Path (Default)
+
+```powershell
+New-PesterContainer -Path <String[]> [-Data <IDictionary[]>] [<CommonParameters>]
+```
+
+### ScriptBlock
+
+```powershell
+New-PesterContainer -ScriptBlock <ScriptBlock[]> [-Data <IDictionary[]>] [<CommonParameters>]
+```
+
+## DESCRIPTION
+
+Pester 5 supports running tests files and scriptblocks using parameter-input.
+To use this feature, Invoke-Pester expects one or more ContainerInfo-objects
+created using this funciton, that specify test containers in the form of paths
+to the test files or scriptblocks containing the tests directly.
+
+A optional Data-dictionary can be provided to supply the containers with any
+required parameter-values.
+This is useful in when tests are generated dynamically
+based on parameter-input.
+This method enables complex test-solutions while being
+able to re-use a lot of test-code.
+
+## EXAMPLES
+
+### EXAMPLE 1
+
+```powershell
+$container = New-PesterContainer -Path 'CodingStyle.Tests.ps1' -Data @{ File = "Get-Emoji.ps1" }
+Invoke-Pester -Container $container
+```
+
+This example runs Pester using a generated ContainerInfo-object referencing a file and
+required parameters that's provided to the test-file during execution.
+
+### EXAMPLE 2
+
+```powershell
+$sb = {
+    Describe 'Testing New-PesterContainer' {
+        It 'Useless test' {
+            "foo" | Should -Not -Be "bar"
+        }
+    }
+}
+$container = New-PesterContainer -ScriptBlock $sb
+Invoke-Pester -Container $container
+```
+
+This example runs Pester agianst a scriptblock.
+New-PesterContainer is used to genreated
+the requried ContainerInfo-object that enables us to do this directly.
+
+## PARAMETERS
+
+### -Path
+
+Specifies one or more paths to files containing tests. The value is a path\file
+    name or name pattern. Wildcards are permitted.
+
+```yaml
+Type: String[]
+Parameter Sets: Path
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ScriptBlock
+
+Specifies one or more scriptblocks containing tests.
+
+```yaml
+Type: ScriptBlock[]
+Parameter Sets: ScriptBlock
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Data
+
+Allows a dictionary to be provided with parameter-values that should be used during
+execution of the test containers defined in Path or ScriptBlock.
+
+```yaml
+Type: IDictionary[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### CommonParameters
+
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+## INPUTS
+
+## OUTPUTS
+
+## NOTES
+
+## RELATED LINKS
+
+[https://pester.dev/docs/commands/New-PesterContainer](https://pester.dev/docs/commands/New-PesterContainer)
+
+[https://pester.dev/docs/commands/Invoke-Pester](https://pester.dev/docs/commands/Invoke-Pester)
+
+[https://pester.dev/docs/usage/data-driven-tests](https://pester.dev/docs/usage/data-driven-tests)
+
+## EDIT THIS PAGE
+
+This page was auto-generated using the comment based help in Pester 5.1.1. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.

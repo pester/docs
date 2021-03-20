@@ -1,7 +1,7 @@
 ---
-id: ConvertTo-NUnitReport
-title: ConvertTo-NUnitReport
-description: Help page for the Powershell Pester "ConvertTo-NUnitReport" command
+id: ConvertTo-JUnitReport
+title: ConvertTo-JUnitReport
+description: Help page for the Powershell Pester "ConvertTo-JUnitReport" command
 keywords:
   - Powershell
   - Pester
@@ -14,12 +14,12 @@ custom_edit_url: null
 
 ## SYNOPSIS
 
-Converts a Pester result-object to an NUnit 2.5-compatible XML-report
+Converts a Pester result-object to an JUnit-compatible XML report
 
 ## SYNTAX
 
 ```powershell
-ConvertTo-NUnitReport [-Result] <Object> [-AsString] [<CommonParameters>]
+ConvertTo-JUnitReport [-Result] <Object> [-AsString] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -29,7 +29,7 @@ tests that are processed in a run.
 This objects can then be converted to an
 NUnit-compatible XML-report using this function.
 The report is generated
-using the NUnit 2.5-schema.
+using the JUnit 4-schema.
 
 The function can convert to both XML-object or a string containing the XML.
 This can be useful for further processing or publishing of test results,
@@ -42,22 +42,22 @@ as part of a CI/CD pipeline.
 
 ```powershell
 $p = Invoke-Pester -Passthru
-$p | ConvertTo-NUnitReport
+$p | ConvertTo-JUnitReport
 ```
 
 This example runs Pester using the Passthru option to retrieve the result-object and
-converts it to an NUnit 2.5-compatible XML-report.
+converts it to an JUnit 4-compatible XML-report.
 The report is returned as an XML-object.
 
 ### EXAMPLE 2
 
 ```powershell
 $p = Invoke-Pester -Passthru
-$p | ConvertTo-NUnitReport -AsString
+$p | ConvertTo-JUnitReport -AsString
 ```
 
 This example runs Pester using the Passthru option to retrieve the result-object and
-converts it to an NUnit 2.5-compatible XML-report.
+converts it to an JUnit 4-compatible XML-report.
 The returned object is a string.
 
 ## PARAMETERS
@@ -108,7 +108,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[https://pester.dev/docs/commands/ConvertTo-NUnitReport](https://pester.dev/docs/commands/ConvertTo-NUnitReport)
+[https://pester.dev/docs/commands/ConvertTo-JUnitReport](https://pester.dev/docs/commands/ConvertTo-JUnitReport)
 
 [https://pester.dev/docs/commands/Invoke-Pester](https://pester.dev/docs/commands/Invoke-Pester)
 
