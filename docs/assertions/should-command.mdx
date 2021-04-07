@@ -2,6 +2,29 @@
 title: Should
 ---
 
+`Should` is used to do an assertion that fails or passes the test. 
+
+An example of assertion is comparing two strings in case insensitive manner: 
+
+```powershell
+"Pester is bad." | Should -Be "Pester is awesome!"
+```
+
+Which throws an exception with this text to fail the test: 
+
+```
+Expected strings to be the same, but they were different.
+Expected length: 18
+Actual length:   14
+Strings differ at index 10.
+Expected: 'Pester is awesome!'
+But was:  'Pester is bad.'
+           ----------^
+```
+
+Other assertion types can be found in [Assertion Reference](assertions).
+
+
 ### Collect all Should failures
 
 `Should` can now be configured to continue on failure. This will report the error to Pester, but won't fail the test immediately. Instead, all the Should failures are collected and reported at the end of the test. This allows you to put multiple assertions into one It and still get complete information on failure.
