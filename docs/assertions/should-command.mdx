@@ -1,0 +1,75 @@
+---
+title: Should
+---
+
+`Should` is used to do an assertion that fails or passes the test. 
+
+An example of assertion is comparing two strings in case insensitive manner: 
+
+```powershell
+"Pester is bad." | Should -Be "Pester is awesome!"
+```
+
+Which throws an exception with this text to fail the test: 
+
+```
+Expected strings to be the same, but they were different.
+Expected length: 18
+Actual length:   14
+Strings differ at index 10.
+Expected: 'Pester is awesome!'
+But was:  'Pester is bad.'
+           ----------^
+```
+
+Other assertion types can be found in [Assertion Reference](assertions).
+
+
+### Collect all Should failures
+
+`Should` can now be configured to continue on failure. This will report the error to Pester, but won't fail the test immediately. Instead, all the Should failures are collected and reported at the end of the test. This allows you to put multiple assertions into one It and still get complete information on failure.
+
+This new Should behavior is opt-in and can be enabled via `Should.ErrorAction = 'Continue'` on the configuration object or via `$PesterPreference`.
+
+```powershell
+ BeforeAll {
+    function Get-User {
+        @{
+            Name = "Jakub"
+            Age = 31
+        }
+    }
+}
+
+Describe "describe" {
+    It "user" {
+        $user = Get-User
+
+        $user | Should -Not -BeNullOrEmpty -ErrorAction Stop
+        $user.Name | Should -Be "Tomas"
+        $user.Age | Should -Be 27
+
+    }
+}
+
+```
+
+```
+Starting test discovery in 1 files.
+Found 1 tests. 51ms
+Test discovery finished. 83ms
+Describing describe
+  [-] user 124ms (109ms|15ms)
+   [0] Expected strings to be the same, but they were different.
+   String lengths are both 5.
+   Strings differ at index 0.
+   Expected: 'Tomas'
+   But was:  'Jakub'
+   at $user.Name | Should -Be "Tomas"
+   [1] Expected 27, but got 31.
+   at $user.Age | Should -Be 27
+Tests completed in 286ms
+Tests Passed: 0, Failed: 1, Skipped: 0, Total: 1, NotRun: 0
+```
+
+This allows you to check complex objects easily without writing It for each of the properties that you want to test. You can also use `-ErrotAction Stop` to force a failure when a pre-condition is not met. In our case if `$user` was null, there would be no point in testing the object further and we would fail the test immediately.

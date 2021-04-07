@@ -1,0 +1,59 @@
+---
+title: Skip
+---
+
+### Skip on everything
+
+`-Skip` is now available on Describe and Context. This allows you to skip all the tests in that block and every child block.
+
+
+```powershell
+Describe "describe1" {
+    Context "with one skipped test" {
+        It "test 1" -Skip {
+            1 | Should -Be 2
+        }
+
+        It "test 2" {
+            1 | Should -Be 1
+        }
+    }
+
+    Describe "that is skipped" -Skip {
+        It "test 3" {
+            1 | Should -Be 2
+        }
+    }
+
+    Context "that is skipped and has skipped test" -Skip {
+        It "test 3" -Skip {
+            1 | Should -Be 2
+        }
+
+        It "test 3" {
+            1 | Should -Be 2
+        }
+    }
+}
+```
+
+```
+Starting test discovery in 1 files.
+Found 5 tests. 117ms
+Test discovery finished. 418ms
+Describing describe1
+ Context with one skipped test
+   [!] test 1, is skipped 18ms (0ms|18ms)
+   [+] test 2 52ms (29ms|22ms)
+ Describing that is skipped
+   [!] test 3, is skipped 12ms (0ms|12ms)
+ Context that is skipped and has skipped test
+   [!] test 3, is skipped 10ms (0ms|10ms)
+   [!] test 3, is skipped 10ms (0ms|10ms)
+Tests completed in 1.03s
+Tests Passed: 1, Failed: 0, Skipped: 4, Total: 5, NotRun: 0
+```
+
+:::caution
+Pending is translated to skipped, Inconclusive does not exist anymore.
+:::

@@ -192,6 +192,36 @@ Tests Passed: 1, Failed: 0, Skipped: 0 NotRun: 0
 
 Setups and teardowns are skipped when the current tree won't result in any test being run. For example when running tests with a tag filter "Acceptance", all unit test files will have all their tests filtered out. The setups and teardowns in those files won't run at all.
 
+In the example below, Pester will see that there are not tests the pass filter `-ExcludeTag Acceptance`, and so it will not run any of the  or teardowns:
+
+```powershell
+BeforeAll {
+    Start-Sleep -Seconds 3
+}
+
+Describe "describe 1" {
+    BeforeAll {
+        Start-Sleep -Seconds 3
+    }
+
+    It "acceptance test 1" -Tag "Acceptance" {
+        1 | Should -Be 1
+    }
+
+    AfterAll {
+        Start-Sleep -Seconds 3
+    }
+}
+```
+
+```
+Starting test discovery in 1 files.
+Found 1 tests. 64ms
+Test discovery finished. 158ms
+Tests completed in 139ms
+Tests Passed: 0, Failed: 0, Skipped: 0, Total: 1, NotRun: 1
+```
+
 ### Scoping
 
 All variables defined in `BeforeAll` are available to all child blocks and tests. But because all child blocks and tests run in their own scopes, the variables are not writeable to them. This is needed to isolate tests from each other.
