@@ -6,7 +6,6 @@ title: Skip
 
 `-Skip` is now available on Describe and Context. This allows you to skip all the tests in that block and every child block.
 
-
 ```powershell
 Describe "describe1" {
     Context "with one skipped test" {
@@ -57,3 +56,72 @@ Tests Passed: 1, Failed: 0, Skipped: 4, Total: 5, NotRun: 0
 :::caution
 Pending is translated to skipped, Inconclusive does not exist anymore.
 :::
+
+### Conditional skip
+
+Evaluation of the skip-parameter is done as part of the Discovery-phase. This means you can also dynamically skip tests based on values available in that phase. Either as logic done in BeforeDiscovery or based on values passed into a parametrized test.
+
+```powershell
+$sb = {
+    param($SkipFirst)
+
+    Describe 'My Describe Block' {
+        BeforeDiscovery {
+            $skipSecond = 1
+        }
+
+        It 'First Test' -Skip:$SkipFirst {
+            1 | Should -Be 1
+        }
+
+        It 'Second Test' -Skip:($skipSecond -eq 1) {
+            1 | Should -Be 1
+        }
+
+        It 'Third Test' {
+            1 | Should -Be 1
+        }
+    }
+}
+
+$container = New-PesterContainer -ScriptBlock $sb -Data @{ SkipFirst = $true }
+$configuation = New-PesterConfiguration
+$configuation.Run.Container = $container
+$configuation.Output.Verbosity = 'Detailed'
+
+Invoke-Pester -Configuration $configuation
+```
+
+```
+Starting discovery in 1 files.
+Discovering in 
+    param($SkipFirst)
+
+    Describe 'My Describe Block' {
+        BeforeDiscovery {
+            $skipSecond = 1
+        }
+
+        It 'First Test' -Skip:$SkipFirst {
+            1 | Should -Be 1
+        }
+
+        It 'Second Test' -Skip:($skipSecond -eq 1) {
+            1 | Should -Be 1
+        }
+
+        It 'Third Test' {
+            1 | Should -Be 1
+        }
+    }
+.
+Found 3 tests. 37ms
+Discovery finished in 97ms.
+Running tests.
+Describing My Describe Block
+  [!] First Test 3ms (0ms|3ms)
+  [!] Second Test 2ms (0ms|2ms)
+  [+] Third Test 18ms (16ms|3ms)
+Tests completed in 206ms
+Tests Passed: 1, Failed: 0, Skipped: 2 NotRun: 0
+```
