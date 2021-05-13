@@ -133,7 +133,7 @@ foreach ($file in $files) {
 }
 ```
 
-In this case the `foreach` is evaluated during `Discovery` because we simply run the whole script file. But `BeforeAll` won't run until run `Run`, so the `$files` variable is not defined during `Discovery` and the tests are not generated. This can be solved by defining the code that is used to generate tests into `BeforeDiscovery` block. See [Data driven tests](data-driven-tests).
+In this case the `foreach` is evaluated during `Discovery` because we simply run the whole script file. But `BeforeAll` won't run until run `Run`, so the `$files` variable is not defined during `Discovery` and the tests are not generated. This can be solved by defining the code that is used to generate tests into `BeforeDiscovery` block. See [Data driven tests](data-driven-tests#beforediscovery).
 
 
 ### Variables are not available in test 
