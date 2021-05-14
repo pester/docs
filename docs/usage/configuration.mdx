@@ -1,3 +1,7 @@
+---
+title: Configuration
+---
+
 ### Advanced interface
 
 Advanced interface uses `PesterConfiguration` object which contains all options that you can provide to Pester and contains descriptions for all the configuration sections and as well as default values. Here is what you see when you look at the default Debug section of the object:
@@ -10,6 +14,10 @@ WriteDebugMessages     : Write Debug messages to screen. (False, default: False)
 WriteDebugMessagesFrom : Write Debug messages from a given source, WriteDebugMessages must be set to true for this to work. You can use like wildcards to get messages from multiple sources, as well as * to get everything. (*, default: *)
 ShowNavigationMarkers  : Write paths after every block and test, for easy navigation in VSCode. (False, default: False)
 ```
+
+:::tip New in Pester 5.2.0!
+[New-PesterConfiguration](../commands/New-PesterConfiguration) is now available and the recommended way to create the PesterConfiguration-object. It has the added benefit of auto-loading the Pester-module if needed and up-to-date help of available options in the configuration object.
+:::
 
 The configuration object can be constructed either via the Default static property or by casting a hashtable to it. You can also cast a hashtable to any of its sections. Here are three different ways to the same goal:
 
@@ -52,11 +60,9 @@ $configuration.Filter = @{
     }
 $configuration.Should.ErrorAction = 'Continue'
 $configuration.CodeCoverage.Enabled = $true
-
 ```
 
 This configuration object contains all the options that are currently supported and the Simple interface is internally translates to this object internally. It is the source of truth for the defaults and configuration. The Intermediate api will be figured out later, as well as all the other details.
-
 
 ## PesterPreference
 
