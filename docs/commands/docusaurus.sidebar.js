@@ -31,6 +31,7 @@ module.exports = [
     'commands/Mock',
     'commands/New-Fixture',
     'commands/New-MockObject',
+    'commands/New-PesterConfiguration',
     'commands/New-PesterContainer',
     'commands/Set-ItResult',
     'commands/Should'
