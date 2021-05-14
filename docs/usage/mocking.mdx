@@ -20,13 +20,13 @@ With the set of Mocking functions that Pester exposes, one can:
 
 Mocks the behavior of an existing command with an alternate implementation.
 
-### Assert-VerifiableMocks
+### Should -Invoke
 
-Checks if any Verifiable Mock has not been invoked. If so, this will throw an exception.
+Checks if a mocked command has been called a certain number of times and throws an exception if it has not.
 
-### Assert-MockCalled
+### Should -InvokeVerifiable
 
-Checks if a Mocked command has been called a certain number of times and throws an exception if it has not.
+Checks if any verifiable Mock has not been invoked. If so, this will throw an exception.
 
 ## Example
 
@@ -63,7 +63,7 @@ Describe "BuildIfChanged" {
         }
 
         It "Builds the next version" {
-            Assert-VerifiableMock
+            Should -InvokeVerifiable
         }
         
         It "returns the next version number" {
@@ -80,14 +80,14 @@ Describe "BuildIfChanged" {
         }
 
         It "Should not build the next version" {
-            Assert-MockCalled Build -Times 0 -ParameterFilter {$version -eq 1.1}
+            Should -Invoke -CommandName Build -Times 0 -ParameterFilter {$version -eq 1.1}
         }
     }
 }
 ```
 
 ---
-If you need to mock calls to commands which are made from inside a Script Module, additional code is required.  For details, refer to [Unit Testing within Modules](https://pester.dev/docs/usage/modules)
+If you need to mock calls to commands which are made from inside a Script Module, additional code is required.  For details, refer to [Unit Testing within Modules](./modules)
 
 ---
 
@@ -162,13 +162,36 @@ function Invoke-PesterJob
 Set-Alias ipj Invoke-PesterJob
 
 ```
-
 [Source](https://github.com/pester/Pester/issues/797#issuecomment-314495326)
 
 
+### Mocking a native application
 
+Mocking native commands can be done in a similar way as Powershell functions/cmdlets. The major difference is that native commands don't provide named parameters for us to use inside the mock scriptblock or in a ParameterFilter, so you'd have to rely on arguments made available using `$args`.
 
-#### Mocks are scoped based on their placement
+```powershell
+Describe 'Mocking native commands' {
+    It "Mock bash" {
+        function GetHTTPHeader ($url) {
+            & curl --url $url `
+            -I
+        }
+
+        Mock curl { Write-Warning "$args" }
+
+        GetHTTPHeader -url "https://google.com"
+
+        Should -Invoke -CommandName "curl" -Exactly -Times 1 -ParameterFilter { $args[0] -eq '--url' -and $args[1] -eq 'https://google.com'}
+
+        # By converting args to string (will concat using space by default) you can match a pattern if order might change. remember linebreaks
+        Should -Invoke -CommandName "curl" -Exactly -Times 1 -ParameterFilter { "$args" -match "--url https://google.com -I" }
+    }
+}
+```
+
+## Changes from Pester v4
+
+### Mocks are scoped based on their placement
 
 Mocks are no longer effective in the whole `Describe` / `Context` in which they were placed. Instead they will default to the block in which they were placed. Both of these work:
 
@@ -204,7 +227,7 @@ Describe "d" {
 }
 ```
 
-#### Counting mocks depends on placement
+### Counting mocks depends on placement
 
 Counting mocks depends on where the assertion is placed. In `It`, `BeforeEach` and `AfterEach` it defaults to `It` scope. In `Describe`, `Context`, `BeforeAll` and `AfterAll`, it default to `Describe` or `Context` based on the command that contains them. The default can still be overriden by specifying `-Scope` parameter.
 
@@ -242,11 +265,7 @@ Describe "d" {
 }
 ```
 
-#### Should -Invoke
-
-Mock counting assertions were renamed to `Should -Invoke` and `Should -InvokeVerifiable`, and most of their parameters are no longer positional. `Assert-MockCalled` and `Assert-VerifiableMock` are provided as functions, and are deprecated.
-
-#### Default parameters for ParameterFilter
+### Default parameters for ParameterFilter
 
 Parameter filters no longer require you to use `param()`.
 
