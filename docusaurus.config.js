@@ -68,7 +68,7 @@ module.exports = {
             },
             {
               label: 'PowerShell.org',
-              href: 'https://powershell.org/forums/forum/pester/',
+              href: 'https://forums.powershell.org/c/pester/',
             },
             {
               label: 'Slack',
