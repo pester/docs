@@ -8,7 +8,7 @@ export const integrations = [
     title: "VSCode snippets for Pester",
     author: "Adam Bertram",
     date: "2017-03-07",
-    url: "https://powershell.org/forums/topic/vscode-snippets-for-pester/",
+    url: "https://forums.powershell.org/t/vscode-snippets-for-pester/8195",
   },
 ];
 

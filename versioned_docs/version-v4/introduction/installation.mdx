@@ -78,9 +78,8 @@ Update-Module -Name Pester
 ### PowerShell 3 and 4
 
 On PowerShell 3 and 4, there is no default package manager installed, but luckily PowerShellGet is available
-for installation. See detailed
-[instructions here](https://docs.microsoft.com/en-us/powershell/gallery/installing-psget#get-powershellget-module-for-powershell-versions-30-and-40)
-. When you have the package manager installed, please start a new _administrator_ PowerShell window and use:
+for installation. See detailed [instructions here](https://docs.microsoft.com/en-us/powershell/scripting/gallery/installing-psget#for-computers-running-powershell-30-or-powershell-40).
+When you have the package manager installed, please start a new _administrator_ PowerShell window and use:
 
 ```powershell
 Install-Module -Name Pester
@@ -112,7 +111,7 @@ To install Pester you don't have to use any package manager. You can download th
 [release page](https://github.com/pester/Pester/releases) and copy them to your Module directory. Your module
 directory is most likely `C:\Program Files\WindowsPowerShell\Modules\Pester` or `C:\Windows\System32\WindowsPowerShell\v1.0\Modules`
 (on older versions of Windows), please refer to `$env:PSModulePath` and
-[this article](https://msdn.microsoft.com/en-us/library/dd878350(v=vs.85).aspx)
+[this article](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_psmodulepath)
 .
 
 This approach can also be used to get unreleased versions of Pester, by clicking the `Clone or download` button on the [main page](https://github.com/pester/Pester), or [clicking this link](https://github.com/pester/Pester/archive/master.zip).
