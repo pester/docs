@@ -35,7 +35,7 @@ This function allows you to create custom Should assertions.
 function BeAwesome($ActualValue, [switch] $Negate)
 {
 
-[bool] $succeeded = $ActualValue -eq 'Awesome'
+    [bool] $succeeded = $ActualValue -eq 'Awesome'
     if ($Negate) { $succeeded = -not $succeeded }
 
     if (-not $succeeded)

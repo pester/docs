@@ -36,6 +36,7 @@ Calling New-PesterConfiguration is equivalent to calling [PesterConfiguration]::
 
 Sections and options:
 
+```
 Run:
   Path: Directories to be searched for tests, paths directly to test files, or combination of both.
   Default value: @('.')
@@ -52,19 +53,16 @@ Run:
   TestExtension: Filter used to identify test files.
   Default value: '.Tests.ps1'
 
-  Exit: Exit with non-zero exit code when the test run fails.
-When used together with Throw, throwing an exception is preferred.
+  Exit: Exit with non-zero exit code when the test run fails. When used together with Throw, throwing an exception is preferred.
   Default value: $false
 
-  Throw: Throw an exception when test run fails.
-When used together with Exit, throwing an exception is preferred.
+  Throw: Throw an exception when test run fails. When used together with Exit, throwing an exception is preferred.
   Default value: $false
 
   PassThru: Return result object to the pipeline after finishing the test run.
   Default value: $false
 
-  SkipRun: Runs the discovery phase but skips run.
-Use it with PassThru to get object populated with all tests.
+  SkipRun: Runs the discovery phase but skips run. Use it with PassThru to get object populated with all tests.
   Default value: $false
 
 Filter:
@@ -74,20 +72,17 @@ Filter:
   ExcludeTag: Tags of Describe, Context or It to be excluded from the run.
   Default value: @()
 
-  Line: Filter by file and scriptblock start line, useful to run parsed tests programatically to avoid problems with expanded names.
-Example: 'C:\tests\file1.Tests.ps1:37'
+  Line: Filter by file and scriptblock start line, useful to run parsed tests programatically to avoid problems with expanded names. Example: 'C:\tests\file1.Tests.ps1:37'
   Default value: @()
 
-  FullName: Full name of test with -like wildcards, joined by dot.
-Example: '*.describe Get-Item.test1'
+  FullName: Full name of test with -like wildcards, joined by dot. Example: '*.describe Get-Item.test1'
   Default value: @()
 
 CodeCoverage:
   Enabled: Enable CodeCoverage.
   Default value: $false
 
-  OutputFormat: Format to use for code coverage report.
-Possible values: JaCoCo, CoverageGutters
+  OutputFormat: Format to use for code coverage report. Possible values: JaCoCo, CoverageGutters
   Default value: 'JaCoCo'
 
   OutputPath: Path relative to the current directory where code coverage report is saved.
@@ -99,8 +94,7 @@ Possible values: JaCoCo, CoverageGutters
   Path: Directories or files to be used for codecoverage, by default the Path(s) from general settings are used, unless overridden here.
   Default value: @()
 
-  ExcludeTests: Exclude tests from code coverage.
-This uses the TestFilter from general configuration.
+  ExcludeTests: Exclude tests from code coverage. This uses the TestFilter from general configuration.
   Default value: $true
 
   RecursePaths: Will recurse through directories in the Path option.
@@ -116,8 +110,7 @@ TestResult:
   Enabled: Enable TestResult.
   Default value: $false
 
-  OutputFormat: Format to use for test result report.
-Possible values: NUnitXml, NUnit2.5 or JUnitXml
+  OutputFormat: Format to use for test result report. Possible values: NUnitXml, NUnit2.5 or JUnitXml
   Default value: 'NUnitXml'
 
   OutputPath: Path relative to the current directory where test result report is saved.
@@ -130,8 +123,7 @@ Possible values: NUnitXml, NUnit2.5 or JUnitXml
   Default value: 'Pester'
 
 Should:
-  ErrorAction: Controls if Should throws on error.
-Use 'Stop' to throw on error, or 'Continue' to fail at the end of the test.
+  ErrorAction: Controls if Should throws on error. Use 'Stop' to throw on error, or 'Continue' to fail at the end of the test.
   Default value: 'Stop'
 
 Debug:
@@ -141,21 +133,21 @@ Debug:
   WriteDebugMessages: Write Debug messages to screen.
   Default value: $false
 
-  WriteDebugMessagesFrom: Write Debug messages from a given source, WriteDebugMessages must be set to true for this to work.
-You can use like wildcards to get messages from multiple sources, as well as * to get everything.
+  WriteDebugMessagesFrom: Write Debug messages from a given source, WriteDebugMessages must be set to true for this to work. You can use like wildcards to get messages from multiple sources, as well as * to get everything.
   Default value: @('Discovery', 'Skip', 'Filter', 'Mock', 'CodeCoverage')
 
   ShowNavigationMarkers: Write paths after every block and test, for easy navigation in VSCode.
   Default value: $false
 
-  ReturnRawResultObject: Returns unfiltered result object, this is for development only.
-Do not rely on this object for additional properties, non-public properties will be renamed without previous notice.
+  ReturnRawResultObject: Returns unfiltered result object, this is for development only. Do not rely on this object for additional properties, non-public properties will be renamed without previous notice.
   Default value: $false
 
 Output:
   Verbosity: The verbosity of output, options are None, Normal, Detailed and Diagnostic.
   Default value: 'Normal'
+```
 
+Adding codeblock
 ## EXAMPLES
 
 ### EXAMPLE 1

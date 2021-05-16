@@ -159,7 +159,7 @@ New-Module -Name ModuleMockExample  -ScriptBlock {
     function Hidden { "Internal Module Function" }
     function Exported { Hidden }
 
-Export-ModuleMember -Function Exported
+    Export-ModuleMember -Function Exported
 } | Import-Module -Force
 
 Describe "ModuleMockExample" {

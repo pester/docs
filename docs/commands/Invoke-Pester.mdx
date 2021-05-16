@@ -106,9 +106,9 @@ with 'Util' and their subdirectories.
 
 ```powershell
 $config = [PesterConfiguration]@{
-    Should = @{ # <- Should configuration.
+    Should = @{ # \<- Should configuration.
 
-        ErrorAction = 'Continue' # <- Always run all Should-assertions in a test
+        ErrorAction = 'Continue' # \<- Always run all Should-assertions in a test
     }
 }
 
@@ -138,10 +138,7 @@ to see other testresult options like  output path and format and their default v
 ### -Path
 
 Aliases Script
-Specifies one or more paths to files containing tests.
-The value is a path\file
-name or name pattern.
-Wildcards are permitted.
+Specifies one or more paths to files containing tests. The value is a path\file name or name pattern. Wildcards are permitted.
 
 ```yaml
 Type: String[]
@@ -340,8 +337,7 @@ Accept wildcard characters: False
 (Deprecated v4)
 Replace with ConfigurationProperty Run.EnableExit
 Will cause Invoke-Pester to exit with a exit code equal to the number of failed
-tests once all tests have been run.
-Use this to "fail" a build when any tests fail.
+tests once all tests have been run. Use this to "fail" a build when any tests fail.
 
 ```yaml
 Type: SwitchParameter
@@ -422,10 +418,10 @@ Accept wildcard characters: False
 ### -CodeCoverageOutputFile
 
 (Deprecated v4)
-The path where Invoke-Pester will save formatted code coverage results file.
-The path must include the location and name of the folder and file name with
-a required extension (usually the xml).
-If this path is not provided, no file will be generated.
+    The path where Invoke-Pester will save formatted code coverage results file.
+    The path must include the location and name of the folder and file name with
+    a required extension (usually the xml).
+    If this path is not provided, no file will be generated.
 
 ```yaml
 Type: String
@@ -646,8 +642,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 [https://pester.dev/docs/commands/Invoke-Pester](https://pester.dev/docs/commands/Invoke-Pester)
 
 [https://pester.dev/docs/quick-start](https://pester.dev/docs/quick-start)
-
-[about_Pester]()
 
 ## EDIT THIS PAGE
 
