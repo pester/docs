@@ -9,7 +9,7 @@ The website pages are written in markdown files using the `.mdx` format and are 
 
 🔥 **One exception**: the pages in the "Command Reference" section are auto-generated from Pester's
 [Comment Based Help](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_comment_based_help?view=powershell-7.1). Please do not create pull requests for these command reference pages here, but instead fix the corresponding
-Pester PowerShell source code in [pester/Pester](https://github.com/pester/pester) repository. For example to change [Invoke-Pester command reference](https://pester.dev/docs/commands/Invoke-Pester), you need to change the help [in this file](https://github.com/pester/Pester/blob/v5.0/src/Pester.ps1#L258-L276).
+Pester PowerShell source code in [pester/Pester](https://github.com/pester/pester) repository. For example to change [Invoke-Pester command reference](https://pester.dev/docs/commands/Invoke-Pester), you need to change the help [in this file](https://github.com/pester/Pester/blob/main/src/Pester.ps1#L258-L276).
 
 ## Contributing
 
