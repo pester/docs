@@ -12,7 +12,10 @@
 # - https://crontab.guru/#0_1_1_*_*
 #
 # To run on your local machine:
-# => npx broken-link-checker https://pester.dev --ordered --recursive
+# npx broken-link-checker https://pester.dev --ordered --recursive 2>/dev/null | grep "Getting links from\|BROKEN"
+#
+# To run on your local machine using verbose mode:
+# npx broken-link-checker https://pester.dev --ordered --recursive
 # -----------------------------------------------------------------------------
 
 name: Link Checker
@@ -29,12 +32,14 @@ jobs:
 
     steps:
     - name: Run Broken Links Checker
-      run: npx broken-link-checker $WEBSITE_URL --ordered --recursive --exclude https://twitter.com
+      run: |
+        set -o pipefail
+        npx broken-link-checker https://pester.dev --ordered --recursive 2>/dev/null | grep "Getting links from\|BROKEN"
 
     - uses: actions/checkout@v2
       if: failure()
 
-    - uses: JasonEtco/create-an-issue@main
+    - uses: JasonEtco/create-an-issue@v2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
