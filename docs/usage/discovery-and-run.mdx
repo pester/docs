@@ -148,7 +148,7 @@ BeforeDiscovery { # <- this will run during Discovery
 
 foreach ($file in $files) { 
     Describe "$file is correct" { 
-        It "has empty line at end" -TestCased @{ File = $file } { # <- we pass $file data to the test
+        It "has empty line at end" -TestCases @{ File = $file } { # <- we pass $file data to the test
             # ...
         }
 
