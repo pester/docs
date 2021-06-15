@@ -11,6 +11,7 @@ module.exports = {
   organizationName: 'pester', // Usually your GitHub org/user name.
   projectName: 'docs', // Usually your repo name.
   onBrokenLinks: 'warn',
+  onBrokenMarkdownLinks: 'warn',
   themeConfig: {
     navbar: {
       title: 'Pester',

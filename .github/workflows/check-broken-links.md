@@ -10,12 +10,10 @@ Broken Links Checker found :coffin: links on [https://pester.dev](https://pester
 
 [View results...](https://github.com/pester/docs/commit/{{sha}}//checks)
 
-> Pro tip: use search filter `─BROKEN─` to highlight failing links.
-
 ------
 
 To run locally:
 
 ```bash
-npx broken-link-checker https://pester.dev --ordered --recursive --exclude https://twitter.com
+npx broken-link-checker https://pester.dev --ordered --recursive
 ```
