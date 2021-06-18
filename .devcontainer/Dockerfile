@@ -4,7 +4,7 @@
 #-------------------------------------------------------------------------------------------------------------
 
 # See here for image contents: https://github.com/microsoft/vscode-dev-containers/tree/master/containers/javascript-node/.devcontainer/base.Dockerfile
-ARG VARIANT="10"
+ARG VARIANT="14"
 FROM mcr.microsoft.com/vscode/devcontainers/javascript-node:${VARIANT}
 
 # Refresh GPG keys to avoid error with Yarn repo
