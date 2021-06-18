@@ -1,0 +1,45 @@
+---
+title: Output
+---
+
+Pester offers multiple options to customize the console output to your preference. These settings are available in the Output-section of PesterConfiguration.
+
+```powershell
+$conf = New-PesterConfiguration
+$conf.Output                   
+
+Verbosity           : The verbosity of output, options are None, Normal, Detailed and Diagnostic. (Normal, default: Normal)
+StackTraceVerbosity : The verbosity of stacktrace output, options are None, FirstLine, Filtered and Full. (Filtered, default: Filtered)
+```
+
+This page focuses on the general options available for all users. See [VSCode](./vscode) for settings and features specific to using Pester with VSCode.
+
+### Verbosity
+
+This option controls the general level of console output. Pester v5 supports the following levels:
+
+- **None**: No console output is shown. Typically used combined with PassThru to do your own post-processing of the results.
+- **Normal (default)**: Focuses on successful containers and failed tests/blocks. Also shows basic discovery information and the summary of all tests. 
+![Shows a run with normal preference that shows only errors](images/minimal-output.gif)
+- **Detailed**: Similar to Normal, but this level shows all blocks and tests including successful.
+![Shows a run with normal preference that shows only errors](images/minimal-output.gif)
+- **Diagnostic**: Useful when troubleshooting tests. This outputs the same as Detailed, but also enables the following settings to show commonly used debug-messages.
+![Shows a run with normal preference that shows only errors](images/minimal-output.gif)
+
+### StackTraceVerbosity
+
+When an error is shown due to a failed setup or test, a stacktrace is included to help you identify where the problem occured. End-users might not care much about this while developers need it to identify and fix issues.
+This options lets you control how much of the stacktrace that will be printed. This option was added in Pester v5.3 and supports the following levels:
+
+- **None**: No stacktrace is shown, only the error message.
+![Shows a run with normal preference that shows only errors](images/minimal-output.gif)
+- **FirstLine**: Only show the first line of the stacktrace. This typically shows which line in your test that failed to get you started troubleshooting.
+![Shows a run with normal preference that shows only errors](images/minimal-output.gif)
+- **Filtered (default)**: Shows stacktrace related to your code. Filters out lines related to Pester-runtime.
+![Shows a run with normal preference that shows only errors](images/minimal-output.gif)
+- **Full**: Shows unfiltered stacktrace including calls made by Pester-runtime. Mostly used for troubleshooting. This is the same as the option `Debug.ShowFullErrors = $true` used prior to Pester v5.3.
+![Shows a run with normal preference that shows only errors](images/minimal-output.gif)
+
+:::tip Error details are always available in the result-object
+The result-object returned from `Run.PassThru / -PassThru` includes a `ErrorRecord`-property containing full stacktrace and more for all failing blocks and tests even if you've limited the console output using the options above.
+:::
