@@ -5,7 +5,9 @@ title: Assertion Reference
 
 `Should` is a command that provides assertion convenience methods for comparing objects and throwing test failures when test expectations fail. `Should` is used inside `It` blocks of a Pester test script.
 
-## Negative Assertions
+## Common parameters
+
+### Negative Assertions
 
 When reviewing the operators listed below, keep in mind that all of them can be negated by putting the word "Not" between "Should" and the operator. For example:
 
@@ -14,7 +16,29 @@ $true | Should -Be $true
 $true | Should -Not -Be $false
 ```
 
+### Because
+
+Lets you to add an optional message to the default test error message to tell the user why the test should pass.
+
+```powershell
+$actual = "Actual value"
+$actual | Should -Be "actual value" -Because 'test must pass'
+$actual | Should -Be "not actual value" -Because 'test must fail'
+# OUTPUT
+# Expected strings to be the same, because test must fail, but they were different.
+# Expected length: 16
+# Actual length:   12
+# Strings differ at index 0.
+# Expected: 'not actual value'
+# But was:  'Actual value'
+# -----------^
+```
+
 ## Should Operators
+
+You can find a list of all operators included in Pester below. You may also use [Get-ShouldOperator](../commands/Get-ShouldOperator) to list the available operators, their aliases and help inside PowerShell.
+
+You may also create custom operators to support more complex assertions, see [Custom Assertions](./custom-assertions).
 
 ### Be
 
@@ -56,14 +80,14 @@ $actual | Should -BeExactly "Actual value" # Test will pass
 $actual | Should -BeExactly "actual value" # Test will fail
 ```
 
-### BeGreaterThan
+### BeFalse
 
-Asserts that a number is greater than an expected value. Uses PowerShell's -gt operator to compare the two values.
+Asserts that the value is false, or falsy.
 
 ```powershell
-$Error.Count | Should -BeGreaterThan 0
-[version]'2.3.4.5' | Should -BeGreaterThan ([version]'1.0.0.1')
-(Get-Date).AddMinutes(5) | Should -BeGreaterThan (Get-Date)
+$false | Should -BeFalse
+0 | Should -BeFalse
+$null | Should -BeFalse
 ```
 
 ### BeGreaterOrEqual
@@ -75,6 +99,16 @@ Asserts that a number (or other comparable value) is greater than or equal to an
 2 | Should -BeGreaterOrEqual 2
 ```
 
+### BeGreaterThan
+
+Asserts that a number is greater than an expected value. Uses PowerShell's -gt operator to compare the two values.
+
+```powershell
+$Error.Count | Should -BeGreaterThan 0
+[version]'2.3.4.5' | Should -BeGreaterThan ([version]'1.0.0.1')
+(Get-Date).AddMinutes(5) | Should -BeGreaterThan (Get-Date)
+```
+
 ### BeIn
 
 Asserts that the actual value is contained by the array/collection
@@ -84,14 +118,6 @@ Asserts that the actual value is contained by the array/collection
 27 | Should -BeIn (1..100)
 ```
 
-### BeLessThan
-
-Asserts that a number is less than an expected value. Uses PowerShell's -lt operator to compare the two values.
-
-```powershell
-$Error.Count | Should -BeLessThan 1
-```
-
 ### BeLessOrEqual
 
 Asserts that a number (or other comparable value) is lower than, or equal to an expected value. Uses PowerShell's -le operator to compare the two values.
@@ -99,6 +125,14 @@ Asserts that a number (or other comparable value) is lower than, or equal to an 
 ```powershell
 1 | Should -BeLessOrEqual 10
 10 | Should -BeLessOrEqual 10
+```
+
+### BeLessThan
+
+Asserts that a number is less than an expected value. Uses PowerShell's -lt operator to compare the two values.
+
+```powershell
+$Error.Count | Should -BeLessThan 1
 ```
 
 ### BeLike
@@ -121,6 +155,17 @@ $actual | Should -BeLikeExactly "Actual *" # Test will pass
 $actual | Should -BeLikeExactly "actual *" # Test will fail
 ```
 
+### BeNullOrEmpty
+
+Checks values for null or empty (strings). The static [String]::IsNullOrEmpty() method is used to do the comparison.
+
+```powershell
+$null | Should -BeNullOrEmpty # Test will pass
+$null | Should -Not -BeNullOrEmpty # Test will fail
+@()   | Should -BeNullOrEmpty # Test will pass
+""    | Should -BeNullOrEmpty # Test will pass
+```
+
 ### BeOfType
 
 Asserts that the actual value should be an object of a specified type (or a subclass of the specified type) using PowerShell's -is operator:
@@ -141,24 +186,6 @@ Asserts that the value is true, or truthy.
 $true | Should -BeTrue
 1 | Should -BeTrue
 1,2,3 | Should -BeTrue
-```
-
-### BeFalse
-
-Asserts that the value is false, or falsy.
-
-```powershell
-$false | Should -BeFalse
-0 | Should -BeFalse
-$null | Should -BeFalse
-```
-
-### HaveCount
-
-Asserts that a collection has the expected amount of items.
-
-```powershell
-1,2,3 | Should -HaveCount 3
 ```
 
 ### Contain
@@ -239,6 +266,35 @@ Set-Content -Path TestDrive:\file.txt -Value $Content -NoNewline
 'TestDrive:\file.txt' | Should -FileContentMatchMultiline '^I am the first line\.$' # Test will fail.
 ```
 
+### HaveCount
+
+Asserts that a collection has the expected amount of items.
+
+```powershell
+1,2,3 | Should -HaveCount 3
+```
+
+### HaveParameter
+
+An assertion operator `-HaveParameter` allows you to check function parameters, and their properties like this:
+
+```powershell
+Get-Command "Invoke-WebRequest" | Should -HaveParameter Uri -Mandatory
+function f ([String] $Value = 8) { }
+Get-Command f | Should -HaveParameter Value -Type String
+Get-Command f | Should -Not -HaveParameter Name
+Get-Command f | Should -HaveParameter Value -DefaultValue 8
+Get-Command f | Should -HaveParameter Value -Not -Mandatory
+```
+
+### Invoke
+
+Checks if a mocked command has been called a certain number of times and throws an exception if it has not. See [Mocking](../usage/mocking) for more details.
+
+### InvokeVerifiable
+
+Checks if any verifiable Mock have not been invoked. If so, this will throw an exception. See [Mocking](../usage/mocking) for more details.
+
 ### Match
 
 Uses a regular expression to compare two objects. This comparison is not case sensitive.
@@ -295,66 +351,3 @@ Get-Process -Name "process" -ErrorAction Stop  | Should -Throw # Should pass but
 If you want to perform validation against non-terminating errors (i.e. `Write-Error` messages), you can [use the technique described here](https://github.com/pester/Pester/issues/366#issuecomment-489377880).
 
 **NOTE:** If you are calling a cmdlet and want to force all errors to be terminating errors so that they can be caught by `| -Should -Throw`, then append `-ErrorAction Stop` to the cmdlet parameters as shown in the example above.
-
-### BeNullOrEmpty
-
-Checks values for null or empty (strings). The static [String]::IsNullOrEmpty() method is used to do the comparison.
-
-```powershell
-$null | Should -BeNullOrEmpty # Test will pass
-$null | Should -Not -BeNullOrEmpty # Test will fail
-@()   | Should -BeNullOrEmpty # Test will pass
-""    | Should -BeNullOrEmpty # Test will pass
-```
-
-### Because
-
-Adds message to test failure message.
-
-```powershell
-$actual = "Actual value"
-$actual | Should -Be "actual value" -Because 'Test must pass'
-$actual | Should -Be "not actual value" -Because 'Test must fail'
-# OUTPUT
-# Expected strings to be the same, because Test must fail, but they were different.
-# Expected length: 16
-# Actual length:   12
-# Strings differ at index 0.
-# Expected: 'not actual value'
-# But was:  'Actual value'
-# -----------^
-```
-
-### HaveParameter
-
-An assertion operator `-HaveParameter` allows you to check function parameters, and their properties like this:
-
-```powershell
-Get-Command "Invoke-WebRequest" | Should -HaveParameter Uri -Mandatory
-function f ([String] $Value = 8) { }
-Get-Command f | Should -HaveParameter Value -Type String
-Get-Command f | Should -Not -HaveParameter Name
-Get-Command f | Should -HaveParameter Value -DefaultValue 8
-Get-Command f | Should -HaveParameter Value -Not -Mandatory
-```
-
-## Using `Should` in a Test
-
-```powershell
-function Add-Numbers($a, $b) {
-    return $a + $b
-}
-
-Describe "Add-Numbers" {
-
-    It "adds positive numbers" {
-        $sum = Add-Numbers 2 3
-        $sum | Should -Be 5
-    }
-
-    It "ensures that 2 + 2 does not equal 5" {
-        $sum = Add-Numbers 2 2
-        $sum | Should -Not -Be 5
-    }
-}
-```
