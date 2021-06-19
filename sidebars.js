@@ -50,6 +50,7 @@ module.exports = {
     "Assertions": [
       "assertions/should-command",
       "assertions/assertions",
+      "assertions/custom-assertions",
     ],
     "Migration Guides": [
       "migrations/v4-to-v5",
