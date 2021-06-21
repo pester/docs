@@ -20,7 +20,7 @@ With the set of Mocking functions that Pester exposes, one can:
 
 Mocks the behavior of an existing command with an alternate implementation.
 
-### Assert-VerifiableMocks
+### Assert-VerifiableMock
 
 Checks if any Verifiable Mock has not been invoked. If so, this will throw an exception.
 
@@ -55,7 +55,7 @@ Describe "BuildIfChanged" {
         $result = BuildIfChanged
 
         It "Builds the next version" {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
         It "returns the next version number" {
             $result | Should Be 1.2

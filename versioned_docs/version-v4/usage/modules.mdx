@@ -49,7 +49,7 @@ Describe "BuildIfChanged" {
         $result = BuildIfChanged
 
         It "Builds the next version and calls Write-Host" {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
 
         It "returns the next version number" {
