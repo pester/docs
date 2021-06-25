@@ -18,20 +18,13 @@ $true | Should -Not -Be $false
 
 ### Because
 
-Lets you to add an optional message to the default test error message to tell the user why the test should pass.
+Lets you to add an optional message to the default test error message to tell the user why the test should pass. Example using `Get-Planet` from [Quick Start](../quick-start#creating-a-pester-test):
 
 ```powershell
-$actual = "Actual value"
-$actual | Should -Be "actual value" -Because 'test must pass'
-$actual | Should -Be "not actual value" -Because 'test must fail'
+$mPlanets = Get-Planet -Name M*
+$mPlanets.Name + @('Earth') | Should -Be 'Mercury','Mars' -Because 'those are the only two planets starting with M'
 # OUTPUT
-# Expected strings to be the same, because test must fail, but they were different.
-# Expected length: 16
-# Actual length:   12
-# Strings differ at index 0.
-# Expected: 'not actual value'
-# But was:  'Actual value'
-# -----------^
+# Expected @('Mercury', 'Mars'), because those are the only two planets starting with M, but got @('Mercury', 'Mars', 'Earth').
 ```
 
 ## Should Operators
