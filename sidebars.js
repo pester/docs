@@ -44,8 +44,9 @@ module.exports = {
       "usage/test-results",
       "usage/code-coverage",
       "usage/configuration",
-      "usage/troubleshooting",
+      "usage/output",
       "usage/vscode",
+      "usage/troubleshooting",
     ],
     "Assertions": [
       "assertions/should-command",
