@@ -15,7 +15,7 @@ When `Should` calls your custom assertion, it will invoke it with the following 
 - **ActualValue**: The value passed to `Should` to assert. 
 - **Negate**: Internal switch/bool parameter used to delcare if the user called `Should -Not ...`.
 - **CallerSessionState**: Used by some internal assertions to invoke code in the user's state. This can usually be ignored.
-- *Remaining bound parameters*, typically matching the parmaeters your accept in your assertion, like `ExpectedValue`, `Because`, `MyCustomParameter` etc.
+- *Remaining bound parameters*, typically matching the parameters your accept in your assertion, like `ExpectedValue`, `Because`, `MyCustomParameter` etc.
 
 The function should return a object with the following properties:
 - **Succeeded**: Bool result of assert
@@ -28,7 +28,7 @@ If a problem occurs in your function, ex. it was called with invalid parameters,
 ::: 
 
 :::caution Using advanced functions as assertions
-Advanced functions, typically enabled by using `[CmdletBinding()]` or `[Parameter()]`, disallows arguments by default. In this scnario, make sure to accept all mandatory parameters in your param-block to avoid errors even if you don't use them. They are `ActualValue`, `Negate` and `CallerSessionState`.
+Advanced functions, typically enabled by using `[CmdletBinding()]` or `[Parameter()]`, disallows arguments by default. In this scenario, make sure to accept all mandatory parameters in your param-block to avoid errors even if you don't use them. They are `ActualValue`, `Negate` and `CallerSessionState`.
 ::: 
 
 ### Good practices
