@@ -10,6 +10,7 @@ $conf.Output
 
 Verbosity           : The verbosity of output, options are None, Normal, Detailed and Diagnostic. (Normal, default: Normal)
 StackTraceVerbosity : The verbosity of stacktrace output, options are None, FirstLine, Filtered and Full. (Filtered, default: Filtered)
+CIFormat            : The CI format of error output in build logs, options are None, Auto, AzureDevops and GithubActions. (Auto, default: Auto)
 ```
 
 This page focuses on the general options available for all users. See [VSCode](./vscode) for settings and features specific to using Pester with VSCode.
@@ -44,3 +45,31 @@ This options lets you control how much of the stacktrace that will be printed. T
 :::tip Error details are always available in the result-object
 The result-object returned from `Run.PassThru / -PassThru` includes a `ErrorRecord`-property in all blocks/tests with full stacktrace and more, even if you've limited the console output using the options above.
 :::
+
+### CIFormat
+
+**New in Pester 5.3!**
+Pester supports CI-specific output syntaxes to highlight, log and navigate to errors in your tests for a few popular CI-systems. This options lets your control how this behavior should work. The following levels are currently supported:
+
+- **None**: Disable all CI-specific syntax. Error messages are presented in the format you're familiar with.
+- **Auto (default)**: Automatically enables CI-specific format when Pester detects that it runs in supported CI-system. If not, Pester will use the normal Pester output like `None`.
+- **AzureDevops**: Enables Azure Devops-specific format to log errors and show the error messages in red.
+- **GithubActions**: Enables Github Actions-specific format to log errors and show the error message in red. Error message and stacktrace are grouped.
+
+#### Azure Devops
+In Azure Devops, the following features are enabled:
+- Errors are logged and shown in the run summary. Clicking on a error will send you to the related lines in the build log.<br/>
+![Azure Devops summary view](./images/azuredevops-report.png)
+- Error messages are highlighted with a prefix and colorized.<br/>
+![Azure Devops log](./images/azuredevops-log.png)
+
+Auto-detection works by checking if `TF_BUILD` environment variable is equal to `True`.
+
+#### Github Actions
+In Github Actions workflows, the following features are enabled:
+- Errors will be highlighted in the run summary.<br/>
+![Github Actions summary view](./images/github-report.png)
+- Error title will be highlighted in red. The remaining error message and stacktrace is placed in a expandable group to clean up the logs.<br/>
+![Github Actions log](./images/github-log.png)
+
+Auto-detection works by checking if `GITHUB_ACTIONS` environment variable is equal to `True`. 
