@@ -10,12 +10,12 @@ with some limitations listed below
 
 - Pester unit tests for test a code coverage of DSC resources can't be executed
 - DSC is not supported on MacOSX
-- support on Linux [requires additional software to be installed](https://docs.microsoft.com/en-us/powershell/dsc/lnxgettingstarted).
+- support on Linux [requires additional software to be installed](https://docs.microsoft.com/en-us/powershell/scripting/dsc/getting-started/lnxgettingstarted).
   Please read also [DSC Future Direction Update](https://blogs.msdn.microsoft.com/powershell/2017/09/12/dsc-future-direction-update/)
   on the PowerShell Team Blog
 - An error ```call depth overflow``` on macOS
   ([please check](https://github.com/PowerShell/PowerShell/issues/4268))
-- the one failing test [in Pester Functions/Assertions/Be.Tests.ps1](https://github.com/pester/Pester/blob/master/Functions/Assertions/Be.Tests.ps1)
+- the one failing test [in Pester Functions/Assertions/Be.Tests.ps1](https://github.com/pester/Pester/blob/rel/4.x.x/Functions/Assertions/Be.Tests.ps1)
   is disabled due that bug
 
 Please remember that not only Pester need to be aligned to work on PowerShell Core 6.x.
