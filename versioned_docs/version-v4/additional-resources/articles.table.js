@@ -212,7 +212,7 @@ export const articles = [
     title: "Download Free Pester Cheat Sheet",
     author: "Kaj Bonfils",
     date: "2016-05-18",
-    url: "https://kajbonfils.com/2016/05/download-free-pester-cheat-sheet",
+    url: "https://kajbonfils.com/2016/05/download-free-pester-cheat-sheet/",
   },
   {
     title: "Testing Your Module Manifest With Pester - Revisited",
