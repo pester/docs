@@ -42,15 +42,15 @@ executed in a manner that is similar to unit tests.
 
 Given 'we have a destination folder' {
     mkdir testdrive:\target -ErrorAction SilentlyContinue
-    'testdrive:\target' | Should Exist
+    'testdrive:\target' | Should -Exist
 }
 
 When 'we call Copy-Item' {
-    { Copy-Item testdrive:\source\something.txt testdrive:\target } | Should Not Throw
+    { Copy-Item testdrive:\source\something.txt testdrive:\target } | Should -Not -Throw
 }
 
 Then 'we have a new file in the destination' {
-    'testdrive:\target\something.txt' | Should Exist
+    'testdrive:\target\something.txt' | Should -Exist
 }
 
 # Steps need to allign with feature specifications in a *.feature file
@@ -77,7 +77,7 @@ Scenario: The file exists, and the target folder exists
 
 Given 'we have a (?\<name\>\S*) function' {
     param($name)
-    "$psscriptroot\..\MyModule\*\$name.ps1" | Should Exist
+    "$psscriptroot\..\MyModule\*\$name.ps1" | Should -Exist
 }
 
 # filename: namedregex.feature
