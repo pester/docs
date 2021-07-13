@@ -154,9 +154,10 @@ Checks values for null or empty (strings). The static [String]::IsNullOrEmpty() 
 
 ```powershell
 $null | Should -BeNullOrEmpty # Test will pass
-$null | Should -Not -BeNullOrEmpty # Test will fail
 @()   | Should -BeNullOrEmpty # Test will pass
 ""    | Should -BeNullOrEmpty # Test will pass
+
+$null | Should -Not -BeNullOrEmpty # Test will fail
 ```
 
 ### BeOfType
