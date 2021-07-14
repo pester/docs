@@ -5,6 +5,12 @@ import React from "react";
 // ----------------------------------------------------------------------------
 export const videos = [
   {
+    title: "Custom Pester assertions are the vocabulary of your tests",
+    author: "Jakub Jares",
+    date: "2019-07-19",
+    url: "https://www.youtube.com/watch?v=WYw23cGoKco",
+  },
+  {
     title: "Beyond Pester 102: Acceptance testing with PowerShell",
     author: "Glenn Sarti",
     date: "2019-05-18",
