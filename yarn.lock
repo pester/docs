@@ -2441,7 +2441,7 @@
     fs-extra "^10.0.0"
     tslib "^2.1.0"
 
-"@docusaurus/theme-search-algolia@2.0.0-beta.4":
+"@docusaurus/theme-search-algolia@2.0.0-beta.4", "@docusaurus/theme-search-algolia@^2.0.0-beta.4":
   version "2.0.0-beta.4"
   resolved "https://registry.yarnpkg.com/@docusaurus/theme-search-algolia/-/theme-search-algolia-2.0.0-beta.4.tgz#0c2051523428c4486ef1dd7cb5271b0d871f5c8e"
   integrity sha512-W/DfGhlAe1Vl+IJiL9rCw8yswdUrX0lTyCMNRAFi749YN4vCWo2RoxylbUuWoV6lUKoIYfj3EGyotRT2OLqtZw==
