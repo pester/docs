@@ -20,15 +20,27 @@ module.exports = {
         src: 'img/logo_white.svg',
       },
       items: [
-        { to: 'docs/quick-start', label: 'Docs', position: 'right' },
         {
           type: 'docsVersionDropdown',
           position: 'left',
         },
-        { to: 'docs/commands/Add-ShouldOperator', label: 'Commands', position: 'right' },
         {
-          href: 'https://github.com/pester/pester',
+          label: 'Docs',
+          to: 'docs/quick-start',
+          position: 'right'
+        },
+        {
+          label: 'Commands',
+          to: 'docs/commands/Add-ShouldOperator',
+          position: 'right'
+        },
+        {
           label: 'GitHub',
+          href: 'https://github.com/pester/pester',
+          position: 'right',
+        },
+        {
+          type: 'search', // algolia search
           position: 'right',
         },
       ],
@@ -38,6 +50,15 @@ module.exports = {
       additionalLanguages: [
         'powershell'
       ]
+    },
+    // Please note that the Algolia DocSearch crawler only runs once every 24 hours.
+    // Configuration options below described at https://docusaurus.io/docs/search.
+    algolia: {
+      apiKey: '3bc69eeabd2050b499c4a1ab01c1c3e6',
+      indexName: 'pester',
+      contextualSearch: true,
+      // searchParameters: {},
+      //... other Algolia params
     },
     footer: {
       style: 'dark',
