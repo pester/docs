@@ -54,7 +54,8 @@ module.exports = {
     // Please note that the Algolia DocSearch crawler only runs once every 24 hours.
     // Configuration options below described at https://docusaurus.io/docs/search.
     algolia: {
-      apiKey: '3bc69eeabd2050b499c4a1ab01c1c3e6',
+      appId: 'Q2JBAARHQ6',
+      apiKey: '59daca417dcd80d5cc18fac56af5c138',
       indexName: 'pester',
       contextualSearch: true,
       // searchParameters: {},
