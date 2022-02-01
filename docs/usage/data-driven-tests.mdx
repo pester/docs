@@ -470,7 +470,7 @@ Invoke-Pester -Container $containers -Output Detailed
 
 In Pester v4 it was normal to place code directly on top of the script file, or directly into the body of `Describe` and `Context`. Pester v5 discourages this, because all code directly in script or in `Describe / Context` body will run during `Discovery`. This leads to unexpected results.
 
-BUT in some cases, especially when generating tests, putting code directly in script body is okay. `BeforeDiscovery` was introduced to show that the code is like this intentionally, and not by accident. Wrapping code into `BeforeDiscovery` has no impact on it's execution. It should be used everywhere where code is intentionally placed outside of a Pester controlled leaf-block (see [Discovery and Run](discovery-and-run)). That is on top of files, or directly in body of `Describe / Context`.
+BUT in some cases, especially when generating tests, putting code directly in script body is okay. `BeforeDiscovery` was introduced to show that the code is like this intentionally, and not by accident. Wrapping code into `BeforeDiscovery` has no impact on its execution. It should be used everywhere where code is intentionally placed outside of a Pester controlled leaf-block (see [Discovery and Run](discovery-and-run)). That is on top of files, or directly in body of `Describe / Context`.
 
 Here for example I generate one `Describe` for each script file, instead of passing the list of files externally. I need this code to run during `Discovery` to generate those blocks. `BeforeDiscovery` is used there to show that this code placement is intentional: 
 
