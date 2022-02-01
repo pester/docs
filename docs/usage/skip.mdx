@@ -85,11 +85,11 @@ $sb = {
 }
 
 $container = New-PesterContainer -ScriptBlock $sb -Data @{ SkipFirst = $true }
-$configuation = New-PesterConfiguration
-$configuation.Run.Container = $container
-$configuation.Output.Verbosity = 'Detailed'
+$configuration = New-PesterConfiguration
+$configuration.Run.Container = $container
+$configuration.Output.Verbosity = 'Detailed'
 
-Invoke-Pester -Configuration $configuation
+Invoke-Pester -Configuration $configuration
 ```
 
 ```
