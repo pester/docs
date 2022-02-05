@@ -188,7 +188,7 @@ See [Data driven tests](data-driven-tests#providing-external-data-to-tests).
 Much like on `It`, You can use `-ForEach` on `Describe` and `Context` to repeat it for every item in the provided array: 
 
 ```powershell
-BeforeAll { 
+BeforeDiscovery { 
     $files = @(
         "Get-Emoji.ps1",
         "Get-Planet.ps1" 
