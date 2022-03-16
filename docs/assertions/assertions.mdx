@@ -172,6 +172,8 @@ $actual | Should -BeOfType System.IO.FileSystemInfo  # Test will pass; Directory
 $actual | Should -BeOfType System.IO.FileInfo        # Test will fail; FileInfo is not a base class of DirectoryInfo
 ```
 
+**Note:** This currently only works for .NET types.  For custom types you need to use the `$MyClass.getType().Name | Should -Be "MyClassName"` form (see: https://github.com/pester/Pester/issues/1315)
+
 ### BeTrue
 
 Asserts that the value is true, or truthy.
