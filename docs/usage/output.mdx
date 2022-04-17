@@ -20,7 +20,7 @@ This page focuses on the general options available for all users. See [VSCode](.
 This option controls the general level of console output. Pester v5 supports the following levels:
 
 - **None**: No console output is shown. Typically used in combination with `Run.PassThru / -PassThru` to do custom post-processing of the results.
-- **Normal (default)**: Focuses on successful containers and failed tests/blocks. Shows basic discovery information and the summary of all tests.<br/>
+- **Normal (default)**: Focus on successful containers and failed tests/blocks. Shows basic discovery information and the summary of all tests.<br/>
 ![Normal verbosity](./images/output-normal.png)
 - **Detailed**: Similar to Normal, but this level shows all blocks and tests, including successful.<br/>
 ![Detailed verbosity](./images/output-detailed.png)
@@ -30,16 +30,16 @@ This option controls the general level of console output. Pester v5 supports the
 ### StackTraceVerbosity
 
 **New in Pester 5.3!**
-When an error is shown due to a failed setup or test, a stacktrace is included to help you identify where the problem occured. End-users might not care much about this while developers need it to identify and fix issues.
-This options lets you control how much of the stacktrace that will be printed. The following levels are currently supported:
+When an error is shown due to a failed setup or test, a stacktrace is included to help you identify where the problem occured. Users might not care much about this while developers need it to identify and fix any issues.
+This option lets you control how much of the stacktrace that will be printed using one of the following levels:
 
 - **None**: No stacktrace is shown, only the error message.<br/>
 ![No stacktrace](./images/stacktrace-none.png)
-- **FirstLine**: Only show the first line of the stacktrace. This typically shows which line in your test that failed to get you started troubleshooting.<br/>
+- **FirstLine**: Only show the first line of the stacktrace. This is typically the line in your failing tests.<br/>
 ![FirstLine stacktrace](./images/stacktrace-firstline.png)
 - **Filtered (default)**: Shows stacktrace related to your code. Filters out lines related to Pester-runtime.<br/>
 ![Filtered stacktrace](./images/stacktrace-filtered.png)
-- **Full**: Shows unfiltered stacktrace including calls made by Pester-runtime. Mostly used for troubleshooting. This is the same as the option `Debug.ShowFullErrors = $true` used prior to Pester v5.3.<br/>
+- **Full**: Shows unfiltered stacktrace including calls made by Pester-runtime. Mostly used for troubleshooting. This is equal to the option `Debug.ShowFullErrors = $true` used prior to Pester v5.3.<br/>
 ![Full stacktrace](./images/stacktrace-full.png)
 
 :::tip Error details are always available in the result-object
@@ -49,12 +49,12 @@ The result-object returned from `Run.PassThru / -PassThru` includes a `ErrorReco
 ### CIFormat
 
 **New in Pester 5.3!**
-Pester supports CI-specific output syntaxes to highlight, log and navigate to errors in your tests for a few popular CI-systems. This options lets your control how this behavior should work. The following levels are currently supported:
+Pester supports CI-specific output syntaxes to highlight, log and navigate to errors in your tests for a few popular CI systems. This options lets your control how this behavior should work. The following levels are currently supported:
 
 - **None**: Disable all CI-specific syntax. Error messages are presented in the format you're familiar with.
-- **Auto (default)**: Automatically enables CI-specific format when Pester detects that it runs in supported CI-system. If not, Pester will use the normal Pester output like `None`.
-- **AzureDevops**: Enables Azure Devops-specific format to log errors and show the error messages in red.
-- **GithubActions**: Enables Github Actions-specific format to log errors and show the error message in red. Error message and stacktrace are grouped.
+- **Auto (default)**: Automatically enables CI-specific format when Pester detects that it runs in a supported CI system. Will fallback to same output as None.
+- **AzureDevops**: Enables Azure Devops-specific format to log errors and display the error messages in red.
+- **GithubActions**: Enables Github Actions-specific format to log errors and display the error message in red. Error message and stacktrace are grouped.
 
 #### Azure Devops
 In Azure Devops, the following features are enabled:
