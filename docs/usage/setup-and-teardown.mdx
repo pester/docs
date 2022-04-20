@@ -190,7 +190,7 @@ Tests Passed: 1, Failed: 0, Skipped: 0 NotRun: 0
 
 ### Skipping setups and teardowns
 
-Setups and teardowns are skipped when the current tree won't result in any test being run. For example, in the code below, running Pester with the the `-ExcludeTag Acceptance` filter will result in no tests which match the filter. With no tests to execute the setup and teardown blocks will not be run:
+Setups and teardowns are skipped when the current tree won't result in any test being run. In the example below, running Pester with the `-ExcludeTag Acceptance` filter will exclude all tests in the Describe-block. As a result the associated setup and teardown blocks will also be skipped.
 
 ```powershell
 BeforeAll {
