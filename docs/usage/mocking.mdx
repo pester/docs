@@ -189,6 +189,28 @@ Describe 'Mocking native commands' {
 }
 ```
 
+## $PesterBoundParameters
+
+Calling a mocked command will execute a proxy-function (hook) which evaluates and chooses the correct behavior/mock to invoke in that scenario. Because of this proxy `$PSBoundParameters` will be overwritten and are not available inside your mock's scriptblock.
+
+Starting in Pester 5.2.0, a new `$PesterBoundParameters` variable has been introduced as a replacement. Using this you can evaluate bound parameters and/or forward them to other functions inside your mock's code.
+
+```powershell
+Describe 'PesterBoundParameters' {
+    It 'Demo' {
+        Mock -CommandName Write-Host -MockWith {
+            # Do something else
+            Write-Warning -Message "MOCKED - $Object"
+
+            # Call real Write-Host with bound parameters
+            & (Get-Command -CommandType Cmdlet -Name Write-Host) @PesterBoundParameters
+        }
+
+        Write-Host -Object "This should be red" -ForegroundColor Red
+    }
+}
+```
+
 ## Changes from Pester v4
 
 ### Mocks are scoped based on their placement
