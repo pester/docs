@@ -64,7 +64,8 @@ module.exports = {
           items: [
             {
               label: 'Gitter',
-              href: 'https://gitter.im/pester/Pester',
+              href:
+                'https://gitter.im/pester/Pester',
             },
             {
               label: 'PowerShell.org',
@@ -73,10 +74,6 @@ module.exports = {
             {
               label: 'Slack',
               href: 'https://powershell.slack.com/messages/C03QKTUCS',
-            },
-            {
-              label: 'Discord (#testing)',
-              href: 'https://discord.gg/powershell',
             },
             {
               label: 'Stack Overflow',
