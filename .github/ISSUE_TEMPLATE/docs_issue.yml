@@ -1,0 +1,36 @@
+name: DOCS 🐛 Documentation issue
+description: Report an issue with the documentation at https://pester.dev
+labels: []
+body:
+- type: markdown
+  attributes:
+    value: |
+      Thank you for using Pester and taking the time to report this issue!
+
+      **Is this about pages in the Command Reference-section?**
+      Command Reference are auto-generated from Pester source code and should be reported in the [Pester-repo](https://github.com/pester/pester).
+- type: checkboxes
+  attributes:
+    label: Checklist
+    options:
+    - label: "Issue has a meaningful title"
+      required: true
+    - label: "I have searched the existing issues. See [issues](https://github.com/pester/docs/issues)"
+- type: input
+  attributes:
+    label: Link to page
+    placeholder: Enter the URL to the page with an issue
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: What is the issue?
+  validations:
+    required: true
+- type: markdown
+  attributes:
+    value: |
+      Feel free to also submit a PR if you'd like to contribute. Each website has a "Edit this page?" shortcut at the bottom which takes you to it's source on GitHub. If not, you may add any ideas you might have for the fix in the field below.
+- type: textarea
+  attributes:
+    label: Suggested fix?
