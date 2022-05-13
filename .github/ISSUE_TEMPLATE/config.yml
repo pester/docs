@@ -1,0 +1,7 @@
+contact_links:
+  - name: Documentation issue in Command Reference?
+    url: https://github.com/pester/Pester/issues/new?template=commandhelp_issue.yml
+    about: Command Reference are auto-generated from source. Please report issue in the Pester-repo.
+  - name: Need help with Pester?
+    url: https://pester.dev/docs/contributing/introduction#where-to-get-support
+    about: Join our online communities to get help with "How to do _____ with Pester?" questions.

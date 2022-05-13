@@ -1,0 +1,36 @@
+name: DOCS 💡 Request for new documentation
+description: Missing something at https://pester.dev? Please suggest it
+labels: []
+body:
+- type: markdown
+  attributes:
+    value: |
+      Thank you for using Pester and taking the time to report this feedback!
+
+      **Is this about pages in the Command Reference-section?**
+      Command Reference are auto-generated from Pester source code and should be reported in the [Pester-repo](https://github.com/pester/pester).
+- type: checkboxes
+  attributes:
+    label: Checklist
+    options:
+    - label: "Issue has a meaningful title"
+      required: true
+    - label: "I have searched the existing issues. See [issues](https://github.com/pester/docs/issues)"
+      required: true
+- type: textarea
+  attributes:
+    label: Summary of the request
+    description: Describe what you feel is missing
+  validations:
+    required: true
+- type: dropdown
+  attributes:
+    label: Suggested section
+    description: Which section do you think this belongs in?
+    options:
+      - Introduction
+      - Usage
+      - Assertions
+      - Migration Guides
+      - Addtional Resources
+      - Contributing
