@@ -1,4 +1,4 @@
-name: DOCS 🐛 Documentation issue
+name: 🐛 Documentation issue
 description: Report an issue with the documentation at https://pester.dev
 labels: []
 body:
@@ -16,6 +16,7 @@ body:
     - label: "Issue has a meaningful title"
       required: true
     - label: "I have searched the existing issues. See [issues](https://github.com/pester/docs/issues)"
+      required: true
 - type: input
   attributes:
     label: Link to page
