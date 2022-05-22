@@ -6,7 +6,7 @@ sidebar_label: Pester v4 to v5
 
 The fundamental change in this release is that Pester now runs in two phases: Discovery and Run. During discovery, it quickly scans your test files and discovers all the Describes, Contexts, Its and other Pester blocks.
 
-**Put all your code into `It`, `BeforeAll`, `BeforeEach`, `AfterAll` or `AfterEach`. Put no code directly into `Describe`, `Context` or on the top of your file, without wrapping it in one of these blocks, unless you have a good reason to do so.**
+**Put all your test-code into `It`, `BeforeAll`, `BeforeEach`, `AfterAll` or `AfterEach`. Put no test-code directly into `Describe`, `Context` or on the top of your file, without wrapping it in one of these blocks, unless you have a good reason to do so.**
 
 **All misplaced code will run during Discovery, and its results won't be available during Run. Code meant to run in Discovery should be explicitly placed into `BeforeDiscovery`, see [Data driven tests](../usage/data-driven-tests#beforediscovery).**
 
