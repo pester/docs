@@ -5,7 +5,7 @@
 module.exports = {
   title: 'Pester',
   tagline: 'The ubiquitous test and mock framework for PowerShell',
-  url: 'https://pester-docs.netlify.com',
+  url: 'https://pester.dev',
   baseUrl: '/',
   baseUrlIssueBanner: true,
   favicon: 'img/favicon.ico',
