@@ -1,7 +1,0 @@
-# https://docs.netlify.com/configure-builds/file-based-configuration/
-# https://gist.github.com/DavidWells/43884f15aed7e4dcb3a6dad06430b756
-
-build:
-  base: /
-  publish: build
-  command: yarn build
