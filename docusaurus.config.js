@@ -7,6 +7,7 @@ module.exports = {
   tagline: 'The ubiquitous test and mock framework for PowerShell',
   url: 'https://pester-docs.netlify.com',
   baseUrl: '/',
+  baseUrlIssueBanner: true,
   favicon: 'img/favicon.ico',
   organizationName: 'pester', // Usually your GitHub org/user name.
   projectName: 'docs', // Usually your repo name.
