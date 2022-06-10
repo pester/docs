@@ -4,12 +4,12 @@
 	"build": {
 		"dockerfile": "Dockerfile",
 		// Update 'VARIANT' to pick a Node version: 12, 14, 16
-		"args": { "VARIANT": "14" }
+		"args": { "VARIANT": "16" }
 	},
 
 	// Set *default* container specific settings.json values on container create.
 	"settings": { 
-		"terminal.integrated.shell.linux": "/bin/bash"
+		"terminal.integrated.defaultProfile.linux": "bash"
 	},
 
 	// Add the IDs of extensions you want installed when the container is created.
@@ -18,6 +18,12 @@
 		"silvenon.mdx",
 		"ms-vscode.powershell"
 	],
+
+	// Windows users should clone repo in container volume, WSL2
+	// If not, uncomment this to fix poor yarn/npm performance
+	// "mounts": [
+	// 	"source=pester-docs-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume"
+	// ],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	"forwardPorts": [3000],
