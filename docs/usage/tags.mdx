@@ -1,10 +1,11 @@
 ---
 title: Tags
+description: Use tags on tests and blocks to categorize code and easily choose which tests to run with simple parameters
 ---
 
 The tag parameter is now available on `Describe`, `Context` and `It` and it is possible to filter tags on any level. You can then use `-Tag` and `-ExcludeTag` to run just the tests that you want.
 
-Here you can see an example of a test suite that has acceptance tests and unit tests, and some of the tests are slow, some are flaky, and some only work on Linux. Pester5 makes running all reliable acceptance tests, that can run on Windows is as simple as:
+Here you can see an example of a test suite that has acceptance tests and unit tests, and some of the tests are slow, some are flaky, and some only work on Linux. Pester v5 makes running all reliable acceptance tests, that can run on Windows is as simple as:
 
 
 ```powershell
