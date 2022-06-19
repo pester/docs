@@ -12,21 +12,21 @@ To reap the benefits, there are two rules to follow:
 
 **Put no code directly into `Describe`, `Context` or on the top of your file, without wrapping it in one of these blocks.**
 
-All misplaced code will run during Discovery, and its results won't be available during Run. This will lead to confusing results. 
+All misplaced code will run during Discovery, and its results won't be available during Run. This will lead to confusing results.
 
 
 ## Execution order
 
-In Pester v4 the execution of your test code was mostly top-down, with the exception of all the `Before*` and `After*` blocks. Those blocks were picked up by Pester using AST and "moved" to the place where they needed to run. 
+In Pester v4 the execution of your test code was mostly top-down, with the exception of all the `Before*` and `After*` blocks. Those blocks were picked up by Pester using AST and "moved" to the place where they needed to run.
 
 For example placing an `AfterAll` at the top of a `Describe` would not run it at the top, but instead it would correctly run it as the last thing in that `Describe` wrapped in a `try finally`.
 
-Pester v5 takes this to the next level and manipulates the execution of your test file in a more complex way. This has good reason, but makes understanding how your code executes quite complex, especially when you don't follow the two rules listed above. 
+Pester v5 takes this to the next level and manipulates the execution of your test file in a more complex way. This has good reason, but makes understanding how your code executes quite complex, especially when you don't follow the two rules listed above.
 
 
 ### Discovery
 
-Take for example this test file. When executed it will discover two tests inside of this file, and run them: 
+Take for example this test file. When executed it will discover two tests inside of this file, and run them:
 
 ```powershell
 BeforeAll {
@@ -45,12 +45,12 @@ Describe "Get-Emoji" {
 Write-Host "Discovery done."
 ```
 
-This is what happens step by step when you run `Get-Emoji.Tests.ps1`: 
+This is what happens step by step when you run `Get-Emoji.Tests.ps1`:
 
 - The script file `Get-Emoji.Tests.ps1` is invoked
 - `BeforeAll` function runs. It saves the ScriptBlock provided to it, but does not execute it yet.
 - `Describe` function runs. It **invokes** the ScriptBlock provided to it, to be able to collect information about the tests contained inside of that scriptblock. `Describe` and `Context` scriptblocks are the only scriptblocks that are invoked during `Discovery`.
-- All parameters provided to `It` are evaluated by PowerShell: 
+- All parameters provided to `It` are evaluated by PowerShell:
     - `-Name` is evaluated:
         - if double quoted string is used (`""`) all variables and sub-expressions in the string are expanded
         - if single quotes string is used (`''`) it is taken as it is
@@ -62,19 +62,19 @@ This is what happens step by step when you run `Get-Emoji.Tests.ps1`:
 
 At this point we are done with `Discovery`. As you can see discovery is just a "trick". We run the whole script to the end, but don't invoke any ScriptBlock, except for the one associated with `Describe`.
 
-At the end of `Discovery` we have collected all the tests and setups that are contained in the file, and stored them in the internal data of Pester module. The internal representation looks something like this: 
+At the end of `Discovery` we have collected all the tests and setups that are contained in the file, and stored them in the internal data of Pester module. The internal representation looks something like this:
 
 ```
-Container: Get-Emoji.Tests.ps1 
+Container: Get-Emoji.Tests.ps1
     BeforeAll: `{ . $PSCommandPath.Replace('.Tests.ps1','.ps1') }
     AfterAll: <none>
-    Blocks: 
+    Blocks:
         Block: Get-Emoji
         BeforeAll: <none>
         BeforeEach: <none>
         AfterEach: <none>
         AfterAll: <none>
-        Tests: 
+        Tests:
             Test: Returns <expected> (<name>)
             Data: @{ Name = "cactus"; Expected = '🌵'}
             ScriptBlock: { Get-Emoji -Name $name | Should -Be $expected }
@@ -83,46 +83,46 @@ Container: Get-Emoji.Tests.ps1
             Data: @{ Name = "giraffe"; Expected = '🦒'}
             ScriptBlock: { Get-Emoji -Name $name | Should -Be $expected }
 ```
-            
-Now we would go through all the objects, check filters and propagate them down and back up. This gives us the final overview of what needs to run. In this case there are no filters, so nothing changes and all tests will be invoked. 
+
+Now we would go through all the objects, check filters and propagate them down and back up. This gives us the final overview of what needs to run. In this case there are no filters, so nothing changes and all tests will be invoked.
 
 At this point we are done with the Discovery phase. We invoked the script to the end, and evaluated all the `-TestCases` and `-Name` strings if they have variables in them and use double quotes.
 
 ### Run
 
-In the run phase we take the internal tree of containers, blocks and tests and run them. We need to do quite a lot of work to reconstruct the correct scoping and to ensure that everything runs safely. At a high level this is what happens: 
+In the run phase we take the internal tree of containers, blocks and tests and run them. We need to do quite a lot of work to reconstruct the correct scoping and to ensure that everything runs safely. At a high level this is what happens:
 
 - Run the `BeforeAll` ScriptBlock, this imports the tested function
 - Create new scope to isolate the test from other tests
     - Invoke the `It ScriptBlock`, this runs the first test
-    - Return to the previous scope    
+    - Return to the previous scope
 - Create new scope to isolate the test from other tests
     - Invoke the `It ScriptBlock`, this runs the second test
     - Return to the previous scope
 - Return to the previous scope
 
 We are done. All tests in this container are executed.
-    
 
-## Common gotchas 
+
+## Common gotchas
 
 ### `BeforeAll` and `-TestCases`
 
-`-TestCases` are evaluated during `Discovery`, but `BeforeAll` won't run until the `Run` phase. Using variables set in `BeforeAll` in `-TestCases` (or `-ForEach`) won't work. The variable from `BeforeAll` simply won't be defined until much after `-TestCases` and `-ForEach` are evaluated. 
+`-TestCases` are evaluated during `Discovery`, but `BeforeAll` won't run until the `Run` phase. Using variables set in `BeforeAll` in `-TestCases` (or `-ForEach`) won't work. The variable from `BeforeAll` simply won't be defined until much after `-TestCases` and `-ForEach` are evaluated.
 
 ### Generating test and blocks via `foreach` keyword
 
-A common pattern in Pester v4 is to use `foreach` to generated tests and blocks based on external data, for example like this: 
+A common pattern in Pester v4 is to use `foreach` to generated tests and blocks based on external data, for example like this:
 
-```powershell 
-BeforeAll { 
+```powershell
+BeforeAll {
     # check all script files
     $files = Get-ChildItem *.ps1
 }
 
-foreach ($file in $files) { 
-    Describe "$file is correct" { 
-        It "has empty line at end" { 
+foreach ($file in $files) {
+    Describe "$file is correct" {
+        It "has empty line at end" {
             # ...
         }
 
@@ -136,18 +136,18 @@ foreach ($file in $files) {
 In this case the `foreach` is evaluated during `Discovery` because we simply run the whole script file. But `BeforeAll` won't be invoked until `Run`, so the `$files` variable is not defined during `Discovery` and the tests are not generated. This can be solved by defining the code that is used to generate tests into `BeforeDiscovery` block. See [Data driven tests](data-driven-tests#beforediscovery).
 
 
-### Variables are not available in test 
+### Variables are not available in test
 
 The example above has one more problem, if we move the setup to `BeforeDiscovery`, we will generate the tests correctly, and the `foreach` will define `$file` variable. But we won't be able to use the `$file` variable in the `It`. We need to attach it to the `It` using `-TestCases` with a single test case:
 
-```powershell 
+```powershell
 BeforeDiscovery { # <- this will run during Discovery
     # check all script files
     $files = Get-ChildItem *.ps1
 }
 
-foreach ($file in $files) { 
-    Describe "$file is correct" { 
+foreach ($file in $files) {
+    Describe "$file is correct" {
         It "has empty line at end" -TestCases @{ File = $file } { # <- we pass $file data to the test
             # ...
         }

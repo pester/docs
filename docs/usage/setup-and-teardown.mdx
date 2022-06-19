@@ -10,13 +10,13 @@ The teardown is used to clean up after test or a block and is guaranteed to run 
 
 ### BeforeAll
 
-`BeforeAll` is used to share setup among all the tests in a `Describe / Context` including all child blocks and tests. `BeforeAll` runs during `Run` phase and runs only once in the current block. 
+`BeforeAll` is used to share setup among all the tests in a `Describe / Context` including all child blocks and tests. `BeforeAll` runs during `Run` phase and runs only once in the current block.
 
 
 The typical usage is to setup the whole test script, most commonly to import the tested function, by dot-sourcing the script file that contains it:
 
 ```powershell
-BeforeAll { 
+BeforeAll {
     . $PSCommandPath.Replace('.Tests.ps1','.ps1')
 }
 
@@ -25,11 +25,11 @@ Describe "API validation" {
 }
 ```
 
-Another typical usage is to do an expensive operation once, and then validate the result in multiple tests: 
+Another typical usage is to do an expensive operation once, and then validate the result in multiple tests:
 
 ```powershell
 Describe "API validation" {
-    BeforeAll { 
+    BeforeAll {
         # this calls REST API and takes roughly 1 second
         $response = Get-Pokemon -Name Pikachu
     }
@@ -44,7 +44,7 @@ Describe "API validation" {
 }
 ```
 
-### BeforeEach 
+### BeforeEach
 
 `BeforeEach` runs once before every test in the current or any child blocks. Typically this is used to create all the prerequisites for the current test, such as writing content to a file. For example this is how we ensure that each test gets fresh file:
 
@@ -71,7 +71,7 @@ Describe "File parsing" {
 ```
 
 
-### AfterEach 
+### AfterEach
 
 `AfterEach` runs once after every test in the current or any child blocks. Typically this is used to clean up resources created by the test, or its setups. `AfterEach` runs in a finally block, and is guaranteed to run even if the test (or setup) fails. For example this is how we ensure that each test removes its test file:
 
@@ -95,17 +95,17 @@ Describe "File parsing" {
         # ...
     }
 
-    AfterEach { 
-        if (Test-Path $file) { 
+    AfterEach {
+        if (Test-Path $file) {
             Remove-Item $file -Force
         }
     }
 }
 ```
 
-`AfterEach` placement within the current block does not affect when it is run, you can place it on the top or on the bottom of the block, and it will still run last. 
+`AfterEach` placement within the current block does not affect when it is run, you can place it on the top or on the bottom of the block, and it will still run last.
 
-The teardown in `AfterEach` should be prepared to run at any place of `BeforeEach` or `It`. For example when the `$file` does not exist yet, because we got `AccessDenied` when trying to write it. 
+The teardown in `AfterEach` should be prepared to run at any place of `BeforeEach` or `It`. For example when the `$file` does not exist yet, because we got `AccessDenied` when trying to write it.
 
 ### AfterAll
 
@@ -113,7 +113,7 @@ The teardown in `AfterEach` should be prepared to run at any place of `BeforeEac
 
 ### Multiple setups and teardowns
 
-When multiple `BeforeAll` are defined, they run in the order in which they were defined. `AfterAll` run in the opposite order. 
+When multiple `BeforeAll` are defined, they run in the order in which they were defined. `AfterAll` run in the opposite order.
 
 When multiple `BeforeEach` are defined, they run in the order in which they were defined, and they run right before the test they setup. `AfterEach` run right after the test is finished, in the opposite order.
 
@@ -129,24 +129,24 @@ Describe "d" {
         Write-Host "-> Describe BeforeAll"
     }
 
-    BeforeEach { 
+    BeforeEach {
         Write-Host "-> Describe BeforeEach"
     }
-    
+
     Context "Whitespace" {
         BeforeAll {
             Write-Host "-> Context BeforeAll"
         }
 
-        BeforeEach { 
+        BeforeEach {
             Write-Host "-> Context BeforeEach"
         }
 
-        It "i" { 
+        It "i" {
             # ...
         }
 
-        AfterEach { 
+        AfterEach {
             Write-Host "-> Context AfterEach"
         }
 
@@ -155,7 +155,7 @@ Describe "d" {
         }
     }
 
-    AfterEach { 
+    AfterEach {
         Write-Host "-> Describe AfterEach"
     }
 
@@ -229,11 +229,11 @@ Describe "d" {
     BeforeAll {
         $a = "BeforeAll"
     }
-    It "Write a" { 
+    It "Write a" {
         $a = "Test"
     }
 
-    It "Check a" { 
+    It "Check a" {
         $a | Should -Be "BeforeAll"
     }
 
@@ -243,7 +243,7 @@ Describe "d" {
 }
 ```
 ```
-Describing d 
+Describing d
   [+] Write a 7ms (1ms|6ms)
   [+] Check a 4ms (3ms|1ms)
 -> AfterAll
@@ -254,7 +254,7 @@ Tests completed in 347ms
 
 ```powershell
 Describe "d" {
-    It "Write a" { 
+    It "Write a" {
         $a = "Test"
     }
 
@@ -265,7 +265,7 @@ Describe "d" {
 ```
 
 ```
-Describing d 
+Describing d
 -> Test
   [+] Write a 7ms (3ms|4ms)
 Tests completed in 227ms

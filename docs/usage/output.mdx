@@ -6,7 +6,7 @@ Pester offers multiple options to customize the console output to your preferenc
 
 ```powershell
 $conf = New-PesterConfiguration
-$conf.Output                   
+$conf.Output
 
 Verbosity           : The verbosity of output, options are None, Normal, Detailed and Diagnostic. (Normal, default: Normal)
 StackTraceVerbosity : The verbosity of stacktrace output, options are None, FirstLine, Filtered and Full. (Filtered, default: Filtered)
@@ -72,4 +72,4 @@ In Github Actions, the following features are enabled:
 - Error title will be highlighted in red. The remaining error message and stacktrace is placed in a expandable group to clean up the logs.<br/>
 ![Github Actions log](./images/github-log.png)
 
-Auto-detection works by checking if `GITHUB_ACTIONS` environment variable is equal to `True`. 
+Auto-detection works by checking if `GITHUB_ACTIONS` environment variable is equal to `True`.

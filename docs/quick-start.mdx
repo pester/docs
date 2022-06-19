@@ -10,28 +10,28 @@ sidebar_label: Quick Start
 
 Pester is a testing and mocking framework for PowerShell.
 
-Pester provides a framework for writing and running tests. Pester is most commonly 
-used for writing unit and integration tests, but it is not limited to just that. 
-It is also a base for tools that validate whole environments, computer deployments, database configurations and so on. 
+Pester provides a framework for writing and running tests. Pester is most commonly
+used for writing unit and integration tests, but it is not limited to just that.
+It is also a base for tools that validate whole environments, computer deployments, database configurations and so on.
 
-Pester follows a file naming convention `*.Tests.ps1`, and uses a simple set of functions: 
+Pester follows a file naming convention `*.Tests.ps1`, and uses a simple set of functions:
 `Describe`, `Context`, `It`, `Should` and `Mock` to create a mini-DSL for writing your tests.
 
 Pester tests can execute any command or script that is accessible to a Pester test file. This
-includes functions, Cmdlets, Modules and scripts. Pester can be run locally, where it integrates well 
+includes functions, Cmdlets, Modules and scripts. Pester can be run locally, where it integrates well
 with Visual Studio Code, and it can of course be integrated into a build script in a CI pipeline.
 
-Pester contains a powerful set of Mocking capabilities that allow tests to replace the behavior of any 
+Pester contains a powerful set of Mocking capabilities that allow tests to replace the behavior of any
 command inside of a piece of PowerShell code being tested. See [Mocking with Pester](./usage/mocking).
 
 Pester can produce artifacts such as Test Results file and can be used for generating
-[Code Coverage](./usage/code-coverage) and [Test Result](./usage/test-results) files for reporting 
+[Code Coverage](./usage/code-coverage) and [Test Result](./usage/test-results) files for reporting
 results in CI pipeline.
 
 ## Installing Pester
 
-To install Pester it is usually enough to just do `Install-Module Pester -Force`. And then follow it by  
-`Import-Module Pester -PassThru`. This is the output you should see in the console: 
+To install Pester it is usually enough to just do `Install-Module Pester -Force`. And then follow it by
+`Import-Module Pester -PassThru`. This is the output you should see in the console:
 
 ```shell-session
 C:\> Import-Module Pester -Passthru
@@ -46,13 +46,13 @@ Full installation guide is available in [installation](introduction/installation
 ## Creating a Pester Test
 
 To start using Pester, create a new file called `Get-Planet.Tests.ps1`. `Get-Planet` is the name of the function
-we will be testing. Feel free to replace that with your own function name. The file name is important because Pester 
+we will be testing. Feel free to replace that with your own function name. The file name is important because Pester
 uses a naming convention, all `*.Tests.ps1` files will be inspected for tests.
 
 Inside of the file paste this code:
 
 ```powershell
-BeforeAll { 
+BeforeAll {
     function Get-Planet ([string]$Name = '*') {
         $planets = @(
             @{ Name = 'Mercury' }
@@ -102,16 +102,16 @@ In the previous run, our test passed, and if you'd run it again it would pass ag
 
 > 👉 "There should be 8 items in `$allPlanets`."
 
-And there are. 
+And there are.
 
 But how did we know that we want to test for exactly that? Well, we didn't. It was just one example of how we could describe our Solar System. You can try remembering some facts about it and try writing them as tests.
 
-Here are few examples: 
+Here are few examples:
 
-- Earth is the third planet in our Solar System. 
+- Earth is the third planet in our Solar System.
 - Pluto is not part of our Solar System.
 - The planets go in this order: Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune.
-  
+
 
 ```powershell
 It 'Earth is the third planet in our Solar System' {
@@ -131,9 +131,9 @@ It 'Pluto is not part of our Solar System' {
 ```powershell
 It 'Planets have this order: Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune' {
     $allPlanets = Get-Planet
-    $planetsInOrder = $allPlanets.Name -join ', ' 
+    $planetsInOrder = $allPlanets.Name -join ', '
     $planetsInOrder | Should -Be 'Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune'
-} 
+}
 ```
 
 Try adding those tests into your `Get-Planet.Tests.ps1` file. Put them under the other `It` block, but make sure they are placed within the curly braces associated with `Describe`.
@@ -156,7 +156,7 @@ $planets = @(
 ) | ForEach-Object { [PSCustomObject] $_ }
 ```
 
-This will break the assertion that we have in our test, because we no longer return 8 items from the tested function. Instead we now return 9. Running the test, it will no longer pass: 
+This will break the assertion that we have in our test, because we no longer return 8 items from the tested function. Instead we now return 9. Running the test, it will no longer pass:
 
 ```shell-session
 Invoke-Pester -Output Detailed C:\t\Planets\Get-Planet.Tests.ps1
@@ -177,11 +177,11 @@ Tests completed in 183ms
 Tests Passed: 0, Failed: 1, Skipped: 0 NotRun: 0
 ```
 
-The error is: `Expected 8, but got 9.`, this exactly reflects the change that we made to the tested function. We added one more item to the collection of planets, and the test confirms that the function is now broken. 
+The error is: `Expected 8, but got 9.`, this exactly reflects the change that we made to the tested function. We added one more item to the collection of planets, and the test confirms that the function is now broken.
 
 ### Breaking our test, by breaking the test expectation
 
-The change that we just did is not the only change that we can make to break the test. There are other ways to do it. We can change the expected count to be 1, saying that there is just one planet orbiting the Sun, by changing the `Should` to `$allPlanets.Count | Should -Be 1`. This will also break the test: 
+The change that we just did is not the only change that we can make to break the test. There are other ways to do it. We can change the expected count to be 1, saying that there is just one planet orbiting the Sun, by changing the `Should` to `$allPlanets.Count | Should -Be 1`. This will also break the test:
 
 ```shell-session
 Describing Get-Planet
@@ -192,28 +192,28 @@ Describing Get-Planet
 Tests completed in 195ms
 ```
 
-The error is: `Expected 1, but got 8.`, this again reflects exactly what we did in the test, but it no longer reflects the real world. 
+The error is: `Expected 1, but got 8.`, this again reflects exactly what we did in the test, but it no longer reflects the real world.
 
 ### How tests break
 
-If you look closer on how we broke the test, you can see that there are two distinct ways to break it. 
-- The first was that the tested function did not work correctly, this is a good way to break the test. 
-- The second one is when the function works correctly, but the test is incorrect. This is a bad way to break the test. 
+If you look closer on how we broke the test, you can see that there are two distinct ways to break it.
+- The first was that the tested function did not work correctly, this is a good way to break the test.
+- The second one is when the function works correctly, but the test is incorrect. This is a bad way to break the test.
 
 Being able to distinguish between those two is important, when your test breaks keep in mind that either the function, or the tests might be broken. What you usually do is that you look at what changed more recently. If the test is new, and the function existed for a while, you first blame the test. When the test was passing before, but it is not anymore, you first blame the tested function.
 
 
 ## Other keywords
 
-Now that we know about `It`, and `Should`. We can quickly look at the rest of the Pester keywords that we used. 
+Now that we know about `It`, and `Should`. We can quickly look at the rest of the Pester keywords that we used.
 
-### Describe 
+### Describe
 
-This keyword allows you to group tests (represented by `It` blocks) into groups. You can have one or more `Describe`s per file. You can also nest `Describe`s into each other to give your test suite more structure. 
+This keyword allows you to group tests (represented by `It` blocks) into groups. You can have one or more `Describe`s per file. You can also nest `Describe`s into each other to give your test suite more structure.
 
-A similar keyword to `Describe` is `Context`. In almost all cases `Context` can be used interchangeably with `Describe`. Typically the top-level block is a `Describe` that is named after the function that is being tested. And then, if needed, `Context` blocks are used inside of the `Describe` to group tests based on what aspect of the function you are testing. 
+A similar keyword to `Describe` is `Context`. In almost all cases `Context` can be used interchangeably with `Describe`. Typically the top-level block is a `Describe` that is named after the function that is being tested. And then, if needed, `Context` blocks are used inside of the `Describe` to group tests based on what aspect of the function you are testing.
 
-Like this: 
+Like this:
 
 ```powershell
 Describe 'Get-Planet' {
@@ -222,12 +222,12 @@ Describe 'Get-Planet' {
             # ..
         }
 
-        It 'lists them in the correct order' { 
+        It 'lists them in the correct order' {
             # ...
         }
     }
 
-    Context "with -Filter" { 
+    Context "with -Filter" {
         It 'filters based on planet Name' {
             # ...
         }
@@ -236,7 +236,7 @@ Describe 'Get-Planet' {
 ```
 ### BeforeAll
 
-Now that we split the tests into groups we might want to share some common code among those tests. To do this we `BeforeAll` block that will run at the start of the block that contains it, or at the start of the file if not contained in any block. In our example we used it to define the tested function. 
+Now that we split the tests into groups we might want to share some common code among those tests. To do this we `BeforeAll` block that will run at the start of the block that contains it, or at the start of the file if not contained in any block. In our example we used it to define the tested function.
 
 There is also `AfterAll` block that will run at the end of the block, and `BeforeEach / AfterEach` that will run before every test in the given block.
 
@@ -245,7 +245,7 @@ There is also `AfterAll` block that will run at the end of the block, and `Befor
 
 Until now we had just a single file that contained both our tests and the function that's being tested. In real life you want the tested function to be separated from its tests. This way you can run the function, without running the tests with it.
 
-To move the function out of the test we will move it to a separate file, and will [dot-source](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_scripts?view=powershell-7#script-scope-and-dot-sourcing) it back into the `BeforeAll`. To do this create a new file in the same directory as `Get-Planet.Tests.ps1` and call it `Get-Planet.ps1`. Then cut the function from the test file and paste it into the other file: 
+To move the function out of the test we will move it to a separate file, and will [dot-source](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_scripts?view=powershell-7#script-scope-and-dot-sourcing) it back into the `BeforeAll`. To do this create a new file in the same directory as `Get-Planet.Tests.ps1` and call it `Get-Planet.ps1`. Then cut the function from the test file and paste it into the other file:
 
 ```powershell
 # in file Get-Planet.ps1
@@ -267,7 +267,7 @@ function Get-Planet ([string]$Name = '*') {
 
 ```powershell
 # in file Get-Planet.Tests.ps1
-BeforeAll { 
+BeforeAll {
 
 }
 
@@ -279,7 +279,7 @@ Describe 'Get-Planet' {
 }
 ```
 
-If we now run the test, we will see that it breaks, because the function is no longer reachable from the test: 
+If we now run the test, we will see that it breaks, because the function is no longer reachable from the test:
 
 ```shell-session
 Starting discovery in 1 files.
@@ -296,14 +296,14 @@ Tests completed in 214ms
 Tests Passed: 0, Failed: 1, Skipped: 0 NotRun: 0
 ```
 
-The error is `CommandNotFoundException: The term 'Get-Planet' is not recognized as the name of a cmdlet, function, script file, or operable program.`. This is because the function is not defined, and we need to make it available to the test. 
+The error is `CommandNotFoundException: The term 'Get-Planet' is not recognized as the name of a cmdlet, function, script file, or operable program.`. This is because the function is not defined, and we need to make it available to the test.
 
 > 🤷‍♀ If your test still works, try starting a clean PowerShell session, chances are, you played around with the code, and the tested function is still defined in your scope. Starting a new PowerShell window will clean that up.
 
-To get the function back to scope we will dot-source (import) the file inside of `BeforeAll`: 
+To get the function back to scope we will dot-source (import) the file inside of `BeforeAll`:
 
 ```powershell
-BeforeAll { 
+BeforeAll {
     . $PSScriptRoot/Get-Planet.ps1
 }
 

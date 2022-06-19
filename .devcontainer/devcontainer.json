@@ -16,7 +16,8 @@
 	"extensions": [
 		"dbaeumer.vscode-eslint",
 		"silvenon.mdx",
-		"ms-vscode.powershell"
+		"ms-vscode.powershell",
+		"EditorConfig.EditorConfig"
 	],
 
 	// Windows users should clone repo in container volume, WSL2

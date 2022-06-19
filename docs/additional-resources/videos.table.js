@@ -53,7 +53,7 @@ export const videos = [
     url: "https://www.youtube.com/watch?v=gssAtCeMOoo",
   },
   {
-    title: "Pester in  Action - series",
+    title: "Pester in Action - series",
     author: "Kevin Marquett",
     date: "2015-11-11",
     url: "https://www.youtube.com/playlist?list=PLOcTmsj9WHDo2_FfKePLaq_mJTcnW_fEJ",

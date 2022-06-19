@@ -12,7 +12,7 @@ Pester allows users to create their own `Should`-operators for more advanced ass
 This can be an array or a single object depending on whether you register the function with `-SupportsArrayInput`.
 
 When `Should` calls your custom assertion, it will invoke it with the following parameters:
-- **ActualValue**: The value passed to `Should` to assert. 
+- **ActualValue**: The value passed to `Should` to assert.
 - **Negate**: Internal switch/bool parameter used to delcare if the user called `Should -Not ...`.
 - **CallerSessionState**: Used by some internal assertions to invoke code in the user's state. This can usually be ignored.
 - *Remaining bound parameters*, typically matching the parameters your accept in your assertion, like `ExpectedValue`, `Because`, `MyCustomParameter` etc.
@@ -25,11 +25,11 @@ If a problem occurs in your function, ex. it was called with invalid parameters,
 
 :::tip ActualValue is provided as a single parameter
 `Should` accepts the value to assert by pipeline but passes it to the assertion using `-ActualValue $ActualValue`. This means `ValueFromPipelineByPropertyName` is not available inside your function, but you can write your own logic to work with complex types provided to `ActualValue`.
-::: 
+:::
 
 :::caution Using advanced functions as assertions
 Advanced functions, typically enabled by using `[CmdletBinding()]` or `[Parameter()]`, disallows arguments by default. In this scenario, make sure to accept all mandatory parameters in your param-block to avoid errors even if you don't use them. They are `ActualValue`, `Negate` and `CallerSessionState`.
-::: 
+:::
 
 ### Good practices
 
@@ -62,7 +62,7 @@ Add-ShouldOperator -Name BeNumber `
 :::note Maxmimum number of Should operators
 Due to a limitation in PowerShell and the current design on `Should`, Pester is limited to a maximum of 32 Should operators. Pester currently includes 25 built-in operators, which limits how many custom operators you can register in a single session.
 The limitation is tracked in [this issue](https://github.com/pester/Pester/issues/1355)
-::: 
+:::
 
 ## Examples
 
