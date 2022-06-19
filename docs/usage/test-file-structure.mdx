@@ -1,5 +1,6 @@
 ﻿---
 title: Test file structure
+description: Pester uses special keywords and blocks to structure your tests like Describe, Context, It, BeforeAll/-Each etc. See this to learn how they relate and fit together
 ---
 
 Pester test files follow a similar structure. Usually there is some setup to get the tested function imported and a top-level `Describe` block to hold all the tests and child blocks. Inside that `Describe` we will find the tests themselves represented by `It` blocks. Those blocks are often grouped into their own `Describe` or `Context` based on the area of code they are testing. Those groups, can each have their own setups and teardowns represented by `BeforeAll`, `BeforeEach`, `AfterEach` and `AfterAll` blocks.
