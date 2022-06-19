@@ -11,7 +11,7 @@ The fundamental change in this release is that Pester now runs in two phases: Di
 
 **All misplaced code will run during Discovery, and its results won't be available during Run.**
 
-This will allow Pester to control when all of your code is executed, and scope it correctly. This will also keep the amount of code executed during discovery to a minimum. Keeping it fast and responsive. See [Discovery and Run](../usage/discovery-and-run) for details. 
+This will allow Pester to control when all of your code is executed, and scope it correctly. This will also keep the amount of code executed during discovery to a minimum. Keeping it fast and responsive. See [Discovery and Run](../usage/discovery-and-run) for details.
 
 
 ### Put setup in BeforeAll
@@ -74,7 +74,7 @@ Consider settings the check statically into a global read-only variable (much li
 
 ### Review your usage of TestCases
 
-`-TestCases`, much like `-Skip` are evaluated during discovery and saved for later use when the test runs. This means that doing expensive setup for them will be happening every Discovery. On the other hand, you will now find their complete content for each TestCase in `Data` on the result test object. 
+`-TestCases`, much like `-Skip` are evaluated during discovery and saved for later use when the test runs. This means that doing expensive setup for them will be happening every Discovery. On the other hand, you will now find their complete content for each TestCase in `Data` on the result test object.
 
 
 # New result object
@@ -108,7 +108,7 @@ Invoke-Pester -Configuration <PesterConfiguration>
 A mapping of the parameters of the simple interface to the configuration object properties on the advanced interface is:
 
 | Parameter      | Configuration Object Property                        |
-| -----------    | -----------------------------------------------------|
+| -------------- | ---------------------------------------------------- |
 | Path           | Run.Path                                             |
 | ExcludePath    | Run.ExcludePath                                      |
 | Tag            | Filter.Tag                                           |
@@ -123,29 +123,29 @@ A mapping of the parameters of the simple interface to the configuration object 
 
 The following table shows a mapping of v4 Legacy parameters (those which have not been documented under the Simple/Advanced interfaces) to the configuration object
 
-| Parameter                       | Configuration Object Property                          |
-| ------------------------------- | ------------------------------------------------------ |
-| EnableExit                      | Run.Exit                                               |
-| CodeCoverage                    | CodeCoverage.Path                                      |
-| CodeCoverageOutputFile          | CodeCoverage.OutputPath                                |
-| CodeCoverageOutputFileEncoding  | CodeCoverage.OutputEncoding                            |
-| CodeCoverageOutputFileFormat    | CodeCoverage.OutputFormat                              |
-| OutputFile                      | TestResult.OutputPath                                  |
-| OutputFormat                    | TestResult.OutputFormat                                |
-| Show                            | Output.Verbosity (via mapping; see below)              |
+| Parameter                      | Configuration Object Property             |
+| ------------------------------ | ----------------------------------------- |
+| EnableExit                     | Run.Exit                                  |
+| CodeCoverage                   | CodeCoverage.Path                         |
+| CodeCoverageOutputFile         | CodeCoverage.OutputPath                   |
+| CodeCoverageOutputFileEncoding | CodeCoverage.OutputEncoding               |
+| CodeCoverageOutputFileFormat   | CodeCoverage.OutputFormat                 |
+| OutputFile                     | TestResult.OutputPath                     |
+| OutputFormat                   | TestResult.OutputFormat                   |
+| Show                           | Output.Verbosity (via mapping; see below) |
 
 The following table shows the mapping for v4 *Show* property values to the configuration property *Output.Verbosity*:
 
-| *Show* value                    | Configuration Object *Output Verbosity* Property       |
-| ------------------------------- | ------------------------------------------------------ |
-| All                             | Detailed                                               |
-| Default                         | Detailed                                               |
-| Detailed                        | Detailed                                               |
-| Fails                           | Normal                                                 |
-| Diagnostic                      | Diagnostic                                             |
-| Normal                          | Normal                                                 |
-| Minimal                         | Minimal                                                |
-| None                            | None                                                   |
+| *Show* value | Configuration Object *Output Verbosity* Property |
+| ------------ | ------------------------------------------------ |
+| All          | Detailed                                         |
+| Default      | Detailed                                         |
+| Detailed     | Detailed                                         |
+| Fails        | Normal                                           |
+| Diagnostic   | Diagnostic                                       |
+| Normal       | Normal                                           |
+| Minimal      | Minimal                                          |
+| None         | None                                             |
 
 
 ### Implicit parameters for TestCases

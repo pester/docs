@@ -327,7 +327,7 @@ Checks if an exception was thrown in the input ScriptBlock. Takes an optional ar
 { throw "bar" } | Should -Throw "This is a test" # Test will fail
 ```
 
-Note: The exception message match is a `-like` 
+Note: The exception message match is a `-like`
 [wildcard match](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_comparison_operators?view=powershell-7#matching-operators),
 so the following assertion will pass:
 

@@ -5,20 +5,20 @@ title: Importing tested functions
 > Migrating from Pester v4? Jump to [Migrating from Pester v4](#migrating-from-pester-v4).
 
 
-### Importing the tested functions 
+### Importing the tested functions
 
-Pester tests are placed in `.Tests.ps1` file, for example `Get-Emoji.Tests.ps1`. The code is placed in `Get-Emoji.ps1`. 
+Pester tests are placed in `.Tests.ps1` file, for example `Get-Emoji.Tests.ps1`. The code is placed in `Get-Emoji.ps1`.
 
 To make the tested code available to the test we need to import the code file. This is done by dot-sourcing the file into the current scope like this:
 
 ```powershell
 # at the top of Get-Emoji.Tests.ps1
-BeforeAll { 
+BeforeAll {
     . $PSScriptRoot/Get-Emoji.ps1
 }
 ```
 
-This code will locate the `Get-Emoji.ps1` file, which is placed in the same directory as `Get-Emoji.Tests.ps1` and import it into the test by dot-sourcing it. 
+This code will locate the `Get-Emoji.ps1` file, which is placed in the same directory as `Get-Emoji.Tests.ps1` and import it into the test by dot-sourcing it.
 
 Alternatively `$PSCommandPath` can be used to get the name of the code file by convention:
 
@@ -60,7 +60,7 @@ Describe "Get-Cactus" {
 ```
 
 ```powershell
-AFTER (Pester v5): 
+AFTER (Pester v5):
 
 BeforeAll {
     # DON'T use $MyInvocation.MyCommand.Path
@@ -74,7 +74,7 @@ Describe "Get-Cactus" {
 }
 ```
 
-### Using `$MyInvocation.MyCommand.Path` in other code 
+### Using `$MyInvocation.MyCommand.Path` in other code
 
 `$MyInvocation.MyCommand.Path` can be used in other parts of your code, just not in `BeforeAll`. If you module uses it, then it will continue to work even when used with Pester 5. The breaking change in Pester is because the `$here\$sut` snippet relies on the fact that it runs directly in the script, which is no longer true when placed in `BeforeAll`. This problem is not specific to `BeforeAll`, running `$MyInvocation.MyCommand.Path` in any function will make the Path property undefined:
 
@@ -84,7 +84,7 @@ Describe "Get-Cactus" {
 function f () { "in function: -$($MyInvocation.MyCommand.Path)-" }
 f
 
-# output: 
+# output:
 in script: -C:\temp\script.ps1-
 in function: --
 ```

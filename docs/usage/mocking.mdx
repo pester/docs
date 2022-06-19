@@ -35,15 +35,15 @@ BeforeAll{
     function Build ($version) {
         Write-Host "a build was run for version: $version"
     }
-    
+
     function Get-Version{
         return 'Version'
     }
-    
+
     function Get-NextVersion {
         return 'NextVersion'
     }
-    
+
     function BuildIfChanged {
         $thisVersion = Get-Version
         $nextVersion = Get-NextVersion
@@ -58,14 +58,14 @@ Describe "BuildIfChanged" {
             Mock Get-Version {return 1.1}
             Mock Get-NextVersion {return 1.2}
             Mock Build {} -Verifiable -ParameterFilter {$version -eq 1.2}
-    
+
             $result = BuildIfChanged
         }
 
         It "Builds the next version" {
             Should -InvokeVerifiable
         }
-        
+
         It "returns the next version number" {
             $result | Should -Be 1.2
         }
@@ -75,7 +75,7 @@ Describe "BuildIfChanged" {
             Mock Get-Version { return 1.1 }
             Mock Get-NextVersion { return 1.1 }
             Mock Build {}
-    
+
             $result = BuildIfChanged
         }
 

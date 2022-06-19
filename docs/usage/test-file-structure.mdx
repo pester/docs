@@ -2,12 +2,12 @@
 title: Test file structure
 ---
 
-Pester test files follow a similar structure. Usually there is some setup to get the tested function imported and a top-level `Describe` block to hold all the tests and child blocks. Inside that `Describe` we will find the tests themselves represented by `It` blocks. Those blocks are often grouped into their own `Describe` or `Context` based on the area of code they are testing. Those groups, can each have their own setups and teardowns represented by `BeforeAll`, `BeforeEach`, `AfterEach` and `AfterAll` blocks. 
+Pester test files follow a similar structure. Usually there is some setup to get the tested function imported and a top-level `Describe` block to hold all the tests and child blocks. Inside that `Describe` we will find the tests themselves represented by `It` blocks. Those blocks are often grouped into their own `Describe` or `Context` based on the area of code they are testing. Those groups, can each have their own setups and teardowns represented by `BeforeAll`, `BeforeEach`, `AfterEach` and `AfterAll` blocks.
 
 ## Simple test file
 
-This test file is a simple as it can be. We have a `BeforeAll` setup placed at the top of the file to import the tested function from its own file. Followed by a top-level `Describe` block called "Get-Emoji" because that is the function we are testing. Inside of that `Describe` block we have a single test represented by an `It` block. This block will run and will either pass or fail to represent the result of the test. 
- 
+This test file is a simple as it can be. We have a `BeforeAll` setup placed at the top of the file to import the tested function from its own file. Followed by a top-level `Describe` block called "Get-Emoji" because that is the function we are testing. Inside of that `Describe` block we have a single test represented by an `It` block. This block will run and will either pass or fail to represent the result of the test.
+
 ```powershell
 # file Get-Emoji.Tests.ps1
 
@@ -29,10 +29,10 @@ Put all your code into `It`, `BeforeAll`, `BeforeEach`, `AfterAll` or `AfterEach
 All misplaced code will run during Discovery, and its results won't be available during Run which will lead to confusing results.
 
 See [Discovery and Run](discovery-and-run).
-::: 
+:::
 ## More complex file
 
-In this file we are using more features of Pester and organize our tests into more groups based on what we are testing. Each group is represented by a `Describe` or `Context` block. Within those groups we are specifying distinct setups represented by `BeforeAll` that will run at the start of the `Describe` (or `Context`) that contains them. Specifically we use the setup to run the tested function once per group of tests to ensure that the whole group uses the same filter. This avoids typos and copy paste errors. 
+In this file we are using more features of Pester and organize our tests into more groups based on what we are testing. Each group is represented by a `Describe` or `Context` block. Within those groups we are specifying distinct setups represented by `BeforeAll` that will run at the start of the `Describe` (or `Context`) that contains them. Specifically we use the setup to run the tested function once per group of tests to ensure that the whole group uses the same filter. This avoids typos and copy paste errors.
 
 ```powershell
 # file Get-Emoji.Tests.ps1
@@ -54,7 +54,7 @@ Describe "Get-Emoji" {
 
     Context "Lookup by wildcard" {
         Context "by prefix" {
-            BeforeAll { 
+            BeforeAll {
                 $emojis = Get-Emoji -Name pen*
             }
 
@@ -66,13 +66,13 @@ Describe "Get-Emoji" {
                 $emojis | Should -Contain "🐧"
             }
 
-            It "Returns 😔 (pensive)" { 
+            It "Returns 😔 (pensive)" {
                 $emojis | Should -Contain "😔"
             }
         }
 
         Context "by contains" {
-            BeforeAll { 
+            BeforeAll {
                 $emojis = Get-Emoji -Name *smiling*
             }
 
@@ -92,13 +92,13 @@ Describe "Get-Emoji" {
 }
 ```
 
-Each of the groups could also use an `AfterAll` block which would clean up after the tests. This is referred to as teardown. The `AfterAll` block is guaranteed to run even if tests fail. 
+Each of the groups could also use an `AfterAll` block which would clean up after the tests. This is referred to as teardown. The `AfterAll` block is guaranteed to run even if tests fail.
 
 Additionally we could also have a `BeforeEach` or `AfterEach` block. Those blocks work just like the `*All` blocks, but the code would run before and after each `It`.  See [Setup and teardown](setup-and-teardown) for more info.
 
 
 :::tip Describe vs. Context
-In almost all cases it does not matter if you use `Describe` or `Context`. They behave the same and are the same function internally. There are only two places where we distinguish them: 
+In almost all cases it does not matter if you use `Describe` or `Context`. They behave the same and are the same function internally. There are only two places where we distinguish them:
 
 - On `Mock` when `-Scope Describe` or `-Scope Context` is used.
 - In output, when the block information is written to screen.
@@ -127,7 +127,7 @@ Describe "Get-Emoji" {
 
     Context "Lookup by wildcard" {
         Context "by prefix" {
-            BeforeAll { 
+            BeforeAll {
                 $emojis = Get-Emoji -Name pen*
             }
 
@@ -141,7 +141,7 @@ Describe "Get-Emoji" {
         }
 
         Context "by contains" {
-            BeforeAll { 
+            BeforeAll {
                 $emojis = Get-Emoji -Name *smiling*
             }
 
@@ -167,11 +167,11 @@ You for example might notice that "by prefix" and "by contains" are very similar
 
 Take the examples below as a list of things you might need when you can't avoid them. Not as a list of things that you need to use in all of your tests to get "Advanced Pester user" achievement unlocked. Less is more.
 
-### Test script parameters 
+### Test script parameters
 
-Passing parameters using the PowerShell `param()` block to provide external data to the `.Tests.ps1` file: 
+Passing parameters using the PowerShell `param()` block to provide external data to the `.Tests.ps1` file:
 
-```powershell 
+```powershell
 param (
     $File
 )
@@ -185,13 +185,13 @@ See [Data driven tests](data-driven-tests#providing-external-data-to-tests).
 
 ### Expanding data to generate `Describe` and `Context` blocks
 
-Much like on `It`, You can use `-ForEach` on `Describe` and `Context` to repeat it for every item in the provided array: 
+Much like on `It`, You can use `-ForEach` on `Describe` and `Context` to repeat it for every item in the provided array:
 
 ```powershell
-BeforeDiscovery { 
+BeforeDiscovery {
     $files = @(
         "Get-Emoji.ps1",
-        "Get-Planet.ps1" 
+        "Get-Planet.ps1"
     )
 }
 
@@ -205,7 +205,7 @@ This can be paired with the test script parameters to generate tests based on ex
 See [Data driven tests](data-driven-tests).
 
 
-### `BeforeDiscovery`  
+### `BeforeDiscovery`
 
 In Pester5 the mantra is to put all code in Pester controlled blocks. No code should be directly in the script, or directly in `Describe` or `Context` block without wrapping it in some other block.
 
