@@ -6,7 +6,7 @@
  *
  * PlEASE NOTE:
  * The API pages for pester-docs are generated using the
- * Alt3.Docusaurus.Powershell module. It takes the Get-Help
+ * Alt3.Docusaurus.PowerShell module. It takes the Get-Help
  * information produced by the Pester module and uses it to
  * 1) generate .mdx files with the required Docusaurus (markdown)
  *    front matter variables for each of the exported module
@@ -14,7 +14,7 @@
  * 2) generate a sidebar file containing references to each
  *    command page (/docs/commands/docusaurus.sidebar.js)
  *
- * To regenerate all API pages, run the following Powershell
+ * To regenerate all API pages, run the following PowerShell
  * command inside the root directory of this repo
  *
  * New-DocusaurusHelp -Module Pester -OutputFolder "docs" -Sidebar "commands" -Verbose

@@ -152,7 +152,7 @@ export const articles = [
     url: "https://www.sapien.com/blog/2016/06/13/how-to-run-a-pester-test",
   },
   {
-    title: "Testing Active Directory with Pester and Powershell",
+    title: "Testing Active Directory with Pester and PowerShell",
     author: "Mark Wragg",
     date: "2016-06-13",
     url: "http://wragg.io/testing-active-directory-with-pester-and-powershell/",
@@ -355,7 +355,7 @@ export const articles = [
   },
   {
     title:
-      "Configure and test windows infrastructure using Powershell technologies DSC and Pester running from Chef and Test-Kitchen",
+      "Configure and test windows infrastructure using PowerShell technologies DSC and Pester running from Chef and Test-Kitchen",
     author: "Matt Wrock",
     date: "2014-10-13",
     url:

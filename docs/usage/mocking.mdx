@@ -168,7 +168,7 @@ Set-Alias ipj Invoke-PesterJob
 
 ### Mocking a native application
 
-Mocking native commands can be done in a similar way as Powershell functions/cmdlets. The major difference is that native commands don't provide named parameters for us to use inside the mock scriptblock or in a ParameterFilter, so you'd have to rely on arguments made available using `$args`.
+Mocking native commands can be done in a similar way as PowerShell functions/cmdlets. The major difference is that native commands don't provide named parameters for us to use inside the mock scriptblock or in a ParameterFilter, so you'd have to rely on arguments made available using `$args`.
 
 ```powershell
 Describe 'Mocking native commands' {

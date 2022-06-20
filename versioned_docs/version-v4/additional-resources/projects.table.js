@@ -20,7 +20,7 @@ export const projects = [
     url: "https://github.com/PowerShellModules/PesterHelpers",
   },
   {
-    title: "PowershellGuard",
+    title: "PowerShellGuard",
     author: "Steven Murawski",
     url: "https://github.com/smurawski/PowerShellGuard",
   },

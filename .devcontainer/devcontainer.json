@@ -1,6 +1,6 @@
 // For format details, see https://aka.ms/vscode-remote/devcontainer.json
 {
-	"name": "Node.js w/Powershell",
+	"name": "Node.js w/PowerShell",
 	"build": {
 		"dockerfile": "Dockerfile",
 		// Update 'VARIANT' to pick a Node version: 12, 14, 16
