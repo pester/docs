@@ -159,13 +159,14 @@ Describe "Get-FruitBasket" {
 
 Describe "Get-FruitBasket" {
     Context "Fruit <_>" -ForEach '🍎','🍌','🥝','🥑','🍇','🍐' {
-    It "Contains <_> by default" {
-        Get-FruitBasket | Should -Contain $_
-    }
+        It "Contains <_> by default" {
+            Get-FruitBasket | Should -Contain $_
+        }
 
-    It "Can remove <_> from the basket" {
-        Remove-FruitBasket -Item $_
-        Get-FruitBasket | Should -NotContain $_
+        It "Can remove <_> from the basket" {
+            Remove-FruitBasket -Item $_
+            Get-FruitBasket | Should -NotContain $_
+        }
     }
 }
 ```
