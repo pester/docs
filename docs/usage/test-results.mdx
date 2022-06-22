@@ -65,9 +65,13 @@ test_script:
         }
 ```
 
-**Note**: `if` check with `throw` is used to fail the build, if any tests are failing.
+:::note
+`if` check with `throw` is used to fail the build, if any tests are failing.
+:::
 
-**Note**: If tests write anything to the pipeline, then `$res` object will contain it as well.  Be careful!
+:::note
+If tests write anything to the pipeline, then `$res` object will contain it as well.  Be careful!
+:::
 
 **That's it! May all your tests be green!**
 
@@ -88,4 +92,6 @@ Invoke-Pester -Script $(System.DefaultWorkingDirectory)\MyFirstModule.test.ps1 -
 
 Then add a Publish Test Results task, it is important to change the Test Result format to NUnit to allow Azure DevOps to ingest the output file.
 
-**Note** Using the Azure PowerShell task doesn't require you to enable the control option of "Continue on error" before the publish test results. If you use one of the Pester Marketplace tools your mileage may vary.
+:::note
+Using the Azure PowerShell task doesn't require you to enable the control option of "Continue on error" before the publish test results. If you use one of the Pester Marketplace tools your mileage may vary.
+:::
