@@ -14,7 +14,7 @@ The most common usage of data driven tests is providing multiple examples to a s
 To define examples for a test, use `-ForEach` on an `It` block. On `It` block the parameter is also aliased `-TestCases` for backwards compatibility.
 
 The data are provided as an array of hashtables:
-```
+```powershell
 Describe "Get-Emoji" {
     It "Returns <expected> (<name>)" -ForEach @(
         @{ Name = "cactus"; Expected = '🌵'}
@@ -363,7 +363,7 @@ $x = 1
 
 `.Tests.ps1` script is a PowerShell script as any other and you can use the `param` block in it. This is very useful when reusing a single test file with multiple data sets. For example when writing a generic test suite that ensures that correct style is used in a given script file:
 
-```
+```powershell
 # in CodingStyle.Tests.ps1
 
 param (

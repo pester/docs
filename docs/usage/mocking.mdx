@@ -161,7 +161,6 @@ function Invoke-PesterJob
     Receive-Job -Wait -AutoRemoveJob
 }
 Set-Alias ipj Invoke-PesterJob
-
 ```
 [Source](https://github.com/pester/Pester/issues/797#issuecomment-314495326)
 
@@ -255,7 +254,6 @@ Describe "d" {
 Counting mocks depends on where the assertion is placed. In `It`, `BeforeEach` and `AfterEach` it defaults to `It` scope. In `Describe`, `Context`, `BeforeAll` and `AfterAll`, it default to `Describe` or `Context` based on the command that contains them. The default can still be overriden by specifying `-Scope` parameter.
 
 ```powershell
-
 Describe "d" {
 
     BeforeAll {

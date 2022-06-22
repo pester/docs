@@ -46,7 +46,7 @@ To enable TLS 1.2 for the current PowerShell instance, you can run the following
 
 If you need to remove the built-in version of Pester on your machine, you can do so by executing the following code:
 
-```
+```powershell
 $module = "C:\Program Files\WindowsPowerShell\Modules\Pester"
 takeown /F $module /A /R
 icacls $module /reset
