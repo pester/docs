@@ -46,7 +46,7 @@ Pester v4 users might be inclined not to use the `BeforeAll` block or to use `$M
 
 In Pester v5 the setup code should be put into a `BeforeAll` block, and `$MyInvocation.MyCommand.Path` should *NOT* be used:
 
-```PowerShell
+```powershell
 # BEFORE (Pester v4):
 
 $here = Split-Path -Parent $MyInvocation.MyCommand.Path

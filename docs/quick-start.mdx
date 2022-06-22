@@ -34,8 +34,8 @@ results in CI pipeline.
 To install Pester it is usually enough to just do `Install-Module Pester -Force`. And then follow it by
 `Import-Module Pester -PassThru`. This is the output you should see in the console:
 
-```shell-session
-C:\> Import-Module Pester -Passthru
+```powershell
+Import-Module Pester -Passthru
 
 ModuleType Version    PreRelease Name
 ---------- -------    ---------- ----
@@ -82,7 +82,7 @@ This code uses multiple Pester keywords, and we will go over them in detail soon
 
 In your console run `Invoke-Pester -Output Detailed C:\t\Planets\Get-Planet.Tests.ps1`:
 
-```shell-session
+```
 Starting discovery in 1 files.
 Discovering in C:\t\Planets\Get-Planet.Tests.ps1.
 Found 1 tests. 41ms
@@ -159,7 +159,7 @@ $planets = @(
 
 This will break the assertion that we have in our test, because we no longer return 8 items from the tested function. Instead we now return 9. Running the test, it will no longer pass:
 
-```shell-session
+```
 Invoke-Pester -Output Detailed C:\t\Planets\Get-Planet.Tests.ps1
 
 
@@ -184,7 +184,7 @@ The error is: `Expected 8, but got 9.`, this exactly reflects the change that we
 
 The change that we just did is not the only change that we can make to break the test. There are other ways to do it. We can change the expected count to be 1, saying that there is just one planet orbiting the Sun, by changing the `Should` to `$allPlanets.Count | Should -Be 1`. This will also break the test:
 
-```shell-session
+```
 Describing Get-Planet
   [-] Given no parameters, it lists all 8 planets 25ms (21ms|4ms)
    Expected 1, but got 8.
@@ -282,7 +282,7 @@ Describe 'Get-Planet' {
 
 If we now run the test, we will see that it breaks, because the function is no longer reachable from the test:
 
-```shell-session
+```
 Starting discovery in 1 files.
 Discovering in C:\t\Planets\Get-Planet.Tests.ps1.
 Found 1 tests. 14ms
@@ -316,7 +316,7 @@ Describe 'Get-Planet' {
 }
 ```
 
-```shell-session
+```
 Invoke-Pester -Output Detailed C:\t\Planets\Get-Planet.Tests.ps1
 
 

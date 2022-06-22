@@ -202,7 +202,7 @@ Remove-Item $actual
 $actual | Should -Exist # Test will fail
 ```
 
-To test path containing `[ ]` wildcards, escape each bracket with two back-ticks as such ````"TestDrive:\``[test``].txt"```` or use `Test-Path -LiteralPath $something | Should -Be $true`.
+To test path containing `[ ]` wildcards, escape each bracket with two back-ticks as such `"TestDrive:\``[test``].txt"` or use `Test-Path -LiteralPath $something | Should -Be $true`.
 
 ### FileContentMatch
 
@@ -216,21 +216,25 @@ Set-Content -Path TestDrive:\file.txt -Value 'I am a file'
 'TestDrive:\file.txt' | Should -FileContentMatch 'I Am Not' # Test will fail
 ```
 
-**Tip:** Use ```[regex]::Escape("pattern")``` to match the exact text.
+:::tip
+Use `[regex]::Escape("pattern")` to match the exact text.
 
 ```powershell
 Set-Content -Path TestDrive:\file.txt -Value 'I am a file.'
 'TestDrive:\file.txt' | Should -FileContentMatch 'I.am.a.file' # Test will pass
 'TestDrive:\file.txt' | Should -FileContentMatch ([regex]::Escape('I.am.a.file')) # Test will fail
 ```
+:::
 
-**Warning:** Make sure the input is either a quoted string or an Item object. Otherwise PowerShell will try to invoke the
-path, likely throwing an error ```Cannot run a document in the middle of a pipeline```.
+:::caution
+Make sure the input is either a quoted string or an Item object. Otherwise PowerShell will try to invoke the
+path, likely throwing an error `Cannot run a document in the middle of a pipeline`.
 
 ```powershell
 c:\file.txt |  Should -FileContentMatch something # Will throw an error
 'c:\file.txt' |  Should -FileContentMatch something # Will evaluate correctly
 ```
+:::
 
 ### FileContentMatchExactly
 
@@ -299,12 +303,14 @@ Uses a regular expression to compare two objects. This comparison is not case se
 "I am a value" | Should -Match "I am a bad person" # Test will fail
 ```
 
-**Tip:** Use ```[regex]::Escape("pattern")``` to match the exact text.
+:::tip
+Use `[regex]::Escape("pattern")` to match the exact text.
 
 ```powershell
 "Greg" | Should -Match ".reg" # Test will pass
 "Greg" | Should -Match ([regex]::Escape(".reg")) # Test will fail
 ```
+:::
 
 ### MatchExactly
 
@@ -328,21 +334,30 @@ Checks if an exception was thrown in the input ScriptBlock. Takes an optional ar
 { throw "bar" } | Should -Throw "This is a test" # Test will fail
 ```
 
-Note: The exception message match is a `-like`
+:::info
+The exception message match is a `-like`
 [wildcard match](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_comparison_operators?view=powershell-7#matching-operators),
 so the following assertion will pass:
 
 ```powershell
 {throw "foo bar baz"} | Should -Throw "*bar*" # Test will pass
 ```
+:::
 
-**Warning:** The input object must be a ScriptBlock, otherwise it is processed outside of the assertion.
+:::caution
+The input object must be a ScriptBlock, otherwise it is processed outside of the assertion.
 
 ```powershell
 Get-Process -Name "process" -ErrorAction Stop  | Should -Throw # Should pass but fails the test
 ```
+:::
 
-**NOTE:** `Throw` is used to validate terminating errors (i.e. exceptions that were thrown).
+
+:::tip
+`Throw` is used to validate terminating errors (i.e. exceptions that were thrown).
 If you want to perform validation against non-terminating errors (i.e. `Write-Error` messages), you can [use the technique described here](https://github.com/pester/Pester/issues/366#issuecomment-489377880).
+:::
 
-**NOTE:** If you are calling a cmdlet and want to force all errors to be terminating errors so that they can be caught by `| -Should -Throw`, then append `-ErrorAction Stop` to the cmdlet parameters as shown in the example above.
+:::tip
+If you are calling a cmdlet and want to force all errors to be terminating errors so that they can be caught by `| -Should -Throw`, then append `-ErrorAction Stop` to the cmdlet parameters as shown in the example above.
+:::

@@ -77,7 +77,7 @@ Notice that in this example test script, all calls to [Mock](../commands/Mock) a
 
 When you write your test script this way, you can mock commands that are called by the module's internal functions.  However, your test script is still limited to accessing the public, exported members of the module.  If you wanted to write a unit test that calls Build directly, for example, it wouldn't work using the above technique.  That's where the second approach to script module testing comes into play.  With Pester 3.0's `InModuleScope` command, you can cause entire sections of your test script to execute inside the targeted script module.  This gives you access to non-exported members of the module.  For example:
 
-```posh
+```powershell
 Import-Module MyModule
 
 Describe "Unit testing the module's internal Build function:" {

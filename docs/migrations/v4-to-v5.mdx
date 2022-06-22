@@ -89,7 +89,7 @@ To use your current CI pipeline with the new object use `ConvertTo-Pester4Result
 
 `Invoke-Pester` is extremely bloated in Pester4. Some of the parameters consume hashtables that I always have to google, and some of the names don't make sense anymore. In Pester5 I aimed to simplify this interface and get rid of the hashtables. Right now I landed on two vastly different apis. With a big hole in the middle that still remains to be defined. There is the Simple interface that looks like this:
 
-```
+```powershell
 Invoke-Pester -Path <String[]>
               -ExcludePath <String[]>
               -Tag <String[]>
@@ -102,7 +102,7 @@ Invoke-Pester -Path <String[]>
 
 And the Advanced interface that takes just Pester configuration object and nothing else:
 
-```
+```powershell
 Invoke-Pester -Configuration <PesterConfiguration>
 ```
 

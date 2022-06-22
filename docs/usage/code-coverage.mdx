@@ -116,7 +116,6 @@ Invoke-Pester -CodeCoverage '$(System.DefaultWorkingDirectory)\TheScript.ps1' -C
 Then, add a Publish Code Coverage Result task to your pipeline. It is important to set the Path To Source Files option so that Azure DevOps to will auto-create HTML reports that can be ingested and displayed by the pipeline.
 
 ```yaml
-
 - task: PublishCodeCoverageResults@1
   inputs:
     codeCoverageTool: 'JaCoCo'

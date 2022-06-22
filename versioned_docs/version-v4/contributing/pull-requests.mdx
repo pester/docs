@@ -152,11 +152,11 @@ In order to propose a new function to be added to Pester, we ask that you:
    - Ensure your code works on PowerShell versions 2-5.
    - Run the Pester test suite.
 
-        ````powershell
-            Get-Module Pester | Remove-Module
-            Import-Module .\Pester.psd1
-            Invoke-Pester -Path 'C:\Program Files\WindowsPowerShell\Modules\Pester\Functions'
-        ````
+        ```powershell
+        Get-Module Pester | Remove-Module
+        Import-Module .\Pester.psd1
+        Invoke-Pester -Path 'C:\Program Files\WindowsPowerShell\Modules\Pester\Functions'
+        ```
 
 6. Commit the change.
 7. Submit a pull request.
