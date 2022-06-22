@@ -29,7 +29,11 @@ Pester v5 takes this to the next level and manipulates the execution of your tes
 
 Take for example this test file. When executed it will discover two tests inside of this file, and run them:
 
-```powershell
+import GetEmoji from './_GetEmoji.mdx';
+
+<GetEmoji />
+
+```powershell title="Get-Emoji.Tests.ps1"
 BeforeAll {
     . $PSCommandPath.Replace('.Tests.ps1','.ps1')
 }
