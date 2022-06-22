@@ -88,7 +88,7 @@ Describe "Get-Emoji cactus" {
     }
 
     It "Has kind Plant" {
-        Get-Emoji -Name cactus | Should -Be 'Plant'
+        Get-Emoji -Name cactus | Get-EmojiKind | Should -Be 'Plant'
     }
 }
 
@@ -98,7 +98,7 @@ Describe "Get-Emoji giraffe" {
     }
 
     It "Has kind Animal" {
-        Get-Emoji -Name giraffe | Should -Be 'Animal'
+        Get-Emoji -Name giraffe | Get-EmojiKind | Should -Be 'Animal'
     }
 }
 ```
@@ -114,13 +114,14 @@ Describe "Get-Emoji <name>" -ForEach @(
         Symbol = '🌵';
         Kind = 'Plant'
         Runes = @(
-            @{ Index = 0; Rune = 127797 }
+            @{ Index = 0; Rune = 55356 }
+            @{ Index = 1; Rune = 57141 }
         )
     }
     @{
         Name = "pencil"
         Symbol = '✏️'
-        Kind = 'Animal'
+        Kind = 'Item'
         Runes = @(
             @{ Index = 0; Rune = 9999 }
             @{ Index = 1; Rune = 65039 }
@@ -138,7 +139,7 @@ Describe "Get-Emoji <name>" -ForEach @(
     Context "Runes (each character in multibyte emoji)" -ForEach $runes {
         It "Has rune <rune> on index <index>" {
             $actual = @((Get-Emoji -Name $name).EnumerateRunes())
-            $actual[$index].Value | Should -Be $rune
+            $actual[$index] | Should -Be $rune
         }
     }
 }
@@ -165,7 +166,7 @@ Describe "Get-FruitBasket" {
 
         It "Can remove <_> from the basket" {
             Remove-FruitBasket -Item $_
-            Get-FruitBasket | Should -NotContain $_
+            Get-FruitBasket | Should -Not -Contain $_
         }
     }
 }
