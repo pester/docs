@@ -1,19 +1,10 @@
 <details>
-<summary>Required code for samples</summary>
+<summary>Required code for samples (PowerShell 6 or later)</summary>
 This module is required for the Emoji and Fruit tests below. Copy and paste this in your console before running the tests.
 
 ```powershell
 Get-Module PesterDemoFunctions | Remove-Module
 New-Module PesterDemoFunctions -ScriptBlock {
-    class PesterEmoji {
-        [string]$Name
-        [string]$Symbol
-        [string]$Kind
-        [string]ToString() { return $this.Symbol }
-        [char[]]EnumerateRunes() { return $this.Symbol.ToCharArray() }
-        [bool]Equals($object) { return $object -is [string] -and $this.Symbol -eq $object }
-    }
-
     $emojis = @(
         @{ Name = 'apple'; Symbol = '🍎'; Kind = 'Fruit' }
         @{ Name = 'beaming face with smiling eyes'; Symbol = '😁'; Kind = 'Face' }
@@ -24,19 +15,19 @@ New-Module PesterDemoFunctions -ScriptBlock {
         @{ Name = 'pensive'; Symbol = '😔'; Kind = 'Face' }
         @{ Name = 'slightly smiling face'; Symbol = '🙂'; Kind = 'Face' }
         @{ Name = 'smiling face with smiling eyes'; Symbol = '😊'; Kind = 'Face' }
-    ) | ForEach-Object { [PesterEmoji] $_ }
+    ) | ForEach-Object { [PSCustomObject]$_ }
 
     function Get-Emoji ([string]$Name = '*') {
-        $script:emojis | Where-Object { $_.Name -like $Name }
+        $script:emojis | Where-Object Name -like $Name | ForEach-Object Symbol
     }
 
     function Get-EmojiKind {
         param(
             [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
-            [PesterEmoji]$Emoji
+            [string]$Emoji
         )
         process {
-            $Emoji.Kind
+            $script:emojis | Where-Object Symbol -eq $Emoji | Foreach-Object Kind
         }
     }
 
@@ -48,14 +39,14 @@ New-Module PesterDemoFunctions -ScriptBlock {
 
     function Remove-FruitBasket {
         param(
-          [Parameter(Mandatory=$true)]
-          [string]$Item
+            [Parameter(Mandatory = $true)]
+            [string]$Item
         )
         $script:fruitBasket.Remove($Item)
     }
 
     function Reset-FruitBasket {
-      $script:fruitBasket = [System.Collections.ArrayList]@('🍎','🍌','🥝','🥑','🍇','🍐')
+        $script:fruitBasket = [System.Collections.ArrayList]@('🍎','🍌','🥝','🥑','🍇','🍐')
     }
 } | Import-Module
 ```

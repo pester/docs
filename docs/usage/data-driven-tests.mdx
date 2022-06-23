@@ -119,8 +119,7 @@ Describe "Get-Emoji <name>" -ForEach @(
         Symbol = '🌵';
         Kind = 'Plant'
         Runes = @(
-            @{ Index = 0; Rune = 55356 }
-            @{ Index = 1; Rune = 57141 }
+            @{ Index = 0; Rune = 127797 }
         )
     }
     @{
@@ -144,7 +143,7 @@ Describe "Get-Emoji <name>" -ForEach @(
     Context "Runes (each character in multibyte emoji)" -ForEach $runes {
         It "Has rune <rune> on index <index>" {
             $actual = @((Get-Emoji -Name $name).EnumerateRunes())
-            $actual[$index] | Should -Be $rune
+            $actual[$index].Value | Should -Be $rune
         }
     }
 }
@@ -173,6 +172,9 @@ Describe "Get-FruitBasket" {
             Remove-FruitBasket -Item $_
             Get-FruitBasket | Should -Not -Contain $_
         }
+    }
+    AfterAll {
+        Reset-FruitBasket
     }
 }
 ```
