@@ -14,6 +14,11 @@ The most common usage of data driven tests is providing multiple examples to a s
 To define examples for a test, use `-ForEach` on an `It` block. On `It` block the parameter is also aliased `-TestCases` for backwards compatibility.
 
 The data are provided as an array of hashtables:
+
+import PesterDemoFunctions from './_PesterDemoFunctions.mdx';
+
+<PesterDemoFunctions />
+
 ```powershell
 Describe "Get-Emoji" {
     It "Returns <expected> (<name>)" -ForEach @(
@@ -88,7 +93,7 @@ Describe "Get-Emoji cactus" {
     }
 
     It "Has kind Plant" {
-        Get-Emoji -Name cactus | Should -Be 'Plant'
+        Get-Emoji -Name cactus | Get-EmojiKind | Should -Be 'Plant'
     }
 }
 
@@ -98,7 +103,7 @@ Describe "Get-Emoji giraffe" {
     }
 
     It "Has kind Animal" {
-        Get-Emoji -Name giraffe | Should -Be 'Animal'
+        Get-Emoji -Name giraffe | Get-EmojiKind | Should -Be 'Animal'
     }
 }
 ```
@@ -120,7 +125,7 @@ Describe "Get-Emoji <name>" -ForEach @(
     @{
         Name = "pencil"
         Symbol = '✏️'
-        Kind = 'Animal'
+        Kind = 'Item'
         Runes = @(
             @{ Index = 0; Rune = 9999 }
             @{ Index = 1; Rune = 65039 }
@@ -165,8 +170,11 @@ Describe "Get-FruitBasket" {
 
         It "Can remove <_> from the basket" {
             Remove-FruitBasket -Item $_
-            Get-FruitBasket | Should -NotContain $_
+            Get-FruitBasket | Should -Not -Contain $_
         }
+    }
+    AfterAll {
+        Reset-FruitBasket
     }
 }
 ```
