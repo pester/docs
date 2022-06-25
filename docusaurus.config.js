@@ -37,7 +37,7 @@ module.exports = {
         },
         {
           label: 'GitHub',
-          href: 'https://github.com/pester/pester',
+          href: 'https://github.com/pester/docs',
           position: 'right',
         },
         {
@@ -117,7 +117,7 @@ module.exports = {
           items: [
             {
               label: 'GitHub',
-              href: 'https://github.com/pester/pester',
+              href: 'https://github.com/sponsors/nohwnd',
             },
             {
               label: 'Open Collective',
