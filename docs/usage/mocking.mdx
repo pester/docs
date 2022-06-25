@@ -171,20 +171,23 @@ Mocking native commands can be done in a similar way as Powershell functions/cmd
 
 ```powershell
 Describe 'Mocking native commands' {
-    It "Mock bash" {
+    It 'Mock bash' {
+        # Windows PowerShell has curl -> Invoke-WebRequest alias. Removing to make sample cross-platform
+        while (Test-Path Alias:curl) { Remove-Item Alias:curl }
+
         function GetHTTPHeader ($url) {
             & curl --url $url `
-            -I
+                -I
         }
 
         Mock curl { Write-Warning "$args" }
 
-        GetHTTPHeader -url "https://google.com"
+        GetHTTPHeader -url 'https://google.com'
 
-        Should -Invoke -CommandName "curl" -Exactly -Times 1 -ParameterFilter { $args[0] -eq '--url' -and $args[1] -eq 'https://google.com'}
+        Should -Invoke -CommandName 'curl' -Exactly -Times 1 -ParameterFilter { $args[0] -eq '--url' -and $args[1] -eq 'https://google.com' }
 
         # By converting args to string (will concat using space by default) you can match a pattern if order might change. remember linebreaks
-        Should -Invoke -CommandName "curl" -Exactly -Times 1 -ParameterFilter { "$args" -match "--url https://google.com -I" }
+        Should -Invoke -CommandName 'curl' -Exactly -Times 1 -ParameterFilter { "$args" -match '--url https://google.com -I' }
     }
 }
 ```
