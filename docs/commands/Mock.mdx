@@ -1,9 +1,9 @@
 ---
 id: Mock
 title: Mock
-description: Help page for the Powershell Pester "Mock" command
+description: Help page for the PowerShell Pester "Mock" command
 keywords:
-  - Powershell
+  - PowerShell
   - Pester
   - Help
   - Documentation
@@ -51,7 +51,7 @@ They will always be evaluated last since
 they will act as a "catch all" mock.
 
 Mocks can be marked Verifiable.
-If so, the Assert-VerifiableMock command
+If so, the Should -InvokeVerifiable command
 can be used to check if all Verifiable mocks were actually called.
 If any
 verifiable mock is not called, Should -InvokeVerifiable will throw an
@@ -159,11 +159,10 @@ New-Module -Name ModuleMockExample  -ScriptBlock {
     function Hidden { "Internal Module Function" }
     function Exported { Hidden }
 
-    Export-ModuleMember -Function Exported
+Export-ModuleMember -Function Exported
 } | Import-Module -Force
 
 Describe "ModuleMockExample" {
-
     It "Hidden function is not directly accessible outside the module" {
         { Hidden } | Should -Throw
     }
@@ -336,11 +335,8 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 [https://pester.dev/docs/usage/mocking
 
 
- Mock](https://pester.dev/docs/usage/mocking
-
-
- Mock)
+ Mock]()
 
 ## EDIT THIS PAGE
 
-This page was auto-generated using the comment based help in Pester 5.2.1. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.
+This page was auto-generated using the comment based help in Pester 5.3.3. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.

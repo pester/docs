@@ -1,9 +1,9 @@
 ---
 id: New-Fixture
 title: New-Fixture
-description: Help page for the Powershell Pester "New-Fixture" command
+description: Help page for the PowerShell Pester "New-Fixture" command
 keywords:
-  - Powershell
+  - PowerShell
   - Pester
   - Help
   - Documentation
@@ -34,9 +34,7 @@ The script defining the function: .\Clean.ps1:
 
 ```powershell
 function Clean {
-    #Do something
-
-    $true
+    throw [NotImplementedException]'Clean is not implemented.'
 }
 ```
 
@@ -51,33 +49,33 @@ $PSCommandPath.Replace('.Tests.ps1', '.ps1')
 Describe "Clean" {
 
     It "Returns expected output" {
-        Clean | Should -Be $true
+        Clean | Should -Be "YOUR_EXPECTED_VALUE"
     }
 }
-```
+```powershell
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 
-```powershell
-New-Fixture -Name Clean
 ```
+New-Fixture -Name Clean
+```powershell
 
 Creates the scripts in the current directory.
 
 ### EXAMPLE 2
 
-```powershell
-New-Fixture C:\Projects\Cleaner Clean
 ```
+New-Fixture Clean C:\Projects\Cleaner
+```powershell
 
 Creates the scripts in the C:\Projects\Cleaner directory.
 
 ### EXAMPLE 3
 
-```powershell
-New-Fixture Cleaner Clean
+```
+New-Fixture -Name Clean -Path Cleaner
 ```
 
 Creates a new folder named Cleaner in the current directory and creates the scripts in it.
@@ -141,4 +139,4 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## EDIT THIS PAGE
 
-This page was auto-generated using the comment based help in Pester 5.2.1. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.
+This page was auto-generated using the comment based help in Pester 5.3.3. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.
