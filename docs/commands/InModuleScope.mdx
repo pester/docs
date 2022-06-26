@@ -40,15 +40,13 @@ either inside or outside a Describe block.
 
 ```powershell
 # The script module:
-
 function PublicFunction
-
+{
     # Does something
-
 }
 
 function PrivateFunction
-
+{
     return $true
 }
 
@@ -77,15 +75,13 @@ Using InModuleScope allowed this call to
 
 ```powershell
 # The script module:
-
 function PublicFunction
-
+{
     # Does something
-
 }
 
 function PrivateFunction ($MyParam)
-
+{
     return $MyParam
 }
 
@@ -100,7 +96,7 @@ Describe 'Testing MyModule' {
 
     It 'passing in parameter' {
         $SomeVar = 123
-      
+        InModuleScope 'MyModule' -Parameters @{ MyVar = $SomeVar } {
             $MyVar | Should -Be 123
         }
     }
@@ -109,7 +105,6 @@ Describe 'Testing MyModule' {
         @{ Name = 'Foo'; Bool = $true }
     ) {
         # Passes the whole testcase-dictionary available in $_ to InModuleScope
-
         InModuleScope 'MyModule' -Parameters $_ {
             $Name | Should -Be 'Foo'
             PrivateFunction -MyParam $Bool | Should -BeTrue
