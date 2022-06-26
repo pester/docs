@@ -32,7 +32,7 @@ Write-Host "Generating MDX files for website Command Reference" -BackgroundColor
 # -----------------------------------------------------------------------------
 $ModuleList = [ordered]@{
   'PlatyPS' = $PlatyPSVersion
-  'Alt3.Docusaurus.Powershell' = $DocusaurusVersion
+  'Alt3.Docusaurus.PowerShell' = $DocusaurusVersion
   'Pester' = $PesterVersion
 }
 # Can't use the original enumerator here because we may modify the dictionary mid-process
@@ -78,9 +78,9 @@ $docusaurusOptions = @{
     "SafeGetCommand"
     "Set-DynamicParameterVariable"
   )
-  MetaDescription = 'Help page for the Powershell Pester "%1" command'
+  MetaDescription = 'Help page for the PowerShell Pester "%1" command'
   MetaKeywords    = @(
-    "Powershell"
+    "PowerShell"
     "Pester"
     "Help"
     "Documentation"
