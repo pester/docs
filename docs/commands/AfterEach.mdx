@@ -47,13 +47,11 @@ Describe "Testing export formats" {
         Get-ChildItem | Export-CSV -Path $filePath -NoTypeInformation
         $dir = Import-CSV -Path $filePath
         # ...
-
     }
     It "Test Export-Clixml" {
         Get-ChildItem | Export-Clixml -Path $filePath
         $dir = Import-Clixml -Path $filePath
         # ...
-
     }
 
     AfterEach {

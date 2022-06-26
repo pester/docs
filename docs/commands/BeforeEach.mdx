@@ -41,7 +41,6 @@ Context or Describe.
 Describe "File parsing" {
     BeforeEach {
         # randomized path, to get fresh file for each test
-
         $file = "$([IO.Path]::GetTempPath())/$([Guid]::NewGuid())_form.xml"
         Copy-Item -Source $template -Destination $file -Force | Out-Null
     }
@@ -50,14 +49,12 @@ Describe "File parsing" {
         Write-XmlForm -Path $file -Field "username" -Value "nohwnd"
         $content = Get-Content $file
         # ...
-
     }
 
     It "Writes name" {
         Write-XmlForm -Path $file -Field "name" -Value "Jakub"
         $content = Get-Content $file
         # ...
-
     }
 }
 ```
