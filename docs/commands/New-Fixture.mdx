@@ -47,34 +47,33 @@ $PSCommandPath.Replace('.Tests.ps1', '.ps1')
 }
 
 Describe "Clean" {
-
     It "Returns expected output" {
         Clean | Should -Be "YOUR_EXPECTED_VALUE"
     }
 }
-```powershell
+```
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 
-```
-New-Fixture -Name Clean
 ```powershell
+New-Fixture -Name Clean
+```
 
 Creates the scripts in the current directory.
 
 ### EXAMPLE 2
 
-```
-New-Fixture Clean C:\Projects\Cleaner
 ```powershell
+New-Fixture Clean C:\Projects\Cleaner
+```
 
 Creates the scripts in the C:\Projects\Cleaner directory.
 
 ### EXAMPLE 3
 
-```
+```powershell
 New-Fixture -Name Clean -Path Cleaner
 ```
 

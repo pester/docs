@@ -39,25 +39,21 @@ apply to tests within that Context .
 ```powershell
 function Add-Numbers($a, $b) {
     return $a + $b
-
 }
 
 Describe "Add-Numbers" {
     Context "when root does not exist" {
         It "..." {
             # ...
-
         }
     }
 
     Context "when root does exist" {
         It "..." {
             # ...
-
         }
         It "..." {
             # ...
-
         }
     }
 }
