@@ -1,9 +1,9 @@
 ---
 id: BeforeEach
 title: BeforeEach
-description: Help page for the Powershell Pester "BeforeEach" command
+description: Help page for the PowerShell Pester "BeforeEach" command
 keywords:
-  - Powershell
+  - PowerShell
   - Pester
   - Help
   - Documentation
@@ -41,7 +41,6 @@ Context or Describe.
 Describe "File parsing" {
     BeforeEach {
         # randomized path, to get fresh file for each test
-
         $file = "$([IO.Path]::GetTempPath())/$([Guid]::NewGuid())_form.xml"
         Copy-Item -Source $template -Destination $file -Force | Out-Null
     }
@@ -50,14 +49,12 @@ Describe "File parsing" {
         Write-XmlForm -Path $file -Field "username" -Value "nohwnd"
         $content = Get-Content $file
         # ...
-
     }
 
     It "Writes name" {
         Write-XmlForm -Path $file -Field "name" -Value "Jakub"
         $content = Get-Content $file
         # ...
-
     }
 }
 ```
@@ -100,4 +97,4 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## EDIT THIS PAGE
 
-This page was auto-generated using the comment based help in Pester 5.2.1. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.
+This page was auto-generated using the comment based help in Pester 5.3.3. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.

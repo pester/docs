@@ -1,9 +1,9 @@
 ---
 id: New-MockObject
 title: New-MockObject
-description: Help page for the Powershell Pester "New-MockObject" command
+description: Help page for the PowerShell Pester "New-MockObject" command
 keywords:
-  - Powershell
+  - PowerShell
   - Pester
   - Help
   - Documentation
@@ -18,8 +18,18 @@ This function instantiates a .NET object from a type.
 
 ## SYNTAX
 
+### Type (Default)
+
 ```powershell
-New-MockObject [-Type] <Type> [<CommonParameters>]
+New-MockObject [-Type] <Type> [-Properties <Hashtable>] [-Methods <Hashtable>] [-MethodHistoryPrefix <String>]
+ [<CommonParameters>]
+```
+
+### InputObject
+
+```powershell
+New-MockObject -InputObject <Object> [-Properties <Hashtable>] [-Methods <Hashtable>]
+ [-MethodHistoryPrefix <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -38,20 +48,117 @@ $obj.GetType().FullName
     System.Diagnostics.Process
 ```
 
+### EXAMPLE 2
+
+```powershell
+$obj = New-MockObject -Type 'System.Diagnostics.Process' -Properties @{ Id = 123 }
+```
+
+### EXAMPLE 3
+
+```powershell
+$obj = New-MockObject -Type 'System.Diagnostics.Process' -Methods @{ Kill = { param($entireProcessTree) "killed" } }
+$obj.Kill()
+$obj.Kill($true)
+$obj.Kill($false)
+
+$obj._Kill
+
+Call Arguments
+---- ---------
+   1 {}
+   2 {True}
+   3 {False}
+```
+
 ## PARAMETERS
 
 ### -Type
 
-The .NET type to create an object based on.
+The .NET type to create.
+This creates the object without calling any of its constructors or initializers.
+Use this to instantiate an object that does not have a public constructor.
+If your object has a constructor, or is giving you errors, try using the constructor and provide the object using the InputObject parameter to decorate it.
 
 ```yaml
 Type: Type
-Parameter Sets: (All)
+Parameter Sets: Type
 Aliases:
 
 Required: True
 Position: 1
 Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -InputObject
+
+An already constructed object to decorate.
+Use New-Object or ::new to create it.
+
+```yaml
+Type: Object
+Parameter Sets: InputObject
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Properties
+
+Properties to define, specified as a hashtable, in format @{ PropertyName = value }.
+
+```yaml
+Type: Hashtable
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Methods
+
+Methods to define, specified as a hashtable, in format @{ MethodName = scriptBlock }.
+
+ScriptBlock can define param block, and it will receive arguments that were provided to the function call based on order.
+
+Method overloads are not supported because ScriptMethods are used to decorate the object, and ScriptMethods do not support method overloads.
+
+For each method a property named _MethodName is defined which holds history of the invocations of the method and the arguments that were provided.
+
+```yaml
+Type: Hashtable
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -MethodHistoryPrefix
+
+{{ Fill MethodHistoryPrefix Description }}
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: _
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -74,4 +181,4 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## EDIT THIS PAGE
 
-This page was auto-generated using the comment based help in Pester 5.2.1. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.
+This page was auto-generated using the comment based help in Pester 5.3.3. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.

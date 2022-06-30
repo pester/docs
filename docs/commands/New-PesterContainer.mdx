@@ -1,9 +1,9 @@
 ---
 id: New-PesterContainer
 title: New-PesterContainer
-description: Help page for the Powershell Pester "New-PesterContainer" command
+description: Help page for the PowerShell Pester "New-PesterContainer" command
 keywords:
-  - Powershell
+  - PowerShell
   - Pester
   - Help
   - Documentation
@@ -70,15 +70,18 @@ $container = New-PesterContainer -ScriptBlock $sb
 Invoke-Pester -Container $container
 ```
 
-This example runs Pester agianst a scriptblock.
-New-PesterContainer is used to genreated
-the requried ContainerInfo-object that enables us to do this directly.
+This example runs Pester against a scriptblock.
+New-PesterContainer is used to generate
+the required ContainerInfo-object that enables us to do this directly.
 
 ## PARAMETERS
 
 ### -Path
 
-Specifies one or more paths to files containing tests. The value is a path\file name or name pattern. Wildcards are permitted.
+Specifies one or more paths to files containing tests.
+The value is a path\file
+name or name pattern.
+Wildcards are permitted.
 
 ```yaml
 Type: String[]
@@ -145,4 +148,4 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## EDIT THIS PAGE
 
-This page was auto-generated using the comment based help in Pester 5.2.1. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.
+This page was auto-generated using the comment based help in Pester 5.3.3. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.

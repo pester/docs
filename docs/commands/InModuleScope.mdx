@@ -1,9 +1,9 @@
 ---
 id: InModuleScope
 title: InModuleScope
-description: Help page for the Powershell Pester "InModuleScope" command
+description: Help page for the PowerShell Pester "InModuleScope" command
 keywords:
-  - Powershell
+  - PowerShell
   - Pester
   - Help
   - Documentation
@@ -21,7 +21,7 @@ scope of a PowerShell script module.
 
 ```powershell
 InModuleScope [-ModuleName] <String> [-ScriptBlock] <ScriptBlock> [[-Parameters] <Hashtable>]
- [[-ArgumentList] <Object>] [<CommonParameters>]
+ [[-ArgumentList] <Object[]>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -40,11 +40,9 @@ either inside or outside a Describe block.
 
 ```powershell
 # The script module:
-
 function PublicFunction
 {
     # Does something
-
 }
 
 function PrivateFunction
@@ -72,6 +70,53 @@ the PowerShell session, because the module only exported
 "PublicFunction". 
 Using InModuleScope allowed this call to
 "PrivateFunction" to work successfully.
+
+### EXAMPLE 2
+
+```powershell
+# The script module:
+function PublicFunction
+{
+    # Does something
+}
+
+function PrivateFunction ($MyParam)
+{
+    return $MyParam
+}
+
+Export-ModuleMember -Function PublicFunction
+
+# The test script:
+
+Describe 'Testing MyModule' {
+    BeforeAll {
+        Import-Module MyModule
+    }
+
+    It 'passing in parameter' {
+        $SomeVar = 123
+        InModuleScope 'MyModule' -Parameters @{ MyVar = $SomeVar } {
+            $MyVar | Should -Be 123
+        }
+    }
+
+    It 'accessing whole testcase in module scope' -TestCases @(
+        @{ Name = 'Foo'; Bool = $true }
+    ) {
+        # Passes the whole testcase-dictionary available in $_ to InModuleScope
+        InModuleScope 'MyModule' -Parameters $_ {
+            $Name | Should -Be 'Foo'
+            PrivateFunction -MyParam $Bool | Should -BeTrue
+        }
+    }
+}
+```
+
+This example shows two ways of using `-Parameters` to pass variables created in a
+testfile into the module scope where the scriptblock provided to InModuleScope is executed.
+No variables from the outside are available inside the scriptblock without explicitly passing
+them in using `-Parameters` or `-ArgumentList`.
 
 ## PARAMETERS
 
@@ -113,6 +158,7 @@ Accept wildcard characters: False
 ### -Parameters
 
 A optional hashtable of parameters to be passed to the scriptblock.
+Parameters are automatically made available as variables in the scriptblock.
 
 ```yaml
 Type: Hashtable
@@ -121,7 +167,7 @@ Aliases:
 
 Required: False
 Position: 3
-Default value: None
+Default value: @{}
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -131,7 +177,7 @@ Accept wildcard characters: False
 A optional list of arguments to be passed to the scriptblock.
 
 ```yaml
-Type: Object
+Type: Object[]
 Parameter Sets: (All)
 Aliases:
 
@@ -158,4 +204,4 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## EDIT THIS PAGE
 
-This page was auto-generated using the comment based help in Pester 5.2.1. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.
+This page was auto-generated using the comment based help in Pester 5.3.3. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.

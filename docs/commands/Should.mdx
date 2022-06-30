@@ -1,9 +1,9 @@
 ---
 id: Should
 title: Should
-description: Help page for the Powershell Pester "Should" command
+description: Help page for the PowerShell Pester "Should" command
 keywords:
-  - Powershell
+  - PowerShell
   - Pester
   - Help
   - Documentation
@@ -138,6 +138,13 @@ Should [[-ActualValue] <Object>] [-Not] [-Because <Object>] [-ExpectedContent <O
 ```powershell
 Should [[-ActualValue] <Object>] [-Not] [-Because <Object>] [-ExpectedContent <Object>]
  [-FileContentMatchMultiline] [<CommonParameters>]
+```
+
+### FileContentMatchMultilineExactly
+
+```powershell
+Should [[-ActualValue] <Object>] [-Not] [-Because <Object>] [-ExpectedContent <Object>]
+ [-FileContentMatchMultilineExactly] [<CommonParameters>]
 ```
 
 ### HaveCount
@@ -284,18 +291,6 @@ $user | Should -NotBeNullOrEmpty -ErrorAction Stop
 $planets.Name | Should -Be $Expected
 ```
 
-### EXAMPLE 10
-
-```powershell
-Context "We want to ensure an exception is thrown when expected" {
-  It "Throws the exception" {
-    {
-      Get-Application -Name Blarg
-    } | Should -Throw "Application 'Blarg' not found";
-  }
-}
-```
-
 ## PARAMETERS
 
 ### -ActualValue
@@ -353,7 +348,7 @@ Accept wildcard characters: False
 
 ```yaml
 Type: Object
-Parameter Sets: Be, BeExactly, BeGreaterThan, BeLessOrEqual, BeIn, BeLessThan, BeGreaterOrEqual, BeLike, BeLikeExactly, BeNullOrEmpty, BeOfType, BeTrue, BeFalse, Contain, Exist, FileContentMatch, FileContentMatchExactly, FileContentMatchMultiline, HaveCount, HaveParameter, Match, MatchExactly, Throw, Invoke
+Parameter Sets: Be, BeExactly, BeGreaterThan, BeLessOrEqual, BeIn, BeLessThan, BeGreaterOrEqual, BeLike, BeLikeExactly, BeNullOrEmpty, BeOfType, BeTrue, BeFalse, Contain, Exist, FileContentMatch, FileContentMatchExactly, FileContentMatchMultiline, FileContentMatchMultilineExactly, HaveCount, HaveParameter, Match, MatchExactly, Throw, Invoke
 Aliases:
 
 Required: False
@@ -705,7 +700,7 @@ Accept wildcard characters: False
 
 ```yaml
 Type: Object
-Parameter Sets: FileContentMatch, FileContentMatchExactly, FileContentMatchMultiline
+Parameter Sets: FileContentMatch, FileContentMatchExactly, FileContentMatchMultiline, FileContentMatchMultilineExactly
 Aliases:
 
 Required: False
@@ -802,6 +797,22 @@ Accept wildcard characters: False
 ```yaml
 Type: SwitchParameter
 Parameter Sets: FileContentMatchMultiline
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -FileContentMatchMultilineExactly
+
+{{ Fill FileContentMatchMultilineExactly Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: FileContentMatchMultilineExactly
 Aliases:
 
 Required: False
@@ -1113,8 +1124,8 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 [https://pester.dev/docs/commands/Should](https://pester.dev/docs/commands/Should)
 
-[https://pester.dev/docs/usage/assertions](https://pester.dev/docs/usage/assertions)
+[https://pester.dev/docs/assertions/assertions](https://pester.dev/docs/assertions/assertions)
 
 ## EDIT THIS PAGE
 
-This page was auto-generated using the comment based help in Pester 5.2.1. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.
+This page was auto-generated using the comment based help in Pester 5.3.3. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.
