@@ -20,7 +20,9 @@ param (
 
   [Parameter(Mandatory = $False)][string] $PlatyPSVersion,
 
-  [Parameter(Mandatory = $False)][string] $DocusaurusVersion
+  [Parameter(Mandatory = $False)][string] $DocusaurusVersion,
+
+  [switch]$SkipModuleImport
 )
 Set-StrictMode -Version Latest
 $PSDefaultParameterValues['*:ErrorAction'] = "Stop"
@@ -60,8 +62,10 @@ $ModuleList.Keys.Clone() | ForEach-Object {
     Install-Module $ModuleName -RequiredVersion $RequestedVersion -Force -SkipPublisherCheck -AllowClobber -Scope CurrentUser
   }
 
-  Write-Host "=> importing"
-  Import-Module -Name $ModuleName -RequiredVersion $RequestedVersion -Force
+  if (-not $SkipModuleImport) {
+    Write-Host "=> importing"
+    Import-Module -Name $ModuleName -RequiredVersion $RequestedVersion -Force
+  }
 }
 
 # -----------------------------------------------------------------------------
