@@ -62,7 +62,7 @@ $ModuleList.Keys.Clone() | ForEach-Object {
     Install-Module $ModuleName -RequiredVersion $RequestedVersion -Force -SkipPublisherCheck -AllowClobber -Scope CurrentUser
   }
 
-  if ($SkipModuleImport -eq $false) {
+  if (-not $SkipModuleImport) {
     Write-Host "=> importing"
     Import-Module -Name $ModuleName -RequiredVersion $RequestedVersion -Force
   }
