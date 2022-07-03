@@ -12,6 +12,7 @@ $conf.Output
 Verbosity           : The verbosity of output, options are None, Normal, Detailed and Diagnostic. (Normal, default: Normal)
 StackTraceVerbosity : The verbosity of stacktrace output, options are None, FirstLine, Filtered and Full. (Filtered, default: Filtered)
 CIFormat            : The CI format of error output in build logs, options are None, Auto, AzureDevops and GithubActions. (Auto, default: Auto)
+RenderMode          : The mode used to render console output, options are Auto, Ansi, Legacy and Plaintext. (Auto, default: Auto)
 ```
 
 This page focuses on the general options available for all users. See [VSCode](./vscode) for settings and features specific to using Pester with VSCode.
@@ -74,3 +75,20 @@ In Github Actions, the following features are enabled:
 ![Github Actions log](./images/github-log.png)
 
 Auto-detection works by checking if `GITHUB_ACTIONS` environment variable is equal to `True`.
+
+### RenderMode
+
+**New in Pester 5.4!**
+Pester may render the console output using different modes including ANSI escape sequences to enable color in CI-systems. The modes are currently supported are:
+
+- **Auto (default)**: Automatically enables the recommended mode using the following rules:
+  - `Plaintext` when environment variable [`NO_COLOR`](https://no-color.org/) is set.
+  - `ANSI` when a supported PowerShell host is being used.
+  - `Legacy` used as fallback.
+- **ANSI**: Colors are rendered using ANSI escape sequences.
+- **Legacy**: Colors are rendered using `System.ConsoleColor` equal to `Write-Host`. Enables colors in console, but usually not in CI, redirected output etc. Same mode used prior to Pester 5.4.
+- **Plaintext**: Render output without any colors.
+
+:::note Using ANSI with PowerShell 3 and 4
+ANSI support is auto-detected using the property `$host.UI.SupportsVirtualTerminal` which was introduced in PowerShell 5. If you are running PowerShell 3 or 4 in a CI pipeline, ANSI may be supported in the CI but you need to enable it explictly using `Output.RenderMode = 'Ansi'`.
+:::
