@@ -79,16 +79,16 @@ Auto-detection works by checking if `GITHUB_ACTIONS` environment variable is equ
 ### RenderMode
 
 **New in Pester 5.4!**
-Pester may render the console output using different modes including ANSI escape sequences to enable color in CI-systems. The modes are currently supported are:
+Pester supports multiple render modes for console output, including ANSI escape sequences which enables colors in CI-logs. The currently supported modes are:
 
 - **Auto (default)**: Automatically enables the recommended mode using the following rules:
   - `Plaintext` when environment variable [`NO_COLOR`](https://no-color.org/) is set.
   - `ANSI` when a supported PowerShell host is being used.
   - `Legacy` used as fallback.
-- **ANSI**: Colors are rendered using ANSI escape sequences.
-- **Legacy**: Colors are rendered using `System.ConsoleColor` equal to `Write-Host`. Enables colors in console, but usually not in CI, redirected output etc. Same mode used prior to Pester 5.4.
-- **Plaintext**: Render output without any colors.
+- **ANSI**: Render using ANSI escape sequences. Colors are shown in ANSI-supported console hosts, redirected output, CI-logs etc.
+- **Legacy**: Uses default `Write-Host` behavior. Colors are shown in console but not in CI, redirected output etc. Same mode used prior to Pester 5.4.
+- **Plaintext**: Render output without colors.
 
 :::note Using ANSI with PowerShell 3 and 4
-ANSI support is auto-detected using the property `$host.UI.SupportsVirtualTerminal` which was introduced in PowerShell 5. If you are running PowerShell 3 or 4 in a CI pipeline, ANSI may be supported in the CI but you need to enable it explictly using `Output.RenderMode = 'Ansi'`.
+ANSI support is auto-detected using the property `$host.UI.SupportsVirtualTerminal` which was introduced in PowerShell 5. If you are running PowerShell 3 or 4 in a known supported host or CI, you need to enable it explictly using `Output.RenderMode = 'Ansi'`.
 :::
