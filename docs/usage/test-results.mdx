@@ -25,6 +25,17 @@ If you are not using the Pester .bat file and are instead calling Invoke-Pester 
 Invoke-Pester -OutputFile Test.xml -OutputFormat NUnitXml
 ```
 
+#### Advanced Interface Configuration
+In Pester v5 a configuration object ([`PesterConfiguration`](https://pester.dev/docs/usage/configuration#advanced-interface)) was introduced. In addition to specifying an `OutputFormat` and `OutputPath` you will need to `Enable` test results for a file to be produced.
+
+```powershell
+$PesterConfig = New-PesterConfiguration
+$PesterConfig.TestResult.OutputFormat = "NUnitXml"
+$PesterConfig.TestResult.OutputPath = "Test.xml"
+$PesterConfig.TestResult.Enabled = $True
+Invoke-Pester -Configuration $PesterConfig
+```
+
 ### TeamCity Settings
 
 1. In your TeamCity build configuration settings, go to the "Build Step" page.
