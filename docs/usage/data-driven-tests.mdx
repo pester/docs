@@ -369,7 +369,7 @@ $x = 1
 
 ## Providing external data to tests
 
-`.Tests.ps1` script is a PowerShell script as any other and you can use the `param` block in it. This is very useful when reusing a single test file with multiple data sets. For example when writing a generic test suite that ensures that correct style is used in a given script file:
+`.Tests.ps1` script is a PowerShell script as any other and you can use the `param` block in it. Script parameters are available in both `Discovery` and `Run`. This is very useful when reusing a single test file with multiple data sets. For example when writing a generic test suite that ensures that correct style is used in a given script file:
 
 ```powershell
 # in CodingStyle.Tests.ps1
