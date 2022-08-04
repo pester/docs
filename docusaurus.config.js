@@ -14,6 +14,12 @@ module.exports = {
   onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
   themeConfig: {
+    metadata: [
+        {
+            name: 'theme-color',
+            content: '#0072c6'
+        }
+    ],
     navbar: {
       title: 'Pester',
       logo: {
