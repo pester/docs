@@ -161,7 +161,7 @@ Read more about the different module types at Microsoft Docs, see [Understanding
 
 ### Usage and workarounds
 
-Pester can be used to test the behavior of commands that are exported from all types of modules. For example the following test will call the `Invoke-PublicMethod` command regardless of whether it is defined in a Script, Binary, Manifest or Dynamic module:
+Pester can be used to test the behavior of commands that are exported from all types of modules. Mocking exported commands is also possible in general. For example the following test will call the `Invoke-PublicMethod` command regardless of whether it is defined in a Script, Binary, Manifest or Dynamic module:
 
 ```powershell
 Describe "Invoke-PublicMethod" {
@@ -169,10 +169,16 @@ Describe "Invoke-PublicMethod" {
         $result = Invoke-PublicMethod
         $result | Should Be 'Invoke-PublicMethod called!'
     }
+
+    It "mocking exported command" {
+        Mock Invoke-PublicMethod { 'mocked' }
+        $result = Invoke-PublicMethod
+        $result | Should Be 'mocked'
+    }
 }
 ```
 
-However injecting mocks into or executing code inside the module are not available for **Binary** modules due to how they are implemented in PowerShell. As a result, you may see an error message when trying to use `Mock -ModuleName` or `InModuleScope`:
+However injecting mocks into or executing code inside a **Binary** module is not possible due to how they are implemented in PowerShell. As a result, you may see an error message when trying to use `Mock -ModuleName` or `InModuleScope`:
 
 ```powershell
 Module 'MyBinaryModule' is not a Script or Manifest module. Detected modules of the following types: 'Binary'
