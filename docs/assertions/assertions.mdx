@@ -342,6 +342,8 @@ so the following assertion will pass:
 ```powershell
 {throw "foo bar baz"} | Should -Throw "*bar*" # Test will pass
 ```
+
+Wildcard-characters `?*[]` can be escaped using backtick, ex `` `*``.
 :::
 
 :::caution
