@@ -155,6 +155,10 @@ table {
   display: table;
 }
 
+.table-wrapper {
+  overflow-x: auto;
+}
+
 @media only screen and (max-width: 768px) {
   .hero .hero__title {
     font-size: 36px;
