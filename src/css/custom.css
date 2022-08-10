@@ -108,11 +108,11 @@
 }
 
 /* color mode toggle styling  */
-.navbar button[class*='olorModeToggle'] {
+.navbar button[title*='light mode'] {
   color: #fff;
 }
 
-.navbar button[class*='olorModeToggle']:hover {
+.navbar button[title*='light mode']:hover {
   background: rgb(255, 255, 255, 0.2);
 }
 
