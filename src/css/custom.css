@@ -108,16 +108,16 @@
 }
 
 /* color mode toggle styling */
-.toggleButton_node_modules-\@docusaurus-theme-classic-lib-theme-ColorModeToggle-styles-module {
+.navbar button.clean-btn {
   color: #fff;
 }
 
-html[data-theme='light'] .toggleButton_node_modules-\@docusaurus-theme-classic-lib-theme-ColorModeToggle-styles-module:hover {
+html[data-theme='light'] .navbar button.clean-btn:hover {
   /* sun icon should be dark on white hover-background */
   color: inherit;
 }
 
-html[data-theme='dark'] .toggleButton_node_modules-\@docusaurus-theme-classic-lib-theme-ColorModeToggle-styles-module:hover {
+html[data-theme='dark'] .navbar button.clean-btn:hover {
   background: var(--ifm-background-color);
 }
 
