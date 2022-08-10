@@ -107,18 +107,13 @@
   color: var(--docsearch-text-color);
 }
 
-/* color mode toggle styling */
-.navbar button.clean-btn {
+/* color mode toggle styling  */
+.navbar button[class*='olorModeToggle'] {
   color: #fff;
 }
 
-html[data-theme='light'] .navbar button.clean-btn:hover {
-  /* sun icon should be dark on white hover-background */
-  color: inherit;
-}
-
-html[data-theme='dark'] .navbar button.clean-btn:hover {
-  background: var(--ifm-background-color);
+.navbar button[class*='olorModeToggle']:hover {
+  background: rgb(255, 255, 255, 0.2);
 }
 
 /* highlighted lines in codeblocks. Example: highlight line 3 using ```powershell {3} */
