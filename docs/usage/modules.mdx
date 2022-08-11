@@ -276,7 +276,8 @@ To convert it into a **Script** module, create a new blank file called `MyModule
 ```powershell title="MyModule.psd1"
 @{
     ModuleVersion     = '1.0'
-    RootModule        = "MyModule.psm1" # <-- add this line to convert a Manifest module into a Script module
+    # highlight-next-line
+    RootModule        = "MyModule.psm1"
     NestedModules     = @( "Invoke-PrivateManifestMethod.ps1", "Invoke-PublicManifestMethod.ps1" )
     FunctionsToExport = @( "Invoke-PublicManifestMethod" )
 }
