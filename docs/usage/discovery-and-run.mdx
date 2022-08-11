@@ -9,12 +9,13 @@ This powers many of the features in Pester 5 and enables many others to be imple
 
 To reap the benefits, there are two rules to follow:
 
-**Put all your code into `It`, `BeforeAll`, `BeforeEach`, `AfterAll` or `AfterEach`.**
+**Put all your test-code into `It`, `BeforeAll`, `BeforeEach`, `AfterAll` or `AfterEach`.**
 
-**Put no code directly into `Describe`, `Context` or on the top of your file, without wrapping it in one of these blocks.**
+**Put no test-code directly into `Describe`, `Context` or on the top of your file, without wrapping it in one of these blocks.**
 
 All misplaced code will run during Discovery, and its results won't be available during Run. This will lead to confusing results.
 
+Running code in Discovery is used for dynamically creating tests. That code should be placed into `BeforeDiscovery`, see [Data driven tests](data-driven-tests#beforediscovery).
 
 ## Execution order
 
