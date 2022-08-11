@@ -12,7 +12,7 @@ $conf.Output
 Verbosity           : The verbosity of output, options are None, Normal, Detailed and Diagnostic. (Normal, default: Normal)
 StackTraceVerbosity : The verbosity of stacktrace output, options are None, FirstLine, Filtered and Full. (Filtered, default: Filtered)
 CIFormat            : The CI format of error output in build logs, options are None, Auto, AzureDevops and GithubActions. (Auto, default: Auto)
-RenderMode          : The mode used to render console output, options are Auto, Ansi, Legacy and Plaintext. (Auto, default: Auto)
+RenderMode          : The mode used to render console output, options are Auto, Ansi, ConsoleColor and Plaintext. (Auto, default: Auto)
 ```
 
 This page focuses on the general options available for all users. See [VSCode](./vscode) for settings and features specific to using Pester with VSCode.
@@ -84,9 +84,9 @@ Pester supports multiple render modes for console output, including ANSI escape 
 - **Auto (default)**: Automatically enables the recommended mode using the following rules:
   - `Plaintext` when environment variable [`NO_COLOR`](https://no-color.org/) is set.
   - `ANSI` when a supported PowerShell host is being used.
-  - `Legacy` used as fallback.
+  - `ConsoleColor` used as fallback.
 - **ANSI**: Render using ANSI escape sequences. Colors are shown in ANSI-supported console hosts, redirected output, CI-logs etc.
-- **Legacy**: Uses default `Write-Host` behavior. Colors are shown in console but not in CI, redirected output etc. Same mode used prior to Pester 5.4.
+- **ConsoleColor**: Uses default `Write-Host` behavior. Colors are shown in console but not in CI, redirected output etc. Same mode used prior to Pester 5.4.
 - **Plaintext**: Render output without colors.
 
 :::note Using ANSI with PowerShell 3 and 4
