@@ -78,18 +78,45 @@
   --ifm-navbar-background-color: #0072c6;
   --ifm-navbar-shadow: none;
   --ifm-navbar-link-color: #fff;
-  --ifm-navbar-link-hover-color: #5ab3dd;
+  --ifm-navbar-link-hover-color: var(--ifm-navbar-link-color);
   --ifm-code-font-size: 90%;
   --ifm-font-weight-semibold: 600;
   --ifm-font-size-base: 16px;
   --ifm-font-family-base: 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   --ifm-heading-font-weight: 600;
+  --ifm-hover-overlay: rgba(0, 0, 0, 0.04);
 }
 
-.navbar-sidebar .menu__link {
+[data-theme='dark'] {
+  --ifm-color-primary-light: #0089ee;
+  --ifm-color-primary-lighter: #0294ff;
+  --ifm-color-primary-lightest: #3eadff;
+  --ifm-breadcrumb-color-active: var(--ifm-color-primary-lightest);
+  --ifm-link-color: var(--ifm-color-primary-lightest);
+  --ifm-menu-color-active: var(--ifm-color-primary-lightest);
+}
+
+[data-theme='dark'] .table-of-contents__link:hover,
+[data-theme='dark'] .table-of-contents__link:hover code,
+[data-theme='dark'] .table-of-contents__link--active,
+[data-theme='dark'] .table-of-contents__link--active code {
+  color: var(--ifm-color-primary-lightest);
+}
+
+[data-theme='light'] .DocSearch-Button-Placeholder {
+  color: var(--docsearch-text-color);
+}
+
+/* color mode toggle styling  */
+.navbar button[title*='light mode'] {
   color: #fff;
 }
 
+.navbar button[title*='light mode']:hover {
+  background: rgb(255, 255, 255, 0.2);
+}
+
+/* highlighted lines in codeblocks. Example: highlight line 3 using ```powershell {3} */
 .docusaurus-highlight-code-line {
   background-color: rgb(72, 77, 91);
   display: block;
@@ -97,8 +124,34 @@
   padding: 0 var(--ifm-pre-padding);
 }
 
+/* navbar styling */
+.menu__link,
+.navbar__brand strong {
+  font-weight: 400;
+}
 .navbar__brand {
   font-size: 19px;
+}
+
+.navbar__link:hover {
+  text-decoration: underline;
+}
+.navbar-sidebar .menu__link,
+.navbar-sidebar__back,
+.navbar__toggle {
+  color: #fff;
+}
+
+.navbar-sidebar__close g {
+  stroke: rgb(255, 255, 255, 0.7);
+}
+
+table {
+  display: table;
+}
+
+.table-wrapper {
+  overflow-x: auto;
 }
 
 @media only screen and (max-width: 768px) {
@@ -106,19 +159,6 @@
     font-size: 36px;
     text-align: center;
   }
-}
-
-table {
-  display: table;
-}
-
-.menu__link,
-.navbar__brand strong {
-  font-weight: 400;
-}
-
-.navbar__toggle {
-  color: #ffffff;
 }
 
 @media (max-width: 996px) {
