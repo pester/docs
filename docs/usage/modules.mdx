@@ -34,7 +34,7 @@ Export-ModuleMember -Function BuildIfChanged
 ## Testing public functions
 You wish to write a unit test for this module which mocks the calls to `Get-Version` and `Get-NextVersion` from the module's `BuildIfChanged` command. In older versions of Pester, this was not possible. As of version 3.0, there are two ways you can perform unit tests of PowerShell script modules. The first is to inject mocks into a module:
 
-For these example, we'll assume the module above is installed in a path defined in you [`$env:PSModulePath`](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_psmodulepath).
+For these example, we'll assume the module above is installed in a path defined in [`$env:PSModulePath`](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_psmodulepath).
 
 ```powershell
 BeforeAll {
@@ -89,11 +89,11 @@ Describe "BuildIfChanged" {
 
 Notice that in this example test script, all calls to [Mock](../commands/Mock) and [Should -Invoke](../commands/Should) have had the `-ModuleName MyModule` parameter added. This tells Pester to inject the mock into the module's scope, which causes any calls to those commands from inside the module to execute the mock instead.
 
-When you write your test script this way, you can mock commands that are called by the module's internal functions. However, your test script is still limited to accessing the public, exported members of the module. If you wanted to write a unit test that calls `Build` directly, for example, it wouldn't work using the above technique.
+When you write your test script this way, you can mock commands that are called by the module's internal functions. However, your test script is still limited to accessing the public, exported members of the module. If you wanted to write a unit test that calls `Build` directly, for example, it wouldn't work using the above technique. That's where the second approach to script module testing comes into play. 
 
 ## Testing private functions
 
-That's where the second approach to script module testing comes into play. With Pester's [InModuleScope](../commands/InModuleScope) command, you can cause entire sections of your test script to execute inside the targeted script module. This gives you access to non-exported members of the module. For example:
+With Pester's [InModuleScope](../commands/InModuleScope) command, you can cause entire sections of your test script to execute inside the targeted script module. This gives you access to non-exported members of the module. For example:
 
 ```powershell
 BeforeAll {
@@ -153,7 +153,7 @@ Script     5.3.3      Pester
 Script     2.0.0      PSReadline
 ```
 
-To inspect your modules you might need to use `-ListAvailable` or load the module first, using `Import-Module` and then inspect it.
+To inspect your modules you might need to use `-ListAvailable` or load the module first using `Import-Module` and then inspect it.
 
 :::tip
 Read more about the different module types at Microsoft Docs, see [Understanding a Windows PowerShell Module](https://docs.microsoft.com/en-us/powershell/scripting/developer/module/understanding-a-windows-powershell-module).
@@ -161,7 +161,7 @@ Read more about the different module types at Microsoft Docs, see [Understanding
 
 ### Usage and workarounds
 
-Pester can be used to test the behavior of commands that are exported from all types of modules. Mocking exported commands is also possible in general. For example the following test will call the `Invoke-PublicMethod` command regardless of whether it is defined in a Script, Binary, Manifest or Dynamic module:
+Pester can be used to both test and mock the behavior commands that are exported from all types of modules. For example the following tests will call the real `Invoke-PublicMethod` command and call a mocked implementation of it regardless of whether it is defined in a Script, Binary, Manifest or Dynamic module:
 
 ```powershell
 Describe "Invoke-PublicMethod" {
