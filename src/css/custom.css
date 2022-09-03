@@ -166,3 +166,27 @@ table {
     flex: 1 0 !important;
   }
 }
+
+/* Make sure content isn't being covered by camera notch or UI elements on mobile */
+@supports(padding: max(0px)) {
+  .navbar {
+    padding-top: max(var(--ifm-navbar-padding-vertical), env(safe-area-inset-top));
+    padding-right: max(var(--ifm-navbar-padding-horizontal), env(safe-area-inset-right));
+    padding-bottom: max(var(--ifm-navbar-padding-vertical), env(safe-area-inset-bottom));
+    padding-left: max(var(--ifm-navbar-padding-horizontal), env(safe-area-inset-left));
+  }
+
+  .main-wrapper {
+    padding-top: max(0, env(safe-area-inset-top));
+    padding-right: max(0, env(safe-area-inset-right));
+    padding-bottom: max(0, env(safe-area-inset-bottom));
+    padding-left: max(0, env(safe-area-inset-left));
+  }
+
+  footer {
+    padding-top: max(var(--ifm-footer-padding-vertical), env(safe-area-inset-top));
+    padding-right: max(var(--ifm-footer-padding-horizontal), env(safe-area-inset-right));
+    padding-bottom: max(var(--ifm-footer-padding-vertical), env(safe-area-inset-bottom));
+    padding-left: max(var(--ifm-footer-padding-horizontal), env(safe-area-inset-left));
+  }
+}
