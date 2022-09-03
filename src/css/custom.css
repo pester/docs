@@ -129,6 +129,7 @@
 .navbar__brand strong {
   font-weight: 400;
 }
+
 .navbar__brand {
   font-size: 19px;
 }
@@ -136,6 +137,7 @@
 .navbar__link:hover {
   text-decoration: underline;
 }
+
 .navbar-sidebar .menu__link,
 .navbar-sidebar__back,
 .navbar__toggle {
@@ -177,8 +179,8 @@ table {
   }
 
   .main-wrapper {
-    padding-right: max(0, env(safe-area-inset-right));
-    padding-left: max(0, env(safe-area-inset-left));
+    padding-right: env(safe-area-inset-right);
+    padding-left: env(safe-area-inset-left);
   }
 
   footer {
@@ -191,7 +193,27 @@ table {
   /* DocSearch is in absolute right position on smaller devices so navbar-padding doesn't affect it */
   @media (max-width: 996px) {
     .DocSearch.DocSearch-Button {
-      margin-right: max(0, calc(env(safe-area-inset-right) - var(--ifm-navbar-padding-horizontal)));
+      margin-right: max(0px, calc(env(safe-area-inset-right) - var(--ifm-navbar-padding-horizontal)));
     }
   }
+}
+
+.paddingDemo {
+  text-align: center;
+  align-items: center;
+  padding-top: calc(env(safe-area-inset-top) * 2);
+  padding-right: calc(env(safe-area-inset-right)* 2);
+  padding-bottom: calc(env(safe-area-inset-bottom)* 2);
+  padding-left: calc(env(safe-area-inset-left)* 2);
+  border: 2px solid #000;
+  background-color: red;
+  margin-bottom: 10px;
+}
+
+.paddingInner {
+  background-color: yellow;
+}
+
+.paddingInner p {
+  margin: 0;
 }
