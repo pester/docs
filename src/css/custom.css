@@ -169,7 +169,10 @@ table {
   }
 }
 
-/* Make sure content isn't being covered by camera notch or UI elements on mobile */
+/*
+  Make sure content isn't being covered by camera notch or UI elements on mobile.
+  Neccessary due to use of viewport-fit=cover to support landscape mode on phones etc.
+*/
 @supports(padding: max(0px)) {
   .navbar {
     padding-top: max(var(--ifm-navbar-padding-vertical), env(safe-area-inset-top));
@@ -178,12 +181,19 @@ table {
     padding-left: max(var(--ifm-navbar-padding-horizontal), env(safe-area-inset-left));
   }
 
-  .main-wrapper {
+  .navbar-sidebar {
+    padding-top: env(safe-area-inset-right);
+    padding-left: env(safe-area-inset-left);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  header.hero > div.container,
+  main {
     padding-right: env(safe-area-inset-right);
     padding-left: env(safe-area-inset-left);
   }
 
-  footer {
+  .footer {
     padding-top: var(--ifm-footer-padding-vertical);
     padding-right: max(var(--ifm-footer-padding-horizontal), env(safe-area-inset-right));
     padding-bottom: max(var(--ifm-footer-padding-vertical), env(safe-area-inset-bottom));
@@ -196,24 +206,24 @@ table {
       margin-right: max(0px, calc(env(safe-area-inset-right) - var(--ifm-navbar-padding-horizontal)));
     }
   }
-}
 
-.paddingDemo {
-  text-align: center;
-  align-items: center;
-  padding-top: calc(env(safe-area-inset-top) * 2);
-  padding-right: calc(env(safe-area-inset-right)* 2);
-  padding-bottom: calc(env(safe-area-inset-bottom)* 2);
-  padding-left: calc(env(safe-area-inset-left)* 2);
-  border: 2px solid #000;
-  background-color: red;
-  margin-bottom: 10px;
-}
+  .paddingDemo {
+    text-align: center;
+    align-items: center;
+    padding-top: calc(env(safe-area-inset-top) * 2);
+    padding-right: calc(env(safe-area-inset-right)* 2);
+    padding-bottom: calc(env(safe-area-inset-bottom)* 2);
+    padding-left: calc(env(safe-area-inset-left)* 2);
+    border: 2px solid #000;
+    background-color: red;
+    margin-bottom: 10px;
+  }
 
-.paddingInner {
-  background-color: yellow;
-}
+  .paddingInner {
+    background-color: yellow;
+  }
 
-.paddingInner p {
-  margin: 0;
+  .paddingInner p {
+    margin: 0;
+  }
 }
