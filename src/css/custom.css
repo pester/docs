@@ -188,7 +188,7 @@ table {
     padding-top: max(var(--ifm-navbar-padding-vertical), env(safe-area-inset-top, 0.001px));
     padding-right: var(--ifm-navbar-padding-horizontal);
     padding-bottom: var(--ifm-navbar-padding-vertical);
-    padding-left: max(var(--ifm-footer-padding-horizontal), env(safe-area-inset-left, 0.001px));
+    padding-left: max(var(--ifm-navbar-padding-horizontal), env(safe-area-inset-left, 0.001px));
   }
 
   .navbar-sidebar__item {
