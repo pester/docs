@@ -175,15 +175,15 @@ table {
 */
 @supports(padding: max(0px)) {
   .navbar {
-    padding-top: max(var(--ifm-navbar-padding-vertical), env(safe-area-inset-top));
-    padding-right: max(var(--ifm-navbar-padding-horizontal), env(safe-area-inset-right));
+    padding-top: max(var(--ifm-navbar-padding-vertical), env(safe-area-inset-top,0px));
+    padding-right: max(var(--ifm-navbar-padding-horizontal), env(safe-area-inset-right,0px));
     padding-bottom: var(--ifm-navbar-padding-vertical);
-    padding-left: max(var(--ifm-navbar-padding-horizontal), env(safe-area-inset-left));
+    padding-left: max(var(--ifm-navbar-padding-horizontal), env(safe-area-inset-left,0px));
   }
 
   .navbar-sidebar {
-    padding-top: env(safe-area-inset-right);
-    padding-left: env(safe-area-inset-left);
+    padding-top: env(safe-area-inset-top);
+    padding-left: max(0px, env(safe-area-inset-left,0px) - var(--ifm-navbar-padding-horizontal));
     padding-bottom: env(safe-area-inset-bottom);
   }
 
@@ -195,15 +195,20 @@ table {
 
   .footer {
     padding-top: var(--ifm-footer-padding-vertical);
-    padding-right: max(var(--ifm-footer-padding-horizontal), env(safe-area-inset-right));
-    padding-bottom: max(var(--ifm-footer-padding-vertical), env(safe-area-inset-bottom));
-    padding-left: max(var(--ifm-footer-padding-horizontal), env(safe-area-inset-left));
+    padding-right: max(var(--ifm-footer-padding-horizontal), env(safe-area-inset-right,0px));
+    padding-bottom: max(var(--ifm-footer-padding-vertical), env(safe-area-inset-bottom,0px));
+    padding-left: max(var(--ifm-footer-padding-horizontal), env(safe-area-inset-left,0px));
   }
 
-  /* DocSearch is in absolute right position on smaller devices so navbar-padding doesn't affect it */
   @media (max-width: 996px) {
-    .DocSearch.DocSearch-Button {
-      margin-right: max(0px, calc(env(safe-area-inset-right) - var(--ifm-navbar-padding-horizontal)));
+    .footer {
+      /* calc/max/min breaks when this is set to 0 in default template */
+      --ifm-footer-padding-horizontal: 0px;
+    }
+
+    /* DocSearch is in absolute right position on smaller devices so navbar-padding doesn't affect it */
+    .DocSearch-Button {
+      margin-right: max(0px, env(safe-area-inset-right,0px) - var(--ifm-navbar-padding-horizontal));
     }
   }
 
