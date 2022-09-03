@@ -192,7 +192,7 @@ table {
   }
 
   .navbar-sidebar__item {
-    padding-left: max(0.5rem, env(safe-area-inset-left, 0.001px));
+    padding-left: max(0.5rem, env(safe-area-inset-left, 0.001px) - 0.5rem);
   }
 
   header > div.container,
