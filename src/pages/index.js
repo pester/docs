@@ -107,14 +107,6 @@ function Home() {
             </section>
           )}
 
-          <section>
-              <div className="paddingDemo">
-                  <div className="paddingInner">
-                      <p>Testing padding</p>
-                  </div>
-              </div>
-          </section>
-
           <section className={classnames(styles.openCollective, 'padding-vert--lg padding-horiz--md')}>
             <h2>Meet Our Sponsors</h2>
 
