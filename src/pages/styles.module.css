@@ -17,7 +17,7 @@
 }
 
 html[data-theme='dark'] .heroBanner {
-  color: #000;
+  --ifm-hero-text-color: var(--ifm-font-color-base);
 }
 
 .heroLogo img {
