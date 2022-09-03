@@ -34,6 +34,13 @@ html[data-theme='dark'] .heroBanner {
   }
 }
 
+@media only screen and (max-width: 768px) {
+  .heroTitle {
+    font-size: 36px;
+    text-align: center;
+  }
+}
+
 .buttons {
   display: flex;
   align-items: center;

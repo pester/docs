@@ -154,13 +154,6 @@ table {
   overflow-x: auto;
 }
 
-@media only screen and (max-width: 768px) {
-  .hero .hero__title {
-    font-size: 36px;
-    text-align: center;
-  }
-}
-
 @media (max-width: 996px) {
   .footer .row .col.col.col {
     flex: 1 0 !important;

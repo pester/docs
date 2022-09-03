@@ -76,7 +76,7 @@ function Home() {
         <div className={classnames('container', styles.container)}>
           <div className="row">
             <div className={classnames('col col--9', styles.heroContent)}>
-              <h1 className="hero__title">The test framework for Powershell</h1>
+              <h1 className={classnames('hero__title', styles.heroTitle)}>The test framework for Powershell</h1>
               <p className="hero__subtitle">Pester is the ubiquitous test and mock framework for PowerShell</p>
 
               <div className={styles.buttons}>
