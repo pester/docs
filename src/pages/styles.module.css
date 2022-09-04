@@ -17,7 +17,7 @@
 }
 
 html[data-theme='dark'] .heroBanner {
-  color: #000;
+  --ifm-hero-text-color: var(--ifm-font-color-base);
 }
 
 .heroLogo img {
@@ -31,6 +31,13 @@ html[data-theme='dark'] .heroBanner {
 
   .heroLogo img {
     width: initial;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .heroTitle {
+    font-size: 36px;
+    text-align: center;
   }
 }
 
