@@ -15,10 +15,16 @@ module.exports = {
   onBrokenMarkdownLinks: 'warn',
   themeConfig: {
     metadata: [
-        {
-            name: 'theme-color',
-            content: '#0072c6'
-        }
+      {
+        name: 'theme-color',
+        content: '#0072c6'
+      },
+      // Use viewport-fit=cover to stretch website into safe-area (camera notch, swipe-for-menu etc.) on mobile.
+      // Combine with padding in CSS to avoid conflicts using env(safe-area-inset-*) variables
+      {
+        name: 'viewport',
+        content: 'width=device-width, initial-scale=1.0, viewport-fit=cover'
+      }
     ],
     navbar: {
       title: 'Pester',
