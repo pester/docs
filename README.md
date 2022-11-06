@@ -64,8 +64,8 @@ To upgrade docusaurus to a more recent version:
 1. Edit `package.json`
 2. Manually bump the version number of these dependency packages:
     ```json
-    @docusaurus/core": "^2.1.0",
-    @docusaurus/preset-classic": "^2.1.0",
+    @docusaurus/core": "^2.2.0",
+    @docusaurus/preset-classic": "^2.2.0",
     ```
 3. Run `yarn install`
 4. Submit a pull request with (only) these updated files:
