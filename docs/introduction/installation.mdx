@@ -39,7 +39,7 @@ WARNING: Source location 'https://www.powershellgallery.com/api/v2/packages/Pest
 To enable TLS 1.2 for the current PowerShell instance, you can run the following code, and then re-run the installation command:
 
 ```powershell
-[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor [System.Net.SecurityProtocol]::Tls12
+[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor [System.Net.SecurityProtocolType]::Tls12
 ```
 
 ### Removing the Built-In Version of Pester
