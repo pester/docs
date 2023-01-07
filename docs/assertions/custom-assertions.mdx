@@ -14,7 +14,7 @@ This can be an array or a single object depending on whether you register the fu
 
 When `Should` calls your custom assertion, it will invoke it with the following parameters:
 - **ActualValue**: The value passed to `Should` to assert.
-- **Negate**: Internal switch/bool parameter used to delcare if the user called `Should -Not ...`.
+- **Negate**: Internal switch/bool parameter used to declare if the user called `Should -Not ...`.
 - **CallerSessionState**: Used by some internal assertions to invoke code in the user's state. This can usually be ignored.
 - *Remaining bound parameters*, typically matching the parameters your accept in your assertion, like `ExpectedValue`, `Because`, `MyCustomParameter` etc.
 
