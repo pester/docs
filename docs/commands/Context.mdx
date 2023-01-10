@@ -37,27 +37,31 @@ apply to tests within that Context .
 ### EXAMPLE 1
 
 ```powershell
-function Add-Numbers($a, $b) {
-    return $a + $b
+BeforeAll {
+    function Add-Numbers($a, $b) {
+        return $a + $b
+    }
 }
 
-Describe "Add-Numbers" {
-    Context "when root does not exist" {
-        It "..." {
+Describe 'Add-Numbers' {
+    Context 'when adding positive values' {
+        It '...' {
             # ...
         }
     }
 
-    Context "when root does exist" {
-        It "..." {
+    Context 'when adding negative values' {
+        It '...' {
             # ...
         }
-        It "..." {
+        It '...' {
             # ...
         }
     }
 }
 ```
+
+Example of how to use Context for grouping different tests
 
 ## PARAMETERS
 
@@ -173,4 +177,4 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## EDIT THIS PAGE
 
-This page was auto-generated using the comment based help in Pester 5.3.3. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.
+This page was auto-generated using the comment based help in Pester 5.4.0. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.

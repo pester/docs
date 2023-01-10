@@ -62,8 +62,10 @@ command as the first tested statement in the It block.
 ### EXAMPLE 1
 
 ```powershell
-function Add-Numbers($a, $b) {
-    return $a + $b
+BeforeAll {
+    function Add-Numbers($a, $b) {
+        return $a + $b
+    }
 }
 
 Describe "Add-Numbers" {
@@ -89,6 +91,9 @@ Describe "Add-Numbers" {
 }
 ```
 
+Example of a simple Pester file.
+It-blocks are used to define the different tests.
+
 ### EXAMPLE 2
 
 ```powershell
@@ -105,13 +110,16 @@ Describe "Add-Numbers" {
     )
 
     It 'Correctly adds \<a\> and \<b\> to get \<expectedResult\>' -TestCases $testCases {
-        param ($a, $b, $expectedResult)
-
         $sum = Add-Numbers $a $b
         $sum | Should -Be $expectedResult
     }
 }
 ```
+
+Using It with -TestCases to run the same tests with different parameters and expected results.
+Each hashtable in the `$testCases`-array generates one tests to a total of four.
+Each key-value pair in the
+current hashtable are made available as variables inside It.
 
 ## PARAMETERS
 
@@ -253,4 +261,4 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## EDIT THIS PAGE
 
-This page was auto-generated using the comment based help in Pester 5.3.3. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.
+This page was auto-generated using the comment based help in Pester 5.4.0. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.
