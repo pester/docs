@@ -15,7 +15,7 @@ custom_edit_url: null
 ## SYNOPSIS
 
 Allows you to execute parts of a test script within the
-scope of a PowerShell script module.
+scope of a PowerShell script or manifest module.
 
 ## SYNTAX
 
@@ -27,7 +27,7 @@ InModuleScope [-ModuleName] <String> [-ScriptBlock] <ScriptBlock> [[-Parameters]
 ## DESCRIPTION
 
 By injecting some test code into the scope of a PowerShell
-script module, you can use non-exported functions, aliases
+script or manifest module, you can use non-exported functions, aliases
 and variables inside that module, to perform unit tests on
 its internal implementation.
 
@@ -40,13 +40,11 @@ either inside or outside a Describe block.
 
 ```powershell
 # The script module:
-function PublicFunction
-{
+function PublicFunction {
     # Does something
 }
 
-function PrivateFunction
-{
+function PrivateFunction {
     return $true
 }
 
@@ -75,13 +73,11 @@ Using InModuleScope allowed this call to
 
 ```powershell
 # The script module:
-function PublicFunction
-{
+function PublicFunction {
     # Does something
 }
 
-function PrivateFunction ($MyParam)
-{
+function PrivateFunction ($MyParam) {
     return $MyParam
 }
 
@@ -141,7 +137,7 @@ Accept wildcard characters: False
 
 ### -ScriptBlock
 
-The code to be executed within the script module.
+The code to be executed within the script or manifest module.
 
 ```yaml
 Type: ScriptBlock
@@ -204,4 +200,4 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## EDIT THIS PAGE
 
-This page was auto-generated using the comment based help in Pester 5.3.3. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.
+This page was auto-generated using the comment based help in Pester 5.4.0. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.
