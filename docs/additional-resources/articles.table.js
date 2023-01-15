@@ -68,7 +68,7 @@ export const articles = [
     title: "Writing Pester Tests",
     author: "PowerShell Community",
     date: "2016-11-07",
-    url: "https://github.com/PowerShell/PowerShell/blob/master/docs/testing-guidelines/WritingPesterTests.md",
+    url: "https://github.com/PowerShell/PowerShell/blob/main/docs/testing-guidelines/WritingPesterTests.md",
   },
   {
     title: "Functional / Non-Functional Pester Tests and why I think you really should have a form of both.",
