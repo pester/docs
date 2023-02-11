@@ -1,0 +1,4 @@
+# GitHub redirects
+/issues                 https://github.com/pester/pester/issues/new/choose
+/issues/docs            https://github.com/pester/docs/issues/new/choose
+/releases/:v            https://github.com/pester/pester/releases/tag/:v
