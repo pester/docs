@@ -15,7 +15,7 @@
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
 		"dbaeumer.vscode-eslint",
-		"silvenon.mdx",
+    "unifiedjs.vscode-mdx",
 		"ms-vscode.powershell",
 		"EditorConfig.EditorConfig"
 	],
