@@ -1,38 +1,41 @@
 // For format details, see https://aka.ms/vscode-remote/devcontainer.json
 {
-	"name": "Node.js w/Powershell",
-	"build": {
-		"dockerfile": "Dockerfile",
-		// Update 'VARIANT' to pick a Node version: 12, 14, 16
-		"args": { "VARIANT": "16" }
-	},
+  "name": "Node.js w/Powershell",
+  "build": {
+    "dockerfile": "Dockerfile",
+    // Update 'VARIANT' to pick a Node version: 12, 14, 16
+    "args": {
+      "VARIANT": "16"
+    }
+  },
+  // Set *default* container specific settings.json values on container create.
+  "settings": {
+    "terminal.integrated.defaultProfile.linux": "bash"
+  },
 
-	// Set *default* container specific settings.json values on container create.
-	"settings": { 
-		"terminal.integrated.defaultProfile.linux": "bash"
-	},
+  // Add the IDs of extensions you want installed when the container is created.
+  "extensions": [
+    "dbaeumer.vscode-eslint",
+    "unifiedjs.vscode-mdx",
+    "ms-vscode.powershell",
+    "EditorConfig.EditorConfig"
+  ],
 
-	// Add the IDs of extensions you want installed when the container is created.
-	"extensions": [
-		"dbaeumer.vscode-eslint",
-		"silvenon.mdx",
-		"ms-vscode.powershell",
-		"EditorConfig.EditorConfig"
-	],
+  // Windows users should clone repo in container volume, WSL2
+  // If not, uncomment this to fix poor yarn/npm performance
+  // "mounts": [
+  // 	"source=pester-docs-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume"
+  // ],
 
-	// Windows users should clone repo in container volume, WSL2
-	// If not, uncomment this to fix poor yarn/npm performance
-	// "mounts": [
-	// 	"source=pester-docs-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume"
-	// ],
+  // Use 'forwardPorts' to make a list of ports inside the container available locally.
+  "forwardPorts": [
+    3000
+  ],
 
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	"forwardPorts": [3000],
+  // Use 'postCreateCommand' to run commands after the container is created.
+  // Restoring node-modules
+  "postCreateCommand": "yarn"
 
-	// Use 'postCreateCommand' to run commands after the container is created.
-	// Restoring node-modules
-	"postCreateCommand": "yarn"
-
-	// Uncomment to connect as a non-root user. See https://aka.ms/vscode-remote/containers/non-root.
-	// "remoteUser": "node"
+  // Uncomment to connect as a non-root user. See https://aka.ms/vscode-remote/containers/non-root.
+  // "remoteUser": "node"
 }
