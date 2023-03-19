@@ -54,7 +54,7 @@ Describe "Validate important file" {
         @(Get-Content $samplePath).Count | Should -Be 100
     }
 
-    It "First ten lines should be 1 -\> 10" {
+    It "First ten lines should be 1 -> 10" {
         @(Get-Content $samplePath -TotalCount 10) | Should -Be @(1..10)
     }
 
