@@ -90,8 +90,8 @@ $docusaurusOptions = @{
     "Documentation"
   )
   PrependMarkdown = @"
-:::note This page was generated using the comment-based help in Pester $($ModuleList.Pester).
-To edit the content of this page, change the corresponding help in the [Pester-repository](https://github.com/pester/pester).
+:::info Generated from Pester $($ModuleList.Pester) help
+To contribute to this page, please update the source in the [Pester-repo](https://github.com/pester/pester).
 :::
 "@
 }
