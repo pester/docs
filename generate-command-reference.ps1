@@ -89,7 +89,11 @@ $docusaurusOptions = @{
     "Help"
     "Documentation"
   )
-  AppendMarkdown  = "## EDIT THIS PAGE`nThis page was auto-generated using the comment based help in Pester $($ModuleList.Pester). To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information."
+  PrependMarkdown = @"
+:::note This page was generated using the comment-based help in Pester $($ModuleList.Pester).
+To edit the content of this page, change the corresponding help in the [Pester-repository](https://github.com/pester/pester).
+:::
+"@
 }
 
 # -----------------------------------------------------------------------------
