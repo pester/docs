@@ -49,7 +49,7 @@ module.exports = {
         },
         {
           label: 'GitHub',
-          href: 'https://github.com/pester/docs',
+          href: 'https://github.com/pester/pester',
           position: 'right',
         },
         {
