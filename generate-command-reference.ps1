@@ -90,10 +90,11 @@ $docusaurusOptions = @{
     "Documentation"
   )
   PrependMarkdown = @"
-:::info Generated from Pester $($ModuleList.Pester) help
-To contribute to this page, please update the source in the [Pester-repo](https://github.com/pester/pester).
+:::info This page was generated
+Contributions are welcome in [Pester-repo](https://github.com/pester/pester).
 :::
 "@
+  AppendMarkdown = "*This page was automatically generated from comment-based help in [Pester $($ModuleList.Pester)](https://github.com/pester/pester).*"
 }
 
 # -----------------------------------------------------------------------------
