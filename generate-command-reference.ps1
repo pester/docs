@@ -94,7 +94,10 @@ $docusaurusOptions = @{
 Contributions are welcome in [Pester-repo](https://github.com/pester/pester).
 :::
 "@
-  AppendMarkdown = "*This page was automatically generated from comment-based help in [Pester $($ModuleList.Pester)](https://github.com/pester/pester).*"
+  AppendMarkdown = @"
+## VERSION
+*This page was generated using comment-based help in [Pester $($ModuleList.Pester)](https://github.com/pester/pester).*
+"@
 }
 
 # -----------------------------------------------------------------------------
