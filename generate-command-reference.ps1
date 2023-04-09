@@ -29,6 +29,11 @@ $PSDefaultParameterValues['*:ErrorAction'] = "Stop"
 
 Write-Host "Generating MDX files for website Command Reference" -BackgroundColor DarkGreen
 
+# Generate help for Operator switch-parameters for Should.
+# CAUTION: Do not use -SkipModuleImport unless this env-var was set prior to importing Pester.
+# See https://github.com/pester/Pester/pull/2336
+$env:PESTER_GENERATE_HELP_FOR_SHOULDOPERATORS = 1
+
 # -----------------------------------------------------------------------------
 # Install required modules
 # -----------------------------------------------------------------------------
@@ -67,6 +72,9 @@ $ModuleList.Keys.Clone() | ForEach-Object {
     Import-Module -Name $ModuleName -RequiredVersion $RequestedVersion -Force
   }
 }
+
+# Revert to default behavior to avoid import perf hit in future imports in same session
+$env:PESTER_GENERATE_HELP_FOR_SHOULDOPERATORS = 0
 
 # -----------------------------------------------------------------------------
 # Use below settings to manipulate the rendered MDX files
