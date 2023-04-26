@@ -147,7 +147,7 @@ module.exports = {
       {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
-          editUrl: 'https://github.com/pester/docs/edit/master',
+          editUrl: 'https://github.com/pester/docs/edit/main',
           lastVersion: "current",
           includeCurrentVersion: true,
           disableVersioning: false,

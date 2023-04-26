@@ -55,7 +55,7 @@ The global CSS overrides for the Pester website are found in `src/css/custom.css
 
 The Pester website uses interactive React tables. To change the content of the tables,
 simply update the correlating `.json` configuration file as can be seen in
-[this example](https://github.com/pester/docs/blob/master/docs/additional-resources/articles.table.js).
+[this example](https://github.com/pester/docs/blob/main/docs/additional-resources/articles.table.js).
 
 ### Bumping Docusaurus
 

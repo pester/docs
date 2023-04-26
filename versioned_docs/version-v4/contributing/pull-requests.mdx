@@ -16,7 +16,7 @@ If you don't have much experience with git, I suggest you download the [GitHub d
 
 __If you just forked and cloned as described in the Step 1 you can skip directly to step 3. Your code is already up-to-date.__
 
-Otherwise you should make sure that your fork and your local copy (clone) is up to date. We will be updating the master branch, because that is where you should always start when creating a new PR.
+Otherwise you should make sure that your fork and your local copy (clone) is up to date. We will be updating the main branch, because that is where you should always start when creating a new PR.
 
 First you need to tell your repository where to find the official Pester repository by setting an upstream remote, you can find how to do that [in this official guide.](https://help.github.com/articles/configuring-a-remote-for-a-fork/)
 
@@ -40,16 +40,16 @@ C:\Users\nohwnd\Documents\GitHub> cd .\Pester\
 
 # listing the remotes to see what is there
 # (notice that the URL is the same as the cloning URL and that it's called origin)
-C:\Users\nohwnd\Documents\GitHub\Pester [master ≡]> git remote -v
+C:\Users\nohwnd\Documents\GitHub\Pester [main ≡]> git remote -v
 origin  https://github.com/nohwnd/Pester.git (fetch)
 origin  https://github.com/nohwnd/Pester.git (push)
 
 # adding one more remote to tell git where the official Pester repository is
 # (notice this one is called upstream, and has /pester/pester.git in the URL, unlike the fork)
-C:\Users\nohwnd\Documents\GitHub\Pester [master ≡]> git remote add upstream https://github.com/pester/Pester.git
+C:\Users\nohwnd\Documents\GitHub\Pester [main ≡]> git remote add upstream https://github.com/pester/Pester.git
 
 # listing the remotes again to confirm the configuration is correct
-C:\Users\nohwnd\Documents\GitHub\Pester [master ≡]> git remote -v
+C:\Users\nohwnd\Documents\GitHub\Pester [main ≡]> git remote -v
 origin  https://github.com/nohwnd/Pester.git (fetch)
 origin  https://github.com/nohwnd/Pester.git (push)
 upstream        https://github.com/pester/Pester.git (fetch)
@@ -59,7 +59,7 @@ upstream        https://github.com/pester/Pester.git (push)
 
 # downloading (fetching) data from the official repository
 # (you can see there are some new branches and tags)
-C:\Users\nohwnd\Documents\GitHub\Pester [master ≡]> git fetch upstream
+C:\Users\nohwnd\Documents\GitHub\Pester [main ≡]> git fetch upstream
 remote: Counting objects: 40, done.
 remote: Compressing objects: 100% (20/20), done.
 remote: Total 40 (delta 23), reused 15 (delta 15), pack-reused 5
@@ -67,7 +67,7 @@ Unpacking objects: 100% (40/40), done.
 From https://github.com/pester/Pester
  * [new branch]      DevelopmentV4 -> upstream/DevelopmentV4
  * [new branch]      RunOnNanoServer -> upstream/RunOnNanoServer
- * [new branch]      master     -> upstream/master
+ * [new branch]      main       -> upstream/main
  * [new tag]         3.3.12     -> 3.3.12
  * [new tag]         3.3.13     -> 3.3.13
  * [new tag]         3.3.14     -> 3.3.14
@@ -76,16 +76,16 @@ From https://github.com/pester/Pester
  * [new tag]         3.4.2      -> 3.4.2
  * [new tag]         3.4.3      -> 3.4.3
 
-# moving to the master branch (I already was there so this step was not necessary.)
-# the message says I am up-to-date with origin/master - the master branch in my fork on the server.
+# moving to the main branch (I already was there so this step was not necessary.)
+# the message says I am up-to-date with origin/main - the main branch in my fork on the server.
 # you can call "git pull" to make sure everything is up to date
-C:\Users\nohwnd\Documents\GitHub\Pester [master ≡]> git checkout master
-Already on 'master'
-Your branch is up-to-date with 'origin/master'.
+C:\Users\nohwnd\Documents\GitHub\Pester [main ≡]> git checkout main
+Already on 'main'
+Your branch is up-to-date with 'origin/main'.
 
-# here I am merging the offical repository master branch to my fork master branch
+# here I am merging the offical repository main branch to my fork main branch
 # you can see there were some changes to merge
-C:\Users\nohwnd\Documents\GitHub\Pester [master ≡]> git merge upstream/master
+C:\Users\nohwnd\Documents\GitHub\Pester [main ≡]> git merge upstream/main
 Updating 6680807..dc550d2
 Fast-forward
  CHANGELOG.md                       |  3 +++
@@ -100,7 +100,7 @@ Fast-forward
  create mode 100644 Functions/New-MockObject.ps1
 
 # pushing the merged changes to my fork on the server (origin)
-C:\Users\nohwnd\Documents\GitHub\Pester [master ↑]> git push
+C:\Users\nohwnd\Documents\GitHub\Pester [main ↑]> git push
 Counting objects: 15, done.
 Delta compression using up to 4 threads.
 Compressing objects: 100% (15/15), done.
@@ -108,24 +108,24 @@ Writing objects: 100% (15/15), 2.23 KiB | 0 bytes/s, done.
 Total 15 (delta 9), reused 0 (delta 0)
 remote: Resolving deltas: 100% (9/9), completed with 7 local objects.
 To https://github.com/nohwnd/Pester.git
-   6680807..dc550d2  master -> master
+   6680807..dc550d2  main -> main
 ```
 
 ### Step 3 - Create a Feature Branch
 
-Switch to your master branch and create a new so-called feature branch from it. This branch will hold all changes for the PR you are implementing. You could put your changes directly into the master branch, but that's not recommended.
+Switch to your main branch and create a new so-called feature branch from it. This branch will hold all changes for the PR you are implementing. You could put your changes directly into the main branch, but that's not recommended.
 
 ```bash
 git checkout -b "FixHelpForShould"
 ```
 
-This command will create a new branch based on the current branch (master) and will switch directly to it.
+This command will create a new branch based on the current branch (main) and will switch directly to it.
 
 ```powershell
-C:\Users\nohwnd\Documents\GitHub\Pester [master ≡]> git checkout master
-Already on 'master'
-Your branch is up-to-date with 'origin/master'.
-C:\Users\nohwnd\Documents\GitHub\Pester [master ≡]> git checkout -b "FixHelpForShould"
+C:\Users\nohwnd\Documents\GitHub\Pester [main ≡]> git checkout main
+Already on 'main'
+Your branch is up-to-date with 'origin/main'.
+C:\Users\nohwnd\Documents\GitHub\Pester [main ≡]> git checkout -b "FixHelpForShould"
 Switched to a new branch 'FixHelpForShould'
 C:\Users\nohwnd\Documents\GitHub\Pester [FixHelpForShould]>
 ```
