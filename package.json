@@ -16,6 +16,7 @@
   "dependencies": {
     "@docusaurus/core": "^3.0.0",
     "@docusaurus/preset-classic": "^3.0.0",
+    "@giscus/react": "^2.2.8",
     "@mdx-js/react": "^3.0.0",
     "@tanstack/react-table": "^8.10.0",
     "clsx": "^1.2.1",
