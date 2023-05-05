@@ -9,21 +9,21 @@ import React from 'react';
 /**
  * Adds a meta-tag to ensure new dicussion always add the canonical link in the initial post.
  * Avoids any localhost etc. if first reaction/post was made from a preview build
- * 
+ *
  * See https://github.com/giscus/giscus/blob/main/ADVANCED-USAGE.md#giscusbacklink
  */
 export function GiscusHead() {
-    const {
-        siteConfig: { url: siteUrl },
-    } = useDocusaurusContext();
-    const { pathname } = useLocation();
-    const canonicalUrl = siteUrl + useBaseUrl(pathname);
+  const {
+    siteConfig: { url: siteUrl },
+  } = useDocusaurusContext();
+  const { pathname } = useLocation();
+  const canonicalUrl = siteUrl + useBaseUrl(pathname);
 
-    return (
-        <Head>
-            <meta name="giscus:backlink" content={canonicalUrl} />
-        </Head>
-    )
+  return (
+    <Head>
+      <meta name="giscus:backlink" content={canonicalUrl} />
+    </Head>
+  )
 }
 
 export function GiscusComponent() {
