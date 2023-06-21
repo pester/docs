@@ -85,6 +85,7 @@
   --ifm-font-family-base: 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   --ifm-heading-font-weight: 600;
   --ifm-hover-overlay: rgba(0, 0, 0, 0.04);
+  --docusaurus-highlighted-code-line-bg: rgb(0, 0, 0, .1);
 }
 
 [data-theme='dark'] {
@@ -94,6 +95,7 @@
   --ifm-breadcrumb-color-active: var(--ifm-color-primary-lightest);
   --ifm-link-color: var(--ifm-color-primary-lightest);
   --ifm-menu-color-active: var(--ifm-color-primary-lightest);
+  --docusaurus-highlighted-code-line-bg: rgb(255, 255, 255, .1);
 }
 
 [data-theme='dark'] .table-of-contents__link:hover,
@@ -114,14 +116,6 @@
 
 .navbar button[title*='light mode']:hover {
   background: rgb(255, 255, 255, 0.2);
-}
-
-/* highlighted lines in codeblocks. Example: highlight line 3 using ```powershell {3} */
-.docusaurus-highlight-code-line {
-  background-color: rgb(72, 77, 91);
-  display: block;
-  margin: 0 calc(-1 * var(--ifm-pre-padding));
-  padding: 0 var(--ifm-pre-padding);
 }
 
 /* navbar styling */
