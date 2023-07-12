@@ -202,8 +202,8 @@ an exception will be thrown.
 This is a convenient way to avoid needing
 to have two calls to Assert-MockCalled like this:
 
-Assert-MockCalled SomeCommand -Times 1 -ParameterFilter { $something -eq $true }
-Assert-MockCalled SomeCommand -Times 0 -ParameterFilter { $something -ne $true }
+Assert-MockCalled SomeCommand -Times 1 -ParameterFilter \{ $something -eq $true \}
+Assert-MockCalled SomeCommand -Times 0 -ParameterFilter \{ $something -ne $true \}
 
 ```yaml
 Type: ScriptBlock
