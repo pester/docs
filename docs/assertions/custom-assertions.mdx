@@ -69,9 +69,7 @@ The limitation is tracked in [this issue](https://github.com/pester/Pester/issue
 
 ### Simple example
 
-#### MyCustomAssertions.psm1
-
-```powershell
+```powershell title="MyCustomAssertions.psm1"
 #Requires -Module Pester
 
 function Should-BeUpperCaseOnly ([string] $ActualValue, [switch] $Negate, [string] $Because) {
@@ -112,9 +110,7 @@ Add-ShouldOperator -Name BeUpperCaseOnly `
     -Alias 'BU'
 ```
 
-#### demo.tests.ps1
-
-```powershell
+```powershell title="demo.tests.ps1"
 BeforeDiscovery {
     # Loads and registers my custom assertion. Ignores usage of unapproved verb with -DisableNameChecking
     Import-Module "$PSScriptRoot/MyCustomAssertions.psm1" -DisableNameChecking
@@ -157,9 +153,7 @@ Tests Passed: 3, Failed: 1, Skipped: 0 NotRun: 0
 
 ### SupportsArrayInput example
 
-#### MyCustomAssertions.psm1
-
-```powershell
+```powershell title="MyCustomAssertions.psm1"
 #Requires -Module Pester
 
 function Should-ContainOnlyValuesOf ($ActualValue, [int]$ExpectedValue, [switch] $Negate, [string] $Because) {
@@ -204,9 +198,7 @@ Add-ShouldOperator -Name ContainOnlyValuesOf `
     -SupportsArrayInput
 ```
 
-#### demo.tests.ps1
-
-```powershell
+```powershell title="demo.tests.ps1"
 BeforeDiscovery {
     # Loads and registers my custom assertion. Ignores usage of unapproved verb with -DisableNameChecking
     Import-Module "$PSScriptRoot/MyCustomAssertions.psm1" -DisableNameChecking
