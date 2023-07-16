@@ -25,20 +25,20 @@ Validates the results of a test inside of a Describe block.
 ### Normal (Default)
 
 ```powershell
-It [-Name] <String> [[-Test] <ScriptBlock>] [-TestCases <Object[]>] [-Tag <String[]>] [<CommonParameters>]
+It [-Name] <String> [[-Test] <ScriptBlock>] [-ForEach <Object[]>] [-Tag <String[]>] [<CommonParameters>]
 ```
 
 ### Pending
 
 ```powershell
-It [-Name] <String> [[-Test] <ScriptBlock>] [-TestCases <Object[]>] [-Tag <String[]>] [-Pending]
+It [-Name] <String> [[-Test] <ScriptBlock>] [-ForEach <Object[]>] [-Tag <String[]>] [-Pending]
  [<CommonParameters>]
 ```
 
 ### Skip
 
 ```powershell
-It [-Name] <String> [[-Test] <ScriptBlock>] [-TestCases <Object[]>] [-Tag <String[]>] [-Skip]
+It [-Name] <String> [[-Test] <ScriptBlock>] [-ForEach <Object[]>] [-Tag <String[]>] [-Skip]
  [<CommonParameters>]
 ```
 
@@ -113,14 +113,14 @@ Describe "Add-Numbers" {
         @{ a = 'two'; b = 'three'; expectedResult = 'twothree' }
     )
 
-    It 'Correctly adds <a> and <b> to get <expectedResult>' -TestCases $testCases {
+    It 'Correctly adds <a> and <b> to get <expectedResult>' -ForEach $testCases {
         $sum = Add-Numbers $a $b
         $sum | Should -Be $expectedResult
     }
 }
 ```
 
-Using It with -TestCases to run the same tests with different parameters and expected results.
+Using It with -ForEach to run the same tests with different parameters and expected results.
 Each hashtable in the `$testCases`-array generates one tests to a total of four.
 Each key-value pair in the
 current hashtable are made available as variables inside It.
@@ -162,21 +162,20 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -TestCases
+### -ForEach
 
-Optional array of hashtable (or any IDictionary) objects. 
-If this parameter is used,
-Pester will call the test script block once for each table in the TestCases array,
-splatting the dictionary to the test script block as input. 
-If you want the name of
-the test to appear differently for each test case, you can embed tokens into the Name
+(Formerly called TestCases.) Optional array of hashtable (or any IDictionary) objects.
+If this parameter is used, Pester will call the test script block once for each table in
+the ForEach array, splatting the dictionary to the test script block as input. 
+If you want
+the name of the test to appear differently for each test case, you can embed tokens into the Name
 parameter with the syntax 'Adds numbers &lt;A&gt; and &lt;B&gt;' (assuming you have keys named A and B
-in your TestCases hashtables.)
+in your ForEach hashtables.)
 
 ```yaml
 Type: Object[]
 Parameter Sets: (All)
-Aliases: ForEach
+Aliases: TestCases
 
 Required: False
 Position: Named
@@ -265,4 +264,4 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 5.4.0](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 5.5.0](https://github.com/pester/pester).*
