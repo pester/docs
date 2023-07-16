@@ -23,9 +23,9 @@ The hashtables may have the following keys:
 
 After `Invoke-Pester` finishes executing the test scripts, Pester will output a coverage report to the console.  If you are using `Invoke-Pester`'s `-PassThru` switch, the coverage analysis will also be available on the output object, under its `CodeCoverage` property.
 
-Here are some examples of the various ways the `-CodeCoverage` parameter can be used, and their corresponding output.  Here is the CoverageTest.ps1 script file:
+Here are some examples of the various ways the `-CodeCoverage` parameter can be used, and their corresponding output when used with the following files.
 
-```powershell
+```powershell title="CoverageTest.ps1"
 function FunctionOne ([switch] $SwitchParam)
 {
     if ($SwitchParam)
@@ -45,9 +45,7 @@ function FunctionTwo
 }
 ```
 
-And here is CoverageTest.Tests.ps1:
-
-```powershell
+```powershell title="CoverageTest.Tests.ps1"
 $here = Split-Path -Parent $MyInvocation.MyCommand.Path
 $sut = (Split-Path -Leaf $MyInvocation.MyCommand.Path) -replace '\.Tests\.', '.'
 . "$here\$sut"
@@ -63,7 +61,7 @@ Describe 'Demonstrating Code Coverage' {
 }
 ```
 
-As you can see, the test script fails to run FunctionOne with its switch parameter set, and there is an unreachable line of code in FunctionTwo.  Here are the results of calling `Invoke-Pester` with different values passed to its `-CodeCoverage` parameter:
+As you can see, the test script fails to run FunctionOne with its switch parameter set, and there is an unreachable line of code in FunctionTwo. Here are the results of calling `Invoke-Pester` with different values passed to its `-CodeCoverage` parameter:
 
 ```powershell
 Invoke-Pester .\CoverageTest.Tests.ps1 -CodeCoverage .\CoverageTest.ps1

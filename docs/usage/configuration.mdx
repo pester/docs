@@ -33,7 +33,9 @@ $configuration.Filter.Tag = 'Acceptance'
 $configuration.Filter.ExcludeTag = 'WindowsOnly'
 $configuration.Should.ErrorAction = 'Continue'
 $configuration.CodeCoverage.Enabled = $true
+```
 
+```powershell
 # cast whole hashtable to configuration
 $configuration = [PesterConfiguration]@{
     Run = @{
@@ -50,7 +52,9 @@ $configuration = [PesterConfiguration]@{
         Enabled = $true
     }
 }
+```
 
+```powershell
 # cast from empty hashtable to get default
 $configuration = [PesterConfiguration]@{}
 $configuration.Run.Path = 'C:\projects\tst'

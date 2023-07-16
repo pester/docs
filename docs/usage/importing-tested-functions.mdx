@@ -12,8 +12,8 @@ Pester tests are placed in `.Tests.ps1` file, for example `Get-Emoji.Tests.ps1`.
 
 To make the tested code available to the test we need to import the code file. This is done by dot-sourcing the file into the current scope like this:
 
-```powershell
-# at the top of Get-Emoji.Tests.ps1
+```powershell title="Get-Emoji.Tests.ps1"
+# at the top of the file
 BeforeAll {
     . $PSScriptRoot/Get-Emoji.ps1
 }
@@ -23,7 +23,7 @@ This code will locate the `Get-Emoji.ps1` file, which is placed in the same dire
 
 Alternatively `$PSCommandPath` can be used to get the name of the code file by convention:
 
-```powershell
+```powershell title="Get-Emoji.Tests.ps1"
 BeforeAll {
     # Get-Emoji.Tests.ps1 - .Tests.ps1 + .ps1 = Get-Emoji.ps1
     . $PSCommandPath.Replace('.Tests.ps1','.ps1')
@@ -61,7 +61,7 @@ Describe "Get-Cactus" {
 ```
 
 ```powershell
-AFTER (Pester v5):
+# AFTER (Pester v5):
 
 BeforeAll {
     # DON'T use $MyInvocation.MyCommand.Path
