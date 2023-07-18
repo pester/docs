@@ -7,7 +7,7 @@ description: PowerShell code in modules run in their own module state. This requ
 
 Let's say you have code like this inside a script module (.psm1 file):
 
-```powershell
+```powershell title="MyModule.psm1"
 function BuildIfChanged {
     $thisVersion = Get-Version
     $nextVersion = Get-NextVersion
@@ -31,7 +31,7 @@ Export-ModuleMember -Function BuildIfChanged
 
 You wish to write a unit test for this module which mocks the calls to `Get-Version` and `Get-NextVersion` from the module's `BuildIfChanged` command. In older versions of Pester, this was not possible. As of version 3.0, there are two ways you can perform unit tests of PowerShell script modules. The first is to inject mocks into a module:
 
-For these example, we'll assume that the PSM1 file is named "MyModule.psm1", and that it is installed on your PSModulePath.
+For these example, we'll assume that the PSM1 file is named `MyModule.psm1`, and that it is installed on your PSModulePath.
 
 ```powershell
 BeforeAll {

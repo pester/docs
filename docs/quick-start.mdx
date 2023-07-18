@@ -162,7 +162,6 @@ This will break the assertion that we have in our test, because we no longer ret
 ```
 Invoke-Pester -Output Detailed C:\t\Planets\Get-Planet.Tests.ps1
 
-
 Starting discovery in 1 files.
 Discovering in C:\t\Planets\Get-Planet.Tests.ps1.
 Found 1 tests. 9ms
@@ -202,7 +201,6 @@ If you look closer on how we broke the test, you can see that there are two dist
 - The second one is when the function works correctly, but the test is incorrect. This is a bad way to break the test.
 
 Being able to distinguish between those two is important, when your test breaks keep in mind that either the function, or the tests might be broken. What you usually do is that you look at what changed more recently. If the test is new, and the function existed for a while, you first blame the test. When the test was passing before, but it is not anymore, you first blame the tested function.
-
 
 ## Other keywords
 
@@ -248,8 +246,7 @@ Until now we had just a single file that contained both our tests and the functi
 
 To move the function out of the test we will move it to a separate file, and will [dot-source](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_scripts?view=powershell-7#script-scope-and-dot-sourcing) it back into the `BeforeAll`. To do this create a new file in the same directory as `Get-Planet.Tests.ps1` and call it `Get-Planet.ps1`. Then cut the function from the test file and paste it into the other file:
 
-```powershell
-# in file Get-Planet.ps1
+```powershell title="Get-Planet.ps1"
 function Get-Planet ([string]$Name = '*') {
     $planets = @(
         @{ Name = 'Mercury' }
@@ -266,8 +263,7 @@ function Get-Planet ([string]$Name = '*') {
 }
 ```
 
-```powershell
-# in file Get-Planet.Tests.ps1
+```powershell title="Get-Planet.Tests.ps1"
 BeforeAll {
 
 }
@@ -318,7 +314,6 @@ Describe 'Get-Planet' {
 
 ```
 Invoke-Pester -Output Detailed C:\t\Planets\Get-Planet.Tests.ps1
-
 
 Starting discovery in 1 files.
 Discovering in C:\t\Planets\Get-Planet.Tests.ps1.
