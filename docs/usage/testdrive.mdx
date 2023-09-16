@@ -18,7 +18,7 @@ Basic scoping rules are implemented for the TestDrive:
 3. When exiting a block, files and folders created during it's lifetime will be removed. Modifications to items created in parent blocks are not reversed, see caution below.
 4. When the whole container is finished, the TestDrive and all files and folders inside it is deleted.
 
-:::caution Modifications to existing items are not reversed
+:::warning Modifications to existing items are not reversed
 Be aware that the TestDrive content is tracked by paths. When entering a block, all paths which already exists will be excluded during cleanup when exiting the block.
 In practice this means that if you create a file in the Describe block and then change its content inside the Context block, the modifications or deletions are preserved even after you left the Context block.
 :::
