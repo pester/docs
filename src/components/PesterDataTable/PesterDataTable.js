@@ -1,11 +1,3 @@
-// ----------------------------------------------------------------------------
-// Please note that this component is deliberately NOT using a CCS stylesheet
-// because react-table is ui-agnostic and the table will therefore inherit
-// Docusaurus table styling. If additional styling ever becomes required please
-// consider using either "css modules" or "styled components".
-//
-// Code sandbox at https://codesandbox.io/s/pester-data-table-basic-1x0mw
-// ----------------------------------------------------------------------------
 import React from "react";
 import { flexRender, useReactTable, getCoreRowModel, getSortedRowModel } from '@tanstack/react-table'
 import "./style.css";
