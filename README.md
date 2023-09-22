@@ -83,4 +83,5 @@ and orientation.
 
 Instances of abusive, harassing, or otherwise unacceptable behavior may be reported to the community leaders responsible for enforcement at coc@pester.dev. All complaints will be reviewed and investigated promptly and fairly.
 
+
 [Read the full code of conduct](code_of_conduct.md)
