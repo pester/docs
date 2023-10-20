@@ -1,7 +1,3 @@
-/**
- * Please note that the syntax highlighting theme CANNOT be configured here,
- * it MUST be configured in swizzled shadow component `/src/theme/index.js`
-*/
 const { themes } = require('prism-react-renderer');
 
 module.exports = {

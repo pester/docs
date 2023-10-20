@@ -19,10 +19,9 @@
     "@mdx-js/react": "^2.3.0",
     "@tanstack/react-table": "^8.10.0",
     "clsx": "^1.2.1",
-    "file-loader": "^6.2.0",
+    "prism-react-renderer": "^2.1.0",
     "react": "^18.0.0",
-    "react-dom": "^18.0.0",
-    "url-loader": "^4.1.1"
+    "react-dom": "^18.0.0"
   },
   "browserslist": {
     "production": [
