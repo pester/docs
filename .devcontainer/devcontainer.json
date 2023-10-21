@@ -1,27 +1,15 @@
-// For format details, see https://aka.ms/vscode-remote/devcontainer.json
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/javascript-node
 {
-  "name": "Node.js w/Powershell",
-  "build": {
-    "dockerfile": "Dockerfile",
-    // Update 'VARIANT' to pick a Node version: 12, 14, 16
-    "args": {
-      "VARIANT": "16"
-    }
-  },
-  // Set *default* container specific settings.json values on container create.
-  "settings": {
-    "terminal.integrated.defaultProfile.linux": "bash"
+  "name": "Pester Docs",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:1-20-bullseye",
+
+  // Features to add to the dev container. More info: https://containers.dev/features.
+  "features": {
+    "ghcr.io/devcontainers/features/powershell:1": {}
   },
 
-  // Add the IDs of extensions you want installed when the container is created.
-  "extensions": [
-    "dbaeumer.vscode-eslint",
-    "unifiedjs.vscode-mdx",
-    "ms-vscode.powershell",
-    "EditorConfig.EditorConfig"
-  ],
-
-  // Windows users should clone repo in container volume, WSL2
+  // Windows users should clone repo in container volume or using WSL2
   // If not, uncomment this to fix poor yarn/npm performance
   // "mounts": [
   // 	"source=pester-docs-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume"
@@ -33,9 +21,23 @@
   ],
 
   // Use 'postCreateCommand' to run commands after the container is created.
-  // Restoring node-modules
-  "postCreateCommand": "yarn"
+  "postCreateCommand": "yarn install",
+  
+  // Configure tool-specific properties.
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash"
+      },
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "unifiedjs.vscode-mdx",
+        "ms-vscode.powershell",
+        "EditorConfig.EditorConfig"
+      ]
+    }
+  }
 
-  // Uncomment to connect as a non-root user. See https://aka.ms/vscode-remote/containers/non-root.
-  // "remoteUser": "node"
+  // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+  // "remoteUser": "root"
 }
