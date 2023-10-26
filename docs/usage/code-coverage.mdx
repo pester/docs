@@ -9,7 +9,107 @@ Code Coverage refers to the percentage of lines of code that are tested by a sui
 
 Note: Unlike most of Pester, use of the Code Coverage feature requires PowerShell version 3.0 or later.
 
-To generate Code Coverage metrics, pass one or more values to the `-CodeCoverage` parameter of the `Invoke-Pester` command. The arguments to this parameter may be one of the following:
+To generate Code Coverage metrics we no longer rely in the `-CodeCoverage` parameter of the `Invoke-Pester` command. Pester, offers a new way to configure Code Coverage using `New-PesterConfiguration` 
+
+## Code Coverage Quickstart with New-PesterConfiguration
+
+To configure Code Coverage with Pester using `New-PesterConfiguration`, follow these steps:
+
+1. Create a Pester configuration object using `New-PesterConfiguration`:
+
+   ```powershell
+   $config = New-PesterConfiguration
+   ```
+
+2. Set the test path to specify where your tests are located. In this example, we set the path to the current directory:
+
+   ```powershell
+   $config.Run.Path = "."
+   ```
+
+3. Enable Code Coverage and Test Results:
+
+   ```powershell
+   $config.CodeCoverage.Enabled = $true
+   $config.TestResult.Enabled = $true
+   ```
+
+4. Run Pester tests using the configuration you've created:
+
+   ```powershell
+   Invoke-Pester -Configuration $config
+   ```
+
+By default a `Detailed` output will show the code coverage details. To see more options of `CodeCoverage` configuration see [New-PesterConfiguration](https://pester.dev/docs/commands/New-PesterConfiguration). 
+
+## Understanding Code Coverage
+
+Code Coverage refers to the percentage of lines of code that are tested by a suite of unit tests. It's a good indicator of how thoroughly your PowerShell code has been tested. Pester calculates this coverage during test execution and generates a report.
+
+Pester uses breakpoints to track which commands are executed. This means that it focuses on commands like function calls, cmdlets, programs, expressions, and variable assignments. Keywords such as `else`, `try`, `finally`, or braces are not included in the analysis.
+
+In practice, Pester's Code Coverage analysis provides valuable insights into the coverage of your code and helps identify untested branches and edge cases.
+
+## Integrating with GitHub Actions
+
+To integrate Pester tests with Code Coverage into your GitHub Actions workflow, follow these steps:
+
+1. Create or update your GitHub Actions workflow file (e.g., `.github/workflows/pester-tests.yml`). Use the following example as a template:
+
+   ```yaml
+   name: Run Pester Tests
+
+   on:
+     push:
+       branches: [ "dev", "main" ]
+     pull_request:
+       branches: [ "dev" ]
+
+   jobs:
+     pester:
+       runs-on: windows-latest 
+
+       steps:
+       - name: Checkout code
+         uses: actions/checkout@v2
+
+       - name: Install Pester
+         shell: pwsh
+         run: Install-Module -Name Pester -Force -Scope CurrentUser
+
+       - name: Run Pester Tests
+         working-directory: ./solution 
+         run: |
+           # Run Pester tests with Code Coverage
+           $config = New-PesterConfiguration
+           $config.Run.Path = "."
+           $config.CodeCoverage.Enabled = $true
+           $config.TestResult.Enabled = $true
+           Invoke-Pester -Configuration $config
+
+       - name: Upload code coverage report
+         if: ${{ success() }}
+         uses: actions/upload-artifact@v2
+         with:
+           name: code-coverage-report
+           path: solution\coverage.xml
+   ```
+
+2. The workflow defined above triggers on pushes to the "dev" and "main" branches and on pull requests targeting the "dev" branch. Make sure to adjust the branch names as needed.
+
+3. This workflow runs on a Windows environment and does the following:
+   - Checks out the code.
+   - Installs the Pester module.
+   - Runs Pester tests with Code Coverage.
+   - Uploads the code coverage report as an artifact.
+
+4. Adjust the paths and configurations in the workflow according to your project structure and requirements.
+
+With this configuration, Pester tests will be executed with Code Coverage, and the coverage report will be available as an artifact in your GitHub Actions workflow.
+
+## Deprecated
+
+The arguments to this parameter may be one of the following:
 
 1. Strings, which refer to the path of the script files for which you want to generate coverage metrics. These strings may contain wildcards.
 2. Hashtables, which give you finer control over which sections of the file are analyzed for coverage. Using these hashtables, you may limit the analysis to specific functions or ranges of lines within a file.
