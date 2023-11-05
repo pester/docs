@@ -58,12 +58,14 @@ Invoke-Pester -Configuration $config
 
 For additional `CodeCoverage` configuration options, please refer to the [New-PesterConfiguration](https://pester.dev/docs/commands/New-PesterConfiguration) documentation.
 
-> **Note:** Pester does not traverse directories. 
+:::tip Pester does not traverse directories.
 If you encounter an **empty `coverage.xml` file**, it's likely because you're running the tests from a directory that doesn't
 include the relevant code to be covered. 
 To resolve this, you can either follow the recommended [Test file structure](https://pester.dev/docs/usage/test-file-structure),
 which involves placing the tests alongside the code you want to cover,
-or execute Pester from the root directory that contains both the tests and the code to be covered.
+or set the config `CodeCoverage.Path` option to the directory 
+that contains the code to be covered.
+:::
 
 ## Detailed output 
 
