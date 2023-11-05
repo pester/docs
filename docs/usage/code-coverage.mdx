@@ -5,7 +5,14 @@ sidebar_label: Code Coverage
 description: Pester can generate code coverage metrics to help you understand how many lines of your PowerShell code that is actually covered by your Pester-tests. Use this to increase confidence in your tests
 ---
 
-Code Coverage refers to the percentage of lines of code that are tested by a suite of unit tests. It's a good general indicator of how thoroughly your code has been tested, that all branches and edge cases are working properly, etc. Pester can generate these code coverage metrics for you while it is executing unit tests.
+Code Coverage refers to the percentage of lines of code that are tested 
+by a suite of unit tests. It's a good general indicator of how thoroughly
+your code has been tested, that all branches and edge cases are working 
+properly, etc. Pester calculates this coverage during 
+test execution and generates a report.
+
+In practice, Pester's Code Coverage analysis provides valuable insights 
+into the coverage of your code and helps identify untested branches and edge cases.
 
 ## Quickstart
 
@@ -70,19 +77,12 @@ $config.Output.Verbosity = 'Detailed'
 Invoke-Pester -Configuration $config
 
 # ...
-# deploy-dev-smple.ps1                                                                                            18 Write-Ou...
-# deploy-dev-sample.ps1                                                                                           20 Write-Er...
-# deploy-dev-sample.ps1                                                                                           22 $Content
-# deploy-dev-sample.ps1                                                                                           22 Set-Cont...
-# deploy-dev-sample.ps1                                                                                           24 kubectl ...
-# jade-codes.dev.ps1                                                                                              1  Show-Out...
+# deploy-dev-smple.ps1                                       18 Write-Ou...
+# deploy-dev-sample.ps1                                      20 Write-Er...
+# deploy-dev-sample.ps1                                      22 $Content
+# deploy-dev-sample.ps1                                      22 Set-Cont...
+# deploy-dev-sample.ps1                                      24 kubectl ...
 ```
-
-## Understanding Code Coverage
-
-Code Coverage refers to the percentage of lines of code that are tested by a suite of unit tests. It's a good indicator of how thoroughly your PowerShell code has been tested. Pester calculates this coverage during test execution and generates a report.
-
-In practice, Pester's Code Coverage analysis provides valuable insights into the coverage of your code and helps identify untested branches and edge cases.
 
 ## Integrating with GitHub Actions
 
