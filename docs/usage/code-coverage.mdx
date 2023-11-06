@@ -41,6 +41,98 @@ Pester, offers a new way to configure Code Coverage using `New-PesterConfigurati
 
 The final line displays both the current code coverage and the desired target coverage. You can customize the target coverage by configuring the CodeCoverage.CoveragePercentTarget option.
 
+## Examples
+
+Here are some examples of the various ways the Code Coverage configuration can be used, 
+and their corresponding output when used with the following files.
+
+```powershell title="CoverageTest.ps1"
+function FunctionOne ([switch] $SwitchParam)
+{
+    if ($SwitchParam)
+    {
+        return 'SwitchParam was set'
+    }
+    else
+    {
+        return 'SwitchParam was not set'
+    }
+}
+
+function FunctionTwo
+{
+    return 'I get executed'
+    return 'I do not'
+}
+```
+
+```powershell title="CoverageTest.Tests.ps1"
+BeforeAll {
+    . $PSCommandPath.Replace('.Tests.ps1','.ps1')
+}
+
+Describe 'Demonstrating Code Coverage' {
+    It 'Calls FunctionOne with no switch parameter set' {
+        FunctionOne | Should -Be 'SwitchParam was not set'
+    }
+
+    It 'Calls FunctionTwo' {
+        FunctionTwo | Should -Be 'I get executed'
+    }
+}
+```
+
+Let's see what is the coverage once executed:
+
+```powershell
+$config = New-PesterConfiguration
+$config.Run.Path = ".\CoverageTest.Tests.ps1"
+$config.CodeCoverage.Enabled = $true
+
+# Optional to scope the coverage to the list of files or directories in this path
+$config.CodeCoverage.Path = ".\CoverageTest.ps1"
+
+Invoke-Pester -Configuration $config
+
+<#
+...
+Tests completed in 109ms
+Tests Passed: 2, Failed: 0, Skipped: 0 NotRun: 0
+Processing code coverage result.
+Covered 60% / 75%. 5 analyzed Commands in 1 File.
+#>
+```
+
+When Pester is executed with detailed verbosity enabled,
+it provides a comprehensive output that includes detailed information about the covered lines. For example:
+
+
+```powershell
+$config = New-PesterConfiguration
+$config.Run.Path = ".\CoverageTest.Tests.ps1"
+$config.CodeCoverage.Enabled = $true
+$config.Output.Verbosity = "Detailed"
+
+Invoke-Pester -Configuration $config
+
+<#
+...
+Tests Passed: 2, Failed: 0, Skipped: 0 NotRun: 0
+Processing code coverage result.
+Code Coverage result processed in 22 ms.
+Covered 60% / 75%. 5 analyzed Commands in 1 File.
+Missed commands:
+
+File             Class Function    Line Command
+----             ----- --------    ---- -------
+CoverageTest.ps1       FunctionOne    5 return 'SwitchParam was set'
+CoverageTest.ps1       FunctionTwo   16 return 'I do not'
+#>
+```
+
+As you can see, the test script fails to run `FunctionOne` with its switch parameter set, 
+and there is an unreachable line of code in `FunctionTwo`. 
+
 ## Coverage Format
 
 By default, Pester generates a `coverage.xml` file in [JaCoCo](https://www.jacoco.org/) format. You have the flexibility to modify the output format, path, and encoding by using the following options:
@@ -66,25 +158,6 @@ which involves placing the tests alongside the code you want to cover,
 or set the config `CodeCoverage.Path` option to the directory 
 that contains the code to be covered.
 :::
-
-## Detailed output 
-
-When Pester is executed with detailed verbosity enabled, it provides a comprehensive output that includes detailed information about the covered lines. For example:
-
-```powershell
-$config = New-PesterConfiguration
-$config.CodeCoverage.Enabled = $true
-$config.Output.Verbosity = 'Detailed'
-
-Invoke-Pester -Configuration $config
-
-# ...
-# deploy-dev-smple.ps1                                       18 Write-Ou...
-# deploy-dev-sample.ps1                                      20 Write-Er...
-# deploy-dev-sample.ps1                                      22 $Content
-# deploy-dev-sample.ps1                                      22 Set-Cont...
-# deploy-dev-sample.ps1                                      24 kubectl ...
-```
 
 ## Integrating with GitHub Actions
 
