@@ -91,3 +91,13 @@ html[data-theme='dark'] .heroBanner {
     margin-bottom: 3rem;
   }
 }
+
+@media print {
+  .heroLogo img {
+    filter: invert(1);
+  }
+
+  .buttons {
+    display: none;
+  }
+}
