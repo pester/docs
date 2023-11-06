@@ -24,27 +24,6 @@ html[data-theme='dark'] .heroBanner {
   width: 86%;
 }
 
-@media screen and (max-width: 996px) {
-  .heroBanner {
-    padding: 4rem 0;
-  }
-
-  .heroContent {
-    order: 1;
-  }
-
-  .heroLogo img {
-    width: initial;
-  }
-}
-
-@media only screen and (max-width: 768px) {
-  .heroTitle {
-    font-size: 36px;
-    text-align: center;
-  }
-}
-
 .buttons {
   display: flex;
   align-items: center;
@@ -81,6 +60,23 @@ html[data-theme='dark'] .heroBanner {
  * CSS overrides for mobile
  */
 @media (max-width: 996px) {
+  .heroBanner {
+    padding: 4rem 0;
+  }
+
+  .heroContent {
+    order: 1;
+  }
+
+  .heroLogo img {
+    width: initial;
+  }
+
+  .heroTitle {
+    font-size: 36px;
+    text-align: center;
+  }
+
   .featureDescCol {
     order: 2;
     padding-bottom: 2.5rem !important;
