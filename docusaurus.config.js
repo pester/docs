@@ -1,7 +1,5 @@
-/**
- * Please note that the syntax highlighting theme CANNOT be configured here,
- * it MUST be configured in swizzled shadow component `/src/theme/index.js`
-*/
+const { themes } = require('prism-react-renderer');
+
 module.exports = {
   title: 'Pester',
   tagline: 'The ubiquitous test and mock framework for PowerShell',
@@ -59,10 +57,12 @@ module.exports = {
       ],
     },
     prism: {
-      theme: require('prism-react-renderer/themes/github'),
-      darkTheme: require('prism-react-renderer/themes/oceanicNext'),
+      theme: themes.github,
+      darkTheme: themes.oceanicNext,
       additionalLanguages: [
-        'powershell'
+        'bash',
+        'powershell',
+        'yaml'
       ]
     },
     // Please note that the Algolia DocSearch crawler only runs once every 24 hours.

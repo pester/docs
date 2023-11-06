@@ -232,7 +232,7 @@ Set-Content -Path TestDrive:\file.txt -Value 'I am a file.'
 ```
 :::
 
-:::caution
+:::warning
 Make sure the input is either a quoted string or an Item object. Otherwise PowerShell will try to invoke the
 path, likely throwing an error `Cannot run a document in the middle of a pipeline`.
 
@@ -352,7 +352,7 @@ so the following assertion will pass:
 Wildcard-characters `?*[]` can be escaped using backtick, ex `` `*``.
 :::
 
-:::caution
+:::warning
 The input object must be a ScriptBlock, otherwise it is processed outside of the assertion.
 
 ```powershell

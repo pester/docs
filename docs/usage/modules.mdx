@@ -112,7 +112,7 @@ Describe "Unit testing the module's internal Build function:" {
 
 Notice that when using `InModuleScope`, you no longer need to specify a `-ModuleName` parameter when calling `Mock` or `Should -Invoke` for commands within that module. You are also able to directly call the `Build` function, which the module does not export.
 
-:::caution Avoid putting in InModuleScope around your Describe and It blocks.
+:::warning Avoid putting in InModuleScope around your Describe and It blocks.
 
 `InModuleScope` is a simple way to expose your internal module functions to be tested, but it prevents you from properly testing your published functions, does not ensure that your functions are actually published and slows down test discovery by loading the module. Aim to avoid it altogether by using `-ModuleName` on `Mock` when possible or at least limit it to inside the It block like the sample above.
 :::
