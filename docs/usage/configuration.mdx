@@ -27,7 +27,7 @@ The configuration object can be constructed either via the Default static proper
 Import-Module Pester
 # get default from static property
 $configuration = [PesterConfiguration]::Default
-# assing properties & discover via intellisense
+# adding properties & discover via intellisense
 $configuration.Run.Path = 'C:\projects\tst'
 $configuration.Filter.Tag = 'Acceptance'
 $configuration.Filter.ExcludeTag = 'WindowsOnly'
