@@ -13,7 +13,6 @@ const PesterDataTable = ({
       data,
       getCoreRowModel: getCoreRowModel(),
       getSortedRowModel: getSortedRowModel(),
-      debugTable: true,
     },
   );
 
