@@ -1,7 +1,7 @@
 /**
  * Unsafe swizzle = might break in future minor upgrades.
  * Run "yarn swizzle @docusaurus/theme-classic DocItem/Layout --eject --danger" and compare the diff.
- * 
+ *
  * Our customizations are marked with comments below
  */
 
@@ -17,6 +17,7 @@ import DocItemTOCMobile from '@theme/DocItem/TOC/Mobile';
 import DocItemTOCDesktop from '@theme/DocItem/TOC/Desktop';
 import DocItemContent from '@theme/DocItem/Content';
 import DocBreadcrumbs from '@theme/DocBreadcrumbs';
+import Unlisted from '@theme/Unlisted';
 import styles from './styles.module.css';
 /* Customization start */
 import { GiscusHead, GiscusComponent } from '../../../components/Giscus';
@@ -43,9 +44,13 @@ function useDocTOC() {
 }
 export default function DocItemLayout({ children }) {
   const docTOC = useDocTOC();
+  const {
+    metadata: { unlisted },
+  } = useDoc();
   return (
     <div className="row">
       <div className={clsx('col', !docTOC.hidden && styles.docItemCol)}>
+        {unlisted && <Unlisted />}
         <DocVersionBanner />
         <div className={styles.docItemContainer}>
           <article>
