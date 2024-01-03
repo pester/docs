@@ -1,0 +1,11 @@
+{
+  "origins": [
+    "https://pester.dev",
+    "https://pester-docs.netlify.app"
+  ],
+  "originsRegex": [
+    "https://deploy-preview-[0-9]+--pester-docs.netlify.app",
+    "http://localhost:[0-9]+"
+  ],
+  "defaultCommentOrder": "oldest"
+}

@@ -72,6 +72,9 @@ To upgrade docusaurus to a more recent version:
    - `package.json`
    - `yarn.lock`
 
+> **Warning**
+> Giscus comments are implemented using a unsafe [swizzle](https://docusaurus.io/docs/swizzling#ejecting) of `DocItem/Layout` that could break in minor upgrades of Docusaurus. See [comments here](https://github.com/pester/docs/blob/main/src/theme/DocItem/Layout/index.js) for update instructions.
+
 ## Code of Conduct
 
 In the interest of fostering an open and welcoming environment, we as
