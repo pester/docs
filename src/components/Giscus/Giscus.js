@@ -5,6 +5,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Giscus from "@giscus/react";
 import React from 'react';
+import styles from './styles.module.css';
 
 /**
  * Adds a meta-tag to ensure new dicussion always add the canonical link in the initial post.
@@ -30,21 +31,23 @@ export function GiscusComponent() {
   const { colorMode } = useColorMode();
 
   return (
-    <Giscus
-      repo="fflaten/docs"
-      repoId="MDEwOlJlcG9zaXRvcnkzMDY2ODYxNTc"
-      category="Comments"
-      categoryId="DIC_kwDOEkeozc4CWO6M"
-      mapping="pathname"
-      strict="1"
-      reactionsEnabled="1"
-      emitMetadata="0"
-      inputPosition="top"
-      theme={colorMode}
-      lang="en"
-      loading="lazy"
-      crossorigin="anonymous"
-      async
-    />
+    <section className={styles.commentsSection}>
+      <Giscus
+        repo="fflaten/docs"
+        repoId="MDEwOlJlcG9zaXRvcnkzMDY2ODYxNTc"
+        category="Comments"
+        categoryId="DIC_kwDOEkeozc4CWO6M"
+        mapping="pathname"
+        strict="1"
+        reactionsEnabled="1"
+        emitMetadata="0"
+        inputPosition="top"
+        theme={colorMode}
+        lang="en"
+        loading="lazy"
+        crossorigin="anonymous"
+        async
+      />
+    </section>
   );
 }

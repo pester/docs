@@ -20,7 +20,7 @@ import DocBreadcrumbs from '@theme/DocBreadcrumbs';
 import Unlisted from '@theme/Unlisted';
 import styles from './styles.module.css';
 /* Customization start */
-import { GiscusHead, GiscusComponent } from '../../../components/Giscus';
+import { GiscusHead, GiscusComponent } from '../../../components/Giscus/Giscus';
 /* Customization end */
 
 /**
@@ -63,7 +63,6 @@ export default function DocItemLayout({ children }) {
           <DocItemPaginator />
         </div>
         {/* Customization start */}
-        <br />
         <GiscusHead />
         <GiscusComponent />
         {/* Customization end */}
