@@ -26,9 +26,9 @@ Describe "Get-Emoji" {
 ```
 
 :::warning
-Put all your code into `It`, `BeforeAll`, `BeforeEach`, `AfterAll` or `AfterEach`. Put no code directly into `Describe`, `Context` or on the top of your file, without wrapping it in one of these blocks, unless you have a good reason to do so.
+Put all your code into `It`, `BeforeAll`, `BeforeEach`, `AfterAll` or `AfterEach`. Put no code directly into `Describe`, `Context` or on the top of your file, without wrapping it in one of these blocks.
 
-All misplaced code will run during Discovery, and its results won't be available during Run which will lead to confusing results.
+Any code outside one of these blocks will run during Discovery, and the results won't be available during Run which will lead to confusing results.
 
 See [Discovery and Run](discovery-and-run).
 :::
