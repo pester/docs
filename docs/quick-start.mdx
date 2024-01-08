@@ -23,10 +23,10 @@ includes functions, Cmdlets, Modules and scripts. Pester can be run locally, whe
 with Visual Studio Code, and it can of course be integrated into a build script in a CI pipeline.
 
 Pester contains a powerful set of Mocking capabilities that allow tests to replace the behavior of any
-command inside of a piece of PowerShell code being tested. See [Mocking with Pester](./usage/mocking).
+command inside of a piece of PowerShell code being tested. See [Mocking with Pester](../usage/mocking).
 
 Pester can produce artifacts such as Test Results file and can be used for generating
-[Code Coverage](./usage/code-coverage) and [Test Result](./usage/test-results) files for reporting
+[Code Coverage](../usage/code-coverage) and [Test Result](../usage/test-results) files for reporting
 results in CI pipeline.
 
 ## Installing Pester
@@ -42,7 +42,7 @@ ModuleType Version    PreRelease Name
 Script     5.0.4                 Pester
 ```
 
-Full installation guide is available in [installation](introduction/installation).
+Full installation guide is available in [installation](../introduction/installation).
 
 ## Creating a Pester Test
 
@@ -335,4 +335,4 @@ Tests are written into `It` blocks and grouped by `Describe` or `Context` into g
 
 `Invoke-Pester` can then be used to run the tests in a given test file, and `-Output Detailed` can be used to show every test in the output, no matter if it passed or failed. Otherwise only failed tests, or whole files (when everything passed) are shown.
 
-To learn more, for example how to run multiple test files in one run, continue to the [Usage](usage/file-placement-and-naming) section.
+To learn more, for example how to run multiple test files in one run, continue to the [Usage](../usage/file-placement-and-naming) section.
