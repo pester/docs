@@ -23,43 +23,54 @@
 import commands from "./docs/commands/docusaurus.sidebar.js";
 
 module.exports = {
-    docs: {
-        Introduction: ['quick-start', 'introduction/installation'],
-        Usage: [
-            'usage/file-placement-and-naming',
-            'usage/importing-tested-functions',
-            'usage/test-file-structure',
-            'usage/discovery-and-run',
-            'usage/data-driven-tests',
-            'usage/setup-and-teardown',
-            'usage/tags',
-            'usage/skip',
-            'usage/mocking',
-            'usage/modules',
-            'usage/testdrive',
-            'usage/testregistry',
-            'usage/test-results',
-            'usage/code-coverage',
-            'usage/configuration',
-            'usage/output',
-            'usage/vscode',
-            'usage/troubleshooting',
-        ],
-        Assertions: ['assertions/should-command', 'assertions/assertions', 'assertions/custom-assertions'],
-        'Migration Guides': ['migrations/v4-to-v5', 'migrations/breaking-changes-in-v5', 'migrations/v3-to-v4'],
-        'Additional Resources': [
-            'additional-resources/articles',
-            'additional-resources/courses',
-            'additional-resources/misc',
-            'additional-resources/projects',
-            'additional-resources/videos',
-        ],
-        Contributing: [
-            'contributing/introduction',
-            'contributing/reporting-issues',
-            'contributing/feature-requests',
-            'contributing/pull-requests',
-        ],
-        'Command Reference': commands,
-    },
+  docs: {
+    Introduction: [
+      "quick-start",
+      "introduction/installation",
+    ],
+    Usage: [
+      "usage/file-placement-and-naming",
+      "usage/importing-tested-functions",
+      "usage/test-file-structure",
+      "usage/discovery-and-run",
+      "usage/data-driven-tests",
+      "usage/setup-and-teardown",
+      "usage/tags",
+      "usage/skip",
+      "usage/mocking",
+      "usage/modules",
+      "usage/testdrive",
+      "usage/testregistry",
+      "usage/test-results",
+      "usage/code-coverage",
+      "usage/configuration",
+      "usage/output",
+      "usage/vscode",
+      "usage/troubleshooting",
+    ],
+    "Assertions": [
+      "assertions/should-command",
+      "assertions/assertions",
+      "assertions/custom-assertions",
+    ],
+    "Migration Guides": [
+      "migrations/v4-to-v5",
+      "migrations/breaking-changes-in-v5",
+      "migrations/v3-to-v4",
+    ],
+    "Additional Resources": [
+      "additional-resources/articles",
+      "additional-resources/courses",
+      "additional-resources/misc",
+      "additional-resources/projects",
+      "additional-resources/videos",
+    ],
+    "Contributing": [
+      "contributing/introduction",
+      "contributing/reporting-issues",
+      "contributing/feature-requests",
+      "contributing/pull-requests",
+    ],
+    "Command Reference": commands
+  }
 };

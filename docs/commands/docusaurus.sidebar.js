@@ -8,7 +8,7 @@
  * Licensed under the MIT license.
  */
 
-export default  [
+module.exports = [
     'commands/Add-ShouldOperator',
     'commands/AfterAll',
     'commands/AfterEach',
