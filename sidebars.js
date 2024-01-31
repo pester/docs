@@ -20,7 +20,7 @@
  * New-DocusaurusHelp -Module Pester -OutputFolder "docs" -Sidebar "commands" -Verbose
  */
 
-const commands = require("./docs/commands/docusaurus.sidebar.js");
+import commands from "./docs/commands/docusaurus.sidebar.js";
 
 module.exports = {
   docs: {
