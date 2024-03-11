@@ -6,6 +6,10 @@
   text-align: right;
 }
 
+.pester-data-table.nowrap {
+  white-space: nowrap;
+}
+
 .pester-data-table, .pester-data-table.center {
   text-align: center;
 }

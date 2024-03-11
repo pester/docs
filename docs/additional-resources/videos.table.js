@@ -82,6 +82,6 @@ export const columns = [
   {
     header: "Date",
     accessorKey: "date",
-    className: "pester-data-table",
+    className: "pester-data-table nowrap",
   },
 ];
