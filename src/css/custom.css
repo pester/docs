@@ -125,14 +125,9 @@
 }
 
 /* navbar styling */
-.menu__link {
+.menu__link:not(.menu__link--sublist) {
   font-weight: var(--ifm-font-weight-normal);
   font-size: var(--ifm-h5-font-size);
-}
-
-.menu__link.menu__link--sublist {
-  font-weight: var(--ifm-font-weight-semibold);
-  font-size: var(--ifm-h4-font-size);
 }
 
 .navbar__brand {
