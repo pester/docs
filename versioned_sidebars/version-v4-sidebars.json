@@ -122,7 +122,7 @@
       "items": [
         {
           "type": "doc",
-          "id": "commands/Add-AssertionOperator"
+          "id": "commands/Add-ShouldOperator"
         },
         {
           "type": "doc",

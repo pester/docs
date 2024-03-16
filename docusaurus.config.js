@@ -36,13 +36,15 @@ module.exports = {
           position: 'left',
         },
         {
+          type: 'doc',
           label: 'Docs',
-          to: 'docs/quick-start',
+          docId: 'quick-start',
           position: 'right'
         },
         {
+          type: 'doc',
           label: 'Commands',
-          to: 'docs/commands/Add-ShouldOperator',
+          docId: 'commands/Add-ShouldOperator',
           position: 'right'
         },
         {
