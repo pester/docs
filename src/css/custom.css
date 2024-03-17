@@ -125,9 +125,12 @@
 }
 
 /* navbar styling */
-.menu__link,
-.navbar__brand strong {
-  font-weight: 400;
+.menu__link {
+  font-weight: var(--ifm-font-weight-normal);
+}
+
+.menu__link:not(.menu__link--sublist) {
+  font-size: var(--ifm-h5-font-size);
 }
 
 .navbar__brand {
