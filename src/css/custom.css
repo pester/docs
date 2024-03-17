@@ -125,8 +125,11 @@
 }
 
 /* navbar styling */
-.menu__link:not(.menu__link--sublist) {
+.menu__link {
   font-weight: var(--ifm-font-weight-normal);
+}
+
+.menu__link:not(.menu__link--sublist) {
   font-size: var(--ifm-h5-font-size);
 }
 
