@@ -13,59 +13,64 @@ Pester is a cross-platform module that runs on Windows, Linux, MacOS and anywher
 
 ## Installing from PSGallery
 
-From an PowerShell session run:
+### Linux & MacOS
+
+From a PowerShell session run:
 
 ```powershell
-# For all users (requires "Run as Administrator" on Windows)
-Install-Module -Name Pester -Force
+# For all users
+Install-Module -Name Pester
 
 # For current user only
-Install-Module -Name Pester -Scope CurrentUser -Force
+Install-Module -Name Pester -Scope CurrentUser
 ```
 
-Or to update:
+To update:
 
 ```powershell
 Update-Module -Name Pester
 ```
 
-### Special instructions for Windows 10 / Windows Server 2016 and later
+### Windows
 
-Pester version 3.4.0 shipped as part of Windows 10 / Windows Server 2016, making Pester availabe to many new users.
-Unfortunately this version cannot be updated using the simple `Update-Module` cmdlet. Instead you need to perform a side-by-side installation of Pester to get the latest version.
+Windows 10 / Windows Server 2016 and later ships with Pester version 3.4.0. This built-in version cannot be updated using the simple `Update-Module` cmdlet.
+Instead you need to perform a side-by-side installation to get started with the latest version of Pester.
 
-The built-in version is signed by Microsoft while newer versions are community-maintained and signed with a different certificate,
-causing `Install-Module` to throw a security error without a few extra parameters.
+The built-in version is signed by Microsoft while newer versions are community-maintained and signed with a different certificate.
+This can cause `Install-Module` to fail with a error mentioning the changed certificate which.
 
 Run the command below _as administrator_ to install the latest version:
 ```powershell
-# -Force = side-by-side installation.
-# -SkipPublisherCheck = accept the newer certificate
+# -Force to install side-by-side
+# -SkipPublisherCheck to accept the newer certificate
 Install-Module -Name Pester -Force -SkipPublisherCheck
+
+# For current user only
+Install-Module -Name Pester -Scope CurrentUser -Force -SkipPublisherCheck
+```
+
+For any subsequent updates it is enough to run:
+
+```powershell
+Update-Module -Name Pester
 ```
 
 :::note Removing the built-in version
-If you'd like to remove the built-in version of Pester, you can do so using the following code:
+If you'd like to remove the built-in version of Pester, you can do so using the following code *as administrator*:
 
 ```powershell
 $module = "C:\Program Files\WindowsPowerShell\Modules\Pester"
-takeown /F $module /A /R
-icacls $module /reset
-icacls $module /grant "*S-1-5-32-544:F" /inheritance:d /T
+& takeown.exe /F $module /A /R
+& icacls.exe $module /reset
+& icacls.exe $module /grant "*S-1-5-32-544:F" /inheritance:d /T
 Remove-Item -Path $module -Recurse -Force -Confirm:$false
 
 # Install latest Pester
 Install-Module -Name Pester -Force
 ```
-
-For any subsequent update it is enough to run:
-
-```powershell
-Update-Module -Name Pester
-```
 :::
 
-### Common issues
+### Common errors
 
 #### TLS error while connecting to PSGallery
 If you receive the following warning when trying to install the module, you may need to explicitly enable TLS 1.2.
@@ -77,20 +82,18 @@ WARNING: Unable to resolve package source 'https://www.powershellgallery.com/api
 [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor [System.Net.SecurityProtocolType]::Tls12
 ```
 
-#### Command `Install-Module` command is missing
+#### Command `Install-Module` is not found
 
-Older versions of Windows running Windows PowerShell 3.0 or 4.0 do not have a built-in package manager, but you can install `PowerShellGet` using the [instructions here](https://docs.microsoft.com/en-us/powershell/scripting/gallery/installing-psget#for-computers-running-powershell-30-or-powershell-40). After completing the steps, start a new PowerShell session and retry [the module installation](#installing-from-psgallery).
+Older versions of Windows running Windows PowerShell 3.0 or 4.0 do not have a built-in package manager. You can install `PowerShellGet` using the [instructions here](https://docs.microsoft.com/en-us/powershell/scripting/gallery/installing-psget#for-computers-running-powershell-30-or-powershell-40). After completing the steps, start a new PowerShell session and retry [the module installation](#installing-from-psgallery).
 
-Another alternative is installing the module manually using the instructions below.
-
-Windows 10 / Windows Server 2016 and later includes Windows PowerShell 5.1 and `PowerShellGet` out-of-the-box.
+Alternatively, you can install the module manually using the instructions below.
 
 ## Installing manually
 
 You don't have to use a package manager to install Pester. Another option is to download and installating it manually which can be useful in e.g. offline envionments.
 
 1. Download the module on a machine with internet using either:
-    - **Recommended:** `Save-Module -Name Pester -Path C:\Temp`. It will save it in a versioned folder, ex *C:\Temp\Pester\5.5.0*
+    - `Save-Module -Name Pester -Path C:\Temp`. It will save it in a versioned folder, ex *C:\Temp\Pester\5.5.0*
     - Or download the NuGet package from PowerShell Gallery and extract it, see [Manual Package Download](https://docs.microsoft.com/en-us/powershell/scripting/gallery/how-to/working-with-packages/manual-download)
 2. Copy the Pester-folder (ex. *C:\Temp\Pester*) to your destination computer and place it in one of your module directories defined by [$env:PSModulePath](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_psmodulepath). On a Windows-system the default locations include:
     - **Current user:** *$HOME\Documents\WindowsPowerShell\Modules*
