@@ -36,13 +36,15 @@ Update-Module -Name Pester
 Windows 10 / Windows Server 2016 and later ships with Pester version 3.4.0. This built-in version cannot be updated using the simple `Update-Module` cmdlet.
 Instead you need to perform a side-by-side installation to get started with the latest version of Pester.
 
-The built-in version is signed by Microsoft while newer versions are community-maintained and signed with a different certificate.
-This can cause `Install-Module` to fail with a error mentioning the changed certificate which.
+The built-in version is signed by Microsoft while newer versions are community-maintained and signed with a different certificate,
+causing `Install-Module` to sometimes throw a error requiring us to accept the new publisher certificate.
 
-Run the command below _as administrator_ to install the latest version:
+Run the command below to install the latest version:
 ```powershell
 # -Force to install side-by-side
 # -SkipPublisherCheck to accept the newer certificate
+
+# For all users (requires "Run as Administrator")
 Install-Module -Name Pester -Force -SkipPublisherCheck
 
 # For current user only
