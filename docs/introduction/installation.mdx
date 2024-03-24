@@ -11,18 +11,16 @@ Pester is a cross-platform module that runs on Windows, Linux, MacOS and anywher
 - Windows PowerShell 3.0 - 5.1
 - PowerShell 6.0.4 and above
 
-## Installing from PSGallery
+## Installing from PowerShell Gallery
+
+The recommended way to install Pester is by using `Install-Module`. The examples below will install Pester in your [default location](https://learn.microsoft.com/en-us/powershell/module/powershellget/install-module?view=powershellget-3.x#-scope), but you can control this with the `-Scope <AllUsers/CurrentUser>` parameter.
 
 ### Linux & MacOS
 
 From a PowerShell session run:
 
 ```powershell
-# For all users
 Install-Module -Name Pester
-
-# For current user only
-Install-Module -Name Pester -Scope CurrentUser
 ```
 
 To update:
@@ -44,11 +42,7 @@ Run the command below to install the latest version:
 # -Force to install side-by-side
 # -SkipPublisherCheck to accept the newer certificate
 
-# For all users (requires "Run as Administrator")
 Install-Module -Name Pester -Force -SkipPublisherCheck
-
-# For current user only
-Install-Module -Name Pester -Scope CurrentUser -Force -SkipPublisherCheck
 ```
 
 For any subsequent updates it is enough to run:
@@ -68,13 +62,13 @@ $module = "C:\Program Files\WindowsPowerShell\Modules\Pester"
 Remove-Item -Path $module -Recurse -Force -Confirm:$false
 
 # Install latest Pester
-Install-Module -Name Pester -Force
+Install-Module -Name Pester
 ```
 :::
 
 ### Common errors
 
-#### TLS error while connecting to PSGallery
+#### TLS error while connecting to PowerShell Gallery
 If you receive the following warning when trying to install the module, you may need to explicitly enable TLS 1.2.
 
 ```powershell
@@ -86,7 +80,7 @@ WARNING: Unable to resolve package source 'https://www.powershellgallery.com/api
 
 #### Command `Install-Module` is not found
 
-Older versions of Windows running Windows PowerShell 3.0 or 4.0 do not have a built-in package manager. You can install `PowerShellGet` using the [instructions here](https://docs.microsoft.com/en-us/powershell/scripting/gallery/installing-psget#for-computers-running-powershell-30-or-powershell-40). After completing the steps, start a new PowerShell session and retry [the module installation](#installing-from-psgallery).
+Older versions of Windows running Windows PowerShell 3.0 or 4.0 do not have a built-in package manager. You can install `PowerShellGet` using the [instructions here](https://docs.microsoft.com/en-us/powershell/scripting/gallery/installing-psget#for-computers-running-powershell-30-or-powershell-40). After completing the steps, start a new PowerShell session and retry [the module installation](#installing-from-powershell-gallery).
 
 Alternatively, you can install the module manually using the instructions below.
 
