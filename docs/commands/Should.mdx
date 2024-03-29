@@ -12,6 +12,10 @@ hide_table_of_contents: false
 custom_edit_url: null
 ---
 
+:::info This page was generated
+Contributions are welcome in [Pester-repo](https://github.com/pester/pester).
+:::
+
 ## SYNOPSIS
 
 Should is a keyword that is used to define an assertion inside an It block.
@@ -158,8 +162,8 @@ Should [[-ActualValue] <Object>] [-Not] [-ExpectedValue <Object>] [-Because <Obj
 
 ```powershell
 Should [[-ActualValue] <Object>] [-Not] [-Because <Object>] [-HaveParameter] [-ParameterName <Object>]
- [-Type <Object>] [-DefaultValue <Object>] [-Mandatory] [-HasArgumentCompleter] [-Alias <Object>]
- [<CommonParameters>]
+ [-Type <Object>] [-DefaultValue <Object>] [-Mandatory] [-InParameterSet <Object>] [-HasArgumentCompleter]
+ [-Alias <Object>] [<CommonParameters>]
 ```
 
 ### Match
@@ -186,7 +190,7 @@ Should [[-ActualValue] <Object>] [-Not] [-Because <Object>] [-Throw] [-ExpectedM
 ### InvokeVerifiable
 
 ```powershell
-Should [[-ActualValue] <Object>] [-Not] [-InvokeVerifiable] [<CommonParameters>]
+Should [[-ActualValue] <Object>] [-Not] [-Because <Object>] [-InvokeVerifiable] [<CommonParameters>]
 ```
 
 ### Invoke
@@ -207,7 +211,7 @@ If assertion is not met the test fails and an exception is thrown.
 Should can be used more than once in the It block if more than one assertion
 need to be verified.
 Each Should keyword needs to be on a separate line.
-Test will be passed only when all assertion will be met (logical conjuction).
+Test will be passed only when all assertion will be met (logical conjunction).
 
 ## EXAMPLES
 
@@ -215,81 +219,68 @@ Test will be passed only when all assertion will be met (logical conjuction).
 
 ```powershell
 Describe "d1" {
-    BeforeEach { $be = 1 }
     It "i1" {
-        $be = 2
+        Mock Get-Command { }
+        Get-Command -CommandName abc
+        Should -Invoke Get-Command -Times 1 -Exactly
     }
-    AfterEach { Write-Host "AfterEach: $be" }
 }
 ```
+
+Example of creating a mock for `Get-Command` and asserting that it was called exactly one time.
 
 ### EXAMPLE 2
-
-```powershell
-Describe "d1" {
-    It "i1" {
-        $user = Get-User
-        $user | Should -NotBeNullOrEmpty -ErrorAction Stop
-        $user |
-            Should -HaveProperty Name -Value "Jakub" |
-            Should -HaveProperty Age  -Value 30
-    }
-}
-```
-
-### EXAMPLE 3
-
-```powershell
-Describe "d1" {
-    It "i1" {
-        Mock Get-Command { }
-        Get-Command -CommandName abc
-        Should -Invoke Get-Command -Times 1 -Exactly
-    }
-}
-```
-
-### EXAMPLE 4
-
-```powershell
-Describe "d1" {
-    It "i1" {
-        Mock Get-Command { }
-        Get-Command -CommandName abc
-        Should -Invoke Get-Command -Times 1 -Exactly
-    }
-}
-```
-
-### EXAMPLE 5
 
 ```powershell
 $true | Should -BeFalse
 ```
 
-### EXAMPLE 6
+Asserting that the input value is false.
+This would fail the test by throwing an error.
+
+### EXAMPLE 3
 
 ```powershell
 $a | Should -Be 10
 ```
 
-### EXAMPLE 7
+Asserting that the input value defined in $a is equal to 10.
+
+### EXAMPLE 4
 
 ```powershell
 Should -Invoke Get-Command -Times 1 -Exactly
 ```
 
-### EXAMPLE 8
+Asserting that the mocked `Get-Command` was called exactly one time.
+
+### EXAMPLE 5
 
 ```powershell
-$user | Should -NotBeNullOrEmpty -ErrorAction Stop
+$user | Should -Not -BeNullOrEmpty
 ```
 
-### EXAMPLE 9
+Asserting that the input value from $user is not null or empty.
+
+### EXAMPLE 6
 
 ```powershell
 $planets.Name | Should -Be $Expected
 ```
+
+Asserting that the value of `$planets.Name` is equal to the value defined in `$Expected`.
+
+### EXAMPLE 7
+
+```powershell
+Context "We want to ensure an exception is thrown when expected" {
+    It "Throws the exception" {
+        { Get-Application -Name Blarg } | Should -Throw -ExpectedMessage "Application 'Blarg' not found"
+    }
+}
+```
+
+Asserting that `Get-Application -Name Blarg` will throw an exception with a specific message.
 
 ## PARAMETERS
 
@@ -312,7 +303,8 @@ Accept wildcard characters: False
 
 ### -Alias
 
-{{ Fill Alias Description }}
+Depends on operator being used.
+See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
 
 ```yaml
 Type: Object
@@ -328,7 +320,7 @@ Accept wildcard characters: False
 
 ### -Be
 
-{{ Fill Be Description }}
+Compares one object with another for equality and throws if the two objects are not the same.
 
 ```yaml
 Type: SwitchParameter
@@ -344,11 +336,12 @@ Accept wildcard characters: False
 
 ### -Because
 
-{{ Fill Because Description }}
+Depends on operator being used.
+See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
 
 ```yaml
 Type: Object
-Parameter Sets: Be, BeExactly, BeGreaterThan, BeLessOrEqual, BeIn, BeLessThan, BeGreaterOrEqual, BeLike, BeLikeExactly, BeNullOrEmpty, BeOfType, BeTrue, BeFalse, Contain, Exist, FileContentMatch, FileContentMatchExactly, FileContentMatchMultiline, FileContentMatchMultilineExactly, HaveCount, HaveParameter, Match, MatchExactly, Throw, Invoke
+Parameter Sets: (All)
 Aliases:
 
 Required: False
@@ -360,7 +353,8 @@ Accept wildcard characters: False
 
 ### -BeExactly
 
-{{ Fill BeExactly Description }}
+Compares one object with another for equality and throws if the two objects are not the same.
+This comparison is case sensitive.
 
 ```yaml
 Type: SwitchParameter
@@ -376,7 +370,7 @@ Accept wildcard characters: False
 
 ### -BeFalse
 
-{{ Fill BeFalse Description }}
+Asserts that the value is false, or falsy.
 
 ```yaml
 Type: SwitchParameter
@@ -392,7 +386,8 @@ Accept wildcard characters: False
 
 ### -BeGreaterOrEqual
 
-{{ Fill BeGreaterOrEqual Description }}
+Asserts that a number (or other comparable value) is greater than or equal to an expected value.
+Uses PowerShell's -ge operator to compare the two values.
 
 ```yaml
 Type: SwitchParameter
@@ -408,7 +403,8 @@ Accept wildcard characters: False
 
 ### -BeGreaterThan
 
-{{ Fill BeGreaterThan Description }}
+Asserts that a number (or other comparable value) is greater than an expected value.
+Uses PowerShell's -gt operator to compare the two values.
 
 ```yaml
 Type: SwitchParameter
@@ -424,7 +420,8 @@ Accept wildcard characters: False
 
 ### -BeIn
 
-{{ Fill BeIn Description }}
+Asserts that a collection of values contain a specific value.
+Uses PowerShell's -contains operator to confirm.
 
 ```yaml
 Type: SwitchParameter
@@ -440,7 +437,8 @@ Accept wildcard characters: False
 
 ### -BeLessOrEqual
 
-{{ Fill BeLessOrEqual Description }}
+Asserts that a number (or other comparable value) is lower than, or equal to an expected value.
+Uses PowerShell's -le operator to compare the two values.
 
 ```yaml
 Type: SwitchParameter
@@ -456,7 +454,8 @@ Accept wildcard characters: False
 
 ### -BeLessThan
 
-{{ Fill BeLessThan Description }}
+Asserts that a number (or other comparable value) is lower than an expected value.
+Uses PowerShell's -lt operator to compare the two values.
 
 ```yaml
 Type: SwitchParameter
@@ -472,7 +471,8 @@ Accept wildcard characters: False
 
 ### -BeLike
 
-{{ Fill BeLike Description }}
+Asserts that the actual value matches a wildcard pattern using PowerShell's -like operator.
+This comparison is not case-sensitive.
 
 ```yaml
 Type: SwitchParameter
@@ -488,7 +488,8 @@ Accept wildcard characters: False
 
 ### -BeLikeExactly
 
-{{ Fill BeLikeExactly Description }}
+Asserts that the actual value matches a wildcard pattern using PowerShell's -like operator.
+This comparison is case-sensitive.
 
 ```yaml
 Type: SwitchParameter
@@ -504,7 +505,8 @@ Accept wildcard characters: False
 
 ### -BeNullOrEmpty
 
-{{ Fill BeNullOrEmpty Description }}
+Checks values for null or empty (strings).
+The static [String]::IsNullOrEmpty() method is used to do the comparison.
 
 ```yaml
 Type: SwitchParameter
@@ -520,7 +522,7 @@ Accept wildcard characters: False
 
 ### -BeOfType
 
-{{ Fill BeOfType Description }}
+Asserts that the actual value should be an object of a specified type (or a subclass of the specified type) using PowerShell's -is operator.
 
 ```yaml
 Type: SwitchParameter
@@ -536,7 +538,7 @@ Accept wildcard characters: False
 
 ### -BeTrue
 
-{{ Fill BeTrue Description }}
+Asserts that the value is true, or truthy.
 
 ```yaml
 Type: SwitchParameter
@@ -552,7 +554,8 @@ Accept wildcard characters: False
 
 ### -CallerSessionState
 
-{{ Fill CallerSessionState Description }}
+Depends on operator being used.
+See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
 
 ```yaml
 Type: Object
@@ -568,7 +571,8 @@ Accept wildcard characters: False
 
 ### -CommandName
 
-{{ Fill CommandName Description }}
+Depends on operator being used.
+See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
 
 ```yaml
 Type: Object
@@ -584,7 +588,8 @@ Accept wildcard characters: False
 
 ### -Contain
 
-{{ Fill Contain Description }}
+Asserts that collection contains a specific value.
+Uses PowerShell's -contains operator to confirm.
 
 ```yaml
 Type: SwitchParameter
@@ -600,7 +605,8 @@ Accept wildcard characters: False
 
 ### -DefaultValue
 
-{{ Fill DefaultValue Description }}
+Depends on operator being used.
+See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
 
 ```yaml
 Type: Object
@@ -616,7 +622,8 @@ Accept wildcard characters: False
 
 ### -ErrorId
 
-{{ Fill ErrorId Description }}
+Depends on operator being used.
+See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
 
 ```yaml
 Type: Object
@@ -632,7 +639,8 @@ Accept wildcard characters: False
 
 ### -Exactly
 
-{{ Fill Exactly Description }}
+Depends on operator being used.
+See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
 
 ```yaml
 Type: SwitchParameter
@@ -648,7 +656,8 @@ Accept wildcard characters: False
 
 ### -ExceptionType
 
-{{ Fill ExceptionType Description }}
+Depends on operator being used.
+See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
 
 ```yaml
 Type: Object
@@ -664,7 +673,8 @@ Accept wildcard characters: False
 
 ### -ExclusiveFilter
 
-{{ Fill ExclusiveFilter Description }}
+Depends on operator being used.
+See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
 
 ```yaml
 Type: Object
@@ -680,7 +690,9 @@ Accept wildcard characters: False
 
 ### -Exist
 
-{{ Fill Exist Description }}
+Does not perform any comparison, but checks if the object calling Exist is present in a PS Provider.
+The object must have valid path syntax.
+It essentially must pass a Test-Path call.
 
 ```yaml
 Type: SwitchParameter
@@ -696,7 +708,8 @@ Accept wildcard characters: False
 
 ### -ExpectedContent
 
-{{ Fill ExpectedContent Description }}
+Depends on operator being used.
+See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
 
 ```yaml
 Type: Object
@@ -712,7 +725,8 @@ Accept wildcard characters: False
 
 ### -ExpectedMessage
 
-{{ Fill ExpectedMessage Description }}
+Depends on operator being used.
+See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
 
 ```yaml
 Type: Object
@@ -728,7 +742,8 @@ Accept wildcard characters: False
 
 ### -ExpectedType
 
-{{ Fill ExpectedType Description }}
+Depends on operator being used.
+See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
 
 ```yaml
 Type: Object
@@ -744,7 +759,8 @@ Accept wildcard characters: False
 
 ### -ExpectedValue
 
-{{ Fill ExpectedValue Description }}
+Depends on operator being used.
+See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
 
 ```yaml
 Type: Object
@@ -760,7 +776,8 @@ Accept wildcard characters: False
 
 ### -FileContentMatch
 
-{{ Fill FileContentMatch Description }}
+Checks to see if a file contains the specified text.
+This search is not case sensitive and uses regular expressions.
 
 ```yaml
 Type: SwitchParameter
@@ -776,7 +793,8 @@ Accept wildcard characters: False
 
 ### -FileContentMatchExactly
 
-{{ Fill FileContentMatchExactly Description }}
+Checks to see if a file contains the specified text.
+This search is case sensitive and uses regular expressions to match the text.
 
 ```yaml
 Type: SwitchParameter
@@ -792,7 +810,12 @@ Accept wildcard characters: False
 
 ### -FileContentMatchMultiline
 
-{{ Fill FileContentMatchMultiline Description }}
+As opposed to FileContentMatch and FileContentMatchExactly operators,
+FileContentMatchMultiline presents content of the file being tested as one string object,
+so that the expression you are comparing it to can consist of several lines.
+
+When using FileContentMatchMultiline operator, '^' and '$' represent the beginning and end
+of the whole file, instead of the beginning and end of a line.
 
 ```yaml
 Type: SwitchParameter
@@ -808,7 +831,12 @@ Accept wildcard characters: False
 
 ### -FileContentMatchMultilineExactly
 
-{{ Fill FileContentMatchMultilineExactly Description }}
+As opposed to FileContentMatch and FileContentMatchExactly operators,
+FileContentMatchMultilineExactly presents content of the file being tested as one string object,
+so that the case sensitive expression you are comparing it to can consist of several lines.
+
+When using FileContentMatchMultilineExactly operator, '^' and '$' represent the beginning and end
+of the whole file, instead of the beginning and end of a line.
 
 ```yaml
 Type: SwitchParameter
@@ -824,7 +852,8 @@ Accept wildcard characters: False
 
 ### -HasArgumentCompleter
 
-{{ Fill HasArgumentCompleter Description }}
+Depends on operator being used.
+See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
 
 ```yaml
 Type: SwitchParameter
@@ -840,7 +869,7 @@ Accept wildcard characters: False
 
 ### -HaveCount
 
-{{ Fill HaveCount Description }}
+Asserts that a collection has the expected amount of items.
 
 ```yaml
 Type: SwitchParameter
@@ -856,7 +885,7 @@ Accept wildcard characters: False
 
 ### -HaveParameter
 
-{{ Fill HaveParameter Description }}
+Asserts that a command has the expected parameter.
 
 ```yaml
 Type: SwitchParameter
@@ -870,9 +899,26 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -InParameterSet
+
+Depends on operator being used.
+See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
+
+```yaml
+Type: Object
+Parameter Sets: HaveParameter
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -Invoke
 
-{{ Fill Invoke Description }}
+Checks if a Mocked command has been called a certain number of times and throws an exception if it has not.
 
 ```yaml
 Type: SwitchParameter
@@ -888,7 +934,8 @@ Accept wildcard characters: False
 
 ### -InvokeVerifiable
 
-{{ Fill InvokeVerifiable Description }}
+Checks if any Verifiable Mock has not been invoked.
+If so, this will throw an exception.
 
 ```yaml
 Type: SwitchParameter
@@ -904,7 +951,8 @@ Accept wildcard characters: False
 
 ### -Mandatory
 
-{{ Fill Mandatory Description }}
+Depends on operator being used.
+See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
 
 ```yaml
 Type: SwitchParameter
@@ -920,7 +968,8 @@ Accept wildcard characters: False
 
 ### -Match
 
-{{ Fill Match Description }}
+Uses a regular expression to compare two objects.
+This comparison is not case sensitive.
 
 ```yaml
 Type: SwitchParameter
@@ -936,7 +985,8 @@ Accept wildcard characters: False
 
 ### -MatchExactly
 
-{{ Fill MatchExactly Description }}
+Uses a regular expression to compare two objects.
+This comparison is case sensitive.
 
 ```yaml
 Type: SwitchParameter
@@ -952,7 +1002,8 @@ Accept wildcard characters: False
 
 ### -ModuleName
 
-{{ Fill ModuleName Description }}
+Depends on operator being used.
+See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
 
 ```yaml
 Type: Object
@@ -968,7 +1019,7 @@ Accept wildcard characters: False
 
 ### -Not
 
-{{ Fill Not Description }}
+Reverse the assertion
 
 ```yaml
 Type: SwitchParameter
@@ -984,7 +1035,8 @@ Accept wildcard characters: False
 
 ### -ParameterFilter
 
-{{ Fill ParameterFilter Description }}
+Depends on operator being used.
+See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
 
 ```yaml
 Type: Object
@@ -1000,7 +1052,8 @@ Accept wildcard characters: False
 
 ### -ParameterName
 
-{{ Fill ParameterName Description }}
+Depends on operator being used.
+See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
 
 ```yaml
 Type: Object
@@ -1016,7 +1069,8 @@ Accept wildcard characters: False
 
 ### -PassThru
 
-{{ Fill PassThru Description }}
+Depends on operator being used.
+See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
 
 ```yaml
 Type: SwitchParameter
@@ -1032,7 +1086,8 @@ Accept wildcard characters: False
 
 ### -RegularExpression
 
-{{ Fill RegularExpression Description }}
+Depends on operator being used.
+See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
 
 ```yaml
 Type: Object
@@ -1048,7 +1103,8 @@ Accept wildcard characters: False
 
 ### -Scope
 
-{{ Fill Scope Description }}
+Depends on operator being used.
+See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
 
 ```yaml
 Type: Object
@@ -1064,7 +1120,8 @@ Accept wildcard characters: False
 
 ### -Throw
 
-{{ Fill Throw Description }}
+Checks if an exception was thrown.
+Enclose input in a scriptblock.
 
 ```yaml
 Type: SwitchParameter
@@ -1080,7 +1137,8 @@ Accept wildcard characters: False
 
 ### -Times
 
-{{ Fill Times Description }}
+Depends on operator being used.
+See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
 
 ```yaml
 Type: Object
@@ -1096,7 +1154,8 @@ Accept wildcard characters: False
 
 ### -Type
 
-{{ Fill Type Description }}
+Depends on operator being used.
+See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
 
 ```yaml
 Type: Object
@@ -1124,8 +1183,8 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 [https://pester.dev/docs/commands/Should](https://pester.dev/docs/commands/Should)
 
-[https://pester.dev/docs/assertions/assertions](https://pester.dev/docs/assertions/assertions)
+[https://pester.dev/docs/assertions](https://pester.dev/docs/assertions)
 
-## EDIT THIS PAGE
+## VERSION
 
-This page was auto-generated using the comment based help in Pester 5.3.3. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.
+*This page was generated using comment-based help in [Pester 5.5.0](https://github.com/pester/pester).*

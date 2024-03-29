@@ -405,23 +405,23 @@ export const articles = [
 // ----------------------------------------------------------------------------
 export const columns = [
   {
-    Header: "Title",
-    accessor: "title",
+    header: "Title",
+    accessorKey: "title",
     className: "pester-data-table left",
-    Cell: ({ cell: { value }, row: { original } }) => (
+    cell: ({ cell, row: { original } }) => (
       <a href={`${original.url}`} target="blank" rel="noreferrer noopener">
-        {value}
+        {cell.getValue()}
       </a>
     ),
   },
   {
-    Header: "Author",
-    accessor: "author",
+    header: "Author",
+    accessorKey: "author",
     className: "pester-data-table left",
   },
   {
-    Header: "Date",
-    accessor: "date",
-    className: "pester-data-table",
+    header: "Date",
+    accessorKey: "date",
+    className: "pester-data-table nowrap",
   },
 ];

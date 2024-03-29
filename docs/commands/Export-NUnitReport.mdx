@@ -12,6 +12,10 @@ hide_table_of_contents: false
 custom_edit_url: null
 ---
 
+:::info This page was generated
+Contributions are welcome in [Pester-repo](https://github.com/pester/pester).
+:::
+
 ## SYNOPSIS
 
 Exports a Pester result-object to an NUnit-compatible XML-report
@@ -19,7 +23,7 @@ Exports a Pester result-object to an NUnit-compatible XML-report
 ## SYNTAX
 
 ```powershell
-Export-NUnitReport [-Result] <Object> [-Path] <String> [<CommonParameters>]
+Export-NUnitReport [-Result] <Object> [-Path] <String> [[-Format] <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -29,7 +33,7 @@ tests that are processed in a run.
 This object can then be exported to an
 NUnit-compatible XML-report using this function.
 The report is generated
-using the NUnit 2.5-schema.
+using the NUnit 2.5-schema (default) or NUnit3-compatible format.
 
 This can be useful for further processing or publishing of test results,
 e.g.
@@ -83,6 +87,22 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -Format
+
+Specifies the NUnit-schema to be used.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 3
+Default value: NUnit2.5
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### CommonParameters
 
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
@@ -99,6 +119,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 [https://pester.dev/docs/commands/Invoke-Pester](https://pester.dev/docs/commands/Invoke-Pester)
 
-## EDIT THIS PAGE
+## VERSION
 
-This page was auto-generated using the comment based help in Pester 5.3.3. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.
+*This page was generated using comment-based help in [Pester 5.5.0](https://github.com/pester/pester).*

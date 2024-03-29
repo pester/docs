@@ -27,13 +27,15 @@ The configuration object can be constructed either via the Default static proper
 Import-Module Pester
 # get default from static property
 $configuration = [PesterConfiguration]::Default
-# assing properties & discover via intellisense
+# adding properties & discover via intellisense
 $configuration.Run.Path = 'C:\projects\tst'
 $configuration.Filter.Tag = 'Acceptance'
 $configuration.Filter.ExcludeTag = 'WindowsOnly'
 $configuration.Should.ErrorAction = 'Continue'
 $configuration.CodeCoverage.Enabled = $true
+```
 
+```powershell
 # cast whole hashtable to configuration
 $configuration = [PesterConfiguration]@{
     Run = @{
@@ -50,7 +52,9 @@ $configuration = [PesterConfiguration]@{
         Enabled = $true
     }
 }
+```
 
+```powershell
 # cast from empty hashtable to get default
 $configuration = [PesterConfiguration]@{}
 $configuration.Run.Path = 'C:\projects\tst'

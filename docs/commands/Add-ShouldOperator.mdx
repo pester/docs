@@ -12,6 +12,10 @@ hide_table_of_contents: false
 custom_edit_url: null
 ---
 
+:::info This page was generated
+Contributions are welcome in [Pester-repo](https://github.com/pester/pester).
+:::
+
 ## SYNOPSIS
 
 Register a Should Operator with Pester
@@ -32,19 +36,15 @@ This function allows you to create custom Should assertions.
 ### EXAMPLE 1
 
 ```powershell
-function BeAwesome($ActualValue, [switch] $Negate)
-{
+function BeAwesome($ActualValue, [switch] $Negate) {
     [bool] $succeeded = $ActualValue -eq 'Awesome'
     if ($Negate) { $succeeded = -not $succeeded }
 
-    if (-not $succeeded)
-    {
-        if ($Negate)
-        {
+    if (-not $succeeded) {
+        if ($Negate) {
             $failureMessage = "{$ActualValue} is Awesome"
         }
-        else
-        {
+        else {
             $failureMessage = "{$ActualValue} is not Awesome"
         }
     }
@@ -55,13 +55,15 @@ function BeAwesome($ActualValue, [switch] $Negate)
     }
 }
 
-Add-ShouldOperator -Name  BeAwesome `
-                    -Test  $function:BeAwesome `
-                    -Alias 'BA'
+Add-ShouldOperator -Name BeAwesome `
+    -Test $function:BeAwesome `
+    -Alias 'BA'
 
-PS C:\> "bad" | should -BeAwesome
+PS C:\> "bad" | Should -BeAwesome
 {bad} is not Awesome
 ```
+
+Example of how to create a simple custom assertion that checks if the input string is 'Awesome'
 
 ## PARAMETERS
 
@@ -162,6 +164,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 [https://pester.dev/docs/commands/Add-ShouldOperator](https://pester.dev/docs/commands/Add-ShouldOperator)
 
-## EDIT THIS PAGE
+## VERSION
 
-This page was auto-generated using the comment based help in Pester 5.3.3. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.
+*This page was generated using comment-based help in [Pester 5.5.0](https://github.com/pester/pester).*

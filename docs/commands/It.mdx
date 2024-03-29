@@ -12,6 +12,10 @@ hide_table_of_contents: false
 custom_edit_url: null
 ---
 
+:::info This page was generated
+Contributions are welcome in [Pester-repo](https://github.com/pester/pester).
+:::
+
 ## SYNOPSIS
 
 Validates the results of a test inside of a Describe block.
@@ -21,20 +25,20 @@ Validates the results of a test inside of a Describe block.
 ### Normal (Default)
 
 ```powershell
-It [-Name] <String> [[-Test] <ScriptBlock>] [-TestCases <Object[]>] [-Tag <String[]>] [<CommonParameters>]
+It [-Name] <String> [[-Test] <ScriptBlock>] [-ForEach <Object[]>] [-Tag <String[]>] [<CommonParameters>]
 ```
 
 ### Pending
 
 ```powershell
-It [-Name] <String> [[-Test] <ScriptBlock>] [-TestCases <Object[]>] [-Tag <String[]>] [-Pending]
+It [-Name] <String> [[-Test] <ScriptBlock>] [-ForEach <Object[]>] [-Tag <String[]>] [-Pending]
  [<CommonParameters>]
 ```
 
 ### Skip
 
 ```powershell
-It [-Name] <String> [[-Test] <ScriptBlock>] [-TestCases <Object[]>] [-Tag <String[]>] [-Skip]
+It [-Name] <String> [[-Test] <ScriptBlock>] [-ForEach <Object[]>] [-Tag <String[]>] [-Skip]
  [<CommonParameters>]
 ```
 
@@ -62,8 +66,10 @@ command as the first tested statement in the It block.
 ### EXAMPLE 1
 
 ```powershell
-function Add-Numbers($a, $b) {
-    return $a + $b
+BeforeAll {
+    function Add-Numbers($a, $b) {
+        return $a + $b
+    }
 }
 
 Describe "Add-Numbers" {
@@ -89,6 +95,9 @@ Describe "Add-Numbers" {
 }
 ```
 
+Example of a simple Pester file.
+It-blocks are used to define the different tests.
+
 ### EXAMPLE 2
 
 ```powershell
@@ -104,14 +113,17 @@ Describe "Add-Numbers" {
         @{ a = 'two'; b = 'three'; expectedResult = 'twothree' }
     )
 
-    It 'Correctly adds \<a\> and \<b\> to get \<expectedResult\>' -TestCases $testCases {
-        param ($a, $b, $expectedResult)
-
+    It 'Correctly adds <a> and <b> to get <expectedResult>' -ForEach $testCases {
         $sum = Add-Numbers $a $b
         $sum | Should -Be $expectedResult
     }
 }
 ```
+
+Using It with -ForEach to run the same tests with different parameters and expected results.
+Each hashtable in the `$testCases`-array generates one tests to a total of four.
+Each key-value pair in the
+current hashtable are made available as variables inside It.
 
 ## PARAMETERS
 
@@ -150,21 +162,20 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -TestCases
+### -ForEach
 
-Optional array of hashtable (or any IDictionary) objects. 
-If this parameter is used,
-Pester will call the test script block once for each table in the TestCases array,
-splatting the dictionary to the test script block as input. 
-If you want the name of
-the test to appear differently for each test case, you can embed tokens into the Name
-parameter with the syntax 'Adds numbers \<A\> and \<B\>' (assuming you have keys named A and B
-in your TestCases hashtables.)
+(Formerly called TestCases.) Optional array of hashtable (or any IDictionary) objects.
+If this parameter is used, Pester will call the test script block once for each table in
+the ForEach array, splatting the dictionary to the test script block as input. 
+If you want
+the name of the test to appear differently for each test case, you can embed tokens into the Name
+parameter with the syntax 'Adds numbers &lt;A&gt; and &lt;B&gt;' (assuming you have keys named A and B
+in your ForEach hashtables.)
 
 ```yaml
 Type: Object[]
 Parameter Sets: (All)
-Aliases: ForEach
+Aliases: TestCases
 
 Required: False
 Position: Named
@@ -251,6 +262,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 [https://pester.dev/docs/commands/Set-ItResult](https://pester.dev/docs/commands/Set-ItResult)
 
-## EDIT THIS PAGE
+## VERSION
 
-This page was auto-generated using the comment based help in Pester 5.3.3. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.
+*This page was generated using comment-based help in [Pester 5.5.0](https://github.com/pester/pester).*

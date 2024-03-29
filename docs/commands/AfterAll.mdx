@@ -12,6 +12,10 @@ hide_table_of_contents: false
 custom_edit_url: null
 ---
 
+:::info This page was generated
+Contributions are welcome in [Pester-repo](https://github.com/pester/pester).
+:::
+
 ## SYNOPSIS
 
 Defines a series of steps to perform at the end of the current container,
@@ -54,7 +58,7 @@ Describe "Validate important file" {
         @(Get-Content $samplePath).Count | Should -Be 100
     }
 
-    It "First ten lines should be 1 -\> 10" {
+    It "First ten lines should be 1 -> 10" {
         @(Get-Content $samplePath -TotalCount 10) | Should -Be @(1..10)
     }
 
@@ -101,6 +105,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 [https://pester.dev/docs/usage/setup-and-teardown](https://pester.dev/docs/usage/setup-and-teardown)
 
-## EDIT THIS PAGE
+## VERSION
 
-This page was auto-generated using the comment based help in Pester 5.3.3. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.
+*This page was generated using comment-based help in [Pester 5.5.0](https://github.com/pester/pester).*

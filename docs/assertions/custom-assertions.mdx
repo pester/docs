@@ -14,7 +14,7 @@ This can be an array or a single object depending on whether you register the fu
 
 When `Should` calls your custom assertion, it will invoke it with the following parameters:
 - **ActualValue**: The value passed to `Should` to assert.
-- **Negate**: Internal switch/bool parameter used to delcare if the user called `Should -Not ...`.
+- **Negate**: Internal switch/bool parameter used to declare if the user called `Should -Not ...`.
 - **CallerSessionState**: Used by some internal assertions to invoke code in the user's state. This can usually be ignored.
 - *Remaining bound parameters*, typically matching the parameters your accept in your assertion, like `ExpectedValue`, `Because`, `MyCustomParameter` etc.
 
@@ -28,7 +28,7 @@ If a problem occurs in your function, ex. it was called with invalid parameters,
 `Should` accepts the value to assert by pipeline but passes it to the assertion using `-ActualValue $ActualValue`. This means `ValueFromPipelineByPropertyName` is not available inside your function, but you can write your own logic to work with complex types provided to `ActualValue`.
 :::
 
-:::caution Using advanced functions as assertions
+:::warning Using advanced functions as assertions
 Advanced functions, typically enabled by using `[CmdletBinding()]` or `[Parameter()]`, disallows arguments by default. In this scenario, make sure to accept all mandatory parameters in your param-block to avoid errors even if you don't use them. They are `ActualValue`, `Negate` and `CallerSessionState`.
 :::
 
@@ -69,9 +69,7 @@ The limitation is tracked in [this issue](https://github.com/pester/Pester/issue
 
 ### Simple example
 
-#### MyCustomAssertions.psm1
-
-```powershell
+```powershell title="MyCustomAssertions.psm1"
 #Requires -Module Pester
 
 function Should-BeUpperCaseOnly ([string] $ActualValue, [switch] $Negate, [string] $Because) {
@@ -112,9 +110,7 @@ Add-ShouldOperator -Name BeUpperCaseOnly `
     -Alias 'BU'
 ```
 
-#### demo.tests.ps1
-
-```powershell
+```powershell title="demo.tests.ps1"
 BeforeDiscovery {
     # Loads and registers my custom assertion. Ignores usage of unapproved verb with -DisableNameChecking
     Import-Module "$PSScriptRoot/MyCustomAssertions.psm1" -DisableNameChecking
@@ -157,9 +153,7 @@ Tests Passed: 3, Failed: 1, Skipped: 0 NotRun: 0
 
 ### SupportsArrayInput example
 
-#### MyCustomAssertions.psm1
-
-```powershell
+```powershell title="MyCustomAssertions.psm1"
 #Requires -Module Pester
 
 function Should-ContainOnlyValuesOf ($ActualValue, [int]$ExpectedValue, [switch] $Negate, [string] $Because) {
@@ -204,9 +198,7 @@ Add-ShouldOperator -Name ContainOnlyValuesOf `
     -SupportsArrayInput
 ```
 
-#### demo.tests.ps1
-
-```powershell
+```powershell title="demo.tests.ps1"
 BeforeDiscovery {
     # Loads and registers my custom assertion. Ignores usage of unapproved verb with -DisableNameChecking
     Import-Module "$PSScriptRoot/MyCustomAssertions.psm1" -DisableNameChecking

@@ -1,5 +1,5 @@
 {
-  "version-v4/docs": [
+  "docs": [
     {
       "collapsed": true,
       "type": "category",
@@ -7,15 +7,15 @@
       "items": [
         {
           "type": "doc",
-          "id": "version-v4/quick-start"
+          "id": "quick-start"
         },
         {
           "type": "doc",
-          "id": "version-v4/introduction/installation"
+          "id": "introduction/installation"
         },
         {
           "type": "doc",
-          "id": "version-v4/introduction/powershell-core-limitations"
+          "id": "introduction/powershell-core-limitations"
         }
       ]
     },
@@ -26,31 +26,31 @@
       "items": [
         {
           "type": "doc",
-          "id": "version-v4/usage/assertions"
+          "id": "usage/assertions"
         },
         {
           "type": "doc",
-          "id": "version-v4/usage/mocking"
+          "id": "usage/mocking"
         },
         {
           "type": "doc",
-          "id": "version-v4/usage/modules"
+          "id": "usage/modules"
         },
         {
           "type": "doc",
-          "id": "version-v4/usage/testdrive"
+          "id": "usage/testdrive"
         },
         {
           "type": "doc",
-          "id": "version-v4/usage/testregistry"
+          "id": "usage/testregistry"
         },
         {
           "type": "doc",
-          "id": "version-v4/usage/test-results"
+          "id": "usage/test-results"
         },
         {
           "type": "doc",
-          "id": "version-v4/usage/code-coverage"
+          "id": "usage/code-coverage"
         }
       ]
     },
@@ -61,7 +61,7 @@
       "items": [
         {
           "type": "doc",
-          "id": "version-v4/migrations/v3-to-v4"
+          "id": "migrations/v3-to-v4"
         }
       ]
     },
@@ -72,23 +72,23 @@
       "items": [
         {
           "type": "doc",
-          "id": "version-v4/additional-resources/articles"
+          "id": "additional-resources/articles"
         },
         {
           "type": "doc",
-          "id": "version-v4/additional-resources/courses"
+          "id": "additional-resources/courses"
         },
         {
           "type": "doc",
-          "id": "version-v4/additional-resources/misc"
+          "id": "additional-resources/misc"
         },
         {
           "type": "doc",
-          "id": "version-v4/additional-resources/projects"
+          "id": "additional-resources/projects"
         },
         {
           "type": "doc",
-          "id": "version-v4/additional-resources/videos"
+          "id": "additional-resources/videos"
         }
       ]
     },
@@ -99,19 +99,19 @@
       "items": [
         {
           "type": "doc",
-          "id": "version-v4/contributing/introduction"
+          "id": "contributing/introduction"
         },
         {
           "type": "doc",
-          "id": "version-v4/contributing/reporting-issues"
+          "id": "contributing/reporting-issues"
         },
         {
           "type": "doc",
-          "id": "version-v4/contributing/feature-requests"
+          "id": "contributing/feature-requests"
         },
         {
           "type": "doc",
-          "id": "version-v4/contributing/pull-requests"
+          "id": "contributing/pull-requests"
         }
       ]
     },
@@ -122,127 +122,127 @@
       "items": [
         {
           "type": "doc",
-          "id": "version-v4/commands/Add-AssertionOperator"
+          "id": "commands/Add-ShouldOperator"
         },
         {
           "type": "doc",
-          "id": "version-v4/commands/AfterAll"
+          "id": "commands/AfterAll"
         },
         {
           "type": "doc",
-          "id": "version-v4/commands/AfterEach"
+          "id": "commands/AfterEach"
         },
         {
           "type": "doc",
-          "id": "version-v4/commands/AfterEachFeature"
+          "id": "commands/AfterEachFeature"
         },
         {
           "type": "doc",
-          "id": "version-v4/commands/AfterEachScenario"
+          "id": "commands/AfterEachScenario"
         },
         {
           "type": "doc",
-          "id": "version-v4/commands/Assert-MockCalled"
+          "id": "commands/Assert-MockCalled"
         },
         {
           "type": "doc",
-          "id": "version-v4/commands/Assert-VerifiableMock"
+          "id": "commands/Assert-VerifiableMock"
         },
         {
           "type": "doc",
-          "id": "version-v4/commands/Assert-VerifiableMocks"
+          "id": "commands/Assert-VerifiableMocks"
         },
         {
           "type": "doc",
-          "id": "version-v4/commands/BeforeAll"
+          "id": "commands/BeforeAll"
         },
         {
           "type": "doc",
-          "id": "version-v4/commands/BeforeEach"
+          "id": "commands/BeforeEach"
         },
         {
           "type": "doc",
-          "id": "version-v4/commands/BeforeEachFeature"
+          "id": "commands/BeforeEachFeature"
         },
         {
           "type": "doc",
-          "id": "version-v4/commands/BeforeEachScenario"
+          "id": "commands/BeforeEachScenario"
         },
         {
           "type": "doc",
-          "id": "version-v4/commands/Context"
+          "id": "commands/Context"
         },
         {
           "type": "doc",
-          "id": "version-v4/commands/Describe"
+          "id": "commands/Describe"
         },
         {
           "type": "doc",
-          "id": "version-v4/commands/Find-GherkinStep"
+          "id": "commands/Find-GherkinStep"
         },
         {
           "type": "doc",
-          "id": "version-v4/commands/Get-ShouldOperator"
+          "id": "commands/Get-ShouldOperator"
         },
         {
           "type": "doc",
-          "id": "version-v4/commands/Get-TestDriveItem"
+          "id": "commands/Get-TestDriveItem"
         },
         {
           "type": "doc",
-          "id": "version-v4/commands/GherkinStep"
+          "id": "commands/GherkinStep"
         },
         {
           "type": "doc",
-          "id": "version-v4/commands/In"
+          "id": "commands/In"
         },
         {
           "type": "doc",
-          "id": "version-v4/commands/InModuleScope"
+          "id": "commands/InModuleScope"
         },
         {
           "type": "doc",
-          "id": "version-v4/commands/Invoke-Gherkin"
+          "id": "commands/Invoke-Gherkin"
         },
         {
           "type": "doc",
-          "id": "version-v4/commands/Invoke-Pester"
+          "id": "commands/Invoke-Pester"
         },
         {
           "type": "doc",
-          "id": "version-v4/commands/It"
+          "id": "commands/It"
         },
         {
           "type": "doc",
-          "id": "version-v4/commands/Mock"
+          "id": "commands/Mock"
         },
         {
           "type": "doc",
-          "id": "version-v4/commands/New-Fixture"
+          "id": "commands/New-Fixture"
         },
         {
           "type": "doc",
-          "id": "version-v4/commands/New-MockObject"
+          "id": "commands/New-MockObject"
         },
         {
           "type": "doc",
-          "id": "version-v4/commands/New-PesterOption"
+          "id": "commands/New-PesterOption"
         },
         {
           "type": "doc",
-          "id": "version-v4/commands/Set-ItResult"
+          "id": "commands/Set-ItResult"
         },
         {
           "type": "doc",
-          "id": "version-v4/commands/Set-TestInconclusive"
+          "id": "commands/Set-TestInconclusive"
         },
         {
           "type": "doc",
-          "id": "version-v4/commands/Setup"
+          "id": "commands/Setup"
         },
         {
           "type": "doc",
-          "id": "version-v4/commands/Should"
+          "id": "commands/Should"
         }
       ]
     }

@@ -1,81 +1,61 @@
-// ----------------------------------------------------------------------------
-// Please note that this component is deliberately NOT using a CCS stylesheet
-// because react-table is ui-agnostic and the table will therefore inherit
-// Docusaurus table styling. If additional styling ever becomes required please
-// consider using either "css modules" or "styled components".
-//
-// Code sandbox at https://codesandbox.io/s/pester-data-table-basic-1x0mw
-// ----------------------------------------------------------------------------
 import React from "react";
-import { useTable, useSortBy } from "react-table";
+import { flexRender, useReactTable, getCoreRowModel, getSortedRowModel } from '@tanstack/react-table'
 import "./style.css";
-
-// create a default prop getter
-const defaultPropGetter = () => ({});
 
 // our pester.dev specific react-table
 const PesterDataTable = ({
   columns,
   data,
-  getHeaderProps = defaultPropGetter,
-  getColumnProps = defaultPropGetter
 }) => {
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow
-  } = useTable(
+  const table = useReactTable(
     {
       columns,
       data,
+      getCoreRowModel: getCoreRowModel(),
+      getSortedRowModel: getSortedRowModel(),
     },
-    useSortBy
   );
 
   // Render the UI for your table
   return (
-    <table {...getTableProps()}>
+    <table role="table">
       <thead>
-        {headerGroups.map(headerGroup => (
-          <tr {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map(column => (
+        {table.getHeaderGroups().map(headerGroup => (
+          <tr key={headerGroup.id} role="row">
+            {headerGroup.headers.map(header => (
               <th
-                // Return an array of prop objects and react-table will merge them appropriately
-                {...column.getHeaderProps([
-                  {
-                    className: column.className
-                  },
-                  getHeaderProps(column),
-                  getColumnProps(column),
-                  column.getSortByToggleProps()
-                ])}
+                key={header.id}
+                colSpan={header.colSpan}
+                role="columnheader"
+                className={header.column.columnDef.className}
+                style={{ cursor: "pointer" }}
+                onClick={header.column.getToggleSortingHandler()}
               >
-                {column.render("Header")}
-                <span>{column.isSorted ? (column.isSortedDesc ? ' ▼' : ' ▲') : ''}</span>
+                {flexRender(header.column.columnDef.header, header.getContext())}
+                <span>{{
+                  asc: ' ▲',
+                  desc: ' ▼',
+                }[header.column.getIsSorted()] ?? ''}</span>
               </th>
             ))}
           </tr>
         ))}
       </thead>
-      <tbody {...getTableBodyProps()}>
-        {rows.map((row, i) => {
-          prepareRow(row);
+      <tbody role="rowgroup">
+        {table.getRowModel().rows.map((row, i) => {
           return (
-            <tr {...row.getRowProps()}>
-              {row.cells.map(cell => {
+            <tr key={row.id} role="row">
+              {row.getVisibleCells().map(cell => {
                 return (
                   <td
-                    {...cell.getCellProps([
-                      {
-                        className: cell.column.className,
-                        style: cell.column.style
-                      },
-                      getColumnProps(cell.column)
-                    ])}
+                    key={cell.id}
+                    role="cell"
+                    className={cell.column.columnDef.className}
                   >
-                    {cell.render("Cell")}
+                    {flexRender(
+                      cell.column.columnDef.cell,
+                      cell.getContext()
+                    )}
                   </td>
                 );
               })}

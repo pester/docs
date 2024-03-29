@@ -12,6 +12,10 @@ hide_table_of_contents: false
 custom_edit_url: null
 ---
 
+:::info This page was generated
+Contributions are welcome in [Pester-repo](https://github.com/pester/pester).
+:::
+
 ## SYNOPSIS
 
 This function instantiates a .NET object from a type.
@@ -48,11 +52,15 @@ $obj.GetType().FullName
     System.Diagnostics.Process
 ```
 
+Creates a mock of a process-object with default property-values.
+
 ### EXAMPLE 2
 
 ```powershell
 $obj = New-MockObject -Type 'System.Diagnostics.Process' -Properties @{ Id = 123 }
 ```
+
+Create a mock of a process-object with the Id-property specified.
 
 ### EXAMPLE 3
 
@@ -70,6 +78,10 @@ Call Arguments
    2 {True}
    3 {False}
 ```
+
+Create a mock of a process-object and mocks the object's `Kill()`-method.
+The mocked method will keep a history
+of any call and the associated arguments in a property named `_Kill`
 
 ## PARAMETERS
 
@@ -95,7 +107,7 @@ Accept wildcard characters: False
 ### -InputObject
 
 An already constructed object to decorate.
-Use New-Object or ::new to create it.
+Use `New-Object` or `[typeName]::new()` to create it.
 
 ```yaml
 Type: Object
@@ -111,7 +123,7 @@ Accept wildcard characters: False
 
 ### -Properties
 
-Properties to define, specified as a hashtable, in format @{ PropertyName = value }.
+Properties to define, specified as a hashtable, in format `@{ PropertyName = value }`.
 
 ```yaml
 Type: Hashtable
@@ -127,13 +139,13 @@ Accept wildcard characters: False
 
 ### -Methods
 
-Methods to define, specified as a hashtable, in format @{ MethodName = scriptBlock }.
+Methods to define, specified as a hashtable, in format `@{ MethodName = scriptBlock }`.
 
 ScriptBlock can define param block, and it will receive arguments that were provided to the function call based on order.
 
 Method overloads are not supported because ScriptMethods are used to decorate the object, and ScriptMethods do not support method overloads.
 
-For each method a property named _MethodName is defined which holds history of the invocations of the method and the arguments that were provided.
+For each method a property named `_MethodName` (if using default `-MethodHistoryPrefix`) is defined which holds history of the invocations of the method and the arguments that were provided.
 
 ```yaml
 Type: Hashtable
@@ -149,7 +161,8 @@ Accept wildcard characters: False
 
 ### -MethodHistoryPrefix
 
-{{ Fill MethodHistoryPrefix Description }}
+Prefix for the history-property created for each mocked method.
+Default is '_' which would create the property '_MethodName'.
 
 ```yaml
 Type: String
@@ -179,6 +192,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 [https://pester.dev/docs/usage/mocking](https://pester.dev/docs/usage/mocking)
 
-## EDIT THIS PAGE
+## VERSION
 
-This page was auto-generated using the comment based help in Pester 5.3.3. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.
+*This page was generated using comment-based help in [Pester 5.5.0](https://github.com/pester/pester).*

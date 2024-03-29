@@ -12,8 +12,8 @@ Pester tests are placed in `.Tests.ps1` file, for example `Get-Emoji.Tests.ps1`.
 
 To make the tested code available to the test we need to import the code file. This is done by dot-sourcing the file into the current scope like this:
 
-```powershell
-# at the top of Get-Emoji.Tests.ps1
+```powershell title="Get-Emoji.Tests.ps1"
+# at the top of the file
 BeforeAll {
     . $PSScriptRoot/Get-Emoji.ps1
 }
@@ -23,7 +23,7 @@ This code will locate the `Get-Emoji.ps1` file, which is placed in the same dire
 
 Alternatively `$PSCommandPath` can be used to get the name of the code file by convention:
 
-```powershell
+```powershell title="Get-Emoji.Tests.ps1"
 BeforeAll {
     # Get-Emoji.Tests.ps1 - .Tests.ps1 + .ps1 = Get-Emoji.ps1
     . $PSCommandPath.Replace('.Tests.ps1','.ps1')
@@ -32,11 +32,11 @@ BeforeAll {
 
 This avoids spelling out the name of the referenced file every time.
 
-:::caution
+:::warning
 The code above is using `string.Replace()` method which is case sensitive. Make sure you say `Tests` and that the test file is named `.Tests.ps1`.
 :::
 
-:::caution
+:::warning
 Pester v4 users might be inclined not to use the `BeforeAll` block or to use `$MyInvocation.MyCommand.Path` in `BeforeAll`. Neither will work. See [Migrating from Pester v4](#migrating-from-pester-v4).
 :::
 
@@ -61,7 +61,7 @@ Describe "Get-Cactus" {
 ```
 
 ```powershell
-AFTER (Pester v5):
+# AFTER (Pester v5):
 
 BeforeAll {
     # DON'T use $MyInvocation.MyCommand.Path
@@ -77,7 +77,7 @@ Describe "Get-Cactus" {
 
 ### Using `$MyInvocation.MyCommand.Path` in other code
 
-`$MyInvocation.MyCommand.Path` can be used in other parts of your code, just not in `BeforeAll`. If you module uses it, then it will continue to work even when used with Pester 5. The breaking change in Pester is because the `$here\$sut` snippet relies on the fact that it runs directly in the script, which is no longer true when placed in `BeforeAll`. This problem is not specific to `BeforeAll`, running `$MyInvocation.MyCommand.Path` in any function will make the Path property undefined:
+`$MyInvocation.MyCommand.Path` can be used in other parts of your code, just not in `BeforeAll`. If your module uses it, then it will continue to work even when used with Pester 5. The breaking change in Pester is because the `$here\$sut` snippet relies on the fact that it runs directly in the script, which is no longer true when placed in `BeforeAll`. This problem is not specific to `BeforeAll`, running `$MyInvocation.MyCommand.Path` in any function will make the Path property undefined:
 
 ```powershell
 "in script: -$($MyInvocation.MyCommand.Path)-"

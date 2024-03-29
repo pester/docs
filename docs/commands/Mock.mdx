@@ -12,6 +12,10 @@ hide_table_of_contents: false
 custom_edit_url: null
 ---
 
+:::info This page was generated
+Contributions are welcome in [Pester-repo](https://github.com/pester/pester).
+:::
+
 ## SYNOPSIS
 
 Mocks the behavior of an existing command with an alternate
@@ -57,10 +61,9 @@ If any
 verifiable mock is not called, Should -InvokeVerifiable will throw an
 exception and indicate all mocks not called.
 
-If you wish to mock commands that are called from inside a script module,
-you can do so by using the -ModuleName parameter to the Mock command.
-This
-injects the mock into the specified module.
+If you wish to mock commands that are called from inside a script or manifest
+module, you can do so by using the -ModuleName parameter to the Mock command.
+This injects the mock into the specified module.
 If you do not specify a
 module name, the mock will be created in the same scope as the test script.
 You may mock the same command multiple times, in different scopes, as needed.
@@ -332,11 +335,8 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 [https://pester.dev/docs/commands/Mock](https://pester.dev/docs/commands/Mock)
 
-[https://pester.dev/docs/usage/mocking
+[https://pester.dev/docs/usage/mocking](https://pester.dev/docs/usage/mocking)
 
+## VERSION
 
- Mock]()
-
-## EDIT THIS PAGE
-
-This page was auto-generated using the comment based help in Pester 5.3.3. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.
+*This page was generated using comment-based help in [Pester 5.5.0](https://github.com/pester/pester).*

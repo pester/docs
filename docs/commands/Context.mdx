@@ -12,6 +12,10 @@ hide_table_of_contents: false
 custom_edit_url: null
 ---
 
+:::info This page was generated
+Contributions are welcome in [Pester-repo](https://github.com/pester/pester).
+:::
+
 ## SYNOPSIS
 
 Provides logical grouping of It blocks within a single Describe block.
@@ -37,27 +41,31 @@ apply to tests within that Context .
 ### EXAMPLE 1
 
 ```powershell
-function Add-Numbers($a, $b) {
-    return $a + $b
+BeforeAll {
+    function Add-Numbers($a, $b) {
+        return $a + $b
+    }
 }
 
-Describe "Add-Numbers" {
-    Context "when root does not exist" {
-        It "..." {
+Describe 'Add-Numbers' {
+    Context 'when adding positive values' {
+        It '...' {
             # ...
         }
     }
 
-    Context "when root does exist" {
-        It "..." {
+    Context 'when adding negative values' {
+        It '...' {
             # ...
         }
-        It "..." {
+        It '...' {
             # ...
         }
     }
 }
 ```
+
+Example of how to use Context for grouping different tests
 
 ## PARAMETERS
 
@@ -137,7 +145,7 @@ Allows data driven tests to be written.
 Takes an array of data and generates one block for each item in the array, and makes the item
 available as $_ in all child blocks.
 When the array is an array of hashtables, it additionally
-defines each key in the hashatble as variable.
+defines each key in the hashtable as variable.
 
 ```yaml
 Type: Object
@@ -171,6 +179,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 [https://pester.dev/docs/usage/testdrive](https://pester.dev/docs/usage/testdrive)
 
-## EDIT THIS PAGE
+## VERSION
 
-This page was auto-generated using the comment based help in Pester 5.3.3. To edit the content of this page, change the corresponding help in the [pester/Pester](https://github.com/pester/pester) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.
+*This page was generated using comment-based help in [Pester 5.5.0](https://github.com/pester/pester).*

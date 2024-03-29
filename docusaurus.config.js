@@ -1,7 +1,5 @@
-/**
- * Please note that the syntax highlighting theme CANNOT be configured here,
- * it MUST be configured in swizzled shadow component `/src/theme/index.js`
-*/
+const { themes } = require('prism-react-renderer');
+
 module.exports = {
   title: 'Pester',
   tagline: 'The ubiquitous test and mock framework for PowerShell',
@@ -15,10 +13,16 @@ module.exports = {
   onBrokenMarkdownLinks: 'warn',
   themeConfig: {
     metadata: [
-        {
-            name: 'theme-color',
-            content: '#0072c6'
-        }
+      {
+        name: 'theme-color',
+        content: '#0072c6'
+      },
+      // Use viewport-fit=cover to stretch website into safe-area (camera notch, swipe-for-menu etc.) on mobile.
+      // Combine with padding in CSS to avoid conflicts using env(safe-area-inset-*) variables
+      {
+        name: 'viewport',
+        content: 'width=device-width, initial-scale=1.0, viewport-fit=cover'
+      }
     ],
     navbar: {
       title: 'Pester',
@@ -32,18 +36,20 @@ module.exports = {
           position: 'left',
         },
         {
+          type: 'doc',
           label: 'Docs',
-          to: 'docs/quick-start',
+          docId: 'quick-start',
           position: 'right'
         },
         {
+          type: 'doc',
           label: 'Commands',
-          to: 'docs/commands/Add-ShouldOperator',
+          docId: 'commands/Add-ShouldOperator',
           position: 'right'
         },
         {
           label: 'GitHub',
-          href: 'https://github.com/pester/docs',
+          href: 'https://github.com/pester/pester',
           position: 'right',
         },
         {
@@ -53,10 +59,12 @@ module.exports = {
       ],
     },
     prism: {
-      theme: require('prism-react-renderer/themes/github'),
-      darkTheme: require('prism-react-renderer/themes/oceanicNext'),
+      theme: themes.github,
+      darkTheme: themes.oceanicNext,
       additionalLanguages: [
-        'powershell'
+        'bash',
+        'powershell',
+        'yaml'
       ]
     },
     // Please note that the Algolia DocSearch crawler only runs once every 24 hours.
@@ -141,7 +149,7 @@ module.exports = {
       {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
-          editUrl: 'https://github.com/pester/docs/edit/master',
+          editUrl: 'https://github.com/pester/docs/edit/main',
           lastVersion: "current",
           includeCurrentVersion: true,
           disableVersioning: false,

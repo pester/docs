@@ -119,10 +119,14 @@
 }
 
 /* navbar styling */
-.menu__link,
-.navbar__brand strong {
-  font-weight: 400;
+.menu__link {
+  font-weight: var(--ifm-font-weight-normal);
 }
+
+.menu__link:not(.menu__link--sublist) {
+  font-size: var(--ifm-h5-font-size);
+}
+
 .navbar__brand {
   font-size: 19px;
 }
@@ -130,6 +134,7 @@
 .navbar__link:hover {
   text-decoration: underline;
 }
+
 .navbar-sidebar .menu__link,
 .navbar-sidebar__back,
 .navbar__toggle {
@@ -148,15 +153,60 @@ table {
   overflow-x: auto;
 }
 
-@media only screen and (max-width: 768px) {
-  .hero .hero__title {
-    font-size: 36px;
-    text-align: center;
-  }
-}
-
 @media (max-width: 996px) {
   .footer .row .col.col.col {
     flex: 1 0 !important;
+  }
+}
+
+/*
+  Make sure content isn't being covered by camera notch or UI elements on mobile.
+  Neccessary due to use of viewport-fit=cover to support landscape mode on phones etc.
+
+  Using 0.001px as 0px is minified to 0 which breaks min/max/calc.
+  TODO: Can't repro with local build, so possibly caused by Netlify cache. Try to remove later.
+*/
+@supports(padding: max(0px)) {
+  .navbar {
+    padding-top: max(var(--ifm-navbar-padding-vertical), env(safe-area-inset-top,0.001px));
+    padding-right: max(var(--ifm-navbar-padding-horizontal), env(safe-area-inset-right,0.001px));
+    padding-bottom: var(--ifm-navbar-padding-vertical);
+    padding-left: max(var(--ifm-navbar-padding-horizontal), env(safe-area-inset-left,0.001px));
+  }
+
+  .navbar-sidebar__brand {
+    padding-top: max(var(--ifm-navbar-padding-vertical), env(safe-area-inset-top, 0.001px));
+    padding-right: var(--ifm-navbar-padding-horizontal);
+    padding-bottom: var(--ifm-navbar-padding-vertical);
+    padding-left: max(var(--ifm-navbar-padding-horizontal), env(safe-area-inset-left, 0.001px));
+  }
+
+  .navbar-sidebar__item {
+    padding-left: max(0.5rem, env(safe-area-inset-left, 0.001px) - 0.5rem);
+  }
+
+  header > div.container,
+  main > .container {
+    padding-right: max(var(--ifm-spacing-horizontal), env(safe-area-inset-right,0.001px));
+    padding-left: max(var(--ifm-spacing-horizontal), env(safe-area-inset-left,0.001px));
+  }
+
+  .footer {
+    padding-top: var(--ifm-footer-padding-vertical);
+    padding-right: max(var(--ifm-footer-padding-horizontal), env(safe-area-inset-right,0.001px));
+    padding-bottom: max(var(--ifm-footer-padding-vertical), env(safe-area-inset-bottom,0.001px));
+    padding-left: max(var(--ifm-footer-padding-horizontal), env(safe-area-inset-left,0.001px));
+  }
+
+  @media (max-width: 996px) {
+    .footer {
+      /* calc/max/min breaks when this is set to 0 in default template */
+      --ifm-footer-padding-horizontal: 0px;
+    }
+
+    /* DocSearch is in absolute right position on smaller devices so navbar-padding doesn't affect it */
+    .DocSearch-Button {
+      margin-right: max(0.001px, env(safe-area-inset-right,0.001px) - var(--ifm-navbar-padding-horizontal));
+    }
   }
 }

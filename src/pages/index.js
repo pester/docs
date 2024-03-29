@@ -1,5 +1,5 @@
 import React from 'react';
-import classnames from 'classnames';
+import clsx from 'clsx';
 import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
@@ -43,7 +43,7 @@ function Feature({ imagePosition, imageUrl, title, description }) {
   return (
     <div className="row">
       <div
-        className={classnames('col col--5', {
+        className={clsx('col col--5', {
           [styles.featureImageSecond]: imagePosition === 'right',
           'col--offset-2': imagePosition === 'right',
         })}>
@@ -53,7 +53,7 @@ function Feature({ imagePosition, imageUrl, title, description }) {
       </div>
 
       <div
-        className={classnames('col col--5 padding-vert--xl', styles.featureDescCol, {
+        className={clsx('col col--5 padding-vert--xl', styles.featureDescCol, {
           'col--offset-2': imagePosition === 'left',
         })}>
         <h2>{title}</h2>
@@ -72,23 +72,23 @@ function Home() {
     <Layout
       title={`${siteConfig.title} - The ubiquitous test and mock framework for PowerShell`}
       description="Pester is the ubiquitous test and mock framework for PowerShell">
-      <header className={classnames('hero hero--primary', styles.heroBanner)}>
-        <div className={classnames('container', styles.container)}>
+      <header className={clsx('hero hero--primary', styles.heroBanner)}>
+        <div className={clsx('container', styles.container)}>
           <div className="row">
-            <div className={classnames('col col--9', styles.heroContent)}>
-              <h1 className="hero__title">The test framework for Powershell</h1>
+            <div className={clsx('col col--9', styles.heroContent)}>
+              <h1 className={clsx('hero__title', styles.heroTitle)}>The test framework for Powershell</h1>
               <p className="hero__subtitle">Pester is the ubiquitous test and mock framework for PowerShell</p>
 
               <div className={styles.buttons}>
                 <Link
-                  className={classnames('button button--secondary button--lg', styles.getStarted)}
+                  className={clsx('button button--secondary button--lg', styles.getStarted)}
                   to={useBaseUrl('docs/quick-start')}>
                   Get Started
                 </Link>
               </div>
             </div>
 
-            <div className={classnames('col text--center', styles.heroLogo)}>
+            <div className={clsx('col text--center', styles.heroLogo)}>
               <img alt="" src={logo} />
             </div>
           </div>
@@ -96,10 +96,10 @@ function Home() {
       </header>
 
       <main>
-        <div className={classnames('container', styles.container)}>
+        <div className={clsx('container', styles.container)}>
           {features && features.length && (
             <section className={styles.features}>
-              <div className={classnames('container', styles.container)}>
+              <div className={clsx('container', styles.container)}>
                 {features.map((props, idx) => (
                   <Feature key={idx} {...props} />
                 ))}
@@ -107,7 +107,7 @@ function Home() {
             </section>
           )}
 
-          <section className={classnames(styles.openCollective, 'padding-vert--lg padding-horiz--md')}>
+          <section className={clsx(styles.openCollective, 'padding-vert--lg padding-horiz--md')}>
             <h2>Meet Our Sponsors</h2>
 
             <p>Pester is sponsored by all the great folks on OpenCollective, GitHub and the DevOps Collective.</p>

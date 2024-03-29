@@ -207,7 +207,7 @@ Set-Content -Path TestDrive:\file.txt -Value 'I am a file.'
 ```
 :::
 
-:::caution
+:::warning
 Make sure the input is either a quoted string or an Item object. Otherwise PowerShell will try to invoke the
 path, likely throwing an error ```Cannot run a document in the middle of a pipeline```.
 
@@ -294,7 +294,7 @@ The exception message match is a substring match, so the following assertion wil
 ```
 :::
 
-:::caution
+:::warning
 The input object must be a ScriptBlock, otherwise it is processed outside of the assertion.
 
 ```powershell
