@@ -82,7 +82,7 @@ An example of a PowerShell script to run against a single pester test file.
 
 ```powershell
 # This updates pester not always necessary but worth noting
-Install-Module -Name Pester -Force -SkipPublisherCheck
+Install-Module -Name Pester -MaximumVersion 4.99 -Force -SkipPublisherCheck
 
 Import-Module Pester
 

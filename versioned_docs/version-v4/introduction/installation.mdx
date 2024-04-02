@@ -19,7 +19,7 @@ Instead you need to perform a new side-by-side installation of Pester, because `
 Here's the command you need to run _as administrator_ in order to get the latest version of Pester:
 
 ```powershell
-Install-Module -Name Pester -Force
+Install-Module -Name Pester -MaximumVersion 4.99 -Force
 ```
 
 Installing the module may result in this message:
@@ -42,13 +42,13 @@ icacls $module /reset
 icacls $module /grant "*S-1-5-32-544:F" /inheritance:d /T
 Remove-Item -Path $module -Recurse -Force -Confirm:$false
 
-Install-Module -Name Pester -Force
+Install-Module -Name Pester  -MaximumVersion 4.99 -Force
 ```
 
 For any subsequent update it is enough to run:
 
 ```powershell
-Update-Module -Name Pester
+Update-Module -Name Pester -MaximumVersion 4.99
 ```
 
 ## Installing from PSGallery on other versions of Windows
@@ -66,13 +66,13 @@ In version 5 or newer you can use the built-in `Install-Module` and `Update-Modu
 From _administrator_ PowerShell command line run:
 
 ```powershell
-Install-Module -Name Pester
+Install-Module -Name Pester -MaximumVersion 4.99
 ```
 
 Or to update:
 
 ```powershell
-Update-Module -Name Pester
+Update-Module -Name Pester -MaximumVersion 4.99
 ```
 
 ### PowerShell 3 and 4
@@ -82,13 +82,13 @@ for installation. See detailed [instructions here](https://docs.microsoft.com/en
 When you have the package manager installed, please start a new _administrator_ PowerShell window and use:
 
 ```powershell
-Install-Module -Name Pester
+Install-Module -Name Pester -MaximumVersion 4.99
 ```
 
 Or to update:
 
 ```powershell
-Update-Module -Name Pester
+Update-Module -Name Pester -MaximumVersion 4.99
 ```
 
 ### PowerShell 2
@@ -96,13 +96,13 @@ Update-Module -Name Pester
 On PowerShell 2 you can use an alternative to PowerShellGet called PSGet. See installation [instructions here](https://github.com/psget/psget). When you have the package manager installed, please start a new _administrator_ PowerShell window and use:
 
 ```powershell
-Install-Module -Module Pester
+Install-Module -Module Pester -MaximumVersion 4.99
 ```
 
 Or to update:
 
 ```powershell
-Update-Module -Module Pester
+Update-Module -Module Pester -MaximumVersion 4.99
 ```
 
 ## Installing from sources
@@ -125,16 +125,10 @@ PSGallery is the easiest way to get Pester installed to your computer, but there
 Chocolatey (or choco) is the easiest way to [get Pester running on AppVeyor](https://github.com/pester/Pester#build-server-integration). You avoid setting up PowerShellGet and it also supports pre-release versions.
 
 ```powershell
-choco install Pester
-```
-
-Or to update:
-
-```powershell
-choco install Pester --prerelease
+choco install Pester --version=4.10.1
 ```
 
 ### Nuget
 
-[Nuget](https://www.nuget.org/) is the package manager for .NET projects. Getting Pester from Nuget is useful when you are integrating PowerShell code with your .NET project, and want to have that code tested. To install use Package Manager of Visual Studio, or Package Manager Console in Visual Studio. Once you need this we are pretty sure you know what you are doing. :)
+[Nuget](https://www.nuget.org/) is the package manager for .NET projects. Getting Pester from Nuget is useful when you are integrating PowerShell code with your .NET project, and want to have that code tested. To install use Package Manager of Visual Studio, or Package Manager Console in Visual Studio. Once you need this we are pretty sure you know what you are doing. :slightly_smiling_face:
 
