@@ -72,7 +72,7 @@ Tests Passed: 2, Failed: 0, Skipped: 0, Total: 7, NotRun: 5
 The tags are now also compared as `-like` wildcards, so you don't have to spell out the whole tag if you can't remember it. This is especially useful when you are running tests locally:
 
 ```powershell
-Invoke-Pester $path -ExcludeT "Accept*", "*nuxonly" | Out-Null
+Invoke-Pester $path -ExcludeTag "Accept*", "*nuxonly" | Out-Null
 ```
 ```
 Starting test discovery in 1 files.
