@@ -3,13 +3,13 @@ title: Tags
 description: Use tags on tests and blocks to categorize code and easily choose which tests to run with simple parameters
 ---
 
-The tag parameter is now available on `Describe`, `Context` and `It` and it is possible to filter tags on any level. You can then use `-Tag` and `-ExcludeTag` to run just the tests that you want.
+The tag parameter is now available on `Describe`, `Context` and `It` and it is possible to filter tags on any level. You can then use `-TagFilter` and `-ExcludeTagFilter` to run just the tests that you want.
 
 Here you can see an example of a test suite that has acceptance tests and unit tests, and some of the tests are slow, some are flaky, and some only work on Linux. Pester v5 makes running all reliable acceptance tests, that can run on Windows is as simple as:
 
 
 ```powershell
-Invoke-Pester $path -Tag "Acceptance" -ExcludeTag "Flaky", "Slow", "LinuxOnly"
+Invoke-Pester $path -TagFilter "Acceptance" -ExcludeTagFilter "Flaky", "Slow", "LinuxOnly"
 ```
 
 ```powershell
@@ -72,7 +72,7 @@ Tests Passed: 2, Failed: 0, Skipped: 0, Total: 7, NotRun: 5
 The tags are now also compared as `-like` wildcards, so you don't have to spell out the whole tag if you can't remember it. This is especially useful when you are running tests locally:
 
 ```powershell
-Invoke-Pester $path -ExcludeTag "Accept*", "*nuxonly" | Out-Null
+Invoke-Pester $path -ExcludeTagFilter "Accept*", "*nuxonly" | Out-Null
 ```
 ```
 Starting test discovery in 1 files.
