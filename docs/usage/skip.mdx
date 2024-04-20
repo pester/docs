@@ -54,13 +54,9 @@ Tests completed in 1.03s
 Tests Passed: 1, Failed: 0, Skipped: 4, Total: 5, NotRun: 0
 ```
 
-:::warning
-Pending is translated to skipped, Inconclusive does not exist anymore.
-:::
-
 ### Conditional skip
 
-Evaluation of the skip-parameter is done as part of the Discovery-phase. This means you can also dynamically skip tests based on values available in that phase. Either as logic done in BeforeDiscovery or based on values passed into a parametrized test.
+Evaluation of the skip-parameter is done as part of the Discovery-phase. This means you can also dynamically skip tests based on values available in that phase. Either as logic done in `BeforeDiscovery` or based on values passed into a parametrized test.
 
 ```powershell
 $sb = {
@@ -126,3 +122,7 @@ Describing My Describe Block
 Tests completed in 206ms
 Tests Passed: 1, Failed: 0, Skipped: 2 NotRun: 0
 ```
+
+:::tip Skipping during Run-phase
+In certain scenarios you might need to mark a test as skipped or inconclusive during execution. This is possible using [`Set-ItResult`](../commands/Set-ItResult). Be aware that setups and teardown-blocks will be executed, so use `-Skip` whenever possible.
+:::
