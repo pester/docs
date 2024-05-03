@@ -32,7 +32,7 @@ description: Pester v5 included an all-new runtime which lead to some breaking c
 
 - `-Strict` switch is not available
 - Inconclusive and Pending states are currently no longer available, `-Pending` and `-Inconclusive` are translated to `-Skip` both on test blocks and when using `Set-ItResult`
-- Automatic Code coverage via -CI switch currently disabled as it's slow. Can still be enabled using configuraitonis largely untested.
+- Automatic Code coverage via -CI switch currently disabled as it's slow. Can still be enabled using configuration, but is largely untested.
 - Generating tests using foreach during discovery time works mostly, generating them from BeforeAll, to postpone expensive work till it is needed in case the test is filtered out also works, but is hacky. Get in touch if you need it and help me refine it.
 - Running on huge codebases is largely untested
 
