@@ -3,11 +3,11 @@ title: Visual Studio Code
 description: See how Visual Studio Code and its extensions helps you run and debug your Pester tests directly inside the editor
 ---
 
-Using Visual Studio Code with the latest [PowerShell extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.PowerShell) provides a great experience for writing PowerShell code. The extension includes Pester-specific features to improve the way you write, run and debug Pester tests.
+Using Visual Studio Code with the latest [PowerShell extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.PowerShell) provides a great experience for writing PowerShell code. The extension even includes Pester-specific features to improve the way you write, run and debug tests.
 
 ### Code lens
 
-With the `Pester: Code Lens` setting enabled, VSCode will show `Run tests` or `Debug tests` links above your Pester blocks for quick execution. Starting with Pester 5 this also works on individual tests. You can even run tests that are marked as skipped by running them individually.
+The editor shows `Run tests` or `Debug tests` links above your Pester blocks for quick execution of `Describe` and `Context` blocks. Starting with Pester 5 this also works on individual tests. You can even run tests that are marked as skipped by running them individually.
 
 ![Shows a single test being run using the new Code Lens](images/single-test.gif)
 
@@ -16,7 +16,8 @@ To enable the improved code lens for Pester 5 you need to disable the "Use Legac
 1. In Visual Studio Code, open **File | Preferences | Settings** (<kbd>⌘/Ctrl</kbd> + <kbd>,</kbd>)
 2. In the **Settings** window, navigate to the **Extensions | PowerShell** section.
 3. Uncheck the **Pester: Use Legacy Code Lens** checkbox.
-4. Close the **Settings** window.
+4. Make sure **Pester: Code Lens** is checked (default).
+5. Close the **Settings** window.
 
 ### Output verbosity
 
@@ -26,13 +27,11 @@ You can control the output verbosity level in VSCode output, or let it inherit f
 
 ### Navigation
 
-Pester-blocks are recognized by the PowerShell-extension to simplify navigation in your test files.
+Pester-blocks are recognized as symbols to simplify navigation in multiple ways:
 
-- The Outline panle shows an overview of your Pester-blocks.<br/>
+- The Outline panel shows an overview of your Pester-blocks.<br/>
   ![Shows a outline of Pester block structure in the sidepanel](images/vscode-outline.png)
-
-- Your current location in easily identified using breadcrumbs or the sticky scroll features.<br/>
+- The current location in nested blocks are shown in breadcrumbs and sticky scroll.<br/>
   ![Shows nested blocks as sticky lines above the current line in the editor](images/vscode-breadcrumbs.png)
-
-- `Context`, `Describe` and `It` blocks are all searchable using Go to symbol commands.<br/>
+- `Context`, `Describe` and `It` blocks are all searchable using "Go to symbol" commands.<br/>
   ![Shows a search result for Help is found-test using the Go To Symbol in Workspace command](images/vscode-symbol.png)
