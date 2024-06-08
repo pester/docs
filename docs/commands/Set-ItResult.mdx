@@ -57,6 +57,9 @@ backwards compatible
 
 ```powershell
 Describe "Example" {
+    It "Inconclusive test" {
+        Set-ItResult -Inconclusive -Because "we want it to be inconclusive"
+    }
     It "Skipped test" {
         Set-ItResult -Skipped -Because "we want it to be skipped"
     }
@@ -66,16 +69,18 @@ Describe "Example" {
 the output should be
 
 ```
-[!] Skipped test is skipped, because we want it to be skipped
-Tests completed in 0ms
-Tests Passed: 0, Failed: 0, Skipped: 0, Pending: 0, Inconclusive 1
+Describing Example
+  [?] Inconclusive test is inconclusive, because we want it to be inconclusive 35ms (32ms|3ms)
+  [!] Skipped test is skipped, because we want it to be skipped 3ms (2ms|1ms)
+Tests completed in 78ms
+Tests Passed: 0, Failed: 0, Skipped: 1, Inconclusive: 1, NotRun: 0
 ```
 
 ## PARAMETERS
 
 ### -Inconclusive
 
-**DEPRECATED** Sets the test result to inconclusive.
+Sets the test result to inconclusive.
 Cannot be used at the same time as -Pending or -Skipped
 
 ```yaml
@@ -158,4 +163,4 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 5.5.0](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 5.6.0](https://github.com/pester/pester).*
