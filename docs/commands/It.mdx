@@ -58,7 +58,7 @@ the expectation of the test.
 In addition to using your own logic to test expectations and throw exceptions,
 you may also use Pester's Should command to perform assertions in plain language.
 
-You can intentionally mark It block result as inconclusive by using Set-TestInconclusive
+You can intentionally mark It block result as inconclusive by using Set-ItResult -Inconclusive
 command as the first tested statement in the It block.
 
 ## EXAMPLES
@@ -227,8 +227,6 @@ Accept wildcard characters: False
 Use this parameter to explicitly mark the test to be skipped.
 This is preferable to temporarily
 commenting out a test, because the test remains listed in the output.
-Use the Strict parameter
-of Invoke-Pester to force all skipped tests to fail.
 
 ```yaml
 Type: SwitchParameter
@@ -264,4 +262,4 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 5.5.0](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 5.6.0](https://github.com/pester/pester).*
