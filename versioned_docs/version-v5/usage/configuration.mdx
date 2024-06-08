@@ -1,0 +1,125 @@
+---
+title: Configuration
+description: Documentation about how to configure the behavior, options and features in Pester
+---
+
+### Advanced interface
+
+Advanced interface uses `PesterConfiguration` object which contains all options that you can provide to Pester and contains descriptions for all the configuration sections and as well as default values. Here is what you see when you look at the default Debug section of the object:
+
+```powershell
+[PesterConfiguration]::Default.Debug | Format-List
+
+ShowFullErrors         : Show full errors including Pester internal stack. (False, default: False)
+WriteDebugMessages     : Write Debug messages to screen. (False, default: False)
+WriteDebugMessagesFrom : Write Debug messages from a given source, WriteDebugMessages must be set to true for this to work. You can use like wildcards to get messages from multiple sources, as well as * to get everything. (*, default: *)
+ShowNavigationMarkers  : Write paths after every block and test, for easy navigation in VSCode. (False, default: False)
+```
+
+:::tip New in Pester 5.2.0!
+[New-PesterConfiguration](../commands/New-PesterConfiguration) is now available and the recommended way to create the PesterConfiguration-object. It has the added benefit of auto-loading the Pester-module if needed and up-to-date help of available options in the configuration object.
+:::
+
+The configuration object can be constructed either via the Default static property or by casting a hashtable to it. You can also cast a hashtable to any of its sections. Here are three different ways to the same goal:
+
+```powershell
+# import module before creating the object
+Import-Module Pester
+# get default from static property
+$configuration = [PesterConfiguration]::Default
+# adding properties & discover via intellisense
+$configuration.Run.Path = 'C:\projects\tst'
+$configuration.Filter.Tag = 'Acceptance'
+$configuration.Filter.ExcludeTag = 'WindowsOnly'
+$configuration.Should.ErrorAction = 'Continue'
+$configuration.CodeCoverage.Enabled = $true
+```
+
+```powershell
+# cast whole hashtable to configuration
+$configuration = [PesterConfiguration]@{
+    Run = @{
+        Path = 'C:\projects\tst'
+    }
+    Filter = @{
+        Tag = 'Acceptance'
+        ExcludeTag = 'WindowsOnly'
+    }
+    Should = @{
+        ErrorAction = 'Continue'
+    }
+    CodeCoverage = @{
+        Enabled = $true
+    }
+}
+```
+
+```powershell
+# cast from empty hashtable to get default
+$configuration = [PesterConfiguration]@{}
+$configuration.Run.Path = 'C:\projects\tst'
+# cast hashtable to section
+$configuration.Filter = @{
+        Tag = 'Acceptance'
+        ExcludeTag = 'WindowsOnly'
+    }
+$configuration.Should.ErrorAction = 'Continue'
+$configuration.CodeCoverage.Enabled = $true
+```
+
+This configuration object contains all the options that are currently supported and the Simple interface is internally translates to this object internally. It is the source of truth for the defaults and configuration. The Intermediate api will be figured out later, as well as all the other details.
+
+### PesterPreference
+
+There is one more way to provide the configuration object which is `$PesterPreference`. On `Invoke-Pester` (in case of interactive execution `Invoke-Pester` is called inside of the first `Describe`) the preference is collected and merged with the configuration object if provided. This allows you to configure everything that you would via Invoke-Pester also when you are running interactively (via `F5`). You can also use this to define the defaults for your session by putting $PesterPreference into your PowerShell profile.
+
+Here is a simple example of enabling Mock logging output while running interactively :
+
+```powershell
+$PesterPreference = [PesterConfiguration]::Default
+$PesterPreference.Debug.WriteDebugMessages = $true
+$PesterPreference.Debug.WriteDebugMessagesFrom = "Mock"
+
+BeforeAll {
+    function a { "hello" }
+}
+Describe "pester preference" {
+    It "mocks" {
+        Mock a { "mock" }
+        a | Should -Be "mock"
+    }
+}
+```
+
+```
+Starting test discovery in 1 files.
+Discovering tests in C:\Users\jajares\Desktop\mck.tests.ps1.
+Found 1 tests. 44ms
+Test discovery finished. 80ms
+
+
+Running tests from 'C:\Users\jajares\Desktop\mck.tests.ps1'
+Describing pester preference
+Mock: Setting up mock for a.
+Mock: We are in a test. Returning mock table from test scope.
+Mock: Resolving command a.
+Mock: Searching for command in the caller scope.
+Mock: Found the command a in the caller scope.
+Mock: Mock does not have a hook yet, creating a new one.
+Mock: Defined new hook with bootstrap function PesterMock_b0bde5ee-1b4f-4b8f-b1dd-aef38b3bc13d and aliases a.
+Mock: Adding a new default behavior to a.
+Mock: Mock bootstrap function a called from block Begin.
+Mock: Capturing arguments of the mocked command.
+Mock: Mock for a was invoked from block Begin.
+Mock: Getting all defined mock behaviors in this and parent scopes for command a.
+Mock: We are in a test. Finding all behaviors in this test.
+Mock: Found behaviors for 'a' in the test.
+Mock: Finding all behaviors in this block and parents.
+... shortened Mock does a lot of stuff
+Verifiable: False
+Mock: We are in a test. Returning mock table from test scope.
+Mock: Removing function PesterMock_b0bde5ee-1b4f-4b8f-b1dd-aef38b3bc13d and aliases a for .
+  [+] mocks 857ms (840ms|16ms)
+Tests completed in 1.12s
+Tests Passed: 1, Failed: 0, Skipped: 0, Total: 1, NotRun: 0
+```

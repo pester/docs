@@ -150,13 +150,14 @@ module.exports = {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
           editUrl: 'https://github.com/pester/docs/edit/main',
-          lastVersion: "current",
+          lastVersion: "v5", // Versioned v5-docs will keep /docs/.. URI while latest stable
           includeCurrentVersion: true,
           disableVersioning: false,
           versions: {
+            // "current" is content in /docs folder
             current: {
-              label: "v5",
-              path: "",
+              label: "v6 (preview) 🚧",
+              // path is /docs/next by default.
             }
           },
         },

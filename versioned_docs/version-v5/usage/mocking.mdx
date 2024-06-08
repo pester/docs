@@ -1,0 +1,315 @@
+---
+id: mocking
+title: Mocking with Pester
+sidebar_label: Mocking
+description: Pester provides a set of Mocking functions making it easy to fake dependencies and also to verify behavior. Using these mocking functions can allow you to "shim" a data layer or mock other complex functions that already have their own tests
+---
+
+Pester provides a set of Mocking functions making it easy to fake dependencies and also to verify behavior. Using these mocking functions can allow you to "shim" a data layer or mock other complex functions that already have their own tests.
+
+## Description
+
+With the set of Mocking functions that Pester exposes, one can:
+
+* Mock the behavior of ANY powershell command.
+* Verify that specific commands were (or were not) called.
+* Verify the number of times a command was called with a set of specified parameters.
+
+## Mocking Functions
+
+### Mock
+
+Mocks the behavior of an existing command with an alternate implementation.
+
+### Should -Invoke
+
+Checks if a mocked command has been called a certain number of times and throws an exception if it has not.
+
+### Should -InvokeVerifiable
+
+Checks if any verifiable Mock has not been invoked. If so, this will throw an exception.
+
+## Example
+
+```powershell
+BeforeAll{
+    function Build ($version) {
+        Write-Host "a build was run for version: $version"
+    }
+
+    function Get-Version{
+        return 'Version'
+    }
+
+    function Get-NextVersion {
+        return 'NextVersion'
+    }
+
+    function BuildIfChanged {
+        $thisVersion = Get-Version
+        $nextVersion = Get-NextVersion
+        if ($thisVersion -ne $nextVersion) { Build $nextVersion }
+        return $nextVersion
+    }
+}
+
+Describe "BuildIfChanged" {
+    Context "When there are Changes" {
+        BeforeEach{
+            Mock Get-Version {return 1.1}
+            Mock Get-NextVersion {return 1.2}
+            Mock Build {} -Verifiable -ParameterFilter {$version -eq 1.2}
+
+            $result = BuildIfChanged
+        }
+
+        It "Builds the next version" {
+            Should -InvokeVerifiable
+        }
+
+        It "returns the next version number" {
+            $result | Should -Be 1.2
+        }
+    }
+    Context "When there are no Changes" {
+        BeforeEach{
+            Mock Get-Version { return 1.1 }
+            Mock Get-NextVersion { return 1.1 }
+            Mock Build {}
+
+            $result = BuildIfChanged
+        }
+
+        It "Should not build the next version" {
+            Should -Invoke -CommandName Build -Times 0 -ParameterFilter {$version -eq 1.1}
+        }
+    }
+}
+```
+
+---
+If you need to mock calls to commands which are made from inside a Script Module, additional code is required.  For details, refer to [Unit Testing within Modules](./modules)
+
+---
+
+### Mocking a function that is called by a method in a PowerShell class
+
+In PowerShell 6, functions called by classes can be mocked as above, with no known problems.
+
+However previous versions of PowerShell, including **all** versions of Windows PowerShell up to 5.1 cache class definitions in such a way that they are never redefined, even if you remove the module and re-import, or modify the class. This breaks Pester's Mock command, as the scope where the mock must be injected cannot be found.
+
+Dave Wyatt has provided this workaround:
+
+> Simply run your Pester tests in a fresh session every time; this is simple to do with Start-Job. I have this proxy function in my PowerShell profile to help with that:
+
+```powershell
+function Invoke-PesterJob
+{
+[CmdletBinding(DefaultParameterSetName='LegacyOutputXml')]
+    param(
+        [Parameter(Position=0)]
+        [Alias('Path','relative_path')]
+        [System.Object[]]
+        ${Script},
+
+        [Parameter(Position=1)]
+        [Alias('Name')]
+        [string[]]
+        ${TestName},
+
+        [Parameter(Position=2)]
+        [switch]
+        ${EnableExit},
+
+        [Parameter(ParameterSetName='LegacyOutputXml', Position=3)]
+        [string]
+        ${OutputXml},
+
+        [Parameter(Position=4)]
+        [Alias('Tags')]
+        [string[]]
+        ${Tag},
+
+        [string[]]
+        ${ExcludeTag},
+
+        [switch]
+        ${PassThru},
+
+        [System.Object[]]
+        ${CodeCoverage},
+
+        [switch]
+        ${Strict},
+
+        [Parameter(ParameterSetName='NewOutputSet', Mandatory=$true)]
+        [string]
+        ${OutputFile},
+
+        [Parameter(ParameterSetName='NewOutputSet', Mandatory=$true)]
+        [ValidateSet('LegacyNUnitXml','NUnitXml')]
+        [string]
+        ${OutputFormat},
+
+        [switch]
+        ${Quiet}
+    )
+
+    $params = $PSBoundParameters
+
+    Start-Job -ScriptBlock { Set-Location $using:pwd; Invoke-Pester @using:params } |
+    Receive-Job -Wait -AutoRemoveJob
+}
+Set-Alias ipj Invoke-PesterJob
+```
+[Source](https://github.com/pester/Pester/issues/797#issuecomment-314495326)
+
+
+### Mocking a native application
+
+Mocking native commands can be done in a similar way as Powershell functions/cmdlets. The major difference is that native commands don't provide named parameters for us to use inside the mock scriptblock or in a ParameterFilter, so you'd have to rely on arguments made available using `$args`.
+
+```powershell
+# For Windows-users: curl used in sample requires Windows 10 1803 / Windows Server 2019 or later
+Describe 'Mocking native commands' {
+    It 'Mock bash' {
+        # Windows PowerShell has curl -> Invoke-WebRequest alias. Removing to make sample cross-platform
+        while (Test-Path Alias:curl) { Remove-Item Alias:curl }
+
+        function GetHTTPHeader ($url) {
+            & curl --url $url `
+                -I
+        }
+
+        Mock curl { Write-Warning "$args" }
+
+        GetHTTPHeader -url 'https://google.com'
+
+        Should -Invoke -CommandName 'curl' -Exactly -Times 1 -ParameterFilter { $args[0] -eq '--url' -and $args[1] -eq 'https://google.com' }
+
+        # By converting args to string (will concat using space by default) you can match a pattern if order might change. remember linebreaks
+        Should -Invoke -CommandName 'curl' -Exactly -Times 1 -ParameterFilter { "$args" -match '--url https://google.com -I' }
+    }
+}
+```
+
+## $PesterBoundParameters
+
+Calling a mocked command will execute a proxy-function (hook) which evaluates and chooses the correct behavior/mock to invoke in that scenario. Because of this proxy `$PSBoundParameters` will be overwritten and are not available inside your mock's scriptblock.
+
+Starting in Pester 5.2.0, a new `$PesterBoundParameters` variable has been introduced as a replacement. Using this you can evaluate bound parameters and/or forward them to other functions inside your mock's code.
+
+```powershell
+Describe 'PesterBoundParameters' {
+    It 'Demo' {
+        Mock -CommandName Write-Host -MockWith {
+            # Do something else
+            Write-Warning -Message "MOCKED - $Object"
+
+            # Call real Write-Host with bound parameters
+            & (Get-Command -CommandType Cmdlet -Name Write-Host) @PesterBoundParameters
+        }
+
+        Write-Host -Object "This should be red" -ForegroundColor Red
+    }
+}
+```
+
+## Changes from Pester v4
+
+### Mocks are scoped based on their placement
+
+Mocks are no longer effective in the whole `Describe` / `Context` in which they were placed. Instead they will default to the block in which they were placed. Both of these work:
+
+```powershell
+Describe "d" {
+    BeforeAll {
+        function f () { "real" }
+    }
+
+    It "i" {
+        Mock f { "mock" }
+        f | Should -Be "mock"
+    }
+
+    It "j" {
+        f | Should -Be "real"
+    }
+}
+
+Describe "d" {
+    BeforeAll {
+        function f () { "real" }
+        Mock f { "mock" }
+    }
+
+    It "i" {
+        f | Should -Be "mock"
+    }
+
+    It "j" {
+        f | Should -Be "mock"
+    }
+}
+```
+
+### Counting mocks depends on placement
+
+Counting mocks depends on where the assertion is placed. In `It`, `BeforeEach` and `AfterEach` it defaults to `It` scope. In `Describe`, `Context`, `BeforeAll` and `AfterAll`, it default to `Describe` or `Context` based on the command that contains them. The default can still be overriden by specifying `-Scope` parameter.
+
+```powershell
+Describe "d" {
+
+    BeforeAll {
+        function f () { "real" }
+        Mock f { "mock" }
+    }
+
+    It "i" {
+        f
+        Should -Invoke f -Exactly 1
+    }
+
+    It "j" {
+        f
+        Should -Invoke f -Exactly 1
+    }
+
+    It "k" {
+        f
+        Should -Invoke f -Exactly 3 -Scope Describe
+    }
+
+    AfterEach {
+        Should -Invoke f -Exactly 1
+    }
+
+    AfterAll {
+        Should -Invoke f -Exactly 3
+    }
+}
+```
+
+### Default parameters for ParameterFilter
+
+Parameter filters no longer require you to use `param()`.
+
+```powershell
+Describe "d" {
+
+    BeforeAll {
+        function f ($a) { "real" }
+        Mock f { "mock" } -ParameterFilter { $a -eq 10 }
+    }
+
+    It "i" {
+        f 10
+        Should -Invoke f -Exactly 1
+    }
+
+    It "j" {
+        f 20
+        Should -Invoke f -Exactly 0
+    }
+}
+```

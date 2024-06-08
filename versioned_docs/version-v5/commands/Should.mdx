@@ -1,0 +1,1184 @@
+---
+id: Should
+title: Should
+description: Help page for the PowerShell Pester "Should" command
+keywords:
+  - PowerShell
+  - Pester
+  - Help
+  - Documentation
+hide_title: false
+hide_table_of_contents: false
+custom_edit_url: null
+---
+
+:::info This page was generated
+Contributions are welcome in [Pester-repo](https://github.com/pester/pester).
+:::
+
+## SYNOPSIS
+
+Should is a keyword that is used to define an assertion inside an It block.
+
+## SYNTAX
+
+### Be
+
+```powershell
+Should [[-ActualValue] <Object>] [-Be] [-Not] [-ExpectedValue <Object>] [-Because <Object>]
+ [<CommonParameters>]
+```
+
+### BeExactly
+
+```powershell
+Should [[-ActualValue] <Object>] [-Not] [-ExpectedValue <Object>] [-Because <Object>] [-BeExactly]
+ [<CommonParameters>]
+```
+
+### BeGreaterThan
+
+```powershell
+Should [[-ActualValue] <Object>] [-Not] [-ExpectedValue <Object>] [-Because <Object>] [-BeGreaterThan]
+ [<CommonParameters>]
+```
+
+### BeLessOrEqual
+
+```powershell
+Should [[-ActualValue] <Object>] [-Not] [-ExpectedValue <Object>] [-Because <Object>] [-BeLessOrEqual]
+ [<CommonParameters>]
+```
+
+### BeIn
+
+```powershell
+Should [[-ActualValue] <Object>] [-Not] [-ExpectedValue <Object>] [-Because <Object>] [-BeIn]
+ [<CommonParameters>]
+```
+
+### BeLessThan
+
+```powershell
+Should [[-ActualValue] <Object>] [-Not] [-ExpectedValue <Object>] [-Because <Object>] [-BeLessThan]
+ [<CommonParameters>]
+```
+
+### BeGreaterOrEqual
+
+```powershell
+Should [[-ActualValue] <Object>] [-Not] [-ExpectedValue <Object>] [-Because <Object>] [-BeGreaterOrEqual]
+ [<CommonParameters>]
+```
+
+### BeLike
+
+```powershell
+Should [[-ActualValue] <Object>] [-Not] [-ExpectedValue <Object>] [-Because <Object>] [-BeLike]
+ [<CommonParameters>]
+```
+
+### BeLikeExactly
+
+```powershell
+Should [[-ActualValue] <Object>] [-Not] [-ExpectedValue <Object>] [-Because <Object>] [-BeLikeExactly]
+ [<CommonParameters>]
+```
+
+### BeNullOrEmpty
+
+```powershell
+Should [[-ActualValue] <Object>] [-Not] [-Because <Object>] [-BeNullOrEmpty] [<CommonParameters>]
+```
+
+### BeOfType
+
+```powershell
+Should [[-ActualValue] <Object>] [-Not] [-Because <Object>] [-BeOfType] [-ExpectedType <Object>]
+ [<CommonParameters>]
+```
+
+### BeTrue
+
+```powershell
+Should [[-ActualValue] <Object>] [-Not] [-Because <Object>] [-BeTrue] [<CommonParameters>]
+```
+
+### BeFalse
+
+```powershell
+Should [[-ActualValue] <Object>] [-Not] [-Because <Object>] [-BeFalse] [<CommonParameters>]
+```
+
+### Contain
+
+```powershell
+Should [[-ActualValue] <Object>] [-Not] [-ExpectedValue <Object>] [-Because <Object>] [-Contain]
+ [<CommonParameters>]
+```
+
+### Exist
+
+```powershell
+Should [[-ActualValue] <Object>] [-Not] [-Because <Object>] [-Exist] [<CommonParameters>]
+```
+
+### FileContentMatch
+
+```powershell
+Should [[-ActualValue] <Object>] [-Not] [-Because <Object>] [-FileContentMatch] [-ExpectedContent <Object>]
+ [<CommonParameters>]
+```
+
+### FileContentMatchExactly
+
+```powershell
+Should [[-ActualValue] <Object>] [-Not] [-Because <Object>] [-ExpectedContent <Object>]
+ [-FileContentMatchExactly] [<CommonParameters>]
+```
+
+### FileContentMatchMultiline
+
+```powershell
+Should [[-ActualValue] <Object>] [-Not] [-Because <Object>] [-ExpectedContent <Object>]
+ [-FileContentMatchMultiline] [<CommonParameters>]
+```
+
+### FileContentMatchMultilineExactly
+
+```powershell
+Should [[-ActualValue] <Object>] [-Not] [-Because <Object>] [-ExpectedContent <Object>]
+ [-FileContentMatchMultilineExactly] [<CommonParameters>]
+```
+
+### HaveCount
+
+```powershell
+Should [[-ActualValue] <Object>] [-Not] [-ExpectedValue <Object>] [-Because <Object>] [-HaveCount]
+ [<CommonParameters>]
+```
+
+### HaveParameter
+
+```powershell
+Should [[-ActualValue] <Object>] [-Not] [-Because <Object>] [-HaveParameter] [-ParameterName <Object>]
+ [-Type <Object>] [-DefaultValue <Object>] [-Mandatory] [-InParameterSet <Object>] [-HasArgumentCompleter]
+ [-Alias <Object>] [<CommonParameters>]
+```
+
+### Match
+
+```powershell
+Should [[-ActualValue] <Object>] [-Not] [-Because <Object>] [-Match] [-RegularExpression <Object>]
+ [<CommonParameters>]
+```
+
+### MatchExactly
+
+```powershell
+Should [[-ActualValue] <Object>] [-Not] [-Because <Object>] [-RegularExpression <Object>] [-MatchExactly]
+ [<CommonParameters>]
+```
+
+### Throw
+
+```powershell
+Should [[-ActualValue] <Object>] [-Not] [-Because <Object>] [-Throw] [-ExpectedMessage <Object>]
+ [-ErrorId <Object>] [-ExceptionType <Object>] [-PassThru] [<CommonParameters>]
+```
+
+### InvokeVerifiable
+
+```powershell
+Should [[-ActualValue] <Object>] [-Not] [-Because <Object>] [-InvokeVerifiable] [<CommonParameters>]
+```
+
+### Invoke
+
+```powershell
+Should [[-ActualValue] <Object>] [-Not] [-Because <Object>] [-Invoke] [-CommandName <Object>] [-Times <Object>]
+ [-ParameterFilter <Object>] [-ExclusiveFilter <Object>] [-ModuleName <Object>] [-Scope <Object>] [-Exactly]
+ [-CallerSessionState <Object>] [<CommonParameters>]
+```
+
+## DESCRIPTION
+
+Should is a keyword that is used to define an assertion inside an It block.
+Should provides assertion methods to verify assertions e.g.
+comparing objects.
+If assertion is not met the test fails and an exception is thrown.
+
+Should can be used more than once in the It block if more than one assertion
+need to be verified.
+Each Should keyword needs to be on a separate line.
+Test will be passed only when all assertion will be met (logical conjunction).
+
+## EXAMPLES
+
+### EXAMPLE 1
+
+```powershell
+Describe "d1" {
+    It "i1" {
+        Mock Get-Command { }
+        Get-Command -CommandName abc
+        Should -Invoke Get-Command -Times 1 -Exactly
+    }
+}
+```
+
+Example of creating a mock for `Get-Command` and asserting that it was called exactly one time.
+
+### EXAMPLE 2
+
+```powershell
+$true | Should -BeFalse
+```
+
+Asserting that the input value is false.
+This would fail the test by throwing an error.
+
+### EXAMPLE 3
+
+```powershell
+$a | Should -Be 10
+```
+
+Asserting that the input value defined in $a is equal to 10.
+
+### EXAMPLE 4
+
+```powershell
+Should -Invoke Get-Command -Times 1 -Exactly
+```
+
+Asserting that the mocked `Get-Command` was called exactly one time.
+
+### EXAMPLE 5
+
+```powershell
+$user | Should -Not -BeNullOrEmpty
+```
+
+Asserting that the input value from $user is not null or empty.
+
+### EXAMPLE 6
+
+```powershell
+$planets.Name | Should -Be $Expected
+```
+
+Asserting that the value of `$planets.Name` is equal to the value defined in `$Expected`.
+
+### EXAMPLE 7
+
+```powershell
+Context "We want to ensure an exception is thrown when expected" {
+    It "Throws the exception" {
+        { Get-Application -Name Blarg } | Should -Throw -ExpectedMessage "Application 'Blarg' not found"
+    }
+}
+```
+
+Asserting that `Get-Application -Name Blarg` will throw an exception with a specific message.
+
+## PARAMETERS
+
+### -ActualValue
+
+The actual value that was obtained in the test which should be verified against
+a expected value.
+
+```yaml
+Type: Object
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 1
+Default value: None
+Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
+
+### -Alias
+
+Depends on operator being used.
+See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
+
+```yaml
+Type: Object
+Parameter Sets: HaveParameter
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Be
+
+Compares one object with another for equality and throws if the two objects are not the same.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Be
+Aliases: EQ
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Because
+
+Depends on operator being used.
+See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
+
+```yaml
+Type: Object
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -BeExactly
+
+Compares one object with another for equality and throws if the two objects are not the same.
+This comparison is case sensitive.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: BeExactly
+Aliases: CEQ
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -BeFalse
+
+Asserts that the value is false, or falsy.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: BeFalse
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -BeGreaterOrEqual
+
+Asserts that a number (or other comparable value) is greater than or equal to an expected value.
+Uses PowerShell's -ge operator to compare the two values.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: BeGreaterOrEqual
+Aliases: GE
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -BeGreaterThan
+
+Asserts that a number (or other comparable value) is greater than an expected value.
+Uses PowerShell's -gt operator to compare the two values.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: BeGreaterThan
+Aliases: GT
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -BeIn
+
+Asserts that a collection of values contain a specific value.
+Uses PowerShell's -contains operator to confirm.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: BeIn
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -BeLessOrEqual
+
+Asserts that a number (or other comparable value) is lower than, or equal to an expected value.
+Uses PowerShell's -le operator to compare the two values.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: BeLessOrEqual
+Aliases: LE
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -BeLessThan
+
+Asserts that a number (or other comparable value) is lower than an expected value.
+Uses PowerShell's -lt operator to compare the two values.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: BeLessThan
+Aliases: LT
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -BeLike
+
+Asserts that the actual value matches a wildcard pattern using PowerShell's -like operator.
+This comparison is not case-sensitive.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: BeLike
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -BeLikeExactly
+
+Asserts that the actual value matches a wildcard pattern using PowerShell's -like operator.
+This comparison is case-sensitive.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: BeLikeExactly
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -BeNullOrEmpty
+
+Checks values for null or empty (strings).
+The static [String]::IsNullOrEmpty() method is used to do the comparison.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: BeNullOrEmpty
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -BeOfType
+
+Asserts that the actual value should be an object of a specified type (or a subclass of the specified type) using PowerShell's -is operator.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: BeOfType
+Aliases: HaveType
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -BeTrue
+
+Asserts that the value is true, or truthy.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: BeTrue
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -CallerSessionState
+
+Depends on operator being used.
+See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
+
+```yaml
+Type: Object
+Parameter Sets: Invoke
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -CommandName
+
+Depends on operator being used.
+See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
+
+```yaml
+Type: Object
+Parameter Sets: Invoke
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Contain
+
+Asserts that collection contains a specific value.
+Uses PowerShell's -contains operator to confirm.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Contain
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -DefaultValue
+
+Depends on operator being used.
+See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
+
+```yaml
+Type: Object
+Parameter Sets: HaveParameter
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ErrorId
+
+Depends on operator being used.
+See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
+
+```yaml
+Type: Object
+Parameter Sets: Throw
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Exactly
+
+Depends on operator being used.
+See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Invoke
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ExceptionType
+
+Depends on operator being used.
+See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
+
+```yaml
+Type: Object
+Parameter Sets: Throw
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ExclusiveFilter
+
+Depends on operator being used.
+See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
+
+```yaml
+Type: Object
+Parameter Sets: Invoke
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Exist
+
+Does not perform any comparison, but checks if the object calling Exist is present in a PS Provider.
+The object must have valid path syntax.
+It essentially must pass a Test-Path call.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Exist
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ExpectedContent
+
+Depends on operator being used.
+See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
+
+```yaml
+Type: Object
+Parameter Sets: FileContentMatch, FileContentMatchExactly, FileContentMatchMultiline, FileContentMatchMultilineExactly
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ExpectedMessage
+
+Depends on operator being used.
+See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
+
+```yaml
+Type: Object
+Parameter Sets: Throw
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ExpectedType
+
+Depends on operator being used.
+See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
+
+```yaml
+Type: Object
+Parameter Sets: BeOfType
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ExpectedValue
+
+Depends on operator being used.
+See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
+
+```yaml
+Type: Object
+Parameter Sets: Be, BeExactly, BeGreaterThan, BeLessOrEqual, BeIn, BeLessThan, BeGreaterOrEqual, BeLike, BeLikeExactly, Contain, HaveCount
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -FileContentMatch
+
+Checks to see if a file contains the specified text.
+This search is not case sensitive and uses regular expressions.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: FileContentMatch
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -FileContentMatchExactly
+
+Checks to see if a file contains the specified text.
+This search is case sensitive and uses regular expressions to match the text.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: FileContentMatchExactly
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -FileContentMatchMultiline
+
+As opposed to FileContentMatch and FileContentMatchExactly operators, FileContentMatchMultiline presents content of the file being tested as one string object, so that the expression you are comparing it to can consist of several lines.
+
+When using FileContentMatchMultiline operator, '^' and '$' represent the beginning and end of the whole file, instead of the beginning and end of a line
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: FileContentMatchMultiline
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -FileContentMatchMultilineExactly
+
+As opposed to FileContentMatch and FileContentMatchExactly operators, FileContentMatchMultilineExactly presents content of the file being tested as one string object, so that the case sensitive expression you are comparing it to can consist of several lines.
+
+When using FileContentMatchMultilineExactly operator, '^' and '$' represent the beginning and end of the whole file, instead of the beginning and end of a line.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: FileContentMatchMultilineExactly
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -HasArgumentCompleter
+
+Depends on operator being used.
+See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: HaveParameter
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -HaveCount
+
+Asserts that a collection has the expected amount of items.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: HaveCount
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -HaveParameter
+
+Asserts that a command has the expected parameter.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: HaveParameter
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -InParameterSet
+
+Depends on operator being used.
+See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
+
+```yaml
+Type: Object
+Parameter Sets: HaveParameter
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Invoke
+
+Checks if a Mocked command has been called a certain number of times and throws an exception if it has not.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Invoke
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -InvokeVerifiable
+
+Checks if any Verifiable Mock has not been invoked.
+If so, this will throw an exception.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: InvokeVerifiable
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Mandatory
+
+Depends on operator being used.
+See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: HaveParameter
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Match
+
+Uses a regular expression to compare two objects.
+This comparison is not case sensitive.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Match
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -MatchExactly
+
+Uses a regular expression to compare two objects.
+This comparison is case sensitive.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: MatchExactly
+Aliases: CMATCH
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ModuleName
+
+Depends on operator being used.
+See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
+
+```yaml
+Type: Object
+Parameter Sets: Invoke
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Not
+
+Reverse the assertion
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ParameterFilter
+
+Depends on operator being used.
+See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
+
+```yaml
+Type: Object
+Parameter Sets: Invoke
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ParameterName
+
+Depends on operator being used.
+See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
+
+```yaml
+Type: Object
+Parameter Sets: HaveParameter
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -PassThru
+
+Depends on operator being used.
+See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Throw
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -RegularExpression
+
+Depends on operator being used.
+See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
+
+```yaml
+Type: Object
+Parameter Sets: Match, MatchExactly
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Scope
+
+Depends on operator being used.
+See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
+
+```yaml
+Type: Object
+Parameter Sets: Invoke
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Throw
+
+Checks if an exception was thrown.
+Enclose input in a scriptblock.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Throw
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Times
+
+Depends on operator being used.
+See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
+
+```yaml
+Type: Object
+Parameter Sets: Invoke
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Type
+
+Depends on operator being used.
+See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
+
+```yaml
+Type: Object
+Parameter Sets: HaveParameter
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### CommonParameters
+
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+## INPUTS
+
+## OUTPUTS
+
+## NOTES
+
+## RELATED LINKS
+
+[https://pester.dev/docs/commands/Should](https://pester.dev/docs/commands/Should)
+
+[https://pester.dev/docs/assertions](https://pester.dev/docs/assertions)
+
+## VERSION
+
+*This page was generated using comment-based help in [Pester 5.6.0](https://github.com/pester/pester).*

@@ -1,0 +1,90 @@
+---
+title: Tags
+description: Use tags on tests and blocks to categorize code and easily choose which tests to run with simple parameters
+---
+
+The tag parameter is now available on `Describe`, `Context` and `It` and it is possible to filter tags on any level. You can then use `-TagFilter` and `-ExcludeTagFilter` to run just the tests that you want.
+
+Here you can see an example of a test suite that has acceptance tests and unit tests, and some of the tests are slow, some are flaky, and some only work on Linux. Pester v5 makes running all reliable acceptance tests, that can run on Windows is as simple as:
+
+
+```powershell
+Invoke-Pester $path -TagFilter "Acceptance" -ExcludeTagFilter "Flaky", "Slow", "LinuxOnly"
+```
+
+```powershell
+Describe "Get-Beer" {
+
+    Context "acceptance tests" -Tag "Acceptance" {
+
+        It "acceptance test 1" -Tag "Slow", "Flaky" {
+            1 | Should -Be 1
+        }
+
+        It "acceptance test 2" {
+            1 | Should -Be 1
+        }
+
+        It "acceptance test 3" -Tag "WindowsOnly" {
+            1 | Should -Be 1
+        }
+
+        It "acceptance test 4" -Tag "Slow" {
+            1 | Should -Be 1
+        }
+
+        It "acceptance test 5" -Tag "LinuxOnly" {
+            1 | Should -Be 1
+        }
+    }
+
+    Context "unit tests" {
+
+        It "unit test 1" {
+            1 | Should -Be 1
+        }
+
+        It "unit test 2" -Tag "LinuxOnly" {
+            1 | Should -Be 1
+        }
+
+    }
+}
+```
+
+```
+Starting test discovery in 1 files.
+Discovering tests in ...\real-life-tagging-scenarios.tests.ps1.
+Found 7 tests. 482ms
+Test discovery finished. 800ms
+
+Running tests from '...\real-life-tagging-scenarios.tests.ps1'
+Describing Get-Beer
+  Context acceptance tests
+      [+] acceptance test 2 50ms (29ms|20ms)
+      [+] acceptance test 3 42ms (19ms|23ms)
+Tests completed in 1.09s
+Tests Passed: 2, Failed: 0, Skipped: 0, Total: 7, NotRun: 5
+```
+
+#### Tags use wildcards
+
+The tags are now also compared as `-like` wildcards, so you don't have to spell out the whole tag if you can't remember it. This is especially useful when you are running tests locally:
+
+```powershell
+Invoke-Pester $path -ExcludeTagFilter "Accept*", "*nuxonly" | Out-Null
+```
+```
+Starting test discovery in 1 files.
+Discovering tests in ...\real-life-tagging-scenarios.tests.ps1.
+Found 7 tests. 59ms
+Test discovery finished. 97ms
+
+
+Running tests from '...\real-life-tagging-scenarios.tests.ps1'
+Describing Get-Beer
+ Context Unit tests
+   [+] unit test 1 15ms (7ms|8ms)
+Tests completed in 269ms
+Tests Passed: 1, Failed: 0, Skipped: 0, Total: 7, NotRun: 6
+```

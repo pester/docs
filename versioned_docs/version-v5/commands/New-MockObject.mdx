@@ -1,0 +1,197 @@
+---
+id: New-MockObject
+title: New-MockObject
+description: Help page for the PowerShell Pester "New-MockObject" command
+keywords:
+  - PowerShell
+  - Pester
+  - Help
+  - Documentation
+hide_title: false
+hide_table_of_contents: false
+custom_edit_url: null
+---
+
+:::info This page was generated
+Contributions are welcome in [Pester-repo](https://github.com/pester/pester).
+:::
+
+## SYNOPSIS
+
+This function instantiates a .NET object from a type.
+
+## SYNTAX
+
+### Type (Default)
+
+```powershell
+New-MockObject [-Type] <Type> [-Properties <Hashtable>] [-Methods <Hashtable>] [-MethodHistoryPrefix <String>]
+ [<CommonParameters>]
+```
+
+### InputObject
+
+```powershell
+New-MockObject -InputObject <Object> [-Properties <Hashtable>] [-Methods <Hashtable>]
+ [-MethodHistoryPrefix <String>] [<CommonParameters>]
+```
+
+## DESCRIPTION
+
+Using the New-MockObject you can mock an object based on .NET type.
+
+An .NET assembly for the particular type must be available in the system and loaded.
+
+## EXAMPLES
+
+### EXAMPLE 1
+
+```powershell
+$obj = New-MockObject -Type 'System.Diagnostics.Process'
+$obj.GetType().FullName
+    System.Diagnostics.Process
+```
+
+Creates a mock of a process-object with default property-values.
+
+### EXAMPLE 2
+
+```powershell
+$obj = New-MockObject -Type 'System.Diagnostics.Process' -Properties @{ Id = 123 }
+```
+
+Create a mock of a process-object with the Id-property specified.
+
+### EXAMPLE 3
+
+```powershell
+$obj = New-MockObject -Type 'System.Diagnostics.Process' -Methods @{ Kill = { param($entireProcessTree) "killed" } }
+$obj.Kill()
+$obj.Kill($true)
+$obj.Kill($false)
+
+$obj._Kill
+
+Call Arguments
+---- ---------
+   1 {}
+   2 {True}
+   3 {False}
+```
+
+Create a mock of a process-object and mocks the object's `Kill()`-method.
+The mocked method will keep a history
+of any call and the associated arguments in a property named `_Kill`
+
+## PARAMETERS
+
+### -Type
+
+The .NET type to create.
+This creates the object without calling any of its constructors or initializers.
+Use this to instantiate an object that does not have a public constructor.
+If your object has a constructor, or is giving you errors, try using the constructor and provide the object using the InputObject parameter to decorate it.
+
+```yaml
+Type: Type
+Parameter Sets: Type
+Aliases:
+
+Required: True
+Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -InputObject
+
+An already constructed object to decorate.
+Use `New-Object` or `[typeName]::new()` to create it.
+
+```yaml
+Type: Object
+Parameter Sets: InputObject
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Properties
+
+Properties to define, specified as a hashtable, in format `@{ PropertyName = value }`.
+
+```yaml
+Type: Hashtable
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Methods
+
+Methods to define, specified as a hashtable, in format `@{ MethodName = scriptBlock }`.
+
+ScriptBlock can define param block, and it will receive arguments that were provided to the function call based on order.
+
+Method overloads are not supported because ScriptMethods are used to decorate the object, and ScriptMethods do not support method overloads.
+
+For each method a property named `_MethodName` (if using default `-MethodHistoryPrefix`) is defined which holds history of the invocations of the method and the arguments that were provided.
+
+```yaml
+Type: Hashtable
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -MethodHistoryPrefix
+
+Prefix for the history-property created for each mocked method.
+Default is '_' which would create the property '_MethodName'.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: _
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### CommonParameters
+
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+## INPUTS
+
+## OUTPUTS
+
+## NOTES
+
+## RELATED LINKS
+
+[https://pester.dev/docs/commands/New-MockObject](https://pester.dev/docs/commands/New-MockObject)
+
+[https://pester.dev/docs/usage/mocking](https://pester.dev/docs/usage/mocking)
+
+## VERSION
+
+*This page was generated using comment-based help in [Pester 5.6.0](https://github.com/pester/pester).*
