@@ -3,7 +3,7 @@ title: Configuration
 description: Documentation about how to configure the behavior, options and features in Pester
 ---
 
-### Advanced interface
+## Advanced interface
 
 Advanced interface uses `PesterConfiguration` object which contains all options that you can provide to Pester and contains descriptions for all the configuration sections and as well as default values. Here is what you see when you look at the default Debug section of the object:
 
@@ -69,7 +69,7 @@ $configuration.CodeCoverage.Enabled = $true
 
 This configuration object contains all the options that are currently supported and the Simple interface is internally translates to this object internally. It is the source of truth for the defaults and configuration. The Intermediate api will be figured out later, as well as all the other details.
 
-### PesterPreference
+## PesterPreference
 
 There is one more way to provide the configuration object which is `$PesterPreference`. On `Invoke-Pester` (in case of interactive execution `Invoke-Pester` is called inside of the first `Describe`) the preference is collected and merged with the configuration object if provided. This allows you to configure everything that you would via Invoke-Pester also when you are running interactively (via `F5`). You can also use this to define the defaults for your session by putting $PesterPreference into your PowerShell profile.
 
@@ -123,3 +123,115 @@ Mock: Removing function PesterMock_b0bde5ee-1b4f-4b8f-b1dd-aef38b3bc13d and alia
 Tests completed in 1.12s
 Tests Passed: 1, Failed: 0, Skipped: 0, Total: 1, NotRun: 0
 ```
+
+## PesterConfiguration Options
+
+<!--GENERATED_PESTER_CONFIGURATION_DOCS_START-->
+
+### Run
+
+Run configuration.
+
+| Option | Description | Default Value |
+|--------|-------------|--------------:|
+| Path | Directories to be searched for tests, paths directly to test files, or combination of both. | `@('.')` |
+| ExcludePath | Directories or files to be excluded from the run. | `@()` |
+| ScriptBlock | ScriptBlocks containing tests to be executed. | `@()` |
+| Container | ContainerInfo objects containing tests to be executed. | `@()` |
+| TestExtension | Filter used to identify test files. | `'.Tests.ps1'` |
+| Exit | Exit with non-zero exit code when the test run fails. Exit code is always set to `$LASTEXITCODE` even when this option is `$false`. When used together with Throw, throwing an exception is preferred. | `$false` |
+| Throw | Throw an exception when test run fails. When used together with Exit, throwing an exception is preferred. | `$false` |
+| PassThru | Return result object to the pipeline after finishing the test run. | `$false` |
+| SkipRun | Runs the discovery phase but skips run. Use it with PassThru to get object populated with all tests. | `$false` |
+| SkipRemainingOnFailure | Skips remaining tests after failure for selected scope, options are None, Run, Container and Block. | `'None'` |
+
+### Filter
+
+Filter configuration
+
+| Option | Description | Default Value |
+|--------|-------------|--------------:|
+| Tag | Tags of Describe, Context or It to be run. | `@()` |
+| ExcludeTag | Tags of Describe, Context or It to be excluded from the run. | `@()` |
+| Line | Filter by file and scriptblock start line, useful to run parsed tests programmatically to avoid problems with expanded names. Example: 'C:\tests\file1.Tests.ps1:37' | `@()` |
+| ExcludeLine | Exclude by file and scriptblock start line, takes precedence over Line. | `@()` |
+| FullName | Full name of test with -like wildcards, joined by dot. Example: '*.describe Get-Item.test1' | `@()` |
+
+### CodeCoverage
+
+CodeCoverage configuration.
+
+| Option | Description | Default Value |
+|--------|-------------|--------------:|
+| Enabled | Enable CodeCoverage. | `$false` |
+| OutputFormat | Format to use for code coverage report. Possible values: JaCoCo, CoverageGutters | `'JaCoCo'` |
+| OutputPath | Path relative to the current directory where code coverage report is saved. | `'coverage.xml'` |
+| OutputEncoding | Encoding of the output file. | `'UTF8'` |
+| Path | Directories or files to be used for code coverage, by default the Path(s) from general settings are used, unless overridden here. | `@()` |
+| ExcludeTests | Exclude tests from code coverage. This uses the TestFilter from general configuration. | `$true` |
+| RecursePaths | Will recurse through directories in the Path option. | `$true` |
+| CoveragePercentTarget | Target percent of code coverage that you want to achieve, default 75%. | `75` |
+| UseBreakpoints | EXPERIMENTAL: When false, use Profiler based tracer to do CodeCoverage instead of using breakpoints. | `$true` |
+| SingleHitBreakpoints | Remove breakpoint when it is hit. | `$true` |
+
+### TestResult
+
+TestResult configuration.
+
+| Option | Description | Default Value |
+|--------|-------------|--------------:|
+| Enabled | Enable TestResult. | `$false` |
+| OutputFormat | Format to use for test result report. Possible values: NUnitXml, NUnit2.5, NUnit3 or JUnitXml | `'NUnitXml'` |
+| OutputPath | Path relative to the current directory where test result report is saved. | `'testResults.xml'` |
+| OutputEncoding | Encoding of the output file. | `'UTF8'` |
+| TestSuiteName | Set the name assigned to the root 'test-suite' element. | `'Pester'` |
+
+### Should
+
+Should configuration.
+
+| Option | Description | Default Value |
+|--------|-------------|--------------:|
+| ErrorAction | Controls if Should throws on error. Use 'Stop' to throw on error, or 'Continue' to fail at the end of the test. | `'Stop'` |
+
+### Debug
+
+Debug configuration for Pester. ⚠ Use at your own risk!
+
+| Option | Description | Default Value |
+|--------|-------------|--------------:|
+| ShowFullErrors | Show full errors including Pester internal stack. This property is deprecated, and if set to true it will override Output.StackTraceVerbosity to 'Full'. | `$false` |
+| WriteDebugMessages | Write Debug messages to screen. | `$false` |
+| WriteDebugMessagesFrom | Write Debug messages from a given source, WriteDebugMessages must be set to true for this to work. You can use like wildcards to get messages from multiple sources, as well as * to get everything. | `@('Discovery', 'Skip', 'Mock', 'CodeCoverage')` |
+| ShowNavigationMarkers | Write paths after every block and test, for easy navigation in VSCode. | `$false` |
+| ReturnRawResultObject | Returns unfiltered result object, this is for development only. Do not rely on this object for additional properties, non-public properties will be renamed without previous notice. | `$false` |
+
+### Output
+
+Output configuration
+
+| Option | Description | Default Value |
+|--------|-------------|--------------:|
+| Verbosity | The verbosity of output, options are None, Normal, Detailed and Diagnostic. | `'Normal'` |
+| StackTraceVerbosity | The verbosity of stacktrace output, options are None, FirstLine, Filtered and Full. | `'Filtered'` |
+| CIFormat | The CI format of error output in build logs, options are None, Auto, AzureDevops and GithubActions. | `'Auto'` |
+| CILogLevel | The CI log level in build logs, options are Error and Warning. | `'Error'` |
+| RenderMode | The mode used to render console output, options are Auto, Ansi, ConsoleColor and Plaintext. | `'Auto'` |
+
+### TestDrive
+
+TestDrive configuration.
+
+| Option | Description | Default Value |
+|--------|-------------|--------------:|
+| Enabled | Enable TestDrive. | `$true` |
+
+### TestRegistry
+
+TestRegistry configuration.
+
+| Option | Description | Default Value |
+|--------|-------------|--------------:|
+| Enabled | Enable TestRegistry. | `$true` |
+
+<!--GENERATED_PESTER_CONFIGURATION_DOCS_END-->
