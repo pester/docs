@@ -4,10 +4,12 @@
 #>
 [CmdletBinding()]
 param (
-    [Parameter(Mandatory = $False)][string]
-    $PesterVersion,
+    [Parameter(Mandatory = $False)]
+    [string] $PesterVersion,
     [ValidateScript({ Test-Path -Path $_ -PathType Leaf })]
-    $ConfigurationPagePath = "$PSScriptRoot/docs/usage/configuration.mdx"
+    [string] $ConfigurationPagePath = "$PSScriptRoot/docs/usage/configuration.mdx",
+    [ValidateSet('List','Table')]
+    [string] $Style = 'List'
 )
 
 #region helpers
@@ -43,6 +45,68 @@ function Format-NicelyMini ($value) {
         return "@($($v -join ', '))"
     }
 }
+
+function generateSectionsMarkdownAsTable {
+    $configObject = New-PesterConfiguration
+    foreach ($configSection in $configObject.PSObject.Properties) {
+        $sectionName = $configSection.Name
+        $sectionDescription = $configSection.Value -as [string]
+        $section = $configSection.Value
+
+        $options = foreach ($configOption in $section.PSObject.Properties) {
+            $optionName = $configOption.Name
+            $option = $configOption.Value
+            $default = Format-NicelyMini $option.Default
+            $type = $option.Default.GetType() -as [string] -replace '^Pester\.'
+            "| $optionName | $($option.Description) | ``$type`` | ``$default`` |"
+        }
+
+        @"
+### ${sectionName}
+
+$sectionDescription
+
+| Option | Description | Type | Default |
+|--------|-------------|-----:|--------:|
+$($options -join $eol)
+
+"@
+    }
+}
+
+function generateSectionsMarkdownAsList {
+    $configObject = New-PesterConfiguration
+    foreach ($configSection in $configObject.PSObject.Properties) {
+        $sectionName = $configSection.Name
+        $sectionDescription = $configSection.Value -as [string]
+        $section = $configSection.Value
+
+        $options = foreach ($configOption in $section.PSObject.Properties) {
+            $optionName = $configOption.Name
+            $option = $configOption.Value
+            $default = Format-NicelyMini $option.Default
+            $type = $option.Default.GetType() -as [string]
+            @"
+#### $sectionName.$optionName
+
+**Type:** ``$type``<br/>
+**Default:** ``$default``
+
+$($option.Description)
+
+"@
+        }
+
+        # Output markdown string per section
+        @"
+### ${sectionName}
+
+$sectionDescription
+
+$($options -join $eol)
+"@
+    }
+}
 #endregion
 
 $startComment = 'GENERATED_PESTER_CONFIGURATION_DOCS_START'
@@ -55,32 +119,12 @@ if ($PSBoundParameters.ContainsKey('PesterVersion')) {
 }
 
 # generate help for config object and insert it
-$configObject = New-PesterConfiguration
 $eol = "`n"
 $encoding = 'UTF8'
 
-$generatedConfigDocs = foreach ($configSection in $configObject.PSObject.Properties) {
-    $sectionName = $configSection.Name
-    $sectionDescription = $configSection.Value
-    $section = $configObject.($sectionName)
-
-    $options = foreach ($optionName in $section.PSObject.Properties.Name) {
-        $option = $section.$optionName
-        $default = Format-NicelyMini $option.Default
-        "| ${optionName} | $($option.Description) | ``$($default)`` |"
-    }
-
-
-    @"
-### ${sectionName}
-
-$sectionDescription
-
-| Option | Description | Default |
-|--------|-------------|--------:|
-$($options -join $eol)
-
-"@
+$generatedConfigDocs = switch ($Style) {
+    'List' { generateSectionsMarkdownAsList }
+    'Table' { generateSectionsMarkdownAsTable }
 }
 
 $pageContent = Get-Content $ConfigurationPagePath -Encoding $encoding
