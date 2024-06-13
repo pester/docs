@@ -1,0 +1,176 @@
+---
+id: Should-Throw
+title: Should-Throw
+description: Help page for the PowerShell Pester "Should-Throw" command
+keywords:
+  - PowerShell
+  - Pester
+  - Help
+  - Documentation
+hide_title: false
+hide_table_of_contents: false
+custom_edit_url: null
+---
+
+:::info This page was generated
+Contributions are welcome in [Pester-repo](https://github.com/pester/pester).
+:::
+
+## SYNOPSIS
+
+Asserts that a script block throws an exception.
+
+## SYNTAX
+
+```powershell
+Should-Throw [-ScriptBlock] <ScriptBlock> [[-ExceptionType] <Type>] [[-ExceptionMessage] <String>]
+ [[-FullyQualifiedErrorId] <String>] [-AllowNonTerminatingError] [[-Because] <String>] [<CommonParameters>]
+```
+
+## DESCRIPTION
+
+\{\{ Fill in the Description \}\}
+
+## EXAMPLES
+
+### EXAMPLE 1
+
+```powershell
+{ throw 'error' } | Should-Throw
+{ throw 'error' } | Should-Throw -ExceptionMessage 'error'
+{ throw 'error' } | Should-Throw -ExceptionType 'System.Management.Automation.RuntimeException'
+{ throw 'error' } | Should-Throw -FullyQualifiedErrorId 'RuntimeException'
+{ throw 'error' } | Should-Throw -FullyQualifiedErrorId '*Exception'
+{ throw 'error' } | Should-Throw -AllowNonTerminatingError
+```
+
+All of these assertions will pass.
+
+### EXAMPLE 2
+
+```powershell
+$err = { throw 'error' } | Should-Throw
+$err.Exception.Message | Should-BeLike '*err*'
+```
+
+The error record is returned from the assertion and can be used in further assertions.
+
+## PARAMETERS
+
+### -ScriptBlock
+
+The script block that should throw an exception.
+
+```yaml
+Type: ScriptBlock
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 1
+Default value: None
+Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
+
+### -ExceptionType
+
+The type of exception that should be thrown.
+
+```yaml
+Type: Type
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 2
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ExceptionMessage
+
+The message that the exception should contain.
+`-like` wildcards are supported.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 3
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -FullyQualifiedErrorId
+
+The FullyQualifiedErrorId that the exception should contain.
+`-like` wildcards are supported.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 4
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -AllowNonTerminatingError
+
+If set, the assertion will pass if a non-terminating error is thrown.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Because
+
+The reason why the input should be the expected value.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 5
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### CommonParameters
+
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+## INPUTS
+
+## OUTPUTS
+
+## NOTES
+
+## RELATED LINKS
+
+[https://pester.dev/docs/commands/Should-Throw](https://pester.dev/docs/commands/Should-Throw)
+
+[https://pester.dev/docs/assertions](https://pester.dev/docs/assertions)
+
+## VERSION
+
+*This page was generated using comment-based help in [Pester 6.0.0-alpha1](https://github.com/pester/pester).*

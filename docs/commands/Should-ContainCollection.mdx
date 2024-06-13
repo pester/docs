@@ -1,0 +1,123 @@
+---
+id: Should-ContainCollection
+title: Should-ContainCollection
+description: Help page for the PowerShell Pester "Should-ContainCollection" command
+keywords:
+  - PowerShell
+  - Pester
+  - Help
+  - Documentation
+hide_title: false
+hide_table_of_contents: false
+custom_edit_url: null
+---
+
+:::info This page was generated
+Contributions are welcome in [Pester-repo](https://github.com/pester/pester).
+:::
+
+## SYNOPSIS
+
+Compares collections to see if the expected collection is present in the provided collection.
+It does not compare the types of the input collections.
+
+## SYNTAX
+
+```powershell
+Should-ContainCollection [[-Actual] <Object>] [-Expected] <Object> [-Because <String>] [<CommonParameters>]
+```
+
+## DESCRIPTION
+
+\{\{ Fill in the Description \}\}
+
+## EXAMPLES
+
+### EXAMPLE 1
+
+```powershell
+1, 2, 3 | Should-ContainCollection @(1, 2)
+@(1) | Should-ContainCollection @(1)
+```
+
+This assertion will pass, because all items are present in the collection, in the right order.
+
+### EXAMPLE 2
+
+```powershell
+1, 2, 3 | Should-ContainCollection @(3, 4)
+1, 2, 3 | Should-ContainCollection @(3, 2, 1)
+@(1) | Should-ContainCollection @(2)
+```
+
+This assertion will fail, because not all items are present in the collection, or are not in the right order.
+
+## PARAMETERS
+
+### -Actual
+
+A collection of items.
+
+```yaml
+Type: Object
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 2
+Default value: None
+Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
+
+### -Expected
+
+A collection of items.
+
+```yaml
+Type: Object
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Because
+
+The reason why the input should be the expected value.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### CommonParameters
+
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+## INPUTS
+
+## OUTPUTS
+
+## NOTES
+
+## RELATED LINKS
+
+[https://pester.dev/docs/commands/Should-ContainCollection](https://pester.dev/docs/commands/Should-ContainCollection)
+
+[https://pester.dev/docs/assertions](https://pester.dev/docs/assertions)
+
+## VERSION
+
+*This page was generated using comment-based help in [Pester 6.0.0-alpha1](https://github.com/pester/pester).*
