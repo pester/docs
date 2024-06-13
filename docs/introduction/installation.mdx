@@ -8,8 +8,8 @@ description: Pester is a cross-platform PowerShell module for testing your Power
 ## Compatibility
 
 Pester is a cross-platform module that runs on Windows, Linux, MacOS and anywhere else supported by PowerShell. It is tested and compatible with:
-- Windows PowerShell 3.0 - 5.1
-- PowerShell 6.0.4 and above
+- Windows PowerShell 5.1
+- PowerShell 7.0 and above
 
 ## Installing from PowerShell Gallery
 
@@ -77,12 +77,6 @@ WARNING: Unable to resolve package source 'https://www.powershellgallery.com/api
 # Enable TLS 1.2 for the current PowerShell instance using the line below and try again
 [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor [System.Net.SecurityProtocolType]::Tls12
 ```
-
-#### Command `Install-Module` is not found
-
-Older versions of Windows running Windows PowerShell 3.0 or 4.0 do not have a built-in package manager. You can install `PowerShellGet` using the [instructions here](https://docs.microsoft.com/en-us/powershell/scripting/gallery/installing-psget#for-computers-running-powershell-30-or-powershell-40). After completing the steps, start a new PowerShell session and retry [the module installation](#installing-from-powershell-gallery).
-
-Alternatively, you can install the module manually using the instructions below.
 
 ## Installing manually
 
