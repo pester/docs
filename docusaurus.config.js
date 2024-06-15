@@ -160,7 +160,9 @@ module.exports = {
             // "current" is content in /docs folder
             current: {
               label: "v6 (preview) 🚧",
-              // path is /docs/next by default.
+              // path is /docs/next by default unless lastVersion is set to "current"
+              // overriden to /docs/v6 during preview
+              path: "v6"
             }
           },
         },
