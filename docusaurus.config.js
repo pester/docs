@@ -150,7 +150,10 @@ module.exports = {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
           editUrl: 'https://github.com/pester/docs/edit/main',
-          lastVersion: "v5", // Versioned v5-docs will keep /docs/.. URI while latest stable
+          // Define which version ("current" vs versioned docs like "v5") that will use unversioned URIs /docs/...
+          // Using v5 while it's latest stable.
+          // When updated, also update static/_redirects to always support versioned URIs
+          lastVersion: "v5",
           includeCurrentVersion: true,
           disableVersioning: false,
           versions: {
