@@ -6,8 +6,8 @@
 param (
     [Parameter(Mandatory = $False)]
     [string] $PesterVersion,
-    [ValidateScript({ Test-Path -Path $_ -PathType Leaf })]
-    [string] $ConfigurationPagePath = "$PSScriptRoot/docs/usage/configuration.mdx",
+    [ValidateSet('Current','v5')]
+    [string] $DocsVersion = 'Current',
     [ValidateSet('List','Table')]
     [string] $Style = 'List'
 )
@@ -109,18 +109,32 @@ $($options -join $eol)
 }
 #endregion
 
-$startComment = 'GENERATED_PESTER_CONFIGURATION_DOCS_START'
-$endComment = 'GENERATED_PESTER_CONFIGURATION_DOCS_END'
-
-if ($PSBoundParameters.ContainsKey('PesterVersion')) {
-    Import-Module Pester -RequiredVersion $PesterVersion
+$loadedModule = if ($PSBoundParameters.ContainsKey('PesterVersion')) {
+    Import-Module Pester -RequiredVersion ($PesterVersion -replace '-\w+$') -PassThru
 } else {
-    Import-Module Pester
+    Import-Module Pester -PassThru
+}
+
+$loadedVersion = if ($loadedModule.PrivateData -and $loadedModule.PrivateData.PSData -and $loadedModule.PrivateData.PSData.PreRelease) {
+    "$($loadedModule.Version)-$($loadedModule.PrivateData.PSData.PreRelease)"
+} else {
+    $loadedModule.Version
+}
+
+if ($PSBoundParameters.ContainsKey('PesterVersion') -and $loadedVersion -ne $PesterVersion) {
+    throw "Pester $PesterVersion was requested, but version '$loadedVersion' was loaded. Aborting."
 }
 
 # generate help for config object and insert it
+$startComment = 'GENERATED_PESTER_CONFIGURATION_DOCS_START'
+$endComment = 'GENERATED_PESTER_CONFIGURATION_DOCS_END'
 $eol = "`n"
 $encoding = 'UTF8'
+
+$ConfigurationPagePath = switch ($DocsVersion) {
+    'Current' { "$PSScriptRoot/docs/usage/configuration.mdx" }
+    'v5' { "$PSScriptRoot/versioned_docs/version-v5/usage/configuration.mdx" }
+}
 
 $generatedConfigDocs = switch ($Style) {
     'List' { generateSectionsMarkdownAsList }
@@ -134,6 +148,7 @@ $sectionFound = $false
 foreach ($line in $pageContent) {
     if (-not $sectionFound -and $line -match $startComment) {
         $null = $sbf.AppendLine("$line$eol")
+        $null = $sbf.AppendLine("*This configuration documentation is generated from Pester $loadedVersion.*$eol")
         $sectionFound = $true
         $null = $sbf.AppendJoin($eol, $generatedConfigDocs)
     } elseif ($sectionFound -and ($line -match $endComment)) {
