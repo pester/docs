@@ -94,65 +94,27 @@ If you need to mock calls to commands which are made from inside a Script Module
 
 ### Mocking a function that is called by a method in a PowerShell class
 
-In PowerShell 6, functions called by classes can be mocked as above, with no known problems.
+In PowerShell 6 and later functions called by classes can be mocked as above with no known problems.
 
 However previous versions of PowerShell, including **all** versions of Windows PowerShell up to 5.1 cache class definitions in such a way that they are never redefined, even if you remove the module and re-import, or modify the class. This breaks Pester's Mock command, as the scope where the mock must be injected cannot be found.
 
-Dave Wyatt has provided this workaround:
+Dave Wyatt has provided this workaround ([original source](https://github.com/pester/Pester/issues/797#issuecomment-314495326)):
 
 > Simply run your Pester tests in a fresh session every time; this is simple to do with Start-Job. I have this proxy function in my PowerShell profile to help with that:
 
 ```powershell
-function Invoke-PesterJob
-{
-[CmdletBinding(DefaultParameterSetName='LegacyOutputXml')]
+# Updated example based on https://github.com/pester/Pester/issues/797#issuecomment-314495326
+function Invoke-PesterJob {
+    [CmdletBinding()]
     param(
         [Parameter(Position=0)]
-        [Alias('Path','relative_path')]
-        [System.Object[]]
-        ${Script},
-
-        [Parameter(Position=1)]
-        [Alias('Name')]
-        [string[]]
-        ${TestName},
-
-        [Parameter(Position=2)]
-        [switch]
-        ${EnableExit},
-
-        [Parameter(ParameterSetName='LegacyOutputXml', Position=3)]
-        [string]
-        ${OutputXml},
-
-        [Parameter(Position=4)]
-        [Alias('Tags')]
-        [string[]]
-        ${Tag},
-
-        [string[]]
-        ${ExcludeTag},
-
-        [switch]
-        ${PassThru},
-
-        [System.Object[]]
-        ${CodeCoverage},
-
-        [switch]
-        ${Strict},
-
-        [Parameter(ParameterSetName='NewOutputSet', Mandatory=$true)]
-        [string]
-        ${OutputFile},
-
-        [Parameter(ParameterSetName='NewOutputSet', Mandatory=$true)]
-        [ValidateSet('LegacyNUnitXml','NUnitXml')]
-        [string]
-        ${OutputFormat},
-
-        [switch]
-        ${Quiet}
+        [string[]] $Path = '.',
+        [string[]] $ExcludePath = @()
+        [string[]] $TagFilter,
+        [string[]] $ExcludeTagFilter,
+        [string[]] $FullNameFilter,
+        [switch] $EnableExit,
+        [switch] $PassThru
     )
 
     $params = $PSBoundParameters
@@ -162,8 +124,6 @@ function Invoke-PesterJob
 }
 Set-Alias ipj Invoke-PesterJob
 ```
-[Source](https://github.com/pester/Pester/issues/797#issuecomment-314495326)
-
 
 ### Mocking a native application
 
