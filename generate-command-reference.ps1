@@ -110,19 +110,19 @@ Contributions are welcome in [Pester-repo](https://github.com/pester/pester).
 Push-Location $PSScriptRoot
 Write-Host (Get-Location)
 
-Write-Host "Removing existing MDX files" -ForegroundColor Magenta
-$outputFolder = Join-Path -Path $docusaurusOptions.DocsFolder -ChildPath $docusaurusOptions.Sidebar | Join-Path -ChildPath "*.*"
+Write-Host 'Removing existing MDX files' -ForegroundColor Magenta
+$outputFolder = Join-Path -Path $docusaurusOptions.DocsFolder -ChildPath $docusaurusOptions.Sidebar | Join-Path -ChildPath '*.*'
 if (Test-Path -Path $outputFolder) {
-  Remove-Item -Path $outputFolder
+    Remove-Item -Path $outputFolder
 }
 
-Write-Host "Generating new MDX files" -ForegroundColor Magenta
+Write-Host 'Generating new MDX files' -ForegroundColor Magenta
 New-DocusaurusHelp @docusaurusOptions
 
-Write-Host "Render completed successfully" -BackgroundColor DarkGreen
+Write-Host 'Render completed successfully' -BackgroundColor DarkGreen
 Pop-Location
 
 if ($ENV:GITHUB_ACTIONS) {
-  # Output Workflow information
-  Write-Host "::set-output name=pester-version::$($ModuleList.Item('Pester'))"
+    # Output Workflow information
+    "pester-version=$($ModuleList.Pester))" >> $env:GITHUB_OUTPUT
 }
