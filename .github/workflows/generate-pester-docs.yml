@@ -1,0 +1,75 @@
+name: Update Pester Docs
+
+on:
+  workflow_dispatch:
+    inputs:
+      docs_version:
+        description: 'Docs version to update'
+        required: true
+        default: 'v5'
+        type: choice
+        options:
+          - Current
+          - v5
+          - v4
+      pester_version:
+        description: 'Pester version to use for docs generation. Format: 5.6.0 or 6.0.0-alpha1'
+        required: true
+        type: string
+
+jobs:
+  generate_docs:
+    name: Docs PR
+    runs-on: ubuntu-latest
+    env:
+      PESTER: ${{ github.event.inputs.pester_version }}
+      DOCS: ${{ github.event.inputs.docs_version }}
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Validate Pester version input
+        run: |
+          echo "Validating that the provided pester_version input is a valid version-format (x.y.z or x.y.z-suffix)"
+          echo "${{ env.PESTER }}" | grep -P '^\d+.\d+.\d+(?:-\w+)?$'
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # This step will also install and import modules incl. selected Pester-version
+      - name: Update Command Reference
+        shell: pwsh
+        run: |
+          ./generate-command-reference.ps1 -PesterVersion '${{ env }}' -DocsVersion '${{ env.DOCS }}'
+
+      - name: Update PesterConfiguration docs
+        if: ${{ env.DOCS != 'v4' }}
+        shell: pwsh
+        run: |
+          ./generate-pesterconfiguration-docs.ps1 -PesterVersion '${{ env.PESTER }}' -Style Table -DocsVersion '${{ env.DOCS }}'
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@6d6857d36972b65feb161a90e484f2984215f83e # v6.0.5
+        env:
+          PR_BRANCH: "docs-update/${{ env.DOCS }}-v${{ env.PESTER }}"
+          TITLE_PREFIX: "${{ env.DOCS != 'Current' && format('({0}) ', env.DOCS) || '' }}"
+        with:
+          branch: ${{ env.PR_BRANCH }}
+          branch-suffix: short-commit-hash
+          # Set user triggering the workflow as author (default in action)
+          author: ${{ github.actor }} <${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com>
+          # Github Action as commit (explicit default)
+          committer: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
+          commit-message: "Update generated docs to ${{ env.PESTER }}"
+          add-paths: |
+            docs
+            versioned_docs
+          title: ${{ env.TITLE_PREFIX }}Update generated docs to Pester v${{ env.PESTER }}
+          body: |
+            Updates Command Reference and/or PesterConfiguration documentation.
+
+            Docs version being updated: ${{ env.DOCS }}
+            Pester version used: v${{ env.PESTER }}
+
+            *PR created using '${{ github.workflow }}' workflow*
+          draft: false
