@@ -1,4 +1,5 @@
 name: Update Pester Docs
+run-name: Update Pester ${{ github.event.inputs.docs_version }} docs to v${{ github.event.inputs.pester_version }}
 
 on:
   workflow_dispatch:
@@ -38,24 +39,36 @@ jobs:
 
       # This step will also install and import modules incl. selected Pester-version
       - name: Update Command Reference
+        id: commands
         shell: pwsh
         run: |
-          ./generate-command-reference.ps1 -PesterVersion '${{ env }}' -DocsVersion '${{ env.DOCS }}'
+          ./generate-command-reference.ps1 -PesterVersion '${{ env.PESTER }}' -DocsVersion '${{ env.DOCS }}'
 
+          # Output if any files were modified
+          $updated = $null -ne (git status -s | Select-String '/commands/')
+          "updated=$updated" >> $env:GITHUB_OUTPUT
       - name: Update PesterConfiguration docs
         if: ${{ env.DOCS != 'v4' }}
+        id: config
         shell: pwsh
         run: |
           ./generate-pesterconfiguration-docs.ps1 -PesterVersion '${{ env.PESTER }}' -Style Table -DocsVersion '${{ env.DOCS }}'
 
+          # Output if any files were modified
+          $updated = $null -ne (git status -s | Select-String '/usage/Configuration.mdx')
+          "updated=$updated" >> $env:GITHUB_OUTPUT
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@6d6857d36972b65feb161a90e484f2984215f83e # v6.0.5
+        id: create-pr
         env:
           PR_BRANCH: "docs-update/${{ env.DOCS }}-v${{ env.PESTER }}"
-          TITLE_PREFIX: "${{ env.DOCS != 'Current' && format('({0}) ', env.DOCS) || '' }}"
+          TITLE_DOCS_VERSION: "${{ env.DOCS != 'Current' && format('{0} ', env.DOCS) || '' }}"
         with:
           branch: ${{ env.PR_BRANCH }}
           branch-suffix: short-commit-hash
+          draft: false
+          # Should always be reviewed by author to fix typos or other errors
+          reviewers: ${{ github.actor }}
           # Set user triggering the workflow as author (default in action)
           author: ${{ github.actor }} <${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com>
           # Github Action as commit (explicit default)
@@ -64,12 +77,22 @@ jobs:
           add-paths: |
             docs
             versioned_docs
-          title: ${{ env.TITLE_PREFIX }}Update generated docs to Pester v${{ env.PESTER }}
+          title: Update ${{ env.TITLE_DOCS_VERSION }}docs to Pester v${{ env.PESTER }}
           body: |
-            Updates Command Reference and/or PesterConfiguration documentation.
+            Updates generated documentation using the specified Pester-version.
 
-            Docs version being updated: ${{ env.DOCS }}
-            Pester version used: v${{ env.PESTER }}
+            **Docs version:** ${{ env.DOCS }}
+            **Pester version:** ${{ env.PESTER }}
 
-            *PR created using '${{ github.workflow }}' workflow*
-          draft: false
+            | Documentation updated | Result |
+            |-----------------------|--------|
+            | Command Reference | ${{ steps.commands.outputs.updated }} |
+            | PesterConfiguration section | ${{ steps.config.outputs.updated }} |
+
+            *PR created using 'Update Pester Docs' workflow*
+
+      - name: Output PR details
+        if: ${{ steps.create-pr.outputs.pull-request-number }}
+        run: |
+          echo "### Update Pester Docs successfully completed! :rocket:" >> $GITHUB_STEP_SUMMARY
+          echo "See [pull request #${{ steps.create-pr.outputs.pull-request-number }}](${{ steps.create-pr.outputs.pull-request-url }})" >> $GITHUB_STEP_SUMMARY
