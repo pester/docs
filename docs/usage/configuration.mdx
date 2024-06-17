@@ -133,6 +133,7 @@ Tests Passed: 1, Failed: 0, Skipped: 0, Total: 1, NotRun: 0
 
 Run configuration.
 
+<div className="table-wrapper">
 | Option | Description | Type | Default |
 |--------|-------------|-----:|--------:|
 | Path | Directories to be searched for tests, paths directly to test files, or combination of both. | `string[]` | `@('.')` |
@@ -145,11 +146,13 @@ Run configuration.
 | PassThru | Return result object to the pipeline after finishing the test run. | `bool` | `$false` |
 | SkipRun | Runs the discovery phase but skips run. Use it with PassThru to get object populated with all tests. | `bool` | `$false` |
 | SkipRemainingOnFailure | Skips remaining tests after failure for selected scope, options are None, Run, Container and Block. | `string` | `'None'` |
+</div>
 
 ### Filter
 
 Filter configuration
 
+<div className="table-wrapper">
 | Option | Description | Type | Default |
 |--------|-------------|-----:|--------:|
 | Tag | Tags of Describe, Context or It to be run. | `string[]` | `@()` |
@@ -157,11 +160,13 @@ Filter configuration
 | Line | Filter by file and scriptblock start line, useful to run parsed tests programmatically to avoid problems with expanded names. Example: 'C:\tests\file1.Tests.ps1:37' | `string[]` | `@()` |
 | ExcludeLine | Exclude by file and scriptblock start line, takes precedence over Line. | `string[]` | `@()` |
 | FullName | Full name of test with -like wildcards, joined by dot. Example: '*.describe Get-Item.test1' | `string[]` | `@()` |
+</div>
 
 ### CodeCoverage
 
 CodeCoverage configuration.
 
+<div className="table-wrapper">
 | Option | Description | Type | Default |
 |--------|-------------|-----:|--------:|
 | Enabled | Enable CodeCoverage. | `bool` | `$false` |
@@ -174,11 +179,13 @@ CodeCoverage configuration.
 | CoveragePercentTarget | Target percent of code coverage that you want to achieve, default 75%. | `decimal` | `75` |
 | UseBreakpoints | When false, use Profiler based tracer to do CodeCoverage instead of using breakpoints. | `bool` | `$false` |
 | SingleHitBreakpoints | Remove breakpoint when it is hit. This increases performance of breakpoint based CodeCoverage. | `bool` | `$true` |
+</div>
 
 ### TestResult
 
 TestResult configuration.
 
+<div className="table-wrapper">
 | Option | Description | Type | Default |
 |--------|-------------|-----:|--------:|
 | Enabled | Enable TestResult. | `bool` | `$false` |
@@ -186,19 +193,23 @@ TestResult configuration.
 | OutputPath | Path relative to the current directory where test result report is saved. | `string` | `'testResults.xml'` |
 | OutputEncoding | Encoding of the output file. | `string` | `'UTF8'` |
 | TestSuiteName | Set the name assigned to the root 'test-suite' element. | `string` | `'Pester'` |
+</div>
 
 ### Should
 
 Should configuration.
 
+<div className="table-wrapper">
 | Option | Description | Type | Default |
 |--------|-------------|-----:|--------:|
 | ErrorAction | Controls if Should throws on error. Use 'Stop' to throw on error, or 'Continue' to fail at the end of the test. | `string` | `'Stop'` |
+</div>
 
 ### Debug
 
 Debug configuration for Pester. ⚠ Use at your own risk!
 
+<div className="table-wrapper">
 | Option | Description | Type | Default |
 |--------|-------------|-----:|--------:|
 | ShowFullErrors | Show full errors including Pester internal stack. This property is deprecated, and if set to true it will override Output.StackTraceVerbosity to 'Full'. | `bool` | `$false` |
@@ -206,11 +217,13 @@ Debug configuration for Pester. ⚠ Use at your own risk!
 | WriteDebugMessagesFrom | Write Debug messages from a given source, WriteDebugMessages must be set to true for this to work. You can use like wildcards to get messages from multiple sources, as well as * to get everything. | `string[]` | `@('Discovery', 'Skip', 'Mock', 'CodeCoverage')` |
 | ShowNavigationMarkers | Write paths after every block and test, for easy navigation in VSCode. | `bool` | `$false` |
 | ReturnRawResultObject | Returns unfiltered result object, this is for development only. Do not rely on this object for additional properties, non-public properties will be renamed without previous notice. | `bool` | `$false` |
+</div>
 
 ### Output
 
 Output configuration
 
+<div className="table-wrapper">
 | Option | Description | Type | Default |
 |--------|-------------|-----:|--------:|
 | Verbosity | The verbosity of output, options are None, Normal, Detailed and Diagnostic. | `string` | `'Normal'` |
@@ -218,20 +231,25 @@ Output configuration
 | CIFormat | The CI format of error output in build logs, options are None, Auto, AzureDevops and GithubActions. | `string` | `'Auto'` |
 | CILogLevel | The CI log level in build logs, options are Error and Warning. | `string` | `'Error'` |
 | RenderMode | The mode used to render console output, options are Auto, Ansi, ConsoleColor and Plaintext. | `string` | `'Auto'` |
+</div>
 
 ### TestDrive
 
 TestDrive configuration.
 
+<div className="table-wrapper">
 | Option | Description | Type | Default |
 |--------|-------------|-----:|--------:|
 | Enabled | Enable TestDrive. | `bool` | `$true` |
+</div>
 
 ### TestRegistry
 
 TestRegistry configuration.
 
+<div className="table-wrapper">
 | Option | Description | Type | Default |
 |--------|-------------|-----:|--------:|
 | Enabled | Enable TestRegistry. | `bool` | `$true` |
+</div>
 <!--GENERATED_PESTER_CONFIGURATION_DOCS_END-->

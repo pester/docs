@@ -66,9 +66,11 @@ function generateSectionsMarkdownAsTable {
 
 $sectionDescription
 
+<div className="table-wrapper">
 | Option | Description | Type | Default |
 |--------|-------------|-----:|--------:|
 $($options -join $eol)
+</div>
 
 "@
     }
