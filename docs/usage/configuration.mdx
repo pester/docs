@@ -127,7 +127,7 @@ Tests Passed: 1, Failed: 0, Skipped: 0, Total: 1, NotRun: 0
 
 <!--GENERATED_PESTER_CONFIGURATION_DOCS_START-->
 
-*This configuration documentation is generated from Pester 6.0.0-alpha1.*
+*This section was generated using Pester 6.0.0-alpha1.*
 
 ### Run
 
@@ -136,16 +136,16 @@ Run configuration.
 <div className="table-wrapper">
 | Option | Description | Type | Default |
 |--------|-------------|-----:|--------:|
-| Path | Directories to be searched for tests, paths directly to test files, or combination of both. | `string[]` | `@('.')` |
-| ExcludePath | Directories or files to be excluded from the run. | `string[]` | `@()` |
-| ScriptBlock | ScriptBlocks containing tests to be executed. | `scriptblock[]` | `@()` |
-| Container | ContainerInfo objects containing tests to be executed. | `ContainerInfo[]` | `@()` |
-| TestExtension | Filter used to identify test files. | `string` | `'.Tests.ps1'` |
-| Exit | Exit with non-zero exit code when the test run fails. Exit code is always set to `$LASTEXITCODE` even when this option is `$false`. When used together with Throw, throwing an exception is preferred. | `bool` | `$false` |
-| Throw | Throw an exception when test run fails. When used together with Exit, throwing an exception is preferred. | `bool` | `$false` |
-| PassThru | Return result object to the pipeline after finishing the test run. | `bool` | `$false` |
-| SkipRun | Runs the discovery phase but skips run. Use it with PassThru to get object populated with all tests. | `bool` | `$false` |
-| SkipRemainingOnFailure | Skips remaining tests after failure for selected scope, options are None, Run, Container and Block. | `string` | `'None'` |
+| Run.Path | Directories to be searched for tests, paths directly to test files, or combination of both. | `string[]` | `@('.')` |
+| Run.ExcludePath | Directories or files to be excluded from the run. | `string[]` | `@()` |
+| Run.ScriptBlock | ScriptBlocks containing tests to be executed. | `scriptblock[]` | `@()` |
+| Run.Container | ContainerInfo objects containing tests to be executed. | `ContainerInfo[]` | `@()` |
+| Run.TestExtension | Filter used to identify test files. | `string` | `'.Tests.ps1'` |
+| Run.Exit | Exit with non-zero exit code when the test run fails. Exit code is always set to `$LASTEXITCODE` even when this option is `$false`. When used together with Throw, throwing an exception is preferred. | `bool` | `$false` |
+| Run.Throw | Throw an exception when test run fails. When used together with Exit, throwing an exception is preferred. | `bool` | `$false` |
+| Run.PassThru | Return result object to the pipeline after finishing the test run. | `bool` | `$false` |
+| Run.SkipRun | Runs the discovery phase but skips run. Use it with PassThru to get object populated with all tests. | `bool` | `$false` |
+| Run.SkipRemainingOnFailure | Skips remaining tests after failure for selected scope, options are None, Run, Container and Block. | `string` | `'None'` |
 </div>
 
 ### Filter
@@ -155,11 +155,11 @@ Filter configuration
 <div className="table-wrapper">
 | Option | Description | Type | Default |
 |--------|-------------|-----:|--------:|
-| Tag | Tags of Describe, Context or It to be run. | `string[]` | `@()` |
-| ExcludeTag | Tags of Describe, Context or It to be excluded from the run. | `string[]` | `@()` |
-| Line | Filter by file and scriptblock start line, useful to run parsed tests programmatically to avoid problems with expanded names. Example: 'C:\tests\file1.Tests.ps1:37' | `string[]` | `@()` |
-| ExcludeLine | Exclude by file and scriptblock start line, takes precedence over Line. | `string[]` | `@()` |
-| FullName | Full name of test with -like wildcards, joined by dot. Example: '*.describe Get-Item.test1' | `string[]` | `@()` |
+| Filter.Tag | Tags of Describe, Context or It to be run. | `string[]` | `@()` |
+| Filter.ExcludeTag | Tags of Describe, Context or It to be excluded from the run. | `string[]` | `@()` |
+| Filter.Line | Filter by file and scriptblock start line, useful to run parsed tests programmatically to avoid problems with expanded names. Example: 'C:\tests\file1.Tests.ps1:37' | `string[]` | `@()` |
+| Filter.ExcludeLine | Exclude by file and scriptblock start line, takes precedence over Line. | `string[]` | `@()` |
+| Filter.FullName | Full name of test with -like wildcards, joined by dot. Example: '*.describe Get-Item.test1' | `string[]` | `@()` |
 </div>
 
 ### CodeCoverage
@@ -169,16 +169,16 @@ CodeCoverage configuration.
 <div className="table-wrapper">
 | Option | Description | Type | Default |
 |--------|-------------|-----:|--------:|
-| Enabled | Enable CodeCoverage. | `bool` | `$false` |
-| OutputFormat | Format to use for code coverage report. Possible values: JaCoCo, CoverageGutters | `string` | `'JaCoCo'` |
-| OutputPath | Path relative to the current directory where code coverage report is saved. | `string` | `'coverage.xml'` |
-| OutputEncoding | Encoding of the output file. | `string` | `'UTF8'` |
-| Path | Directories or files to be used for code coverage, by default the Path(s) from general settings are used, unless overridden here. | `string[]` | `@()` |
-| ExcludeTests | Exclude tests from code coverage. This uses the TestFilter from general configuration. | `bool` | `$true` |
-| RecursePaths | Will recurse through directories in the Path option. | `bool` | `$true` |
-| CoveragePercentTarget | Target percent of code coverage that you want to achieve, default 75%. | `decimal` | `75` |
-| UseBreakpoints | When false, use Profiler based tracer to do CodeCoverage instead of using breakpoints. | `bool` | `$false` |
-| SingleHitBreakpoints | Remove breakpoint when it is hit. This increases performance of breakpoint based CodeCoverage. | `bool` | `$true` |
+| CodeCoverage.Enabled | Enable CodeCoverage. | `bool` | `$false` |
+| CodeCoverage.OutputFormat | Format to use for code coverage report. Possible values: JaCoCo, CoverageGutters | `string` | `'JaCoCo'` |
+| CodeCoverage.OutputPath | Path relative to the current directory where code coverage report is saved. | `string` | `'coverage.xml'` |
+| CodeCoverage.OutputEncoding | Encoding of the output file. | `string` | `'UTF8'` |
+| CodeCoverage.Path | Directories or files to be used for code coverage, by default the Path(s) from general settings are used, unless overridden here. | `string[]` | `@()` |
+| CodeCoverage.ExcludeTests | Exclude tests from code coverage. This uses the TestFilter from general configuration. | `bool` | `$true` |
+| CodeCoverage.RecursePaths | Will recurse through directories in the Path option. | `bool` | `$true` |
+| CodeCoverage.CoveragePercentTarget | Target percent of code coverage that you want to achieve, default 75%. | `decimal` | `75` |
+| CodeCoverage.UseBreakpoints | When false, use Profiler based tracer to do CodeCoverage instead of using breakpoints. | `bool` | `$false` |
+| CodeCoverage.SingleHitBreakpoints | Remove breakpoint when it is hit. This increases performance of breakpoint based CodeCoverage. | `bool` | `$true` |
 </div>
 
 ### TestResult
@@ -188,11 +188,11 @@ TestResult configuration.
 <div className="table-wrapper">
 | Option | Description | Type | Default |
 |--------|-------------|-----:|--------:|
-| Enabled | Enable TestResult. | `bool` | `$false` |
-| OutputFormat | Format to use for test result report. Possible values: NUnitXml, NUnit2.5, NUnit3 or JUnitXml | `string` | `'NUnitXml'` |
-| OutputPath | Path relative to the current directory where test result report is saved. | `string` | `'testResults.xml'` |
-| OutputEncoding | Encoding of the output file. | `string` | `'UTF8'` |
-| TestSuiteName | Set the name assigned to the root 'test-suite' element. | `string` | `'Pester'` |
+| TestResult.Enabled | Enable TestResult. | `bool` | `$false` |
+| TestResult.OutputFormat | Format to use for test result report. Possible values: NUnitXml, NUnit2.5, NUnit3 or JUnitXml | `string` | `'NUnitXml'` |
+| TestResult.OutputPath | Path relative to the current directory where test result report is saved. | `string` | `'testResults.xml'` |
+| TestResult.OutputEncoding | Encoding of the output file. | `string` | `'UTF8'` |
+| TestResult.TestSuiteName | Set the name assigned to the root 'test-suite' element. | `string` | `'Pester'` |
 </div>
 
 ### Should
@@ -202,7 +202,7 @@ Should configuration.
 <div className="table-wrapper">
 | Option | Description | Type | Default |
 |--------|-------------|-----:|--------:|
-| ErrorAction | Controls if Should throws on error. Use 'Stop' to throw on error, or 'Continue' to fail at the end of the test. | `string` | `'Stop'` |
+| Should.ErrorAction | Controls if Should throws on error. Use 'Stop' to throw on error, or 'Continue' to fail at the end of the test. | `string` | `'Stop'` |
 </div>
 
 ### Debug
@@ -212,11 +212,11 @@ Debug configuration for Pester. ⚠ Use at your own risk!
 <div className="table-wrapper">
 | Option | Description | Type | Default |
 |--------|-------------|-----:|--------:|
-| ShowFullErrors | Show full errors including Pester internal stack. This property is deprecated, and if set to true it will override Output.StackTraceVerbosity to 'Full'. | `bool` | `$false` |
-| WriteDebugMessages | Write Debug messages to screen. | `bool` | `$false` |
-| WriteDebugMessagesFrom | Write Debug messages from a given source, WriteDebugMessages must be set to true for this to work. You can use like wildcards to get messages from multiple sources, as well as * to get everything. | `string[]` | `@('Discovery', 'Skip', 'Mock', 'CodeCoverage')` |
-| ShowNavigationMarkers | Write paths after every block and test, for easy navigation in VSCode. | `bool` | `$false` |
-| ReturnRawResultObject | Returns unfiltered result object, this is for development only. Do not rely on this object for additional properties, non-public properties will be renamed without previous notice. | `bool` | `$false` |
+| Debug.ShowFullErrors | Show full errors including Pester internal stack. This property is deprecated, and if set to true it will override Output.StackTraceVerbosity to 'Full'. | `bool` | `$false` |
+| Debug.WriteDebugMessages | Write Debug messages to screen. | `bool` | `$false` |
+| Debug.WriteDebugMessagesFrom | Write Debug messages from a given source, WriteDebugMessages must be set to true for this to work. You can use like wildcards to get messages from multiple sources, as well as * to get everything. | `string[]` | `@('Discovery', 'Skip', 'Mock', 'CodeCoverage')` |
+| Debug.ShowNavigationMarkers | Write paths after every block and test, for easy navigation in VSCode. | `bool` | `$false` |
+| Debug.ReturnRawResultObject | Returns unfiltered result object, this is for development only. Do not rely on this object for additional properties, non-public properties will be renamed without previous notice. | `bool` | `$false` |
 </div>
 
 ### Output
@@ -226,11 +226,11 @@ Output configuration
 <div className="table-wrapper">
 | Option | Description | Type | Default |
 |--------|-------------|-----:|--------:|
-| Verbosity | The verbosity of output, options are None, Normal, Detailed and Diagnostic. | `string` | `'Normal'` |
-| StackTraceVerbosity | The verbosity of stacktrace output, options are None, FirstLine, Filtered and Full. | `string` | `'Filtered'` |
-| CIFormat | The CI format of error output in build logs, options are None, Auto, AzureDevops and GithubActions. | `string` | `'Auto'` |
-| CILogLevel | The CI log level in build logs, options are Error and Warning. | `string` | `'Error'` |
-| RenderMode | The mode used to render console output, options are Auto, Ansi, ConsoleColor and Plaintext. | `string` | `'Auto'` |
+| Output.Verbosity | The verbosity of output, options are None, Normal, Detailed and Diagnostic. | `string` | `'Normal'` |
+| Output.StackTraceVerbosity | The verbosity of stacktrace output, options are None, FirstLine, Filtered and Full. | `string` | `'Filtered'` |
+| Output.CIFormat | The CI format of error output in build logs, options are None, Auto, AzureDevops and GithubActions. | `string` | `'Auto'` |
+| Output.CILogLevel | The CI log level in build logs, options are Error and Warning. | `string` | `'Error'` |
+| Output.RenderMode | The mode used to render console output, options are Auto, Ansi, ConsoleColor and Plaintext. | `string` | `'Auto'` |
 </div>
 
 ### TestDrive
@@ -240,7 +240,7 @@ TestDrive configuration.
 <div className="table-wrapper">
 | Option | Description | Type | Default |
 |--------|-------------|-----:|--------:|
-| Enabled | Enable TestDrive. | `bool` | `$true` |
+| TestDrive.Enabled | Enable TestDrive. | `bool` | `$true` |
 </div>
 
 ### TestRegistry
@@ -250,6 +250,6 @@ TestRegistry configuration.
 <div className="table-wrapper">
 | Option | Description | Type | Default |
 |--------|-------------|-----:|--------:|
-| Enabled | Enable TestRegistry. | `bool` | `$true` |
+| TestRegistry.Enabled | Enable TestRegistry. | `bool` | `$true` |
 </div>
 <!--GENERATED_PESTER_CONFIGURATION_DOCS_END-->

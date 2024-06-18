@@ -58,7 +58,7 @@ function generateSectionsMarkdownAsTable {
             $option = $configOption.Value
             $default = Format-NicelyMini $option.Default
             $type = $option.Default.GetType() -as [string] -replace '^Pester\.'
-            "| $optionName | $($option.Description) | ``$type`` | ``$default`` |"
+            "| $sectionName.$optionName | $($option.Description) | ``$type`` | ``$default`` |"
         }
 
         @"
@@ -150,7 +150,7 @@ $sectionFound = $false
 foreach ($line in $pageContent) {
     if (-not $sectionFound -and $line -match $startComment) {
         $null = $sbf.AppendLine("$line$eol")
-        $null = $sbf.AppendLine("*This configuration documentation is generated from Pester $loadedVersion.*$eol")
+        $null = $sbf.AppendLine("*This section was generated using Pester $loadedVersion.*$eol")
         $sectionFound = $true
         $null = $sbf.AppendJoin($eol, $generatedConfigDocs)
     } elseif ($sectionFound -and ($line -match $endComment)) {
