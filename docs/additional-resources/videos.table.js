@@ -33,6 +33,13 @@ export const videos = [
     event: "PowerShell Conference EU 2023",
   },
   {
+    title: "The art of mocking",
+    author: "Bartosz Bielawski",
+    date: "2022-06-21",
+    url: "https://www.youtube.com/watch?v=_w1mKwZRp_Q",
+    event: "PowerShell Conference EU 2022",
+  },
+  {
     title: "Pester 5 vs Pester 4",
     author: "Jakub Jareš",
     date: "2022-06-20",
