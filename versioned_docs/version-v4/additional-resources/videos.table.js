@@ -19,13 +19,6 @@ export const videos = [
     event: "PowerShell UG Singapore",
   },
   {
-    title: "Testing PowerShell with Pester",
-    author: "Robert Cain",
-    date: "2016-06-18",
-    url: "https://www.pluralsight.com/courses/powershell-testing-pester",
-    event: "",
-  },
-  {
     title: "Pester the Tester PowerShell Bugs Beware",
     author: "Robert Cain",
     date: "2016-06-14",
