@@ -82,7 +82,7 @@ export const videos = [
     event: "PowerShell Conference EU 2019",
   },
   {
-    title: "Pester internals and concepts",
+    title: "Pester internals and concepts (v5)",
     author: "Jakub Jareš",
     date: "2019-06-04",
     url: "https://www.youtube.com/watch?v=6d0K2i7pgQs",
