@@ -19,7 +19,7 @@ ReturnRawResultObject  : Returns unfiltered result object, this is for developme
                          default: False)
 ```
 
-The configuration object can be constructed either via the Default static property or by casting a hashtable to it. You can also cast a hashtable to any of its sections. Here are three different ways to the same goal:
+The configuration object can be constructed either using the `New-PesterConfiguration` command or by casting a hashtable to the `PesterConfiguration` type. Here are three different ways to the same goal:
 
 ```powershell
 # import module before creating the object
