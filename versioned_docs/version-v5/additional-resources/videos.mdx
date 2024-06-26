@@ -1,0 +1,20 @@
+---
+id: videos
+title: Videos
+sidebar_label: Videos
+custom_edit_url: null
+description: List of videos about using Pester and PowerShell testing provided by the community
+---
+
+import { PesterDataTable, PesterDataButton } from "@site/src/components/PesterDataTable";
+import { columns, videos } from "./videos.table";
+
+<PesterDataTable
+  columns={ columns }
+  data={ videos }
+/>
+
+<PesterDataButton
+  text="Suggest New Video"
+  editUrl="https://github.com/pester/docs/edit/main/docs/additional-resources/videos.table.js"
+/>

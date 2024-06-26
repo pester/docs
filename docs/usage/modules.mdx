@@ -237,7 +237,7 @@ Describe 'Executing test code inside a dynamic module' {
 
 ### Manifest Modules
 
-Pester 5.4 and later fully supports Manifest modules, so both `Mock` and `InModuleScope` can be used without any workarounds. For earlier versions, see workaround below.
+Pester supports Manifest modules, so both `Mock` and `InModuleScope` can be used without any workarounds. For earlier versions, see workaround below.
 
 Be aware that only code in nested scripts (`*.ps1`) execute directly from the manifest module. Nested script modules (`*.psm1`) or binary modules (`*.dll`) are executed in their own module state. In the example below, mocking calls made inside `Get-HelloWorld` would require `-ModuleName MyNestedModule` because it's was defined in `MyNestedModule.psm1`.
 
@@ -257,34 +257,6 @@ Script     0.0                   MyNestedModule                      Get-HelloWo
 Get-HelloWorld
 Hello World from module: MyNestedModule
 ```
-
-:::tip Workaround for older versions of Pester
-Prior to Pester 5.4, only exported members from a manifest module could be tested with Pester and the `Mock` and `InModuleScope` features were unavailable. However, by creating a empty script module with `*.psm1` extension and adding it into the `RootModule` (or `ModuleToProcess`) attribute of the manifest `*.psd1` file, the module is converted to a Script module.
-
-For example, save the manifest below to create a PowerShell **Manifest** module.
-
-```powershell title="MyModule.psd1"
-@{
-    ModuleVersion     = '1.0'
-    NestedModules     = @( "Invoke-PrivateManifestMethod.ps1", "Invoke-PublicManifestMethod.ps1" )
-    FunctionsToExport = @( "Invoke-PublicManifestMethod" )
-}
-```
-
-To convert it into a **Script** module, create a new blank file called `MyModule.psm1` and modify the manifest created above as follows:
-
-```powershell title="MyModule.psd1"
-@{
-    ModuleVersion     = '1.0'
-    # highlight-next-line
-    RootModule        = "MyModule.psm1"
-    NestedModules     = @( "Invoke-PrivateManifestMethod.ps1", "Invoke-PublicManifestMethod.ps1" )
-    FunctionsToExport = @( "Invoke-PublicManifestMethod" )
-}
-```
-
-PowerShell will then load the module as a Script module and Pester's `Mock` and `InModuleScope` features will work as expected.
-:::
 
 ### Binary Modules
 

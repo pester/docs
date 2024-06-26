@@ -1,0 +1,81 @@
+---
+id: testdrive
+title: Isolating File Operations using the TestDrive
+sidebar_label: TestDrive
+description: TestDrive is a PowerShell PSDrive where you can create temporary files used in your tests that are automatically cleaned up after your tests are finished
+---
+
+TestDrive is a PowerShell PSDrive for file activity limited to the scope of a block ([Describe](../commands/Describe) or [Context](../commands/Context)).
+
+A test may need to work with file operations and validate certain types of file activities. It is usually desirable not to perform file activity tests that will produce side effects outside of an individual test. Pester creates a PSDrive inside the user's temporary drive that is accessible via a named PSDrive `TestDrive:`. Pester will remove this drive after the tests completes. You may use this drive to isolate the file operations of your test to a temporary store.
+
+## Scoping
+
+Basic scoping rules are implemented for the TestDrive:
+
+1. A clean TestDrive is created per container (test-file or scriptblock) on entry to the first top-level block (Describe or Context) in that container.
+2. All files and folders created by your setups and tests are available during the lifetime of that block, including inner blocks.
+3. When exiting a block, files and folders created during it's lifetime will be removed. Modifications to items created in parent blocks are not reversed, see caution below.
+4. When the whole container is finished, the TestDrive and all files and folders inside it is deleted.
+
+:::warning Modifications to existing items are not reversed
+Be aware that the TestDrive content is tracked by paths. When entering a block, all paths which already exists will be excluded during cleanup when exiting the block.
+In practice this means that if you create a file in the Describe block and then change its content inside the Context block, the modifications or deletions are preserved even after you left the Context block.
+:::
+
+:::note Using TestDrive in parallel runs
+Internally the TestDrive creates a randomly named folder placed in $env:Temp and links it to the TestDrive PSDrive.
+Making the folder names random enables you to run multiple instances of Pester in parallel, as long as they are running as separate processes. That means running in different PowerShell.exe sessions or running using PowerShell jobs.
+:::
+
+## Example
+
+```powershell
+BeforeAll {
+    function Add-Footer($path, $footer) {
+        Add-Content $path -Value $footer
+    }
+}
+
+Describe "Add-Footer" {
+    BeforeAll {
+        $testPath = "TestDrive:\test.txt"
+        Set-Content $testPath -value "my test text."
+        Add-Footer $testPath "-Footer"
+        $result = Get-Content $testPath
+    }
+
+    It "adds a footer" {
+        (-join $result) | Should -Be "my test text.-Footer"
+    }
+}
+```
+
+## Compare with Literal Path
+
+Use the $TestDrive variable to compare regular paths with TestDrive paths. The following
+two paths will refer to the same file on disk, but the first one will contain the full file
+system path to the root of the TestDrive PSDrive, rather than a PowerShell path starting with
+'TestDrive:\'.
+
+```powershell
+#eg. C:\Users\nohwnd\AppData\Local\Temp\264f1c74-464f-4387-b908-79e5eecba982\somefile.txt
+$pathOne = Join-Path $TestDrive 'somefile.txt'
+
+$pathTwo = 'TestDrive:\somefile.txt'
+```
+
+To get the full path, you can use this snippet:
+
+```powershell
+function GetFullPath {
+    Param(
+        [string] $Path
+    )
+    return $Path.Replace('TestDrive:', (Get-PSDrive TestDrive).Root)
+}
+```
+
+## Working with .NET Objects
+
+When working directly with .NET objects, it's not possible to use the convenient `TestDrive:\` PSDrive. Instead you need to use the `$TestDrive` variable which holds the actual path in a format that .NET understands. For example instead of using `TestDrive:\somefile.txt` use `$TestDrive\somefile.txt` instead.

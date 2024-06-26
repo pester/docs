@@ -1,0 +1,119 @@
+---
+id: BeforeAll
+title: BeforeAll
+description: Help page for the PowerShell Pester "BeforeAll" command
+keywords:
+  - PowerShell
+  - Pester
+  - Help
+  - Documentation
+hide_title: false
+hide_table_of_contents: false
+custom_edit_url: null
+---
+
+:::info This page was generated
+Contributions are welcome in [Pester-repo](https://github.com/pester/pester).
+:::
+
+## SYNOPSIS
+
+Defines a series of steps to perform at the beginning of the current container,
+Context or Describe block.
+
+## SYNTAX
+
+```powershell
+BeforeAll [-Scriptblock] <ScriptBlock> [<CommonParameters>]
+```
+
+## DESCRIPTION
+
+BeforeAll is used to share setup among all the tests in a container, Describe
+or Context including all child blocks and tests.
+BeforeAll runs during Run phase
+and runs only once in the current level.
+
+The typical usage is to setup the whole test script, most commonly to
+import the tested function, by dot-sourcing the script file that contains it.
+
+BeforeAll and AfterAll are unique in that they apply to the entire container,
+Context or Describe block regardless of the order of the statements compared to
+other Context or Describe blocks at the same level.
+
+## EXAMPLES
+
+### EXAMPLE 1
+
+```powershell
+BeforeAll {
+    . $PSCommandPath.Replace('.Tests.ps1','.ps1')
+}
+
+Describe "API validation" {
+    # ...
+}
+```
+
+This example uses dot-sourcing in BeforeAll to make functions in the script-file
+available for the tests.
+
+### EXAMPLE 2
+
+```powershell
+Describe "API validation" {
+    BeforeAll {
+        # this calls REST API and takes roughly 1 second
+        $response = Get-Pokemon -Name Pikachu
+    }
+
+    It "response has Name = 'Pikachu'" {
+        $response.Name | Should -Be 'Pikachu'
+    }
+
+    It "response has Type = 'electric'" {
+        $response.Type | Should -Be 'electric'
+    }
+}
+```
+
+This example uses BeforeAll to perform an expensive operation only once, before validating
+the results in separate tests.
+
+## PARAMETERS
+
+### -Scriptblock
+
+A scriptblock with steps to be executed during setup.
+
+```yaml
+Type: ScriptBlock
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 2
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### CommonParameters
+
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+## INPUTS
+
+## OUTPUTS
+
+## NOTES
+
+## RELATED LINKS
+
+[https://pester.dev/docs/commands/BeforeAll](https://pester.dev/docs/commands/BeforeAll)
+
+[https://pester.dev/docs/usage/setup-and-teardown](https://pester.dev/docs/usage/setup-and-teardown)
+
+## VERSION
+
+*This page was generated using comment-based help in [Pester 5.6.0](https://github.com/pester/pester).*

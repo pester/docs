@@ -1,0 +1,43 @@
+---
+id: v5-to-v6
+title: Migrating from Pester v5 to v6
+sidebar_label: Pester v5 to v6
+description: See this guide for how to update your tests to be compatible with Pester v6.
+---
+
+Pester v6 builds upon the new runtime introduced in v5 and behaves mostly the same which ensures backwards-compatibility. This guide will highlight any necessary steps to update your code and environment to run Pester v6.
+
+## Breaking Changes
+
+### Removed support for PowerShell 3, 4, 5.0, 6, 7.0 and 7.1
+
+To be able to support new functionalit and modernize the codebase, Pester 6.0.0 dropped support for unsupported versions of PowerShell.
+It currently requires Windows PowerShell 5.1 or PowerShell 7.2 and later, see [Installation](../introduction/installation#compatibility).
+
+Make sure your computer and/or CI-systems are updated to run a supported version of PowerShell.
+
+### Removed `Assert-MockCalled` and `Assert-VerifiableMock`
+
+Both functions were deprecated and replaced in Pester v5 and has been fully removed in Pester v6. Replace:
+- `Assert-MockCalled` with [Should -Invoke](../usage/mocking)
+- `Assert-VerifiableMock` with [Should -InvokeVerifiable](../usage/mocking)
+
+### Removed `Set-ItResult -Pending`
+
+The Pending result was never fully implemented in v5 and has been removed in v6.
+
+Replace any calls to `Set-ItResult -Pending` with `Set-ItResult -Inconclusive/-Skip` or mark the test using `It .. -Skip`.
+
+## Changed Defaults
+
+### Code Coverage defaults to the newer Profiler-based tracer
+
+When using Code Coverage it will now run using the newer and faster Profiler-based tracer instead of using breakpoints.
+The option `CodeCoverage.UseBreakpoints` is no longer experimental mode and the new default is `$false`.
+
+To switch back to the older breakpoints-mode, set `CodeCoverage.UseBreakpoints` to `$true`.
+
+:::warning Guide is incomplete
+Like the v6 preview docs in general this guide is incomplete and will be updated as we release new builds.
+To keep up with the latest development, see the release notes for 6.0.0 pre-release builds at https://github.com/pester/Pester/releases
+:::

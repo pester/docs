@@ -54,6 +54,7 @@ module.exports = {
       "assertions/custom-assertions",
     ],
     "Migration Guides": [
+      "migrations/v5-to-v6",
       "migrations/v4-to-v5",
       "migrations/breaking-changes-in-v5",
       "migrations/v3-to-v4",
