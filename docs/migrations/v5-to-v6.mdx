@@ -28,6 +28,13 @@ The Pending result was never fully implemented in v5 and has been removed in v6.
 
 Replace any calls to `Set-ItResult -Pending` with `Set-ItResult -Inconclusive/-Skip` or mark the test using `It .. -Skip`.
 
+### Discovery throws on empty `-ForEach` values
+
+[Data-driven tests](../usage/data-driven-tests) will throw when provided `$null` or an empty array to `-ForEach/TestCases`. This makes it easier to detect common errors like referencing a variable that is not defined in `BeforeDiscovery` or provided as external data. Previously these tests and blocks would be silently ignored.
+
+To allow empty data in specific blocks or tests, use the new `-AllowNullOrEmptyForEach` switch in `Describe/Context/It`.
+To disable the new behavior globally, set the configuration option `Run.FailOnNullOrEmptyForEach` to `$false`.
+
 ## Changed Defaults
 
 ### Code Coverage defaults to the newer Profiler-based tracer
