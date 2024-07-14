@@ -149,8 +149,6 @@ Describe "Get-Emoji <name>" -ForEach @(
 }
 ```
 
-
-
 ## Using `-ForEach` & `-TestCases` with an array
 
 `-ForEach` is most powerful when used with an array of hashtables, but it can take any array. In that case it will define `$_` variable, representing the current item. This approach can be used on `Describe`, `Context` and `It`:
@@ -179,8 +177,13 @@ Describe "Get-FruitBasket" {
 }
 ```
 
-:::tip
+:::tip Array of hashtables
 `-ForEach` defines the `$_` variable even when used with an array of hashtables. In that case `$_` will be set to the current hashtable.
+:::
+
+:::warning Empty or null data
+Pester v6 will throw an exception when `-ForEach` is passed `$null` or an empty array to avoid silently ignoring the test.
+To allow tests with missing/no data, use the `-AllowNullOrEmptyForEach` switch in `Describe/Context/It` or allow globally by setting the [configuration option](./configuration) `Run.FailOnNullOrEmptyForEach` to `$false`.
 :::
 
 ## Using `<>` templates
