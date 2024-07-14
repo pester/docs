@@ -44,7 +44,7 @@ Pester v4 users might be inclined not to use the `BeforeAll` block or to use `$M
 ## Migrating from Pester v4
 ### Put setup in BeforeAll
 
-In Pester v5 the setup code should be put into a `BeforeAll` block, and `$MyInvocation.MyCommand.Path` should *NOT* be used:
+In Pester v5 and later the setup code should be put into a `BeforeAll` block, and `$MyInvocation.MyCommand.Path` should *NOT* be used:
 
 ```powershell
 # BEFORE (Pester v4):
@@ -61,7 +61,7 @@ Describe "Get-Cactus" {
 ```
 
 ```powershell
-# AFTER (Pester v5):
+# AFTER (Pester v5+):
 
 BeforeAll {
     # DON'T use $MyInvocation.MyCommand.Path

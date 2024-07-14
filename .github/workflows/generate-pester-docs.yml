@@ -1,0 +1,98 @@
+name: Update Pester Docs
+run-name: Update Pester ${{ github.event.inputs.docs_version }} docs to v${{ github.event.inputs.pester_version }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      docs_version:
+        description: 'Docs version to update'
+        required: true
+        default: 'v5'
+        type: choice
+        options:
+          - Current
+          - v5
+          - v4
+      pester_version:
+        description: 'Pester version to use for docs generation. Format: 5.6.0 or 6.0.0-alpha1'
+        required: true
+        type: string
+
+jobs:
+  generate_docs:
+    name: Docs PR
+    runs-on: ubuntu-latest
+    env:
+      PESTER: ${{ github.event.inputs.pester_version }}
+      DOCS: ${{ github.event.inputs.docs_version }}
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Validate Pester version input
+        run: |
+          echo "Validating that the provided pester_version input is a valid version-format (x.y.z or x.y.z-suffix)"
+          echo "${{ env.PESTER }}" | grep -P '^\d+.\d+.\d+(?:-\w+)?$'
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # This step will also install and import modules incl. selected Pester-version
+      - name: Update Command Reference
+        id: commands
+        shell: pwsh
+        run: |
+          ./generate-command-reference.ps1 -PesterVersion '${{ env.PESTER }}' -DocsVersion '${{ env.DOCS }}'
+
+          # Output if any files were modified
+          $updated = $null -ne (git status -s | Select-String '/commands/')
+          "updated=$updated" >> $env:GITHUB_OUTPUT
+      - name: Update PesterConfiguration docs
+        if: ${{ env.DOCS != 'v4' }}
+        id: config
+        shell: pwsh
+        run: |
+          ./generate-pesterconfiguration-docs.ps1 -PesterVersion '${{ env.PESTER }}' -Style Table -DocsVersion '${{ env.DOCS }}'
+
+          # Output if any files were modified
+          $updated = $null -ne (git status -s | Select-String '/usage/Configuration.mdx')
+          "updated=$updated" >> $env:GITHUB_OUTPUT
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@6d6857d36972b65feb161a90e484f2984215f83e # v6.0.5
+        id: create-pr
+        env:
+          PR_BRANCH: "docs-update/${{ env.DOCS }}-v${{ env.PESTER }}"
+          TITLE_DOCS_VERSION: "${{ env.DOCS != 'Current' && format('{0} ', env.DOCS) || '' }}"
+        with:
+          branch: ${{ env.PR_BRANCH }}
+          branch-suffix: short-commit-hash
+          draft: false
+          # Should always be reviewed by author to fix typos or other errors
+          reviewers: ${{ github.actor }}
+          # Set user triggering the workflow as author (default in action)
+          author: ${{ github.actor }} <${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com>
+          # Github Action as commit (explicit default)
+          committer: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
+          commit-message: "Update generated docs to ${{ env.PESTER }}"
+          add-paths: |
+            docs
+            versioned_docs
+          title: Update ${{ env.TITLE_DOCS_VERSION }}docs to Pester v${{ env.PESTER }}
+          body: |
+            Updates generated documentation using the specified Pester-version.
+
+            **Docs version:** ${{ env.DOCS }}
+            **Pester version:** ${{ env.PESTER }}
+
+            | Documentation updated | Result |
+            |-----------------------|--------|
+            | Command Reference | ${{ steps.commands.outputs.updated }} |
+            | PesterConfiguration section | ${{ steps.config.outputs.updated }} |
+
+            *PR created using 'Update Pester Docs' workflow*
+
+      - name: Output PR details
+        if: ${{ steps.create-pr.outputs.pull-request-number }}
+        run: |
+          echo "### Update Pester Docs successfully completed! :rocket:" >> $GITHUB_STEP_SUMMARY
+          echo "See [pull request #${{ steps.create-pr.outputs.pull-request-number }}](${{ steps.create-pr.outputs.pull-request-url }})" >> $GITHUB_STEP_SUMMARY

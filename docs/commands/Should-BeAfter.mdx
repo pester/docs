@@ -1,0 +1,201 @@
+---
+id: Should-BeAfter
+title: Should-BeAfter
+description: Help page for the PowerShell Pester "Should-BeAfter" command
+keywords:
+  - PowerShell
+  - Pester
+  - Help
+  - Documentation
+hide_title: false
+hide_table_of_contents: false
+custom_edit_url: null
+---
+
+:::info This page was generated
+Contributions are welcome in [Pester-repo](https://github.com/pester/pester).
+:::
+
+## SYNOPSIS
+
+Asserts that the provided [datetime] is after the expected [datetime].
+
+## SYNTAX
+
+### Now (Default)
+
+```powershell
+Should-BeAfter [[-Actual] <Object>] [-Now] [<CommonParameters>]
+```
+
+### Fluent
+
+```powershell
+Should-BeAfter [[-Actual] <Object>] [[-Time] <Object>] [-Ago] [-FromNow] [<CommonParameters>]
+```
+
+### Expected
+
+```powershell
+Should-BeAfter [[-Actual] <Object>] [[-Expected] <DateTime>] [<CommonParameters>]
+```
+
+## DESCRIPTION
+
+\{\{ Fill in the Description \}\}
+
+## EXAMPLES
+
+### EXAMPLE 1
+
+```powershell
+(Get-Date).AddDays(1) | Should-BeAfter (Get-Date)
+```
+
+This assertion will pass, because the actual value is after the expected value.
+
+### EXAMPLE 2
+
+```powershell
+(Get-Date).AddDays(-1) | Should-BeAfter (Get-Date)
+```
+
+This assertion will fail, because the actual value is not after the expected value.
+
+### EXAMPLE 3
+
+```powershell
+(Get-Date).AddDays(1) | Should-BeAfter 10minutes -FromNow
+```
+
+This assertion will pass, because the actual value is after the expected value.
+
+### EXAMPLE 4
+
+```powershell
+(Get-Date).AddDays(-1) | Should-BeAfter -Time 3days -Ago
+```
+
+This assertion will pass, because the actual value is after the expected value.
+
+## PARAMETERS
+
+### -Actual
+
+The actual [datetime] value.
+
+```yaml
+Type: Object
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 3
+Default value: None
+Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
+
+### -Now
+
+Indicates that the current time should be used as the expected time.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Now
+Aliases:
+
+Required: False
+Position: 1
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Time
+
+The time to add or subtract from the current time.
+This parameter uses fluent time syntax e.g.
+1minute.
+
+```yaml
+Type: Object
+Parameter Sets: Fluent
+Aliases:
+
+Required: False
+Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Ago
+
+Indicates that the -Time should be subtracted from the current time.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Fluent
+Aliases:
+
+Required: False
+Position: 2
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -FromNow
+
+Indicates that the -Time should be added to the current time.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Fluent
+Aliases:
+
+Required: False
+Position: 2
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Expected
+
+The expected [datetime] value.
+
+```yaml
+Type: DateTime
+Parameter Sets: Expected
+Aliases:
+
+Required: False
+Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### CommonParameters
+
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+## INPUTS
+
+## OUTPUTS
+
+## NOTES
+
+The `Should-BeAfter` assertion is the opposite of the `Should-BeBefore` assertion.
+
+## RELATED LINKS
+
+[https://pester.dev/docs/commands/Should-BeAfter](https://pester.dev/docs/commands/Should-BeAfter)
+
+[https://pester.dev/docs/assertions](https://pester.dev/docs/assertions)
+
+## VERSION
+
+*This page was generated using comment-based help in [Pester 6.0.0-alpha1](https://github.com/pester/pester).*

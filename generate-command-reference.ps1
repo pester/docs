@@ -16,85 +16,89 @@
 #>
 [CmdletBinding()]
 param (
-  [Parameter(Mandatory = $False)][string] $PesterVersion,
-
-  [Parameter(Mandatory = $False)][string] $PlatyPSVersion,
-
-  [Parameter(Mandatory = $False)][string] $DocusaurusVersion,
-
-  [switch]$SkipModuleImport
+    [string] $PesterVersion,
+    [string] $PlatyPSVersion,
+    [string] $DocusaurusVersion,
+    [switch] $SkipModuleImport,
+    [ValidateSet('Current','v4','v5')]
+    [string] $DocsVersion = 'Current'
 )
 Set-StrictMode -Version Latest
-$PSDefaultParameterValues['*:ErrorAction'] = "Stop"
+$PSDefaultParameterValues['*:ErrorAction'] = 'Stop'
 
-Write-Host "Generating MDX files for website Command Reference" -BackgroundColor DarkGreen
+Write-Host 'Generating MDX files for website Command Reference' -BackgroundColor DarkGreen
 
 # -----------------------------------------------------------------------------
 # Install required modules
 # -----------------------------------------------------------------------------
 $ModuleList = [ordered]@{
-  'PlatyPS' = $PlatyPSVersion
-  'Alt3.Docusaurus.PowerShell' = $DocusaurusVersion
-  'Pester' = $PesterVersion
+    'PlatyPS'                    = $PlatyPSVersion
+    'Alt3.Docusaurus.PowerShell' = $DocusaurusVersion
+    'Pester'                     = $PesterVersion
 }
 # Can't use the original enumerator here because we may modify the dictionary mid-process
 $ModuleList.Keys.Clone() | ForEach-Object {
-  $ModuleName = $_
-  $RequestedVersion = $ModuleList.Item($ModuleName)
-  Write-Host "Requires $ModuleName $RequestedVersion"
+    $ModuleName = $_
+    $RequestedVersion = $ModuleList.Item($ModuleName)
+    Write-Host "Requires $ModuleName $RequestedVersion"
 
-  if ([String]::IsNullOrEmpty($RequestedVersion)) {
-    Write-Host "=> Fetching module versions of $ModuleName from PSGallery..."
-    $RequestedVersion = (Find-Module -Name $ModuleName).Version
-    $ModuleList.Item($ModuleName) = $RequestedVersion
-    Write-Host "=> PSGallery version is $RequestedVersion"
-  }
-
-  $Installed = Get-Module -ListAvailable $ModuleName
-  if ($Installed -and ($Installed.Version -contains $RequestedVersion)) {
-    Write-Host "=> required version already installed"
-  } else {
-    if (-not $Installed) {
-      Write-Host "=> no versions installed: installing $RequestedVersion"
-    } else {
-      Write-Host "=> no matching version installed: installing $RequestedVersion"
+    if ([String]::IsNullOrEmpty($RequestedVersion)) {
+        Write-Host "=> Fetching latest stable version of $ModuleName from PSGallery..."
+        $RequestedVersion = (Find-Module -Name $ModuleName).Version
+        $ModuleList.Item($ModuleName) = $RequestedVersion
+        Write-Host "=> PSGallery version is $RequestedVersion"
     }
-    Install-Module $ModuleName -RequiredVersion $RequestedVersion -Force -SkipPublisherCheck -AllowClobber -Scope CurrentUser
-  }
 
-  if (-not $SkipModuleImport) {
-    Write-Host "=> importing"
-    Import-Module -Name $ModuleName -RequiredVersion $RequestedVersion -Force
-  }
+    $Installed = Get-Module -ListAvailable $ModuleName
+    if ($Installed -and ($Installed.Version -contains $RequestedVersion)) {
+        Write-Host '=> required version already installed'
+    } else {
+        if (-not $Installed) {
+            Write-Host "=> no versions installed: installing $RequestedVersion"
+        } else {
+            Write-Host "=> no matching version installed: installing $RequestedVersion"
+        }
+        Install-Module $ModuleName -RequiredVersion $RequestedVersion -AllowPrerelease -Force -SkipPublisherCheck -AllowClobber -Scope CurrentUser
+    }
+
+    if (-not $SkipModuleImport) {
+        Write-Host '=> importing'
+        # Import doesn't support prerelease-version. Only one x.y.z* version can be installed at any time, so just strip suffix
+        Import-Module -Name $ModuleName -RequiredVersion ($RequestedVersion -replace '-\w+$') -Force
+    }
 }
 
 # -----------------------------------------------------------------------------
 # Use below settings to manipulate the rendered MDX files
 # -----------------------------------------------------------------------------
 $docusaurusOptions = @{
-  Module          = "Pester"
-  DocsFolder      = "./docs"
-  SideBar         = "commands"
-  EditUrl         = "null" # prevent the `Edit this Page` button from appearing
-  Exclude         = @(
-    "Get-MockDynamicParameter"
-    "Invoke-Mock"
-    "SafeGetCommand"
-    "Set-DynamicParameterVariable"
-  )
-  MetaDescription = 'Help page for the PowerShell Pester "%1" command'
-  MetaKeywords    = @(
-    "PowerShell"
-    "Pester"
-    "Help"
-    "Documentation"
-  )
-  PrependMarkdown = @"
+    Module          = 'Pester'
+    DocsFolder      = switch ($DocsVersion) {
+        'Current' { "$PSScriptRoot/docs" }
+        'v5' { "$PSScriptRoot/versioned_docs/version-v5" }
+        'v4' { "$PSScriptRoot/versioned_docs/version-v4" }
+    }
+    SideBar         = 'commands'
+    EditUrl         = 'null' # prevent the `Edit this Page` button from appearing
+    Exclude         = @(
+        'Get-MockDynamicParameter'
+        'Invoke-Mock'
+        'SafeGetCommand'
+        'Set-DynamicParameterVariable'
+    )
+    MetaDescription = 'Help page for the PowerShell Pester "%1" command'
+    MetaKeywords    = @(
+        'PowerShell'
+        'Pester'
+        'Help'
+        'Documentation'
+    )
+    PrependMarkdown = @'
 :::info This page was generated
 Contributions are welcome in [Pester-repo](https://github.com/pester/pester).
 :::
-"@
-  AppendMarkdown = @"
+'@
+    AppendMarkdown  = @"
 ## VERSION
 *This page was generated using comment-based help in [Pester $($ModuleList.Pester)](https://github.com/pester/pester).*
 "@
@@ -106,19 +110,19 @@ Contributions are welcome in [Pester-repo](https://github.com/pester/pester).
 Push-Location $PSScriptRoot
 Write-Host (Get-Location)
 
-Write-Host "Removing existing MDX files" -ForegroundColor Magenta
-$outputFolder = Join-Path -Path $docusaurusOptions.DocsFolder -ChildPath $docusaurusOptions.Sidebar | Join-Path -ChildPath "*.*"
+Write-Host 'Removing existing MDX files' -ForegroundColor Magenta
+$outputFolder = Join-Path -Path $docusaurusOptions.DocsFolder -ChildPath $docusaurusOptions.Sidebar | Join-Path -ChildPath '*.*'
 if (Test-Path -Path $outputFolder) {
-  Remove-Item -Path $outputFolder
+    Remove-Item -Path $outputFolder
 }
 
-Write-Host "Generating new MDX files" -ForegroundColor Magenta
+Write-Host 'Generating new MDX files' -ForegroundColor Magenta
 New-DocusaurusHelp @docusaurusOptions
 
-Write-Host "Render completed successfully" -BackgroundColor DarkGreen
+Write-Host 'Render completed successfully' -BackgroundColor DarkGreen
 Pop-Location
 
 if ($ENV:GITHUB_ACTIONS) {
-  # Output Workflow information
-  Write-Host "::set-output name=pester-version::$($ModuleList.Item('Pester'))"
+    # Output Workflow information
+    "pester-version=$($ModuleList.Pester))" >> $env:GITHUB_OUTPUT
 }

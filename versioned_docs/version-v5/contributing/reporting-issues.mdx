@@ -1,0 +1,25 @@
+---
+id: reporting-issues
+title: Reporting Issues
+sidebar_label: Reporting Issues
+description: Found an issue with Pester? Check out this guide for how to create an issue and provide us feedback so we can help you
+---
+
+To report a bug, please [create a new issue](https://github.com/pester/Pester/issues/new/choose), and fill out the details. Your bug report should include the description of what is wrong, the version of Pester, PowerShell and the operating system. To make your bug report perfect you should also include a simple way to reproduce the bug.
+
+Here is a piece of code that collects the required system information for you and puts it in your clipboard:
+
+```powershell
+# You can open the URL in a browser to view the code before running it.
+(Invoke-WebRequest -Uri "https://git.io/JTinj" -UseBasicParsing).Content | Invoke-Expression
+```
+
+Example output:
+
+```
+Pester version     : 5.3.3 C:\Users\nohwnd\Documents\PowerShell\Modules\Pester\5.3.3\Pester.psm1
+PowerShell version : 7.2.3
+OS version         : Microsoft Windows NT 10.0.22000.0
+```
+
+The best way to report the reproduction steps is in a form of a Pester test. But it's not always easy to do, especially if you are reporting a bug in some internal part of the framework. So feel free to provide just a list of steps that need to be taken to reproduce the bug.

@@ -1,0 +1,111 @@
+---
+id: Should-BeFalsy
+title: Should-BeFalsy
+description: Help page for the PowerShell Pester "Should-BeFalsy" command
+keywords:
+  - PowerShell
+  - Pester
+  - Help
+  - Documentation
+hide_title: false
+hide_table_of_contents: false
+custom_edit_url: null
+---
+
+:::info This page was generated
+Contributions are welcome in [Pester-repo](https://github.com/pester/pester).
+:::
+
+## SYNOPSIS
+
+Compares the actual value to a boolean $false or a falsy value: 0, "", $null or @().
+It converts the input value to a boolean.
+
+## SYNTAX
+
+```powershell
+Should-BeFalsy [[-Actual] <Object>] [[-Because] <String>] [<CommonParameters>]
+```
+
+## DESCRIPTION
+
+\{\{ Fill in the Description \}\}
+
+## EXAMPLES
+
+### EXAMPLE 1
+
+```powershell
+$false | Should-BeFalsy
+$null | Should-BeFalsy
+$() | Should-BeFalsy
+@() | Should-BeFalsy
+0 | Should-BeFalsy
+```
+
+These assertion will pass.
+
+### EXAMPLE 2
+
+```powershell
+$true | Should-BeFalsy
+Get-Process | Should-BeFalsy
+```
+
+These assertions will fail, because the actual value is not $false or falsy.
+
+## PARAMETERS
+
+### -Actual
+
+The actual value to compare to $false.
+
+```yaml
+Type: Object
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 1
+Default value: None
+Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
+
+### -Because
+
+The reason why the input should be the expected value.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 2
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### CommonParameters
+
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+## INPUTS
+
+## OUTPUTS
+
+## NOTES
+
+The `Should-BeFalsy` assertion is the opposite of the `Should-BeTruthy` assertion.
+
+## RELATED LINKS
+
+[https://pester.dev/docs/commands/Should-BeFalsy](https://pester.dev/docs/commands/Should-BeFalsy)
+
+[https://pester.dev/docs/assertions](https://pester.dev/docs/assertions)
+
+## VERSION
+
+*This page was generated using comment-based help in [Pester 6.0.0-alpha1](https://github.com/pester/pester).*

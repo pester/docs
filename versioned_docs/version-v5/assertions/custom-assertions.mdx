@@ -1,0 +1,232 @@
+---
+title: Custom Assertions
+description: A guide for creating your own custom operators for more advanced or user-specific assertion needs
+---
+
+Pester allows users to create their own `Should`-operators for more advanced assertions. This is done by defining a test-function and registering it with Pester using the guidelines below.
+
+## Create the function
+
+### Requirements / Interface
+
+[Should](../commands/Add-ShouldOperator) will automatically pass on values from pipeline to your function as `ActualValue`.
+This can be an array or a single object depending on whether you register the function with `-SupportsArrayInput`.
+
+When `Should` calls your custom assertion, it will invoke it with the following parameters:
+- **ActualValue**: The value passed to `Should` to assert.
+- **Negate**: Internal switch/bool parameter used to declare if the user called `Should -Not ...`.
+- **CallerSessionState**: Used by some internal assertions to invoke code in the user's state. This can usually be ignored.
+- *Remaining bound parameters*, typically matching the parameters your accept in your assertion, like `ExpectedValue`, `Because`, `MyCustomParameter` etc.
+
+The function should return a object with the following properties:
+- **Succeeded**: Bool result of assert
+- **FailureMessage**: Message to the user explaining why the assert failed, typically in the format `Expected <expected value>, but got <actual value>`. If the function supports the commonly used `-Because` parameter, this property should include that message.
+
+If a problem occurs in your function, ex. it was called with invalid parameters, throw an exception. This will also fail the `Should` assertion, while making it clear to the user that it's not normal behavior.
+
+:::tip ActualValue is provided as a single parameter
+`Should` accepts the value to assert by pipeline but passes it to the assertion using `-ActualValue $ActualValue`. This means `ValueFromPipelineByPropertyName` is not available inside your function, but you can write your own logic to work with complex types provided to `ActualValue`.
+:::
+
+:::warning Using advanced functions as assertions
+Advanced functions, typically enabled by using `[CmdletBinding()]` or `[Parameter()]`, disallows arguments by default. In this scenario, make sure to accept all mandatory parameters in your param-block to avoid errors even if you don't use them. They are `ActualValue`, `Negate` and `CallerSessionState`.
+:::
+
+### Good practices
+
+- Support `-Not` for negative assertions. If not supported, throw an exception when used.
+  - Note that this is passed as `$Negate` to the function.
+- Support `-Because` to let users customize the error message on failure.
+- Write tests for you custom assertions to make sure they work the way you intended.
+  - `Should` will create error records for failed assertions with the `FullyQualifiedErrorId` set to `PesterAssertionFailed`.
+- Provide comment-based help with synopsis and examples so users can find it using `Get-ShouldOperator`.
+  - If you register an operator with a different name than the internal function, specify `-InternalName YourFunctionName` in `Add-ShouldOperator`.
+    This is required for `Get-ShouldOperator` to retrieve your comment-bases help.
+
+## Register function as operator
+
+When your function is ready you need to register it with Pester. See [Add-ShouldOperator](../commands/Add-ShouldOperator) for help or check out the examples below. Remember:
+
+- If `-Name` is different from the actual function name, make sure to specify `-InternalName` with your function name. This is used to retrieve help in `Get-ShouldOperator`.
+- Specify `-SupportsArrayInput` if your function should work with array input, ex. `1,2,3 | Should -BeNumber`
+
+Example registering a assertion function named `Should-BeNumber`:
+
+```powershell
+Add-ShouldOperator -Name BeNumber `
+    -InternalName 'Should-BeNumber' `
+    -Test ${function:Should-BeNumber} `
+    -Alias 'BeNum' `
+    -SupportsArrayInput
+```
+
+:::note Maxmimum number of Should operators
+Due to a limitation in PowerShell and the current design on `Should`, Pester is limited to a maximum of 32 Should operators. Pester currently includes 25 built-in operators, which limits how many custom operators you can register in a single session.
+The limitation is tracked in [this issue](https://github.com/pester/Pester/issues/1355)
+:::
+
+## Examples
+
+### Simple example
+
+```powershell title="MyCustomAssertions.psm1"
+#Requires -Module Pester
+
+function Should-BeUpperCaseOnly ([string] $ActualValue, [switch] $Negate, [string] $Because) {
+    <#
+    .SYNOPSIS
+        Checks provided string for only uppercase letters
+    .EXAMPLE
+        "ABC" | Should -BeUpperCaseOnly
+
+        Checks if "ABC" only contains uppercase letters. This should pass.
+    .EXAMPLE
+        "aBc" | Should -Not -BeUpperCaseOnly
+
+        Checks if "aBc" does NOT contain only uppercase. Since there are lowercase letters in the string, this should pass.
+    #>
+    $arr = $ActualValue.ToCharArray()
+    [bool] $succeeded = @($arr | Where-Object { [char]::IsLetter($_) -and [char]::IsUpper($_) }).Count -eq $arr.Count
+    if ($Negate) { $succeeded = -not $succeeded }
+
+    if (-not $succeeded) {
+        if ($Negate) {
+            $failureMessage = "Expected '$ActualValue' to not only contain uppercase letters$(if($Because) { " because $Because"})."
+        }
+        else {
+            $failureMessage = "Expected '$ActualValue' to only contain uppercase letters$(if($Because) { " because $Because"})."
+        }
+    }
+
+    return [pscustomobject]@{
+        Succeeded      = $succeeded
+        FailureMessage = $failureMessage
+    }
+}
+
+Add-ShouldOperator -Name BeUpperCaseOnly `
+    -InternalName 'Should-BeUpperCaseOnly' `
+    -Test ${function:Should-BeUpperCaseOnly} `
+    -Alias 'BU'
+```
+
+```powershell title="demo.tests.ps1"
+BeforeDiscovery {
+    # Loads and registers my custom assertion. Ignores usage of unapproved verb with -DisableNameChecking
+    Import-Module "$PSScriptRoot/MyCustomAssertions.psm1" -DisableNameChecking
+}
+
+Describe 'Testing Should -BeUpperCaseOnly' {
+    It 'Success' {
+        "HELLO" | Should -BeUpperCaseOnly
+    }
+
+    It 'Failure' {
+        "HeLLo" | Should -BeUpperCaseOnly -Because "it looks cooler"
+    }
+
+    It 'Not all characters are uppercase' {
+        "hELLO" | Should -Not -BeUpperCaseOnly
+    }
+
+    It 'We can test failed assertions' {
+        { "fails" | Should -BeUpperCaseOnly } | Should -Throw -ErrorId 'PesterAssertionFailed'
+    }
+}
+```
+
+#### Demo
+
+```powershell
+Invoke-Pester ./demo.tests.ps1
+
+Starting discovery in 1 files.
+Discovery found 4 tests in 181ms.
+Running tests.
+[-] Testing custom assertion.Failure 22ms (20ms|3ms)
+ Expected 'HeLLo' to only contain uppercase letters because it looks cooler.
+ at "HeLLo" | Should -BeUpperCaseOnly -Because "it looks cooler", /workspaces/Pester/Samples/demo.tests.ps1:11
+ at <ScriptBlock>, /workspaces/Pester/Samples/demo.tests.ps1:11
+Tests completed in 651ms
+Tests Passed: 3, Failed: 1, Skipped: 0 NotRun: 0
+```
+
+### SupportsArrayInput example
+
+```powershell title="MyCustomAssertions.psm1"
+#Requires -Module Pester
+
+function Should-ContainOnlyValuesOf ($ActualValue, [int]$ExpectedValue, [switch] $Negate, [string] $Because) {
+    <#
+    .SYNOPSIS
+        Asserts if collection contains only the expected value
+    .EXAMPLE
+        3,3,3 | Should -ContainOnlyValuesOf 3
+
+        Checks if the array contains only values of 3. This should pass.
+
+    .EXAMPLE
+        1,2,3 | Should -Not -ContainOnlyValuesOf 3
+
+        Checks if the array contains other values than 3. This should pass.
+    #>
+
+    $notEqual = foreach ($val in $ActualValue) {
+        if ($val -ne $ExpectedValue) { $val }
+    }
+    [bool] $succeeded = @($notEqual).Count -eq 0
+    if ($Negate) { $succeeded = -not $succeeded }
+
+    if (-not $succeeded) {
+        if ($Negate) {
+            $failureMessage = "Expected values not equal to $ExpectedValue to be in collection @($($ActualValue -join ', '))$(if($Because) { " because $Because"})."
+        }
+        else {
+            $failureMessage = "Expected only values equal to $ExpectedValue in collection @($($ActualValue -join ', '))$(if($Because) { " because $Because"})."
+        }
+    }
+
+    return [pscustomobject]@{
+        Succeeded      = $succeeded
+        FailureMessage = $failureMessage
+    }
+}
+
+Add-ShouldOperator -Name ContainOnlyValuesOf `
+    -InternalName 'Should-ContainOnlyValuesOf' `
+    -Test ${function:Should-ContainOnlyValuesOf} `
+    -SupportsArrayInput
+```
+
+```powershell title="demo.tests.ps1"
+BeforeDiscovery {
+    # Loads and registers my custom assertion. Ignores usage of unapproved verb with -DisableNameChecking
+    Import-Module "$PSScriptRoot/MyCustomAssertions.psm1" -DisableNameChecking
+}
+
+Describe 'Testing Should -ContainOnlyValuesOf' {
+    It 'All values are as expected' {
+        3, 3, 3 | Should -ContainOnlyValuesOf 3
+    }
+
+    It 'Failure' {
+        3, 3, 3 | Should -Not -ContainOnlyValuesOf 3
+    }
+}
+```
+
+#### Demo
+
+```powershell
+Invoke-Pester ./demo.tests.ps1
+
+Starting discovery in 1 files.
+Discovery found 2 tests in 25ms.
+Running tests.
+[-] Testing Should -ContainOnlyValuesOf.Failure 8ms (6ms|2ms)
+ Expected values not equal to 3 to be in collection @(3, 3, 3).
+ at 3, 3, 3 | Should -Not -ContainOnlyValuesOf 3, /workspaces/Pester/Samples/demo.tests.ps1:11
+ at <ScriptBlock>, /workspaces/Pester/Samples/demo.tests.ps1:11
+Tests completed in 83ms
+Tests Passed: 1, Failed: 1, Skipped: 0 NotRun: 0
+```

@@ -37,7 +37,7 @@ Invoke-Pester [[-Path] <String[]>] [-TagFilter <String[]>] [-ExcludeTagFilter <S
  [-FullNameFilter <String[]>] [-PassThru] [-EnableExit] [-CodeCoverage <Object[]>]
  [-CodeCoverageOutputFile <String>] [-CodeCoverageOutputFileEncoding <String>]
  [-CodeCoverageOutputFileFormat <String>] [-Strict] [-OutputFile <String>] [-OutputFormat <String>] [-Quiet]
- [-PesterOption <Object>] [-Show <OutputTypes>] [<CommonParameters>]
+ [-PesterOption <Object>] [-Show <String>] [<CommonParameters>]
 ```
 
 ### Advanced
@@ -74,7 +74,7 @@ OutputFormat parameters to write the test results to an XML file, and use the
 EnableExit parameter to return an exit code that contains the number of failed
 tests.
 
-You can also use the Strict parameter to fail all pending and skipped tests.
+You can also use the Strict parameter to fail all skipped tests.
 This feature is ideal for build systems and other processes that require success
 on every test.
 
@@ -489,7 +489,7 @@ Accept wildcard characters: False
 ### -Strict
 
 (Deprecated v4)
-Makes Pending and Skipped tests to Failed tests.
+Makes Skipped tests to Failed tests.
 Useful for continuous
 integration where you need to make sure all tests passed.
 
@@ -599,7 +599,7 @@ Accept wildcard characters: False
 Replace with ConfigurationProperty Output.Verbosity
 Customizes the output Pester writes to the screen.
 Available options are None, Default,
-Passed, Failed, Pending, Skipped, Inconclusive, Describe, Context, Summary, Header, All, Fails.
+Passed, Failed, Skipped, Inconclusive, Describe, Context, Summary, Header, All, Fails.
 The options can be combined to define presets.
 ConfigurationProperty Output.Verbosity supports the following values:
 None
@@ -623,10 +623,9 @@ This parameter does not affect the PassThru custom object or the XML output that
 is written when you use the Output parameters.
 
 ```yaml
-Type: OutputTypes
+Type: String
 Parameter Sets: Legacy
 Aliases:
-Accepted values: None, Default, Passed, Failed, Pending, Skipped, Inconclusive, Describe, Context, Summary, Header, Fails, All
 
 Required: False
 Position: Named
@@ -653,4 +652,4 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 5.6.0](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.0.0-alpha1](https://github.com/pester/pester).*

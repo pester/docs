@@ -1,0 +1,121 @@
+---
+id: ConvertTo-JUnitReport
+title: ConvertTo-JUnitReport
+description: Help page for the PowerShell Pester "ConvertTo-JUnitReport" command
+keywords:
+  - PowerShell
+  - Pester
+  - Help
+  - Documentation
+hide_title: false
+hide_table_of_contents: false
+custom_edit_url: null
+---
+
+:::info This page was generated
+Contributions are welcome in [Pester-repo](https://github.com/pester/pester).
+:::
+
+## SYNOPSIS
+
+Converts a Pester result-object to an JUnit-compatible XML report
+
+## SYNTAX
+
+```powershell
+ConvertTo-JUnitReport [-Result] <Run> [-AsString] [<CommonParameters>]
+```
+
+## DESCRIPTION
+
+Pester can generate a result-object containing information about all
+tests that are processed in a run.
+This objects can then be converted to an
+NUnit-compatible XML-report using this function.
+The report is generated
+using the JUnit 4-schema.
+
+The function can convert to both XML-object or a string containing the XML.
+This can be useful for further processing or publishing of test results,
+e.g.
+as part of a CI/CD pipeline.
+
+## EXAMPLES
+
+### EXAMPLE 1
+
+```powershell
+$p = Invoke-Pester -Passthru
+$p | ConvertTo-JUnitReport
+```
+
+This example runs Pester using the Passthru option to retrieve the result-object and
+converts it to an JUnit 4-compatible XML-report.
+The report is returned as an XML-object.
+
+### EXAMPLE 2
+
+```powershell
+$p = Invoke-Pester -Passthru
+$p | ConvertTo-JUnitReport -AsString
+```
+
+This example runs Pester using the Passthru option to retrieve the result-object and
+converts it to an JUnit 4-compatible XML-report.
+The returned object is a string.
+
+## PARAMETERS
+
+### -Result
+
+Result object from a Pester-run.
+This can be retrieved using Invoke-Pester
+-Passthru or by using the Run.PassThru configuration-option.
+
+```yaml
+Type: Run
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 1
+Default value: None
+Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
+
+### -AsString
+
+Returns the XML-report as a string.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### CommonParameters
+
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+## INPUTS
+
+## OUTPUTS
+
+## NOTES
+
+## RELATED LINKS
+
+[https://pester.dev/docs/commands/ConvertTo-JUnitReport](https://pester.dev/docs/commands/ConvertTo-JUnitReport)
+
+[https://pester.dev/docs/commands/Invoke-Pester](https://pester.dev/docs/commands/Invoke-Pester)
+
+## VERSION
+
+*This page was generated using comment-based help in [Pester 5.6.0](https://github.com/pester/pester).*
