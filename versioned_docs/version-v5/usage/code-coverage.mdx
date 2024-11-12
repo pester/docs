@@ -1,0 +1,217 @@
+---
+id: code-coverage
+title: Generating Code Coverage Metrics
+sidebar_label: Code Coverage
+description: Pester can generate code coverage metrics to help you understand how many lines of your PowerShell code that is actually covered by your Pester-tests. Use this to increase confidence in your tests
+---
+
+Code Coverage refers to the percentage of lines of code that are tested 
+by a suite of unit tests. It's a good general indicator of how thoroughly
+your code has been tested, that all branches and edge cases are working 
+properly, etc. Pester calculates this coverage during 
+test execution and generates a report.
+
+In practice, Pester's Code Coverage analysis provides valuable insights 
+into the coverage of your code and helps identify untested branches and edge cases.
+
+## Quickstart
+
+To generate Code Coverage metrics we no longer rely in the `-CodeCoverage` parameter of the `Invoke-Pester` command.
+Pester, offers a new way to configure Code Coverage using `New-PesterConfiguration`, as explained in the following snippet:
+
+   ```powershell
+   # Create a Pester configuration object using `New-PesterConfiguration`
+   $config = New-PesterConfiguration
+   
+   # Set the test path to specify where your tests are located. In this example, we set the path to the current directory. Pester will look into all subdirectories.
+   $config.Run.Path = "."
+
+   # Enable Code Coverage
+   $config.CodeCoverage.Enabled = $true
+
+   # Run Pester tests using the configuration you've created
+   Invoke-Pester -Configuration $config
+
+   # Example output...
+   # Tests completed in 8.26s
+   # Tests Passed: 8, Failed: 0, Skipped: 0 NotRun: 0
+   # Processing code coverage result.
+   # Covered 11.7% / 75%. 735 analyzed Commands in 22 Files.
+   ```
+
+The final line displays both the current code coverage and the desired target coverage. You can customize the target coverage by configuring the CodeCoverage.CoveragePercentTarget option.
+
+## Examples
+
+Here are some examples of the various ways the Code Coverage configuration can be used, 
+and their corresponding output when used with the following files.
+
+```powershell title="CoverageTest.ps1"
+function FunctionOne ([switch] $SwitchParam)
+{
+    if ($SwitchParam)
+    {
+        return 'SwitchParam was set'
+    }
+    else
+    {
+        return 'SwitchParam was not set'
+    }
+}
+
+function FunctionTwo
+{
+    return 'I get executed'
+    return 'I do not'
+}
+```
+
+```powershell title="CoverageTest.Tests.ps1"
+BeforeAll {
+    . $PSCommandPath.Replace('.Tests.ps1','.ps1')
+}
+
+Describe 'Demonstrating Code Coverage' {
+    It 'Calls FunctionOne with no switch parameter set' {
+        FunctionOne | Should -Be 'SwitchParam was not set'
+    }
+
+    It 'Calls FunctionTwo' {
+        FunctionTwo | Should -Be 'I get executed'
+    }
+}
+```
+
+Let's see what is the coverage once executed:
+
+```powershell
+$config = New-PesterConfiguration
+$config.Run.Path = ".\CoverageTest.Tests.ps1"
+$config.CodeCoverage.Enabled = $true
+
+# Optional to scope the coverage to the list of files or directories in this path
+$config.CodeCoverage.Path = ".\CoverageTest.ps1"
+
+Invoke-Pester -Configuration $config
+
+<#
+...
+Tests completed in 109ms
+Tests Passed: 2, Failed: 0, Skipped: 0 NotRun: 0
+Processing code coverage result.
+Covered 60% / 75%. 5 analyzed Commands in 1 File.
+#>
+```
+
+When Pester is executed with detailed verbosity enabled,
+it provides a comprehensive output that includes detailed information about the covered lines. For example:
+
+
+```powershell
+$config = New-PesterConfiguration
+$config.Run.Path = ".\CoverageTest.Tests.ps1"
+$config.CodeCoverage.Enabled = $true
+$config.Output.Verbosity = "Detailed"
+
+Invoke-Pester -Configuration $config
+
+<#
+...
+Tests Passed: 2, Failed: 0, Skipped: 0 NotRun: 0
+Processing code coverage result.
+Code Coverage result processed in 22 ms.
+Covered 60% / 75%. 5 analyzed Commands in 1 File.
+Missed commands:
+
+File             Class Function    Line Command
+----             ----- --------    ---- -------
+CoverageTest.ps1       FunctionOne    5 return 'SwitchParam was set'
+CoverageTest.ps1       FunctionTwo   16 return 'I do not'
+#>
+```
+
+As you can see, the test script fails to run `FunctionOne` with its switch parameter set, 
+and there is an unreachable line of code in `FunctionTwo`. 
+
+## Coverage Format
+
+By default, Pester generates a `coverage.xml` file in [JaCoCo](https://www.jacoco.org/) format. You have the flexibility to modify the output format, path, and encoding by using the following options:
+
+```powershell
+$config = New-PesterConfiguration
+$config.CodeCoverage.OutputFormat = 'CoverageGutters'
+$config.CodeCoverage.OutputPath = 'cov.xml'
+$config.CodeCoverage.OutputEncoding = 'UTF8'
+
+$config.CodeCoverage.Enabled = $true
+
+Invoke-Pester -Configuration $config
+```
+
+For additional `CodeCoverage` configuration options, please refer to the [New-PesterConfiguration](https://pester.dev/docs/commands/New-PesterConfiguration) documentation.
+
+:::tip Pester does not traverse directories.
+If you encounter an **empty `coverage.xml` file**, it's likely because you're running the tests from a directory that doesn't
+include the relevant code to be covered. 
+To resolve this, you can either follow the recommended [Test file structure](https://pester.dev/docs/usage/test-file-structure),
+which involves placing the tests alongside the code you want to cover,
+or set the config `CodeCoverage.Path` option to the directory 
+that contains the code to be covered.
+:::
+
+## Integrating with GitHub Actions
+
+To integrate Pester tests with Code Coverage into your GitHub Actions workflow, follow these steps:
+
+1. Create or update your GitHub Actions workflow file (e.g., `.github/workflows/pester-tests.yml`). Use the following example as a template:
+
+   ```yaml
+   name: Run Pester Tests
+
+   on:
+     push:
+       branches: [ "dev", "main" ]
+     pull_request:
+       branches: [ "dev" ]
+
+   jobs:
+     pester:
+       runs-on: windows-latest 
+
+       steps:
+       - name: Checkout code
+         uses: actions/checkout@v2
+
+       - name: Install Pester
+         shell: pwsh
+         run: Install-Module -Name Pester -Force -Scope CurrentUser
+
+       - name: Run Pester Tests
+         working-directory: ./solution 
+         run: |
+           # Run Pester tests with Code Coverage
+           $config = New-PesterConfiguration
+           $config.Run.Path = "."
+           $config.CodeCoverage.Enabled = $true
+           $config.TestResult.Enabled = $true
+           Invoke-Pester -Configuration $config
+
+       - name: Upload code coverage report
+         if: ${{ success() }}
+         uses: actions/upload-artifact@v2
+         with:
+           name: code-coverage-report
+           path: solution\coverage.xml
+   ```
+
+2. The workflow defined above triggers on pushes to the "dev" and "main" branches and on pull requests targeting the "dev" branch. Make sure to adjust the branch names as needed.
+
+3. This workflow runs on a Windows environment and does the following:
+   - Checks out the code.
+   - Installs the Pester module.
+   - Runs Pester tests with Code Coverage.
+   - Uploads the code coverage report as an artifact.
+
+4. Adjust the paths and configurations in the workflow according to your project structure and requirements.
+
+With this configuration, Pester tests will be executed with Code Coverage, and the coverage report will be available as an artifact in your GitHub Actions workflow.

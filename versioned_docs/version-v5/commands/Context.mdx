@@ -1,0 +1,186 @@
+---
+id: Context
+title: Context
+description: Help page for the PowerShell Pester "Context" command
+keywords:
+  - PowerShell
+  - Pester
+  - Help
+  - Documentation
+hide_title: false
+hide_table_of_contents: false
+custom_edit_url: null
+---
+
+:::info This page was generated
+Contributions are welcome in [Pester-repo](https://github.com/pester/pester).
+:::
+
+## SYNOPSIS
+
+Provides logical grouping of It blocks within a single Describe block.
+
+## SYNTAX
+
+```powershell
+Context [-Name] <String> [-Tag <String[]>] [[-Fixture] <ScriptBlock>] [-Skip] [-ForEach <Object>]
+ [<CommonParameters>]
+```
+
+## DESCRIPTION
+
+Provides logical grouping of It blocks within a single Describe block.
+Any Mocks defined inside a Context are removed at the end of the Context scope,
+as are any files or folders added to the TestDrive during the Context block's
+execution.
+Any BeforeEach or AfterEach blocks defined inside a Context also only
+apply to tests within that Context .
+
+## EXAMPLES
+
+### EXAMPLE 1
+
+```powershell
+BeforeAll {
+    function Add-Numbers($a, $b) {
+        return $a + $b
+    }
+}
+
+Describe 'Add-Numbers' {
+    Context 'when adding positive values' {
+        It '...' {
+            # ...
+        }
+    }
+
+    Context 'when adding negative values' {
+        It '...' {
+            # ...
+        }
+        It '...' {
+            # ...
+        }
+    }
+}
+```
+
+Example of how to use Context for grouping different tests
+
+## PARAMETERS
+
+### -Name
+
+The name of the Context.
+This is a phrase describing a set of tests within a describe.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Tag
+
+Optional parameter containing an array of strings.
+When calling Invoke-Pester,
+it is possible to specify a -Tag parameter which will only execute Context blocks
+containing the same Tag.
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases: Tags
+
+Required: False
+Position: Named
+Default value: @()
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Fixture
+
+Script that is executed.
+This may include setup specific to the context
+and one or more It blocks that validate the expected outcomes.
+
+```yaml
+Type: ScriptBlock
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 2
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Skip
+
+Use this parameter to explicitly mark the block to be skipped.
+This is preferable to temporarily
+commenting out a block, because it remains listed in the output.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ForEach
+
+Allows data driven tests to be written.
+Takes an array of data and generates one block for each item in the array, and makes the item
+available as $_ in all child blocks.
+When the array is an array of hashtables, it additionally
+defines each key in the hashtable as variable.
+
+```yaml
+Type: Object
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### CommonParameters
+
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+## INPUTS
+
+## OUTPUTS
+
+## NOTES
+
+## RELATED LINKS
+
+[https://pester.dev/docs/commands/Context](https://pester.dev/docs/commands/Context)
+
+[https://pester.dev/docs/usage/test-file-structure](https://pester.dev/docs/usage/test-file-structure)
+
+[https://pester.dev/docs/usage/mocking](https://pester.dev/docs/usage/mocking)
+
+[https://pester.dev/docs/usage/testdrive](https://pester.dev/docs/usage/testdrive)
+
+## VERSION
+
+*This page was generated using comment-based help in [Pester 5.6.0](https://github.com/pester/pester).*

@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "command": "yarn start --poll",
+            "command": "yarn start --host 0.0.0.0 --poll 1000",
             "name": "Start Docusaurus (with polling)",
             "request": "launch",
             "type": "node-terminal"

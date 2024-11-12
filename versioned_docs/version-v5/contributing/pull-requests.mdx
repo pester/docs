@@ -1,0 +1,148 @@
+---
+id: pull-requests
+title: Submitting Pull Requests
+sidebar_label: Pull Requests
+description: Introduction on how to start contributing to the Pester project either by filing a bug, feature requests, support or submitting a pull request
+---
+
+So now we talked about your proposed change in the issue and it's time for you to implement the change and make it into a pull request (PR).
+
+### Step 1 - Forking the Main Repository
+
+You cannot add code directly to our repository, you need to first get your own copy "a fork". GitHub makes this really simple, all you need to do is log in with your GitHub account, navigate to [Pester repository](https://github.com/pester/Pester) and click the "Fork" button on the upper right. There is a helpful wizard to walk you through the process of forking and cloning the repository. At the end you should have a local copy of Pester on your computer.
+
+If you don't have much experience with git, I suggest you download the [GitHub desktop client](https://desktop.github.com/) that will make reviewing your changes really simple. I will be describing all the steps in commands that you need to put in command line. You can get to it by clicking the cog wheel in the application and selecting "Open in Git shell".
+
+### Step 2 - Syncing Your Clone with the Main Repository
+
+__If you just forked and cloned as described in the Step 1 you can skip directly to step 3. Your code is already up-to-date.__
+
+Otherwise you should make sure that your fork and your local copy (clone) is up to date. We will be updating the main branch, because that is where you should always start when creating a new PR.
+
+First you need to tell your repository where to find the official Pester repository by setting an upstream remote, you can find how to do that [in this official guide.](https://help.github.com/articles/configuring-a-remote-for-a-fork/)
+
+Then you need to get the latest code from the main Pester repository (upstream) and merge it to your repository, [here is another official guide on how to do that.](https://help.github.com/articles/syncing-a-fork/). Finally you push the changes to your fork on the server (origin), by running `git push` in the command line. You should repeat these steps every time you are starting a new PR, to make sure your code is up-to-date.
+
+Here is the whole process from cloning the repository from an out-dated fork, till pushing the changes to the server:
+
+```powershell
+# cloning my fork of Pester from the server,
+# (notice the /nohwnd/pester.git in the URL, unlike /pester/pester.git of the official repository)
+C:\Users\nohwnd\Documents\GitHub> git clone https://github.com/nohwnd/pester.git
+Cloning into 'pester'...
+remote: Enumerating objects: 10888, done.
+remote: Counting objects: 100% (789/789), done.
+remote: Compressing objects: 100% (371/371), done.
+remote: Total 10888 (delta 441), reused 689 (delta 405), pack-reused 10099
+Receiving objects: 100% (10888/10888), 20.92 MiB | 8.37 MiB/s, done.
+Resolving deltas: 100% (7528/7528), done.
+
+# navigating to the repository folder
+C:\Users\nohwnd\Documents\GitHub> cd .\Pester\
+
+# listing the remotes to see what is there
+# (notice that the URL is the same as the cloning URL and that it's called origin)
+C:\Users\nohwnd\Documents\GitHub\Pester [main ≡]> git remote -v
+origin  https://github.com/nohwnd/Pester.git (fetch)
+origin  https://github.com/nohwnd/Pester.git (push)
+
+# adding one more remote to tell git where the official Pester repository is
+# (notice this one is called upstream, and has /pester/pester.git in the URL, unlike the fork)
+C:\Users\nohwnd\Documents\GitHub\Pester [main ≡]> git remote add upstream https://github.com/pester/Pester.git
+
+# listing the remotes again to confirm the configuration is correct
+C:\Users\nohwnd\Documents\GitHub\Pester [main ≡]> git remote -v
+origin  https://github.com/nohwnd/Pester.git (fetch)
+origin  https://github.com/nohwnd/Pester.git (push)
+upstream        https://github.com/pester/Pester.git (fetch)
+upstream        https://github.com/pester/Pester.git (push)
+
+### --- The previous steps are one-time. You can start from here on successive updates. ---
+
+# downloading (fetching) data from the official repository
+# (you can see there are some new branches and tags)
+C:\Users\nohwnd\Documents\GitHub\Pester [main ≡]> git fetch upstream
+remote: Enumerating objects: 502, done.
+remote: Counting objects: 100% (502/502), done.
+remote: Compressing objects: 100% (257/257), done.
+remote: Total 502 (delta 335), reused 373 (delta 244), pack-reused 0
+Receiving objects: 100% (502/502), 333.22 KiB | 4.56 MiB/s, done.
+Resolving deltas: 100% (335/335), completed with 47 local objects.
+From https://github.com/pester/Pester
+...
+ * [new branch]      main                  -> upstream/main
+ * [new branch]      profiler-cc           -> upstream/profiler-cc
+ * [new branch]      readme                -> upstream/readme
+ * [new branch]      rel/3.x.x             -> upstream/rel/3.x.x
+ * [new branch]      rel/4.x.x             -> upstream/rel/4.x.x
+ * [new branch]      rel/5.2.x             -> upstream/rel/5.2.x
+ * [new branch]      rel/5.3.x             -> upstream/rel/5.3.x
+...
+ * [new tag]         5.3.2                 -> 5.3.2
+ * [new tag]         5.3.3                 -> 5.3.3
+
+# moving to the main branch (I already was there so this step was not necessary.)
+# the message says I am up to date with origin/main - the main branch in my fork on the server.
+# you can call "git pull" to make sure everything is up to date
+C:\Users\nohwnd\Documents\GitHub\Pester [main ≡]> git checkout main
+Already on 'main'
+Your branch is up to date with 'origin/main'.
+
+# here I am merging the offical repository main branch to my fork main branch
+# you can see there were some changes to merge
+C:\Users\nohwnd\Documents\GitHub\Pester [main ≡]> git merge upstream/main
+Updating 3c1b0e4..8869115
+Fast-forward
+ azure-pipelines.yml                 |  9 ---------
+ src/functions/Output.ps1            | 17 +++++++++++++----
+ src/functions/assertions/Should.ps1 |  9 +++++++++
+ 3 files changed, 22 insertions(+), 13 deletions(-)
+
+# pushing the merged changes to my fork on the server (origin)
+C:\Users\nohwnd\Documents\GitHub\Pester [main ↑]> git push
+...
+To https://github.com/nohwnd/Pester.git
+   3c1b0e4..8869115  main -> main
+```
+
+### Step 3 - Create a Feature Branch
+
+Switch to your main branch and create a new so-called feature branch from it ("FixHelpForShould" in examples below). This branch will hold all changes for the PR you are implementing. You could put your changes directly into the main branch, but that's not recommended.
+
+```bash
+git checkout -b "FixHelpForShould"
+```
+
+This command will create a new branch based on the current branch (main) and will switch directly to it.
+
+```powershell
+C:\Users\nohwnd\Documents\GitHub\Pester [main ≡]> git checkout main
+Already on 'main'
+Your branch is up-to-date with 'origin/main'.
+C:\Users\nohwnd\Documents\GitHub\Pester [main ≡]> git checkout -b "FixHelpForShould"
+Switched to a new branch 'FixHelpForShould'
+C:\Users\nohwnd\Documents\GitHub\Pester [FixHelpForShould]>
+```
+
+### Step 4 - Implement Your Changes
+
+Now you can start implementing your changes. Make sure that your changes are relevant to the feature that you are implementing/the bug you are fixing.
+Avoid changing formatting and style of code that is not relevant to your changes.
+
+Remember to build the module and run tests to make sure everything still works. See [CONTRIBUTING](https://github.com/pester/Pester/blob/main/CONTRIBUTING.md) for more details.
+
+### Step 5 - Commit Your Changes
+
+Once you are done with you changes you need to commit them to your branch.
+When all commits are ready and tests pass, push the new feature branch to your fork.
+
+```bash
+git push origin FixHelpForShould
+```
+
+### Step 6 - Submit Your Pull Request
+
+Open your fork on https://github.com and click the "Compare & pull request" button in the banner at the top.
+This will take you to the pull request form. Read and fill out the template text and submit your pull request.
+
+Thanks for contributing!

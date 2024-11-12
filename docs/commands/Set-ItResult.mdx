@@ -28,12 +28,6 @@ Set-ItResult is used inside the It block to explicitly set the test result
 Set-ItResult [-Inconclusive] [-Because <String>] [<CommonParameters>]
 ```
 
-### Pending
-
-```powershell
-Set-ItResult [-Pending] [-Because <String>] [<CommonParameters>]
-```
-
 ### Skipped
 
 ```powershell
@@ -45,11 +39,7 @@ Set-ItResult [-Skipped] [-Because <String>] [<CommonParameters>]
 Sometimes a test shouldn't be executed, sometimes the condition cannot be evaluated.
 By default such tests would typically fail and produce a big red message.
 Using Set-ItResult it is possible to set the result from the inside of the It script
-block to either inconclusive, pending or skipped.
-
-As of Pester 5, there is no "Inconclusive" or "Pending" test state, so all tests will now go to state skipped,
-however the test result notes will include information about being inconclusive or testing to keep this command
-backwards compatible
+block to either inconclusive, or skipped.
 
 ## EXAMPLES
 
@@ -81,7 +71,7 @@ Tests Passed: 0, Failed: 0, Skipped: 1, Inconclusive: 1, NotRun: 0
 ### -Inconclusive
 
 Sets the test result to inconclusive.
-Cannot be used at the same time as -Pending or -Skipped
+Cannot be used at the same time as -Skipped
 
 ```yaml
 Type: SwitchParameter
@@ -95,27 +85,10 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Pending
-
-**DEPRECATED** Sets the test result to pending.
-Cannot be used at the same time as -Inconclusive or -Skipped
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Pending
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -Skipped
 
 Sets the test result to skipped.
-Cannot be used at the same time as -Inconclusive or -Pending
+Cannot be used at the same time as -Inconclusive.
 
 ```yaml
 Type: SwitchParameter
@@ -163,4 +136,4 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 5.6.0](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.0.0-alpha1](https://github.com/pester/pester).*

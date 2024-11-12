@@ -156,13 +156,19 @@ const config = {
         docs: {
           sidebarPath: './sidebars.js',
           editUrl: 'https://github.com/pester/docs/edit/main',
-          lastVersion: "current",
+          // Define which version ("current" vs versioned docs like "v5") that will use unversioned URIs /docs/...
+          // Using v5 while it's latest stable.
+          // When updated, also update static/_redirects to always support versioned URIs
+          lastVersion: "v5",
           includeCurrentVersion: true,
           disableVersioning: false,
           versions: {
+            // "current" is content in /docs folder
             current: {
-              label: "v5",
-              path: "",
+              label: "v6 (preview) 🚧",
+              // path is /docs/next by default unless lastVersion is set to "current"
+              // overriden to /docs/v6 during preview
+              path: "v6"
             }
           },
         },

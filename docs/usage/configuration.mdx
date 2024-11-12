@@ -3,30 +3,29 @@ title: Configuration
 description: Documentation about how to configure the behavior, options and features in Pester
 ---
 
-### Advanced interface
+## Advanced interface
 
 Advanced interface uses `PesterConfiguration` object which contains all options that you can provide to Pester and contains descriptions for all the configuration sections and as well as default values. Here is what you see when you look at the default Debug section of the object:
 
 ```powershell
-[PesterConfiguration]::Default.Debug | Format-List
+(New-PesterConfiguration).Debug | Format-List
 
-ShowFullErrors         : Show full errors including Pester internal stack. (False, default: False)
+ShowFullErrors         : Show full errors including Pester internal stack. This property is deprecated, and if set to true it will override Output.StackTraceVerbosity to 'Full'. (False, default: False)
 WriteDebugMessages     : Write Debug messages to screen. (False, default: False)
-WriteDebugMessagesFrom : Write Debug messages from a given source, WriteDebugMessages must be set to true for this to work. You can use like wildcards to get messages from multiple sources, as well as * to get everything. (*, default: *)
+WriteDebugMessagesFrom : Write Debug messages from a given source, WriteDebugMessages must be set to true for this to work. You can use like wildcards to get messages from multiple sources, as well as * to get
+                         everything. (System.String[], default: System.String[])
 ShowNavigationMarkers  : Write paths after every block and test, for easy navigation in VSCode. (False, default: False)
+ReturnRawResultObject  : Returns unfiltered result object, this is for development only. Do not rely on this object for additional properties, non-public properties will be renamed without previous notice. (False,
+                         default: False)
 ```
 
-:::tip New in Pester 5.2.0!
-[New-PesterConfiguration](../commands/New-PesterConfiguration) is now available and the recommended way to create the PesterConfiguration-object. It has the added benefit of auto-loading the Pester-module if needed and up-to-date help of available options in the configuration object.
-:::
-
-The configuration object can be constructed either via the Default static property or by casting a hashtable to it. You can also cast a hashtable to any of its sections. Here are three different ways to the same goal:
+The configuration object can be constructed either using the `New-PesterConfiguration` command or by casting a hashtable to the `PesterConfiguration` type. Here are three different ways to the same goal:
 
 ```powershell
 # import module before creating the object
 Import-Module Pester
 # get default from static property
-$configuration = [PesterConfiguration]::Default
+$configuration = New-PesterConfiguration
 # adding properties & discover via intellisense
 $configuration.Run.Path = 'C:\projects\tst'
 $configuration.Filter.Tag = 'Acceptance'
@@ -69,14 +68,14 @@ $configuration.CodeCoverage.Enabled = $true
 
 This configuration object contains all the options that are currently supported and the Simple interface is internally translates to this object internally. It is the source of truth for the defaults and configuration. The Intermediate api will be figured out later, as well as all the other details.
 
-### PesterPreference
+## PesterPreference
 
 There is one more way to provide the configuration object which is `$PesterPreference`. On `Invoke-Pester` (in case of interactive execution `Invoke-Pester` is called inside of the first `Describe`) the preference is collected and merged with the configuration object if provided. This allows you to configure everything that you would via Invoke-Pester also when you are running interactively (via `F5`). You can also use this to define the defaults for your session by putting $PesterPreference into your PowerShell profile.
 
 Here is a simple example of enabling Mock logging output while running interactively :
 
 ```powershell
-$PesterPreference = [PesterConfiguration]::Default
+$PesterPreference = New-PesterConfiguration
 $PesterPreference.Debug.WriteDebugMessages = $true
 $PesterPreference.Debug.WriteDebugMessagesFrom = "Mock"
 
@@ -123,3 +122,134 @@ Mock: Removing function PesterMock_b0bde5ee-1b4f-4b8f-b1dd-aef38b3bc13d and alia
 Tests completed in 1.12s
 Tests Passed: 1, Failed: 0, Skipped: 0, Total: 1, NotRun: 0
 ```
+
+## PesterConfiguration Options
+
+<!--GENERATED_PESTER_CONFIGURATION_DOCS_START-->
+
+*This section was generated using Pester 6.0.0-alpha1.*
+
+### Run
+
+Run configuration.
+
+<div className="table-wrapper">
+| Option | Description | Type | Default |
+|--------|-------------|-----:|--------:|
+| Run.Path | Directories to be searched for tests, paths directly to test files, or combination of both. | `string[]` | `@('.')` |
+| Run.ExcludePath | Directories or files to be excluded from the run. | `string[]` | `@()` |
+| Run.ScriptBlock | ScriptBlocks containing tests to be executed. | `scriptblock[]` | `@()` |
+| Run.Container | ContainerInfo objects containing tests to be executed. | `ContainerInfo[]` | `@()` |
+| Run.TestExtension | Filter used to identify test files. | `string` | `'.Tests.ps1'` |
+| Run.Exit | Exit with non-zero exit code when the test run fails. Exit code is always set to `$LASTEXITCODE` even when this option is `$false`. When used together with Throw, throwing an exception is preferred. | `bool` | `$false` |
+| Run.Throw | Throw an exception when test run fails. When used together with Exit, throwing an exception is preferred. | `bool` | `$false` |
+| Run.PassThru | Return result object to the pipeline after finishing the test run. | `bool` | `$false` |
+| Run.SkipRun | Runs the discovery phase but skips run. Use it with PassThru to get object populated with all tests. | `bool` | `$false` |
+| Run.SkipRemainingOnFailure | Skips remaining tests after failure for selected scope, options are None, Run, Container and Block. | `string` | `'None'` |
+</div>
+
+### Filter
+
+Filter configuration
+
+<div className="table-wrapper">
+| Option | Description | Type | Default |
+|--------|-------------|-----:|--------:|
+| Filter.Tag | Tags of Describe, Context or It to be run. | `string[]` | `@()` |
+| Filter.ExcludeTag | Tags of Describe, Context or It to be excluded from the run. | `string[]` | `@()` |
+| Filter.Line | Filter by file and scriptblock start line, useful to run parsed tests programmatically to avoid problems with expanded names. Example: 'C:\tests\file1.Tests.ps1:37' | `string[]` | `@()` |
+| Filter.ExcludeLine | Exclude by file and scriptblock start line, takes precedence over Line. | `string[]` | `@()` |
+| Filter.FullName | Full name of test with -like wildcards, joined by dot. Example: '*.describe Get-Item.test1' | `string[]` | `@()` |
+</div>
+
+### CodeCoverage
+
+CodeCoverage configuration.
+
+<div className="table-wrapper">
+| Option | Description | Type | Default |
+|--------|-------------|-----:|--------:|
+| CodeCoverage.Enabled | Enable CodeCoverage. | `bool` | `$false` |
+| CodeCoverage.OutputFormat | Format to use for code coverage report. Possible values: JaCoCo, CoverageGutters | `string` | `'JaCoCo'` |
+| CodeCoverage.OutputPath | Path relative to the current directory where code coverage report is saved. | `string` | `'coverage.xml'` |
+| CodeCoverage.OutputEncoding | Encoding of the output file. | `string` | `'UTF8'` |
+| CodeCoverage.Path | Directories or files to be used for code coverage, by default the Path(s) from general settings are used, unless overridden here. | `string[]` | `@()` |
+| CodeCoverage.ExcludeTests | Exclude tests from code coverage. This uses the TestFilter from general configuration. | `bool` | `$true` |
+| CodeCoverage.RecursePaths | Will recurse through directories in the Path option. | `bool` | `$true` |
+| CodeCoverage.CoveragePercentTarget | Target percent of code coverage that you want to achieve, default 75%. | `decimal` | `75` |
+| CodeCoverage.UseBreakpoints | When false, use Profiler based tracer to do CodeCoverage instead of using breakpoints. | `bool` | `$false` |
+| CodeCoverage.SingleHitBreakpoints | Remove breakpoint when it is hit. This increases performance of breakpoint based CodeCoverage. | `bool` | `$true` |
+</div>
+
+### TestResult
+
+TestResult configuration.
+
+<div className="table-wrapper">
+| Option | Description | Type | Default |
+|--------|-------------|-----:|--------:|
+| TestResult.Enabled | Enable TestResult. | `bool` | `$false` |
+| TestResult.OutputFormat | Format to use for test result report. Possible values: NUnitXml, NUnit2.5, NUnit3 or JUnitXml | `string` | `'NUnitXml'` |
+| TestResult.OutputPath | Path relative to the current directory where test result report is saved. | `string` | `'testResults.xml'` |
+| TestResult.OutputEncoding | Encoding of the output file. | `string` | `'UTF8'` |
+| TestResult.TestSuiteName | Set the name assigned to the root 'test-suite' element. | `string` | `'Pester'` |
+</div>
+
+### Should
+
+Should configuration.
+
+<div className="table-wrapper">
+| Option | Description | Type | Default |
+|--------|-------------|-----:|--------:|
+| Should.ErrorAction | Controls if Should throws on error. Use 'Stop' to throw on error, or 'Continue' to fail at the end of the test. | `string` | `'Stop'` |
+</div>
+
+### Debug
+
+Debug configuration for Pester. ⚠ Use at your own risk!
+
+<div className="table-wrapper">
+| Option | Description | Type | Default |
+|--------|-------------|-----:|--------:|
+| Debug.ShowFullErrors | Show full errors including Pester internal stack. This property is deprecated, and if set to true it will override Output.StackTraceVerbosity to 'Full'. | `bool` | `$false` |
+| Debug.WriteDebugMessages | Write Debug messages to screen. | `bool` | `$false` |
+| Debug.WriteDebugMessagesFrom | Write Debug messages from a given source, WriteDebugMessages must be set to true for this to work. You can use like wildcards to get messages from multiple sources, as well as * to get everything. | `string[]` | `@('Discovery', 'Skip', 'Mock', 'CodeCoverage')` |
+| Debug.ShowNavigationMarkers | Write paths after every block and test, for easy navigation in VSCode. | `bool` | `$false` |
+| Debug.ReturnRawResultObject | Returns unfiltered result object, this is for development only. Do not rely on this object for additional properties, non-public properties will be renamed without previous notice. | `bool` | `$false` |
+</div>
+
+### Output
+
+Output configuration
+
+<div className="table-wrapper">
+| Option | Description | Type | Default |
+|--------|-------------|-----:|--------:|
+| Output.Verbosity | The verbosity of output, options are None, Normal, Detailed and Diagnostic. | `string` | `'Normal'` |
+| Output.StackTraceVerbosity | The verbosity of stacktrace output, options are None, FirstLine, Filtered and Full. | `string` | `'Filtered'` |
+| Output.CIFormat | The CI format of error output in build logs, options are None, Auto, AzureDevops and GithubActions. | `string` | `'Auto'` |
+| Output.CILogLevel | The CI log level in build logs, options are Error and Warning. | `string` | `'Error'` |
+| Output.RenderMode | The mode used to render console output, options are Auto, Ansi, ConsoleColor and Plaintext. | `string` | `'Auto'` |
+</div>
+
+### TestDrive
+
+TestDrive configuration.
+
+<div className="table-wrapper">
+| Option | Description | Type | Default |
+|--------|-------------|-----:|--------:|
+| TestDrive.Enabled | Enable TestDrive. | `bool` | `$true` |
+</div>
+
+### TestRegistry
+
+TestRegistry configuration.
+
+<div className="table-wrapper">
+| Option | Description | Type | Default |
+|--------|-------------|-----:|--------:|
+| TestRegistry.Enabled | Enable TestRegistry. | `bool` | `$true` |
+</div>
+<!--GENERATED_PESTER_CONFIGURATION_DOCS_END-->
