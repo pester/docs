@@ -27,7 +27,7 @@ Runs Pester tests
 ```powershell
 Invoke-Pester [[-Path] <String[]>] [-ExcludePath <String[]>] [-TagFilter <String[]>]
  [-ExcludeTagFilter <String[]>] [-FullNameFilter <String[]>] [-CI] [-Output <String>] [-PassThru]
- [-Container <ContainerInfo[]>] [<CommonParameters>]
+ [-Container <ContainerInfo[]>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### Legacy
@@ -37,13 +37,13 @@ Invoke-Pester [[-Path] <String[]>] [-TagFilter <String[]>] [-ExcludeTagFilter <S
  [-FullNameFilter <String[]>] [-PassThru] [-EnableExit] [-CodeCoverage <Object[]>]
  [-CodeCoverageOutputFile <String>] [-CodeCoverageOutputFileEncoding <String>]
  [-CodeCoverageOutputFileFormat <String>] [-Strict] [-OutputFile <String>] [-OutputFormat <String>] [-Quiet]
- [-PesterOption <Object>] [-Show <String>] [<CommonParameters>]
+ [-PesterOption <Object>] [-Show <String>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### Advanced
 
 ```powershell
-Invoke-Pester [-Configuration <PesterConfiguration>] [<CommonParameters>]
+Invoke-Pester [-Configuration <PesterConfiguration>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -126,7 +126,7 @@ even if the first fails.
 ### EXAMPLE 4
 
 ```powershell
-$config = [PesterConfiguration]::Default
+$config = New-PesterConfiguration
 $config.TestResult.Enabled = $true
 Invoke-Pester -Configuration $config
 ```
@@ -315,16 +315,8 @@ Accept wildcard characters: False
 
 ### -Configuration
 
-(Introduced v5)
-[PesterConfiguration] object for Advanced Configuration
-
-Pester supports Simple and Advanced Configuration.
-
-Invoke-Pester -Configuration &lt;PesterConfiguration&gt; [&lt;CommonParameters&gt;]
-
-Default is New-PesterConfiguration.
-
-For help on each option see New-PesterConfiguration, or inspect the object it returns.
+[PesterConfiguration] object for Advanced Configuration created using `New-PesterConfiguration`.
+For help on each option see about_PesterConfiguration or inspect the object.
 
 ```yaml
 Type: PesterConfiguration
@@ -575,12 +567,6 @@ Accept wildcard characters: False
 This parameter is ignored in v5, and is only present for backwards compatibility
 when migrating from v4.
 
-Sets advanced options for the test execution.
-Enter a PesterOption object,
-such as one that you create by using the New-PesterOption cmdlet, or a hash table
-in which the keys are option names and the values are option values.
-For more information on the options available, see the help for New-PesterOption.
-
 ```yaml
 Type: Object
 Parameter Sets: Legacy
@@ -634,6 +620,22 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -ProgressAction
+
+\{\{ Fill ProgressAction Description \}\}
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### CommonParameters
 
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
@@ -641,6 +643,8 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ## OUTPUTS
+
+### Pester.Run
 
 ## NOTES
 
@@ -652,4 +656,4 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 6.0.0-alpha1](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.0.0-alpha5](https://github.com/pester/pester).*

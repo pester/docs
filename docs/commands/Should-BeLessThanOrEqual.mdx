@@ -23,7 +23,8 @@ Compares the expected value to actual value, to see if the actual value is less 
 ## SYNTAX
 
 ```powershell
-Should-BeLessThanOrEqual [[-Actual] <Object>] [-Expected] <Object> [-Because <String>] [<CommonParameters>]
+Should-BeLessThanOrEqual [[-Actual] <Object>] [-Expected] <Object> [-Because <String>]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -99,6 +100,22 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -ProgressAction
+
+\{\{ Fill ProgressAction Description \}\}
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### CommonParameters
 
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
@@ -119,4 +136,4 @@ The `Should-BeLessThanOrEqual` assertion is the opposite of the `Should-BeGreate
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 6.0.0-alpha1](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.0.0-alpha5](https://github.com/pester/pester).*

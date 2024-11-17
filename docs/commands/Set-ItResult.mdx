@@ -25,13 +25,13 @@ Set-ItResult is used inside the It block to explicitly set the test result
 ### Inconclusive
 
 ```powershell
-Set-ItResult [-Inconclusive] [-Because <String>] [<CommonParameters>]
+Set-ItResult [-Inconclusive] [-Because <String>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### Skipped
 
 ```powershell
-Set-ItResult [-Skipped] [-Because <String>] [<CommonParameters>]
+Set-ItResult [-Skipped] [-Because <String>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -120,6 +120,22 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -ProgressAction
+
+\{\{ Fill ProgressAction Description \}\}
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### CommonParameters
 
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
@@ -136,4 +152,4 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 6.0.0-alpha1](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.0.0-alpha5](https://github.com/pester/pester).*
