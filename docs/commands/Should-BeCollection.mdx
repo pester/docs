@@ -23,8 +23,16 @@ It does not compare the types of the input collections.
 
 ## SYNTAX
 
+### Expected
+
 ```powershell
 Should-BeCollection [[-Actual] <Object>] [-Expected] <Object> [-Because <String>] [<CommonParameters>]
+```
+
+### Count
+
+```powershell
+Should-BeCollection [[-Actual] <Object>] [-Because <String>] [-Count <Int32>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -78,7 +86,7 @@ A collection of items.
 
 ```yaml
 Type: Object
-Parameter Sets: (All)
+Parameter Sets: Expected
 Aliases:
 
 Required: True
@@ -104,6 +112,22 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -Count
+
+Checks if the collection has the expected number of items.
+
+```yaml
+Type: Int32
+Parameter Sets: Count
+Aliases:
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### CommonParameters
 
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
@@ -122,4 +146,4 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 6.0.0-alpha1](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.0.0-alpha5](https://github.com/pester/pester).*
