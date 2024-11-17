@@ -37,8 +37,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-        # Temporary workaround for pending platyPS fix for https://github.com/PowerShell/platyPS/issues/663
-        # PowerShell 7.4+ in images add -ProgressAction to help
+      # TEMP workaround for https://github.com/PowerShell/platyPS/issues/663 affection PS 7.4+ used in runner images
       - name: Downgrade to PowerShell 7.3
         shell: pwsh
         run: |
@@ -47,6 +46,7 @@ jobs:
           sudo dpkg -i packages-microsoft-prod.deb
           sudo apt-get update
           sudo apt-get install -y powershell=7.3.11-1.deb
+          rm packages-microsoft-prod.deb
           pwsh --version
 
       # This step will also install and import modules incl. selected Pester-version
