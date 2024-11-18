@@ -23,8 +23,8 @@ Asserts that a script block throws an exception.
 ## SYNTAX
 
 ```powershell
-Should-Throw [-ScriptBlock] <ScriptBlock> [[-ExceptionType] <Type>] [[-ExceptionMessage] <String>]
- [[-FullyQualifiedErrorId] <String>] [-AllowNonTerminatingError] [[-Because] <String>] [<CommonParameters>]
+Should-Throw -ScriptBlock <ScriptBlock> [[-ExceptionMessage] <String>] [[-FullyQualifiedErrorId] <String>]
+ [[-ExceptionType] <Type>] [[-Because] <String>] [-AllowNonTerminatingError] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -38,6 +38,7 @@ Should-Throw [-ScriptBlock] <ScriptBlock> [[-ExceptionType] <Type>] [[-Exception
 ```powershell
 { throw 'error' } | Should-Throw
 { throw 'error' } | Should-Throw -ExceptionMessage 'error'
+{ throw 'wildcard character []' } | Should-Throw -ExceptionMessage '*character `[`]'
 { throw 'error' } | Should-Throw -ExceptionType 'System.Management.Automation.RuntimeException'
 { throw 'error' } | Should-Throw -FullyQualifiedErrorId 'RuntimeException'
 { throw 'error' } | Should-Throw -FullyQualifiedErrorId '*Exception'
@@ -67,25 +68,9 @@ Parameter Sets: (All)
 Aliases:
 
 Required: True
-Position: 1
+Position: Named
 Default value: None
 Accept pipeline input: True (ByValue)
-Accept wildcard characters: False
-```
-
-### -ExceptionType
-
-The type of exception that should be thrown.
-
-```yaml
-Type: Type
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 2
-Default value: None
-Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
@@ -100,7 +85,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 3
+Position: 1
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -110,6 +95,38 @@ Accept wildcard characters: False
 
 The FullyQualifiedErrorId that the exception should contain.
 `-like` wildcards are supported.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 2
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ExceptionType
+
+The type of exception that should be thrown.
+
+```yaml
+Type: Type
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 3
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Because
+
+The reason why the input should be the expected value.
 
 ```yaml
 Type: String
@@ -139,22 +156,6 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Because
-
-The reason why the input should be the expected value.
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 5
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### CommonParameters
 
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
@@ -173,4 +174,4 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 6.0.0-alpha1](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.0.0-alpha5](https://github.com/pester/pester).*

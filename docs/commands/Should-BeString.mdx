@@ -24,7 +24,7 @@ Asserts that the actual value is equal to the expected value.
 
 ```powershell
 Should-BeString [[-Actual] <Object>] [-Expected] <String> [-Because <String>] [-CaseSensitive]
- [-IgnoreWhitespace] [<CommonParameters>]
+ [-IgnoreWhitespace] [-TrimWhitespace] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -132,6 +132,22 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -TrimWhitespace
+
+Trims whitespace at the start and end of the string.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### CommonParameters
 
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
@@ -152,4 +168,4 @@ The `Should-BeString` assertion is the opposite of the `Should-NotBeString` asse
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 6.0.0-alpha1](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.0.0-alpha5](https://github.com/pester/pester).*

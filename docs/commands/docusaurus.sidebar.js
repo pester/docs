@@ -22,7 +22,6 @@ module.exports = [
     'commands/Describe',
     'commands/Export-JUnitReport',
     'commands/Export-NUnitReport',
-    'commands/Get-EquivalencyOption',
     'commands/Get-ShouldOperator',
     'commands/InModuleScope',
     'commands/Invoke-Pester',

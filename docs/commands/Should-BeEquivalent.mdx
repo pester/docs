@@ -23,8 +23,8 @@ Compares two objects for equivalency, by recursively comparing their properties 
 ## SYNTAX
 
 ```powershell
-Should-BeEquivalent [[-Actual] <Object>] [-Expected] <Object> [-Because <String>] [-Options <Object>]
- [<CommonParameters>]
+Should-BeEquivalent [[-Actual] <Object>] [-Expected] <Object> [-Because <String>] [-ExcludePath <String[]>]
+ [-ExcludePathsNotOnExpected] [-Comparator <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -34,6 +34,24 @@ Should-BeEquivalent [[-Actual] <Object>] [-Expected] <Object> [-Because <String>
 ## EXAMPLES
 
 ### EXAMPLE 1
+
+```
+```powershell
+    Should-BeEquivalent ...  -ExcludePath 'Id', 'Timestamp' -Comparator 'Equality'
+```powershell
+This example generates an equivalency option object that excludes the 'Id' and 'Timestamp' properties from the comparison and uses a simple equality comparison strategy.
+```
+
+### EXAMPLE 2
+
+```
+```powereshell
+    Should-BeEquivalent ... -ExcludePathsNotOnExpected
+```powershell
+This example generates an equivalency option object that excludes any paths not present on the expected object from the comparison, using the default deep comparison strategy.
+```
+
+### EXAMPLE 3
 
 ```powershell
     $expected = [PSCustomObject] @{
@@ -50,7 +68,7 @@ Should-BeEquivalent [[-Actual] <Object>] [-Expected] <Object> [-Because <String>
 
 This will throw an error because the actual object has an additional property Age and the Name values are not equivalent.
 
-### EXAMPLE 2
+### EXAMPLE 4
 
 ```powershell
     $expected = [PSCustomObject] @{
@@ -116,19 +134,55 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Options
+### -ExcludePath
 
-Options for the comparison.
-Get-EquivalencyOption function is called to get the default options.
+An array of strings specifying the paths to exclude from the comparison.
+Each path should correspond to a property name or a chain of property names separated by dots for nested properties.
+The paths use dot notation to navigate to a child property, such as "user.name".
 
 ```yaml
-Type: Object
+Type: String[]
 Parameter Sets: (All)
 Aliases:
 
 Required: False
 Position: Named
-Default value: (Get-EquivalencyOption)
+Default value: @()
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ExcludePathsNotOnExpected
+
+A switch parameter that, when set, excludes any paths from the comparison that are not present on the expected object.
+This is useful for ignoring extra properties on the actual object that are not relevant to the comparison.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Comparator
+
+Specifies the comparison strategy to use.
+The options are 'Equivalency' for a deep comparison that considers the structure and values of objects, and 'Equality' for a simple equality comparison.
+The default is 'Equivalency'.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: Equivalency
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -151,4 +205,4 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 6.0.0-alpha1](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.0.0-alpha5](https://github.com/pester/pester).*

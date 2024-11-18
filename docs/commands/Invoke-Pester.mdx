@@ -126,7 +126,7 @@ even if the first fails.
 ### EXAMPLE 4
 
 ```powershell
-$config = [PesterConfiguration]::Default
+$config = New-PesterConfiguration
 $config.TestResult.Enabled = $true
 Invoke-Pester -Configuration $config
 ```
@@ -315,16 +315,8 @@ Accept wildcard characters: False
 
 ### -Configuration
 
-(Introduced v5)
-[PesterConfiguration] object for Advanced Configuration
-
-Pester supports Simple and Advanced Configuration.
-
-Invoke-Pester -Configuration &lt;PesterConfiguration&gt; [&lt;CommonParameters&gt;]
-
-Default is New-PesterConfiguration.
-
-For help on each option see New-PesterConfiguration, or inspect the object it returns.
+[PesterConfiguration] object for Advanced Configuration created using `New-PesterConfiguration`.
+For help on each option see about_PesterConfiguration or inspect the object.
 
 ```yaml
 Type: PesterConfiguration
@@ -575,12 +567,6 @@ Accept wildcard characters: False
 This parameter is ignored in v5, and is only present for backwards compatibility
 when migrating from v4.
 
-Sets advanced options for the test execution.
-Enter a PesterOption object,
-such as one that you create by using the New-PesterOption cmdlet, or a hash table
-in which the keys are option names and the values are option values.
-For more information on the options available, see the help for New-PesterOption.
-
 ```yaml
 Type: Object
 Parameter Sets: Legacy
@@ -642,6 +628,8 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
+### Pester.Run
+
 ## NOTES
 
 ## RELATED LINKS
@@ -652,4 +640,4 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 6.0.0-alpha1](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.0.0-alpha5](https://github.com/pester/pester).*

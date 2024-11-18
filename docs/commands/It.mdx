@@ -25,14 +25,15 @@ Validates the results of a test inside of a Describe block.
 ### Normal (Default)
 
 ```powershell
-It [-Name] <String> [[-Test] <ScriptBlock>] [-ForEach <Object[]>] [-Tag <String[]>] [<CommonParameters>]
+It [-Name] <String> [[-Test] <ScriptBlock>] [-ForEach <Object[]>] [-Tag <String[]>] [-AllowNullOrEmptyForEach]
+ [<CommonParameters>]
 ```
 
 ### Skip
 
 ```powershell
 It [-Name] <String> [[-Test] <ScriptBlock>] [-ForEach <Object[]>] [-Tag <String[]>] [-Skip]
- [<CommonParameters>]
+ [-AllowNullOrEmptyForEach] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -213,6 +214,23 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -AllowNullOrEmptyForEach
+
+Allows empty or null values for -ForEach when Run.FailOnNullOrEmptyForEach is enabled.
+This might be excepted in certain scenarios like using external data.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### CommonParameters
 
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
@@ -235,4 +253,4 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 6.0.0-alpha1](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.0.0-alpha5](https://github.com/pester/pester).*
