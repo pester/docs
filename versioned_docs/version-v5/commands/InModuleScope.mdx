@@ -1,0 +1,207 @@
+---
+id: InModuleScope
+title: InModuleScope
+description: Help page for the PowerShell Pester "InModuleScope" command
+keywords:
+  - PowerShell
+  - Pester
+  - Help
+  - Documentation
+hide_title: false
+hide_table_of_contents: false
+custom_edit_url: null
+---
+
+:::info This page was generated
+Contributions are welcome in [Pester-repo](https://github.com/pester/pester).
+:::
+
+## SYNOPSIS
+
+Allows you to execute parts of a test script within the
+scope of a PowerShell script or manifest module.
+
+## SYNTAX
+
+```powershell
+InModuleScope [-ModuleName] <String> [-ScriptBlock] <ScriptBlock> [[-Parameters] <Hashtable>]
+ [[-ArgumentList] <Object[]>] [<CommonParameters>]
+```
+
+## DESCRIPTION
+
+By injecting some test code into the scope of a PowerShell
+script or manifest module, you can use non-exported functions, aliases
+and variables inside that module, to perform unit tests on
+its internal implementation.
+
+InModuleScope may be used anywhere inside a Pester script,
+either inside or outside a Describe block.
+
+## EXAMPLES
+
+### EXAMPLE 1
+
+```powershell
+# The script module:
+function PublicFunction {
+    # Does something
+}
+
+function PrivateFunction {
+    return $true
+}
+
+Export-ModuleMember -Function PublicFunction
+
+# The test script:
+
+Import-Module MyModule
+
+InModuleScope MyModule {
+    Describe 'Testing MyModule' {
+        It 'Tests the Private function' {
+            PrivateFunction | Should -Be $true
+        }
+    }
+}
+```
+
+Normally you would not be able to access "PrivateFunction" from
+the PowerShell session, because the module only exported
+"PublicFunction". 
+Using InModuleScope allowed this call to
+"PrivateFunction" to work successfully.
+
+### EXAMPLE 2
+
+```powershell
+# The script module:
+function PublicFunction {
+    # Does something
+}
+
+function PrivateFunction ($MyParam) {
+    return $MyParam
+}
+
+Export-ModuleMember -Function PublicFunction
+
+# The test script:
+
+Describe 'Testing MyModule' {
+    BeforeAll {
+        Import-Module MyModule
+    }
+
+    It 'passing in parameter' {
+        $SomeVar = 123
+        InModuleScope 'MyModule' -Parameters @{ MyVar = $SomeVar } {
+            $MyVar | Should -Be 123
+        }
+    }
+
+    It 'accessing whole testcase in module scope' -TestCases @(
+        @{ Name = 'Foo'; Bool = $true }
+    ) {
+        # Passes the whole testcase-dictionary available in $_ to InModuleScope
+        InModuleScope 'MyModule' -Parameters $_ {
+            $Name | Should -Be 'Foo'
+            PrivateFunction -MyParam $Bool | Should -BeTrue
+        }
+    }
+}
+```
+
+This example shows two ways of using `-Parameters` to pass variables created in a
+testfile into the module scope where the scriptblock provided to InModuleScope is executed.
+No variables from the outside are available inside the scriptblock without explicitly passing
+them in using `-Parameters` or `-ArgumentList`.
+
+## PARAMETERS
+
+### -ModuleName
+
+The name of the module into which the test code should be
+injected.
+This module must already be loaded into the current
+PowerShell session.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ScriptBlock
+
+The code to be executed within the script or manifest module.
+
+```yaml
+Type: ScriptBlock
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 2
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Parameters
+
+A optional hashtable of parameters to be passed to the scriptblock.
+Parameters are automatically made available as variables in the scriptblock.
+
+```yaml
+Type: Hashtable
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 3
+Default value: @{}
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ArgumentList
+
+A optional list of arguments to be passed to the scriptblock.
+
+```yaml
+Type: Object[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 4
+Default value: @()
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### CommonParameters
+
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+## INPUTS
+
+## OUTPUTS
+
+## NOTES
+
+## RELATED LINKS
+
+[https://pester.dev/docs/commands/InModuleScope](https://pester.dev/docs/commands/InModuleScope)
+
+## VERSION
+
+*This page was generated using comment-based help in [Pester 5.6.0](https://github.com/pester/pester).*

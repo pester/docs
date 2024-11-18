@@ -1,0 +1,110 @@
+---
+id: AfterAll
+title: AfterAll
+description: Help page for the PowerShell Pester "AfterAll" command
+keywords:
+  - PowerShell
+  - Pester
+  - Help
+  - Documentation
+hide_title: false
+hide_table_of_contents: false
+custom_edit_url: null
+---
+
+:::info This page was generated
+Contributions are welcome in [Pester-repo](https://github.com/pester/pester).
+:::
+
+## SYNOPSIS
+
+Defines a series of steps to perform at the end of the current container,
+Context or Describe block.
+
+## SYNTAX
+
+```powershell
+AfterAll [-Scriptblock] <ScriptBlock> [<CommonParameters>]
+```
+
+## DESCRIPTION
+
+AfterAll is used to share teardown after all the tests in a container, Describe
+or Context including all child blocks and tests.
+AfterAll runs during Run phase
+and runs only once in the current block.
+It's guaranteed to run even if tests
+fail.
+
+The typical usage is to clean up state or temporary used in tests.
+
+BeforeAll and AfterAll are unique in that they apply to the entire container,
+Context or Describe block regardless of the order of the statements compared to
+other Context or Describe blocks at the same level.
+
+## EXAMPLES
+
+### EXAMPLE 1
+
+```powershell
+Describe "Validate important file" {
+    BeforeAll {
+        $samplePath = "$([IO.Path]::GetTempPath())/$([Guid]::NewGuid()).txt"
+        Write-Host $samplePath
+        1..100 | Set-Content -Path $samplePath
+    }
+
+    It "File Contains 100 lines" {
+        @(Get-Content $samplePath).Count | Should -Be 100
+    }
+
+    It "First ten lines should be 1 -> 10" {
+        @(Get-Content $samplePath -TotalCount 10) | Should -Be @(1..10)
+    }
+
+    AfterAll {
+        Remove-Item -Path $samplePath
+    }
+}
+```
+
+This example uses AfterAll to clean up a sample-file generated only for
+the tests in the Describe-block.
+
+## PARAMETERS
+
+### -Scriptblock
+
+A scriptblock with steps to be executed during teardown.
+
+```yaml
+Type: ScriptBlock
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 2
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### CommonParameters
+
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+## INPUTS
+
+## OUTPUTS
+
+## NOTES
+
+## RELATED LINKS
+
+[https://pester.dev/docs/commands/AfterAll](https://pester.dev/docs/commands/AfterAll)
+
+[https://pester.dev/docs/usage/setup-and-teardown](https://pester.dev/docs/usage/setup-and-teardown)
+
+## VERSION
+
+*This page was generated using comment-based help in [Pester 5.6.0](https://github.com/pester/pester).*

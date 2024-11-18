@@ -1,0 +1,114 @@
+---
+id: Should-NotHaveType
+title: Should-NotHaveType
+description: Help page for the PowerShell Pester "Should-NotHaveType" command
+keywords:
+  - PowerShell
+  - Pester
+  - Help
+  - Documentation
+hide_title: false
+hide_table_of_contents: false
+custom_edit_url: null
+---
+
+:::info This page was generated
+Contributions are welcome in [Pester-repo](https://github.com/pester/pester).
+:::
+
+## SYNOPSIS
+
+Asserts that the input is not of the expected type.
+
+## SYNTAX
+
+```powershell
+Should-NotHaveType [[-Actual] <Object>] [-Expected] <Type> [-Because <String>] [<CommonParameters>]
+```
+
+## DESCRIPTION
+
+\{\{ Fill in the Description \}\}
+
+## EXAMPLES
+
+### EXAMPLE 1
+
+```powershell
+"hello" | Should-NotHaveType ([Int32])
+1 | Should-NotHaveType ([String])
+```
+
+These assertions will pass, because the actual value is not of the expected type.
+
+## PARAMETERS
+
+### -Actual
+
+The actual value.
+
+```yaml
+Type: Object
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 2
+Default value: None
+Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
+
+### -Expected
+
+The expected type.
+
+```yaml
+Type: Type
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Because
+
+The reason why the input should not be the expected type.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### CommonParameters
+
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+## INPUTS
+
+## OUTPUTS
+
+## NOTES
+
+This assertion is the opposite of `Should-HaveType`.
+
+## RELATED LINKS
+
+[https://pester.dev/docs/commands/Should-NotHaveType](https://pester.dev/docs/commands/Should-NotHaveType)
+
+[https://pester.dev/docs/assertions](https://pester.dev/docs/assertions)
+
+## VERSION
+
+*This page was generated using comment-based help in [Pester 6.0.0-alpha5](https://github.com/pester/pester).*

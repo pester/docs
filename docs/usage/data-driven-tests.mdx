@@ -149,8 +149,6 @@ Describe "Get-Emoji <name>" -ForEach @(
 }
 ```
 
-
-
 ## Using `-ForEach` & `-TestCases` with an array
 
 `-ForEach` is most powerful when used with an array of hashtables, but it can take any array. In that case it will define `$_` variable, representing the current item. This approach can be used on `Describe`, `Context` and `It`:
@@ -179,8 +177,13 @@ Describe "Get-FruitBasket" {
 }
 ```
 
-:::tip
+:::tip Array of hashtables
 `-ForEach` defines the `$_` variable even when used with an array of hashtables. In that case `$_` will be set to the current hashtable.
+:::
+
+:::warning Empty or null data
+Pester v6 will throw an exception when `-ForEach` is passed `$null` or an empty array to avoid silently ignoring the test.
+To allow tests with missing/no data, use the `-AllowNullOrEmptyForEach` switch in `Describe/Context/It` or allow globally by setting the [configuration option](./configuration) `Run.FailOnNullOrEmptyForEach` to `$false`.
 :::
 
 ## Using `<>` templates
@@ -480,7 +483,7 @@ Invoke-Pester -Container $containers -Output Detailed
 
 ## `BeforeDiscovery`
 
-In Pester v4 it was normal to place code directly on top of the script file, or directly into the body of `Describe` and `Context`. Pester v5 discourages this, because all code directly in script or in `Describe / Context` body will run during `Discovery`. This leads to unexpected results.
+In Pester v4 it was normal to place code directly on top of the script file, or directly into the body of `Describe` and `Context`. Pester v5 and later discourages this, because all code directly in script or in `Describe / Context` body will run during `Discovery`. This leads to unexpected results.
 
 BUT in some cases, especially when generating tests, putting code directly in script body is okay. `BeforeDiscovery` was introduced to show that the code is like this intentionally, and not by accident. Wrapping code into `BeforeDiscovery` has no impact on its execution. It should be used everywhere where code is intentionally placed outside of a Pester controlled leaf-block (see [Discovery and Run](discovery-and-run)). That is on top of files, or directly in body of `Describe / Context`.
 
@@ -507,13 +510,13 @@ Describe "File - <_>" -ForEach $files {
 
 ## Migrating from Pester v4
 
-There are two main things to take into account when Data driven tests in Pester v5: The [execution is not top down](#execution-is-not-top-down) like in V4 but done in two phases `Discovery` and `Run`. Variables from `Discovery` are not available in `Run`, unless you explicitly attach them to a `Describe`, `Context` or `It` using `Foreach` or `TestCases`
+There are two main things to take into account when Data driven tests in Pester v5+: The [execution is not top down](#execution-is-not-top-down) like in V4 but done in two phases `Discovery` and `Run`. Variables from `Discovery` are not available in `Run`, unless you explicitly attach them to a `Describe`, `Context` or `It` using `Foreach` or `TestCases`
 
 This has big impact the classic pattern of using `foreach` to generate tests.
 
 ### Execution is not top down
 
-Pester v5 introduces a new two phase execution. In the first phase called `Discovery`, it will run your whole test script from top to bottom. It will also run all ScriptBlocks that you provided to any `Describe`, `Context` and `BeforeDiscovery`. It will collect the ScriptBlocks you provided to `It`, `BeforeAll`, `BeforeEach`, `AfterEach` and `AfterAll`, but won't run them until later.
+Pester v5 introduced a new two phase execution. In the first phase called `Discovery`, it will run your whole test script from top to bottom. It will also run all ScriptBlocks that you provided to any `Describe`, `Context` and `BeforeDiscovery`. It will collect the ScriptBlocks you provided to `It`, `BeforeAll`, `BeforeEach`, `AfterEach` and `AfterAll`, but won't run them until later.
 
 | Phase             | V4   | V5 Discovery | V5 Run |
 | :---------------- | :--- | :----------- | :----- |
@@ -670,7 +673,7 @@ foreach ($file in $files) {
 }
 ```
 
-This approach can still be easily converted to Pester v5:
+This approach can still be easily converted to Pester v5+:
 
 ```powershell
 BeforeDiscovery {

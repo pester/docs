@@ -23,7 +23,7 @@ Exports a Pester result-object to an JUnit-compatible XML-report
 ## SYNTAX
 
 ```powershell
-Export-JUnitReport [-Result] <Object> [-Path] <String> [<CommonParameters>]
+Export-JUnitReport [-Result] <Run> [-Path] <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -60,7 +60,7 @@ This can be retrieved using Invoke-Pester
 -Passthru or by using the Run.PassThru configuration-option.
 
 ```yaml
-Type: Object
+Type: Run
 Parameter Sets: (All)
 Aliases:
 
@@ -73,7 +73,7 @@ Accept wildcard characters: False
 
 ### -Path
 
-The path where the XML-report should  to the ou the XML report as string.
+The path where the XML-report should be saved.
 
 ```yaml
 Type: String
@@ -105,4 +105,4 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 5.5.0](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.0.0-alpha5](https://github.com/pester/pester).*

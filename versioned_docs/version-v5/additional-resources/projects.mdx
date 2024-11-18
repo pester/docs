@@ -1,0 +1,24 @@
+---
+id: projects
+title: Projects
+sidebar_label: Projects
+custom_edit_url: null
+description: List of third-party modules and projects that extend or compliment Pester
+---
+
+import { PesterDataTable, PesterDataButton } from "@site/src/components/PesterDataTable";
+import { columns, projects } from "./projects.table";
+
+<PesterDataTable
+  columns={ columns }
+  data={ projects }
+/>
+
+:::note Compatibility
+Many projects above were designed for earlier versions of Pester and might not yet be updated to support Pester v5.
+:::
+
+<PesterDataButton
+  text="Suggest New Project"
+  editUrl="https://github.com/pester/docs/edit/main/docs/additional-resources/projects.table.js"
+/>

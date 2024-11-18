@@ -1,0 +1,208 @@
+---
+id: Should-BeEquivalent
+title: Should-BeEquivalent
+description: Help page for the PowerShell Pester "Should-BeEquivalent" command
+keywords:
+  - PowerShell
+  - Pester
+  - Help
+  - Documentation
+hide_title: false
+hide_table_of_contents: false
+custom_edit_url: null
+---
+
+:::info This page was generated
+Contributions are welcome in [Pester-repo](https://github.com/pester/pester).
+:::
+
+## SYNOPSIS
+
+Compares two objects for equivalency, by recursively comparing their properties for equivalency.
+
+## SYNTAX
+
+```powershell
+Should-BeEquivalent [[-Actual] <Object>] [-Expected] <Object> [-Because <String>] [-ExcludePath <String[]>]
+ [-ExcludePathsNotOnExpected] [-Comparator <String>] [<CommonParameters>]
+```
+
+## DESCRIPTION
+
+\{\{ Fill in the Description \}\}
+
+## EXAMPLES
+
+### EXAMPLE 1
+
+```
+```powershell
+    Should-BeEquivalent ...  -ExcludePath 'Id', 'Timestamp' -Comparator 'Equality'
+```powershell
+This example generates an equivalency option object that excludes the 'Id' and 'Timestamp' properties from the comparison and uses a simple equality comparison strategy.
+```
+
+### EXAMPLE 2
+
+```
+```powereshell
+    Should-BeEquivalent ... -ExcludePathsNotOnExpected
+```powershell
+This example generates an equivalency option object that excludes any paths not present on the expected object from the comparison, using the default deep comparison strategy.
+```
+
+### EXAMPLE 3
+
+```powershell
+    $expected = [PSCustomObject] @{
+        Name = "Thomas"
+    }
+
+    $actual = [PSCustomObject] @{
+        Name = "Jakub"
+        Age = 30
+    }
+
+    $actual | Should-BeEquivalent $expected
+```
+
+This will throw an error because the actual object has an additional property Age and the Name values are not equivalent.
+
+### EXAMPLE 4
+
+```powershell
+    $expected = [PSCustomObject] @{
+        Name = "Thomas"
+    }
+
+    $actual = [PSCustomObject] @{
+        Name = "Thomas"
+    }
+
+    $actual | Should-BeEquivalent $expected
+```
+
+This will pass because the actual object has the same properties as the expected object and the Name values are equivalent.
+
+## PARAMETERS
+
+### -Actual
+
+The actual object to compare.
+
+```yaml
+Type: Object
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 2
+Default value: None
+Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
+
+### -Expected
+
+The expected object to compare.
+
+```yaml
+Type: Object
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Because
+
+The reason why the input should be the expected value.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ExcludePath
+
+An array of strings specifying the paths to exclude from the comparison.
+Each path should correspond to a property name or a chain of property names separated by dots for nested properties.
+The paths use dot notation to navigate to a child property, such as "user.name".
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: @()
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ExcludePathsNotOnExpected
+
+A switch parameter that, when set, excludes any paths from the comparison that are not present on the expected object.
+This is useful for ignoring extra properties on the actual object that are not relevant to the comparison.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Comparator
+
+Specifies the comparison strategy to use.
+The options are 'Equivalency' for a deep comparison that considers the structure and values of objects, and 'Equality' for a simple equality comparison.
+The default is 'Equivalency'.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: Equivalency
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### CommonParameters
+
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+## INPUTS
+
+## OUTPUTS
+
+## NOTES
+
+## RELATED LINKS
+
+[https://pester.dev/docs/commands/Should-BeEquivalent](https://pester.dev/docs/commands/Should-BeEquivalent)
+
+[https://pester.dev/docs/assertions](https://pester.dev/docs/assertions)
+
+## VERSION
+
+*This page was generated using comment-based help in [Pester 6.0.0-alpha5](https://github.com/pester/pester).*

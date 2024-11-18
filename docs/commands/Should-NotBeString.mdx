@@ -1,0 +1,157 @@
+---
+id: Should-NotBeString
+title: Should-NotBeString
+description: Help page for the PowerShell Pester "Should-NotBeString" command
+keywords:
+  - PowerShell
+  - Pester
+  - Help
+  - Documentation
+hide_title: false
+hide_table_of_contents: false
+custom_edit_url: null
+---
+
+:::info This page was generated
+Contributions are welcome in [Pester-repo](https://github.com/pester/pester).
+:::
+
+## SYNOPSIS
+
+Asserts that the actual value is not equal to the expected value.
+
+## SYNTAX
+
+```powershell
+Should-NotBeString [[-Actual] <Object>] [[-Expected] <String>] [-Because <String>] [-CaseSensitive]
+ [-IgnoreWhitespace] [<CommonParameters>]
+```
+
+## DESCRIPTION
+
+The `Should-NotBeString` assertion compares the actual value to the expected value using the `-ne` operator.
+The `-ne` operator is case-insensitive by default, but you can make it case-sensitive by using the `-CaseSensitive` switch.
+
+## EXAMPLES
+
+### EXAMPLE 1
+
+```
+```powershell
+"hello" | Should-NotBeString "HELLO"
+```powershell
+This assertion will pass, because the actual value is not equal to the expected value.
+```
+
+### EXAMPLE 2
+
+```
+```powershell
+"hello" | Should-NotBeString "hello" -CaseSensitive
+```powershell
+This assertion will fail, because the actual value is equal to the expected value.
+```
+
+## PARAMETERS
+
+### -Actual
+
+The actual value.
+
+```yaml
+Type: Object
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 2
+Default value: None
+Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
+
+### -Expected
+
+The expected value.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Because
+
+The reason why the actual value should not be equal to the expected value.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -CaseSensitive
+
+Indicates that the comparison should be case-sensitive.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IgnoreWhitespace
+
+Indicates that the comparison should ignore whitespace.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### CommonParameters
+
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+## INPUTS
+
+## OUTPUTS
+
+## NOTES
+
+The `Should-NotBeString` assertion is the opposite of the `Should-BeString` assertion.
+
+## RELATED LINKS
+
+[https://pester.dev/docs/commands/Should-NotBeString](https://pester.dev/docs/commands/Should-NotBeString)
+
+[https://pester.dev/docs/assertions](https://pester.dev/docs/assertions)
+
+## VERSION
+
+*This page was generated using comment-based help in [Pester 6.0.0-alpha5](https://github.com/pester/pester).*

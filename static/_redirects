@@ -2,3 +2,6 @@
 /issues                 https://github.com/pester/pester/issues/new/choose
 /issues/docs            https://github.com/pester/docs/issues/new/choose
 /releases/:v            https://github.com/pester/pester/releases/tag/:v
+
+# Redirect versioned URLs for latest (e.g. /docs/v5 -> /docs)
+/docs/v5/*              /docs/:splat    302

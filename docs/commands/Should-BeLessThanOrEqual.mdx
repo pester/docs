@@ -1,0 +1,122 @@
+---
+id: Should-BeLessThanOrEqual
+title: Should-BeLessThanOrEqual
+description: Help page for the PowerShell Pester "Should-BeLessThanOrEqual" command
+keywords:
+  - PowerShell
+  - Pester
+  - Help
+  - Documentation
+hide_title: false
+hide_table_of_contents: false
+custom_edit_url: null
+---
+
+:::info This page was generated
+Contributions are welcome in [Pester-repo](https://github.com/pester/pester).
+:::
+
+## SYNOPSIS
+
+Compares the expected value to actual value, to see if the actual value is less than or equal to the expected value.
+
+## SYNTAX
+
+```powershell
+Should-BeLessThanOrEqual [[-Actual] <Object>] [-Expected] <Object> [-Because <String>] [<CommonParameters>]
+```
+
+## DESCRIPTION
+
+\{\{ Fill in the Description \}\}
+
+## EXAMPLES
+
+### EXAMPLE 1
+
+```powershell
+1 | Should-BeLessThanOrEqual 2
+1 | Should-BeLessThanOrEqual 1
+```
+
+These assertions will pass, because the actual value is less than or equal to the expected value.
+
+### EXAMPLE 2
+
+```powershell
+2 | Should-BeLessThanOrEqual 1
+```
+
+This assertion will fail, because the actual value is not less than or equal to the expected value.
+
+## PARAMETERS
+
+### -Actual
+
+The actual value.
+
+```yaml
+Type: Object
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 2
+Default value: None
+Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
+
+### -Expected
+
+The expected value.
+
+```yaml
+Type: Object
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Because
+
+The reason why the input should be the expected value.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### CommonParameters
+
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+## INPUTS
+
+## OUTPUTS
+
+## NOTES
+
+The `Should-BeLessThanOrEqual` assertion is the opposite of the `Should-BeGreaterThan` assertion.
+
+## RELATED LINKS
+
+[https://pester.dev/docs/commands/Should-BeLessThanOrEqual](https://pester.dev/docs/commands/Should-BeLessThanOrEqual)
+
+[https://pester.dev/docs/assertions](https://pester.dev/docs/assertions)
+
+## VERSION
+
+*This page was generated using comment-based help in [Pester 6.0.0-alpha5](https://github.com/pester/pester).*

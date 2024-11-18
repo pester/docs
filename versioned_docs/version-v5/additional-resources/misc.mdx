@@ -1,0 +1,38 @@
+---
+id: misc
+title: Miscellaneous
+sidebar_label: Misc
+custom_edit_url: null
+description: Integrations, books and other resources about using Pester
+---
+
+import { PesterDataTable, PesterDataButton } from "@site/src/components/PesterDataTable";
+import { columns, integrations, books } from "./misc.table";
+
+## Integrations
+
+<PesterDataTable
+  columns={ columns }
+  data={ integrations }
+/>
+
+## Paid resources
+
+### Books
+
+<PesterDataTable
+  columns={ columns }
+  data={ books }
+/>
+
+## TBD
+
+Waiting to be re-read and added
+
+- [mikefrobbins.com](http://mikefrobbins.com/?s=pester)
+- [powershell.org](https://powershell.org)
+
+<PesterDataButton
+  text="Suggest New Entry"
+  editUrl="https://github.com/pester/docs/edit/main/docs/additional-resources/misc.table.js"
+/>

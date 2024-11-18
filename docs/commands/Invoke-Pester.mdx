@@ -37,7 +37,7 @@ Invoke-Pester [[-Path] <String[]>] [-TagFilter <String[]>] [-ExcludeTagFilter <S
  [-FullNameFilter <String[]>] [-PassThru] [-EnableExit] [-CodeCoverage <Object[]>]
  [-CodeCoverageOutputFile <String>] [-CodeCoverageOutputFileEncoding <String>]
  [-CodeCoverageOutputFileFormat <String>] [-Strict] [-OutputFile <String>] [-OutputFormat <String>] [-Quiet]
- [-PesterOption <Object>] [-Show <OutputTypes>] [<CommonParameters>]
+ [-PesterOption <Object>] [-Show <String>] [<CommonParameters>]
 ```
 
 ### Advanced
@@ -74,7 +74,7 @@ OutputFormat parameters to write the test results to an XML file, and use the
 EnableExit parameter to return an exit code that contains the number of failed
 tests.
 
-You can also use the Strict parameter to fail all pending and skipped tests.
+You can also use the Strict parameter to fail all skipped tests.
 This feature is ideal for build systems and other processes that require success
 on every test.
 
@@ -126,7 +126,7 @@ even if the first fails.
 ### EXAMPLE 4
 
 ```powershell
-$config = [PesterConfiguration]::Default
+$config = New-PesterConfiguration
 $config.TestResult.Enabled = $true
 Invoke-Pester -Configuration $config
 ```
@@ -315,16 +315,8 @@ Accept wildcard characters: False
 
 ### -Configuration
 
-(Introduced v5)
-[PesterConfiguration] object for Advanced Configuration
-
-Pester supports Simple and Advanced Configuration.
-
-Invoke-Pester -Configuration &lt;PesterConfiguration&gt; [&lt;CommonParameters&gt;]
-
-Default is New-PesterConfiguration.
-
-For help on each option see New-PesterConfiguration, or inspect the object it returns.
+[PesterConfiguration] object for Advanced Configuration created using `New-PesterConfiguration`.
+For help on each option see about_PesterConfiguration or inspect the object.
 
 ```yaml
 Type: PesterConfiguration
@@ -489,7 +481,7 @@ Accept wildcard characters: False
 ### -Strict
 
 (Deprecated v4)
-Makes Pending and Skipped tests to Failed tests.
+Makes Skipped tests to Failed tests.
 Useful for continuous
 integration where you need to make sure all tests passed.
 
@@ -575,12 +567,6 @@ Accept wildcard characters: False
 This parameter is ignored in v5, and is only present for backwards compatibility
 when migrating from v4.
 
-Sets advanced options for the test execution.
-Enter a PesterOption object,
-such as one that you create by using the New-PesterOption cmdlet, or a hash table
-in which the keys are option names and the values are option values.
-For more information on the options available, see the help for New-PesterOption.
-
 ```yaml
 Type: Object
 Parameter Sets: Legacy
@@ -599,7 +585,7 @@ Accept wildcard characters: False
 Replace with ConfigurationProperty Output.Verbosity
 Customizes the output Pester writes to the screen.
 Available options are None, Default,
-Passed, Failed, Pending, Skipped, Inconclusive, Describe, Context, Summary, Header, All, Fails.
+Passed, Failed, Skipped, Inconclusive, Describe, Context, Summary, Header, All, Fails.
 The options can be combined to define presets.
 ConfigurationProperty Output.Verbosity supports the following values:
 None
@@ -623,10 +609,9 @@ This parameter does not affect the PassThru custom object or the XML output that
 is written when you use the Output parameters.
 
 ```yaml
-Type: OutputTypes
+Type: String
 Parameter Sets: Legacy
 Aliases:
-Accepted values: None, Default, Passed, Failed, Pending, Skipped, Inconclusive, Describe, Context, Summary, Header, Fails, All
 
 Required: False
 Position: Named
@@ -643,6 +628,8 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
+### Pester.Run
+
 ## NOTES
 
 ## RELATED LINKS
@@ -653,4 +640,4 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 5.5.0](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.0.0-alpha5](https://github.com/pester/pester).*

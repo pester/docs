@@ -1,0 +1,113 @@
+---
+id: Should-BeSlowerThan
+title: Should-BeSlowerThan
+description: Help page for the PowerShell Pester "Should-BeSlowerThan" command
+keywords:
+  - PowerShell
+  - Pester
+  - Help
+  - Documentation
+hide_title: false
+hide_table_of_contents: false
+custom_edit_url: null
+---
+
+:::info This page was generated
+Contributions are welcome in [Pester-repo](https://github.com/pester/pester).
+:::
+
+## SYNOPSIS
+
+Asserts that the provided [timespan] is slower than the expected [timespan].
+
+## SYNTAX
+
+```powershell
+Should-BeSlowerThan [[-Actual] <Object>] [[-Expected] <Object>] [<CommonParameters>]
+```
+
+## DESCRIPTION
+
+\{\{ Fill in the Description \}\}
+
+## EXAMPLES
+
+### EXAMPLE 1
+
+```powershell
+{ Start-Sleep -Seconds 10 } | Should-BeSlowerThan 2seconds
+```
+
+This assertion will pass, because the actual value is slower than the expected value.
+
+### EXAMPLE 2
+
+```powershell
+[Timespan]::fromSeconds(10) | Should-BeSlowerThan 2seconds
+```
+
+This assertion will pass, because the actual value is slower than the expected value.
+
+### EXAMPLE 3
+
+```powershell
+{ Start-Sleep -Seconds 1 } | Should-BeSlowerThan 10seconds
+```
+
+This assertion will fail, because the actual value is not slower than the expected value.
+
+## PARAMETERS
+
+### -Actual
+
+The actual [timespan] or [scriptblock] value.
+
+```yaml
+Type: Object
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 2
+Default value: None
+Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
+
+### -Expected
+
+The expected [timespan] or fluent time value.
+
+```yaml
+Type: Object
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### CommonParameters
+
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+## INPUTS
+
+## OUTPUTS
+
+## NOTES
+
+The `Should-BeSlowerThan` assertion is the opposite of the `Should-BeFasterThan` assertion.
+
+## RELATED LINKS
+
+[https://pester.dev/docs/commands/Should-BeSlowerThan](https://pester.dev/docs/commands/Should-BeSlowerThan)
+
+[https://pester.dev/docs/assertions](https://pester.dev/docs/assertions)
+
+## VERSION
+
+*This page was generated using comment-based help in [Pester 6.0.0-alpha5](https://github.com/pester/pester).*
