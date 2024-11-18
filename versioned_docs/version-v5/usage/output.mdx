@@ -31,7 +31,7 @@ This option controls the general level of console output. Pester v5 supports the
 
 ### StackTraceVerbosity
 
-**New in Pester 5.3!**
+**New in Pester 5.3.0!**<br/>
 When an error is shown due to a failed setup or test, a stacktrace is included to help you identify where the problem occured. Users might not care much about this while developers need it to identify and fix any issues.
 This option lets you control how much of the stacktrace that will be printed using one of the following levels:
 
@@ -50,7 +50,7 @@ The result-object returned from `Run.PassThru / -PassThru` includes a `ErrorReco
 
 ### CIFormat
 
-**New in Pester 5.3!**
+**New in Pester 5.3.0!**<br/>
 Pester supports CI-specific output syntaxes to highlight, log and navigate to errors in your tests for a few popular CI systems. This options lets your control how this behavior should work. The following levels are currently supported:
 
 - **None**: Disable all CI-specific syntax. Error messages are presented in the format you're familiar with.
@@ -78,7 +78,7 @@ Auto-detection works by checking if `GITHUB_ACTIONS` environment variable is equ
 
 ### RenderMode
 
-**New in Pester 5.4!**
+**New in Pester 5.4.0!**<br/>
 Pester supports multiple render modes for console output, including ANSI escape sequences which enables colors in CI-logs. The currently supported modes are:
 
 - **Auto (default)**: Automatically enables the recommended mode using the following rules:
