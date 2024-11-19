@@ -55,8 +55,8 @@ Code coverage metrics are not included in the NUnit xml report so it is necessar
 
 ```powershell
 $testResults = Invoke-Pester -OutputFile Test.xml -OutputFormat NUnitXml -CodeCoverage (Get-ChildItem -Path $PSScriptRoot\*.ps1 -Exclude *.Tests.* ).FullName -PassThru
-Write-Output "##teamcity[buildStatisticValue key='CodeCoverageAbsLTotal' value='$($testResults.CodeCoverage.NumberOfCommandsAnalyzed)']"
-Write-Output "##teamcity[buildStatisticValue key='CodeCoverageAbsLCovered' value='$($testResults.CodeCoverage.NumberOfCommandsExecuted)']"
+Write-Output "##teamcity[buildStatisticValue key='CodeCoverageAbsLTotal' value='$($testResults.CodeCoverage.CommandsAnalyzedCount)']"
+Write-Output "##teamcity[buildStatisticValue key='CodeCoverageAbsLCovered' value='$($testResults.CodeCoverage.CommandsExecutedCount)']"
 ```
 
 ## [AppVeyor](https://appveyor.com)

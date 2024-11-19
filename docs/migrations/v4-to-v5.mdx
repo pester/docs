@@ -138,18 +138,18 @@ The following table shows a mapping of v4 Legacy parameters (those which have no
 
 </div>
 
-The following table shows the mapping for v4 *Show* property values to the configuration property *Output.Verbosity*:
+The following table shows the mapping for v4 `-Show` property values to the configuration property `Output.Verbosity`:
 
-| *Show* value | Configuration Object *Output Verbosity* Property |
-| ------------ | ------------------------------------------------ |
-| All          | Detailed                                         |
-| Default      | Detailed                                         |
-| Detailed     | Detailed                                         |
-| Fails        | Normal                                           |
-| Diagnostic   | Diagnostic                                       |
-| Normal       | Normal                                           |
-| Minimal      | Minimal                                          |
-| None         | None                                             |
+| `-Show` Value | `Output.Verbosity` Property |
+| ------------- | ----------------------------|
+| All           | Detailed                    |
+| Default       | Detailed                    |
+| Detailed      | Detailed                    |
+| Fails         | Normal                      |
+| Diagnostic    | Diagnostic                  |
+| Normal        | Normal                      |
+| Minimal       | Minimal                     |
+| None          | None                        |
 
 
 ### Implicit parameters for TestCases
@@ -170,7 +170,7 @@ This also works for Mock.
 
 #### Mocks can be debugged
 
-Mocks don't rewrite the scriptblock you provide anymore. You can now set breakpoints into them as well as any of the ParameterFilter or Should -Invoke Parameter filter.
+Mocks don't rewrite the scriptblock you provide anymore. You can now set breakpoints into them as well as any of the `-ParameterFilter` used in `Mock` and `Should -Invoke`.
 
 #### Avoid putting in InModuleScope around your Describe and It blocks
 
