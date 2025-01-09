@@ -21,7 +21,7 @@ on:
 jobs:
   generate_docs:
     name: Docs PR
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     env:
       PESTER: ${{ github.event.inputs.pester_version }}
       DOCS: ${{ github.event.inputs.docs_version }}
