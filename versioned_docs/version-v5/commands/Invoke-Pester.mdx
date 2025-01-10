@@ -126,7 +126,7 @@ even if the first fails.
 ### EXAMPLE 4
 
 ```powershell
-$config = [PesterConfiguration]::Default
+$config = New-PesterConfiguration
 $config.TestResult.Enabled = $true
 Invoke-Pester -Configuration $config
 ```
@@ -315,16 +315,8 @@ Accept wildcard characters: False
 
 ### -Configuration
 
-(Introduced v5)
-[PesterConfiguration] object for Advanced Configuration
-
-Pester supports Simple and Advanced Configuration.
-
-Invoke-Pester -Configuration &lt;PesterConfiguration&gt; [&lt;CommonParameters&gt;]
-
-Default is New-PesterConfiguration.
-
-For help on each option see New-PesterConfiguration, or inspect the object it returns.
+[PesterConfiguration] object for Advanced Configuration created using `New-PesterConfiguration`.
+For help on each option see about_PesterConfiguration or inspect the object.
 
 ```yaml
 Type: PesterConfiguration
@@ -647,10 +639,10 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[https://pester.dev/docs/commands/Invoke-Pester](https://pester.dev/docs/commands/Invoke-Pester)
+[https://pester.dev/docs/v5/commands/Invoke-Pester](https://pester.dev/docs/v5/commands/Invoke-Pester)
 
-[https://pester.dev/docs/quick-start](https://pester.dev/docs/quick-start)
+[https://pester.dev/docs/v5/quick-start](https://pester.dev/docs/v5/quick-start)
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 5.6.1](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 5.7.1](https://github.com/pester/pester).*
