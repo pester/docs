@@ -133,6 +133,18 @@ CoverageTest.ps1       FunctionTwo   16 return 'I do not'
 As you can see, the test script fails to run `FunctionOne` with its switch parameter set, 
 and there is an unreachable line of code in `FunctionTwo`. 
 
+### Excluding functions from coverage
+
+To exclude a function (or scriptblock) from code coverage. Place `[ExcludeFromCodeCoverageAttribute()]` before the param block of the function:
+
+```powershell
+ function FunctionExcluded {
+    [ExcludeFromCodeCoverageAttribute()]
+    param()
+    "I am not included"
+}
+```
+
 ## Coverage Format
 
 By default, Pester generates a `coverage.xml` file in [JaCoCo](https://www.jacoco.org/) format. You have the flexibility to modify the output format, path, and encoding by using the following options:
