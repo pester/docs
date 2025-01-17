@@ -163,20 +163,24 @@ $null | Should -Not -BeNullOrEmpty # Test will fail
 
 ### BeOfType
 
-Asserts that the actual value should be an object of a specified type (or a subclass of the specified type) using PowerShell's -is operator:
+Asserts that the actual value should be an object of a specified type (or a subclass of the specified type) using PowerShell's -is operator.
+Expected type can be provided using full type name strings or a type wrapped in parantheses.
 
 ```powershell
 $actual = Get-Item $env:SystemRoot
-$actual | Should -BeOfType System.IO.DirectoryInfo   # Test will pass; object is a DirectoryInfo
-$actual | Should -BeOfType System.IO.FileSystemInfo  # Test will pass; DirectoryInfo base class is FileSystemInfo
+$actual | Should -BeOfType System.IO.DirectoryInfo       # Test will pass; object is a DirectoryInfo
+$actual | Should -BeOfType ([System.IO.DirectoryInfo])   # Test will pass; object is a DirectoryInfo
+$actual | Should -BeOfType System.IO.FileSystemInfo      # Test will pass; DirectoryInfo base class is FileSystemInfo
 
-$actual | Should -BeOfType System.IO.FileInfo        # Test will fail; FileInfo is not a base class of DirectoryInfo
+$actual | Should -BeOfType System.IO.FileInfo            # Test will fail; FileInfo is not a base class of DirectoryInfo
 ```
 
-:::note
+:::note Asserting PowerShell classes
+PowerShell classes are not always visible to Pester due to PowerShell scoping behavior. As a workaround, use `$obj | Should -BeOfType ([MyClassName])` for exported classes or `$obj.GetType().Name | Should -Be "MyClassName"` for internal classes. See [this issue](https://github.com/pester/Pester/issues/2414).
+:::
 
-This currently only works for .NET types. For custom type name, added using PSTypeNames, you need to use `$MyClass.GetType().Name | Should -Be "MyClassName"`. See [this issue](https://github.com/pester/Pester/issues/1315) for more information.
-
+:::note Asserting PSTypeNames in custom objects
+PSCustomObjects with custom `PSTypeName` are not recognized by the `-is` operator in PowerShell used by `Should -BeOfType`. As a workaround, use `$obj.PSTypeNames[0] | Should -Be 'SomeType'`. See [this issue](https://github.com/pester/Pester/issues/1315) for more information.
 :::
 
 ### BeTrue
