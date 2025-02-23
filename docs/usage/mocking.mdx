@@ -109,7 +109,7 @@ function Invoke-PesterJob {
     param(
         [Parameter(Position=0)]
         [string[]] $Path = '.',
-        [string[]] $ExcludePath = @()
+        [string[]] $ExcludePath = @(),
         [string[]] $TagFilter,
         [string[]] $ExcludeTagFilter,
         [string[]] $FullNameFilter,
