@@ -5,13 +5,13 @@ sidebar_label: Code Coverage
 description: Pester can generate code coverage metrics to help you understand how many lines of your PowerShell code that is actually covered by your Pester-tests. Use this to increase confidence in your tests
 ---
 
-Code Coverage refers to the percentage of lines of code that are tested 
+Code Coverage refers to the percentage of lines of code that are tested
 by a suite of unit tests. It's a good general indicator of how thoroughly
-your code has been tested, that all branches and edge cases are working 
-properly, etc. Pester calculates this coverage during 
+your code has been tested, that all branches and edge cases are working
+properly, etc. Pester calculates this coverage during
 test execution and generates a report.
 
-In practice, Pester's Code Coverage analysis provides valuable insights 
+In practice, Pester's Code Coverage analysis provides valuable insights
 into the coverage of your code and helps identify untested branches and edge cases.
 
 ## Quickstart
@@ -22,7 +22,7 @@ Pester, offers a new way to configure Code Coverage using `New-PesterConfigurati
    ```powershell
    # Create a Pester configuration object using `New-PesterConfiguration`
    $config = New-PesterConfiguration
-   
+
    # Set the test path to specify where your tests are located. In this example, we set the path to the current directory. Pester will look into all subdirectories.
    $config.Run.Path = "."
 
@@ -43,7 +43,7 @@ The final line displays both the current code coverage and the desired target co
 
 ## Examples
 
-Here are some examples of the various ways the Code Coverage configuration can be used, 
+Here are some examples of the various ways the Code Coverage configuration can be used,
 and their corresponding output when used with the following files.
 
 ```powershell title="CoverageTest.ps1"
@@ -130,8 +130,8 @@ CoverageTest.ps1       FunctionTwo   16 return 'I do not'
 #>
 ```
 
-As you can see, the test script fails to run `FunctionOne` with its switch parameter set, 
-and there is an unreachable line of code in `FunctionTwo`. 
+As you can see, the test script fails to run `FunctionOne` with its switch parameter set,
+and there is an unreachable line of code in `FunctionTwo`.
 
 ### Excluding functions from coverage
 
@@ -164,10 +164,10 @@ For additional `CodeCoverage` configuration options, please refer to the [New-Pe
 
 :::tip Pester does not traverse directories.
 If you encounter an **empty `coverage.xml` file**, it's likely because you're running the tests from a directory that doesn't
-include the relevant code to be covered. 
+include the relevant code to be covered.
 To resolve this, you can either follow the recommended [Test file structure](https://pester.dev/docs/usage/test-file-structure),
 which involves placing the tests alongside the code you want to cover,
-or set the config `CodeCoverage.Path` option to the directory 
+or set the config `CodeCoverage.Path` option to the directory
 that contains the code to be covered.
 :::
 
@@ -188,18 +188,18 @@ To integrate Pester tests with Code Coverage into your GitHub Actions workflow, 
 
    jobs:
      pester:
-       runs-on: windows-latest 
+       runs-on: windows-latest
 
        steps:
        - name: Checkout code
-         uses: actions/checkout@v2
+         uses: actions/checkout@v4
 
        - name: Install Pester
          shell: pwsh
          run: Install-Module -Name Pester -Force -Scope CurrentUser
 
        - name: Run Pester Tests
-         working-directory: ./solution 
+         working-directory: ./solution
          run: |
            # Run Pester tests with Code Coverage
            $config = New-PesterConfiguration
@@ -210,7 +210,7 @@ To integrate Pester tests with Code Coverage into your GitHub Actions workflow, 
 
        - name: Upload code coverage report
          if: ${{ success() }}
-         uses: actions/upload-artifact@v2
+         uses: actions/upload-artifact@v4
          with:
            name: code-coverage-report
            path: solution\coverage.xml
