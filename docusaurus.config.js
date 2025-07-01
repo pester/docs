@@ -178,6 +178,12 @@ const config = {
       }),
     ],
   ],
+  future: {
+    experimental_faster: true, // Use new @docusaurus/faster features for faster build
+    v4: {
+      removeLegacyPostBuildHeadAttribute: true, // To support SSG worker threads (experimental_faster.ssgWorkerThreads)
+    },
+  }
 };
 
 export default config;
