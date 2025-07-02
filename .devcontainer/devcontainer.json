@@ -12,7 +12,7 @@
   // Windows users should clone repo in container volume or using WSL2
   // If not, uncomment this to fix poor yarn/npm performance
   // "mounts": [
-  // 	"source=pester-docs-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume"
+  //   "source=pester-docs-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume"
   // ],
 
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
