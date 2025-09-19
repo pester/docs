@@ -110,7 +110,7 @@ function Home() {
           <section className={clsx(styles.openCollective, 'padding-vert--lg padding-horiz--md')}>
             <h2>Meet Our Sponsors</h2>
 
-            <p>Pester is sponsored by all the great folks on OpenCollective, GitHub and the DevOps Collective.</p>
+            <p>Pester is sponsored by all the great folks on OpenCollective and GitHub Sponsors.</p>
 
             <p>Become a financial contributor and help us sustain our community.</p>
 
@@ -127,6 +127,13 @@ function Home() {
 
               <a href="https://opencollective.com/pester#sponsors" target="_blank">
                 <img src="https://opencollective.com/pester/sponsors.svg" />
+              </a>
+
+              <a href="https://chocolatey.org/">
+                <img src="https://chocolatey.org/assets/images/global-shared/logo-square.svg" height="64" />
+              </a>
+              <a href="https://www.lambdatest.com/" target="_blank">
+                <img src="https://www.lambdatest.com/blue-logo.png" height="64" />
               </a>
             </div>
           </section>
