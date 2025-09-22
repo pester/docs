@@ -135,6 +135,12 @@ function Home() {
               <a href="https://www.lambdatest.com/" target="_blank">
                 <img src="https://www.lambdatest.com/blue-logo.png" height="64" />
               </a>
+              <a href="https://www.dotcom-monitor.com/" target="_blank">
+                <img src="img/sponsors/dotcom-monitor-logo.png" height="64" />
+              </a>
+              <a href="https://www.loadview-testing.com/" target="_blank">
+                <img src="img/sponsors/loadview-logo.png" height="64" />
+              </a>
             </div>
           </section>
         </div>
