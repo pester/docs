@@ -210,3 +210,10 @@ table {
     }
   }
 }
+
+.sponsor-logo {
+  max-height: 64px;
+  max-width: 255px;
+  padding: 15px;
+  vertical-align: middle;
+}

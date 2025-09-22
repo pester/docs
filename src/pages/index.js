@@ -126,20 +126,20 @@ function Home() {
               <h3>Organizations</h3>
 
               <a href="https://opencollective.com/pester#sponsors" target="_blank">
-                <img src="https://opencollective.com/pester/sponsors.svg" />
+                <img src="https://opencollective.com/pester/sponsors.svg" class="sponsor-logo" />
               </a>
 
               <a href="https://chocolatey.org/">
-                <img src="https://chocolatey.org/assets/images/global-shared/logo-square.svg" height="64" />
+                <img src="https://chocolatey.org/assets/images/global-shared/logo-square.svg" class="sponsor-logo" />
               </a>
               <a href="https://www.lambdatest.com/" target="_blank">
-                <img src="https://www.lambdatest.com/blue-logo.png" height="64" />
+                <img src="https://www.lambdatest.com/blue-logo.png" class="sponsor-logo" />
               </a>
               <a href="https://www.dotcom-monitor.com/" target="_blank">
-                <img src="img/sponsors/dotcom-monitor-logo.png" height="64" />
+                <img src="img/sponsors/dotcom-monitor-logo.png" class="sponsor-logo" />
               </a>
               <a href="https://www.loadview-testing.com/" target="_blank">
-                <img src="img/sponsors/loadview-logo.png" height="64" />
+                <img src="img/sponsors/loadview-logo.png" class="sponsor-logo" />
               </a>
             </div>
           </section>
