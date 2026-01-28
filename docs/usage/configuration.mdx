@@ -146,7 +146,7 @@ General runtime options for Pester including tests containers to execute.
 | Run.PassThru | Return result object to the pipeline after finishing the test run. | `bool` | `$false` |
 | Run.SkipRun | Runs the discovery phase but skips run. Use it with PassThru to get object populated with all tests. | `bool` | `$false` |
 | Run.SkipRemainingOnFailure | Skips remaining tests after failure for selected scope, options are None, Run, Container and Block. | `string` | `'None'` |
-| Run.FailOnNullOrEmptyForEach | Fails discovery when -ForEach is provided $null or @() in a block or test. Can be overriden for a specific Describe/Context/It using -AllowNullOrEmptyForEach. | `bool` | `$true` |
+| Run.FailOnNullOrEmptyForEach | Fails discovery when -ForEach is provided $null or @() in a block or test. Can be overridden for a specific Describe/Context/It using -AllowNullOrEmptyForEach. | `bool` | `$true` |
 </div>
 
 ### Filter
@@ -184,7 +184,7 @@ Options to enable and configure Pester's code coverage feature.
 
 ### TestResult
 
-Export options to output Pester's testresult to knwon file formats like NUnit and JUnit XML.
+Export options to output Pester's testresult to known file formats like NUnit and JUnit XML.
 
 <div className="table-wrapper">
 | Option | Description | Type | Default |
