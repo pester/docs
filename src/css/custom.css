@@ -161,7 +161,7 @@ table {
 
 /*
   Make sure content isn't being covered by camera notch or UI elements on mobile.
-  Neccessary due to use of viewport-fit=cover to support landscape mode on phones etc.
+  Necessary due to use of viewport-fit=cover to support landscape mode on phones etc.
 
   Using 0.001px as 0px is minified to 0 which breaks min/max/calc.
   TODO: Can't repro with local build, so possibly caused by Netlify cache. Try to remove later.
