@@ -154,8 +154,11 @@ Describe 'Mocking native commands' {
 ```
 
 ### Mocking function in scriptblock
-
 Unfortunately, we don't have a straightforward way to mock a function inside a scriptblock, but we could use some workarounds to accomplish this.
+
+warning：Mocking may not work correctly in Pester versions below v5, so this function is only supported in Pester v5. In earlier versions, you cannot run the mock together with the script.
+
+
 
 ```
 ---t1.ps1---
@@ -202,6 +205,8 @@ Main -Name $Name
 ```
 --t1.test.ps1--
 
+
+#warning :Mocking may not work correctly in Pester versions below v5, so this function is only supported in Pester v5. In earlier versions, you cannot run the mock together with the script.
 
 BeforeAll{
 
@@ -263,8 +268,9 @@ namespace ScriptMocking
   Import-Module ([ScriptMocking.ImportScriptCommand].Assembly)
 Import-Script -Path "$psScriptRoot/t1.ps1" -EntryPoint 'Main' -ArgumentList '-Name Jakub'
 
-}
 
+}
+Describe 'test scriptMocking'{
  
 Describe "t1.ps1" {
     It "Can test 'Main' function" {
@@ -280,25 +286,17 @@ Describe "t1.ps1" {
         Get-Greeting -Name 'Pester' | Should -Be 'Pester is getting better at mocking!'
     }
 }
------------
-```
-
-```
-/Users/nohwnd/Desktop/t1.ps1
-Hello, Thomas!
-Hello, Thomas!
-this is placeholder
-
-Describing t1.ps1
-/Users/nohwnd/Desktop/t1.ps1
+}
+<#
+output :
 Hello, Pester!
-  [+] Can test 'Main' function 58ms
 Hello, Pester!
-  [+] Can test 'Get-Greeting' function 34ms
 Pester is getting better at mocking!
-  [+] Can mock Get-GreetingText that is used by Get-GreetingFunction 65ms
-```
-One small problem with this, if you encapsulate the steps into a helper function (say Import-Script) then you will dot-source into the scope of Import-Script and your functions won't be available for testing. I will test this using iex, and if that works, then I can encapsulate it in binary cmdlet, that does when iex does + the extra aliasing behavior.
+[+] O:\OneDrive\script-tester\mockFunction.test.ps1 363ms (119ms|202ms)
+Tests completed in 370ms
+Tests Passed: 3, Failed: 0, Skipped: 0, Inconclusive: 0, NotRun: 0
+PS C:\Users\Administrator> Remove-Module -name pester -Force     
+#>
 
 
 
