@@ -153,6 +153,141 @@ Describe 'Mocking native commands' {
 }
 ```
 
+### Mocking function in scriptblock
+
+    unfortunately we don't have straightforward to mocking a function inside a scriptblock
+but we could use some workaround to accomplish
+
+```
+---t1.ps1---
+
+###  --- file t1.ps1
+param (
+    [Parameter(Mandatory)]
+    $Name
+)
+
+# our entry point function that holds 
+# all the stuff that should happen when 
+# we run this script
+function Main {
+    param (
+        [Parameter(Mandatory)]
+        $Name
+    )
+    Write-Host $PSCommandPath
+    Get-Greeting $Name
+}
+
+# internal function that writes greeting
+function Get-Greeting {
+    param ($Name) 
+
+    $text = Get-GreetingText 
+    $formattedGreetingText = $text -f $Name
+    Write-Host $formattedGreetingText
+    $formattedGreetingText
+}
+
+# another internal function that collaborates
+# with Get-Greeting and that we will mock 
+# in our tests
+function Get-GreetingText {
+    'Hello, {0}!'
+}
+
+Main -Name $Name
+---------------
+```
+
+```
+--t1.test.ps1--
+BeforeAll{
+
+    Add-Type -TypeDefinition @'
+using System.Collections.ObjectModel;
+using System.Management.Automation;
+using System.Reflection;
+
+namespace ScriptMocking
+{
+    [Cmdlet(VerbsData.Import, "Script")]
+    public sealed class ImportScriptCommand : PSCmdlet
+    {
+        private static string Body = @"
+            function ____placeholder {{ }}
+            # alias to prevent main from running
+            Set-Alias {0} '____placeholder'
+            
+            . {1} {2}
+            # remove the alias, now we have all functions
+            # from the script dot-sourced in this scope
+            Remove-Item 'alias:{0}' -Force
+            Remove-Item 'function:____placeholder' -Force";
+
+        [Parameter(Position = 0, Mandatory = true)]
+        public string Path { get; set; }
+
+        [Parameter(Position = 1)]
+        public string EntryPoint { get; set; }
+
+        [Parameter]
+        public string[] ArgumentList { get; set; }
+
+        public ImportScriptCommand() {
+            ArgumentList = new string[0];
+            EntryPoint = "Main";
+        }
+        protected override void ProcessRecord()
+        {
+            var body =  string.Format(Body, EntryPoint, Path, string.Join(" ", ArgumentList));
+
+            var sb = InvokeCommand.NewScriptBlock(body);
+
+            var method = sb.GetType()
+                .GetMethod("InvokeUsingCmdlet", BindingFlags.Instance | BindingFlags.NonPublic);
+
+            var emptyArray = new object[0];
+            var automationNull = new PSObject();
+            const int writeToCurrentErrorPipe = 1;
+
+            var @params = new object[]
+                {this, false, writeToCurrentErrorPipe, automationNull, emptyArray, automationNull, new object[0]};
+
+            method.Invoke(sb, @params);
+        }
+    }
+}
+'@
+  Import-Module ([ScriptMocking.ImportScriptCommand].Assembly)
+Import-Script -Path "$psScriptRoot/t1.ps1" -EntryPoint 'Main' -ArgumentList '-Name Jakub'
+
+}
+
+ 
+Describe "t1.ps1" {
+    It "Can test 'Main' function" {
+        Main -Name 'Pester' | Should -Be 'Hello, Pester!'
+    }
+
+    It "Can test 'Get-Greeting' function" {
+        Get-Greeting -Name 'Pester' | Should -Be 'Hello, Pester!'
+    }
+
+    It "Can mock Get-GreetingText that is used by Get-GreetingFunction" {
+        Mock Get-GreetingText { '{0} is getting better at mocking!'  }
+        Get-Greeting -Name 'Pester' | Should -Be 'Pester is getting better at mocking!'
+    }
+}
+-----------
+```
+
+    The following could mock the function inside script with parameter and entry point
+
+
+
+
+
 ## $PesterBoundParameters
 
 Calling a mocked command will execute a proxy-function (hook) which evaluates and chooses the correct behavior/mock to invoke in that scenario. Because of this proxy `$PSBoundParameters` will be overwritten and are not available inside your mock's scriptblock.
