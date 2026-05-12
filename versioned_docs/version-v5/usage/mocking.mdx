@@ -155,12 +155,11 @@ Describe 'Mocking native commands' {
 
 ### Mocking function in scriptblock
 
-    unfortunately we don't have straightforward to mocking a function inside a scriptblock
-but we could use some workaround to accomplish
+Unfortunately, we don't have a straightforward way to mock a function inside a scriptblock, but we could use some workarounds to accomplish this.
 
 ```
 ---t1.ps1---
-
+# base https://github.com/pester/Pester/issues/1069
 ###  --- file t1.ps1
 param (
     [Parameter(Mandatory)]
@@ -202,6 +201,8 @@ Main -Name $Name
 
 ```
 --t1.test.ps1--
+
+
 BeforeAll{
 
     Add-Type -TypeDefinition @'
@@ -282,7 +283,23 @@ Describe "t1.ps1" {
 -----------
 ```
 
-    The following could mock the function inside script with parameter and entry point
+```
+/Users/nohwnd/Desktop/t1.ps1
+Hello, Thomas!
+Hello, Thomas!
+this is placeholder
+
+Describing t1.ps1
+/Users/nohwnd/Desktop/t1.ps1
+Hello, Pester!
+  [+] Can test 'Main' function 58ms
+Hello, Pester!
+  [+] Can test 'Get-Greeting' function 34ms
+Pester is getting better at mocking!
+  [+] Can mock Get-GreetingText that is used by Get-GreetingFunction 65ms
+```
+One small problem with this, if you encapsulate the steps into a helper function (say Import-Script) then you will dot-source into the scope of Import-Script and your functions won't be available for testing. I will test this using iex, and if that works, then I can encapsulate it in binary cmdlet, that does when iex does + the extra aliasing behavior.
+
 
 
 
@@ -407,4 +424,3 @@ Describe "d" {
         Should -Invoke f -Exactly 0
     }
 }
-```
