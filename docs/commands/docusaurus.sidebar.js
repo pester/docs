@@ -55,7 +55,10 @@ module.exports = [
     'commands/Should-BeTrue',
     'commands/Should-BeTruthy',
     'commands/Should-ContainCollection',
+    'commands/Should-HaveParameter',
     'commands/Should-HaveType',
+    'commands/Should-Invoke',
+    'commands/Should-MatchString',
     'commands/Should-NotBe',
     'commands/Should-NotBeEmptyString',
     'commands/Should-NotBeLikeString',
@@ -64,7 +67,10 @@ module.exports = [
     'commands/Should-NotBeString',
     'commands/Should-NotBeWhiteSpaceString',
     'commands/Should-NotContainCollection',
+    'commands/Should-NotHaveParameter',
     'commands/Should-NotHaveType',
+    'commands/Should-NotInvoke',
+    'commands/Should-NotMatchString',
     'commands/Should-Throw',
     'commands/Should'
 ];
