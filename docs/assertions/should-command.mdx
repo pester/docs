@@ -65,11 +65,11 @@ Another special case is `@()`. A value assertion will handle it as `$null`, but 
 1 | Should-Be -Expected 1
 @(1) | Should-Be -Expected 1
 $null | Should-Be -Expected $null
-@() | Should-Be -Expected $null #< --- TODO: this is not the case right now, we special case this as empty array, but is that correct? it does not play well with the value and collection assertion, and we special case it just because we can.
-# $null | will give $local:input -> $null , and @() | will give $local:input -> @(), is that distinction important when we know that we will only check against values?
+@() | Should-Be -Expected $null # @() is handled as $null by a value assertion
 
 # This fails, because -Expected does not allow collections.
 @() | Should-Be -Expected @()
+```
 
 ```powershell
 # Should-BeCollection is a collection assertion:
@@ -121,7 +121,121 @@ These assertions take the advantage of being more specialized to provide a type 
 
 ### Collection assertions
 
-<mark>TODO</mark>
+Collection assertions operate on the whole collection provided to `$Actual` instead of unwrapping it to a single value. Use them whenever you want to assert on multiple items at once.
+
+#### Generic collection assertions
+
+[`Should-BeCollection`](../commands/Should-BeCollection.mdx) compares two collections by first comparing their size, and then comparing each item. The `$Expected` value must be a collection.
+
+```powershell
+1, 2, 3 | Should-BeCollection @(1, 2, 3)
+@(1)    | Should-BeCollection @(1)
+
+# This fails, the collections have different sizes.
+1, 2, 3, 4 | Should-BeCollection @(1, 2, 3)
+```
+
+You can also assert on the size of a collection without comparing items, by using `-Count`:
+
+```powershell
+1, 2, 3 | Should-BeCollection -Count 3
+```
+
+[`Should-ContainCollection`](../commands/Should-ContainCollection.mdx) and [`Should-NotContainCollection`](../commands/Should-NotContainCollection.mdx) check whether the expected items are (or are not) present in the provided collection, in order.
+
+```powershell
+1, 2, 3 | Should-ContainCollection @(1, 2)
+1, 2, 3 | Should-NotContainCollection @(3, 4)
+```
+
+#### Combinator assertions
+
+Combinator assertions take a `-FilterScript` and run it against every item in the collection. The filter can be a plain PowerShell expression or another `Should-*` assertion.
+
+[`Should-All`](../commands/Should-All.mdx) passes when **every** item matches the filter:
+
+```powershell
+1, 2, 3 | Should-All { $_ -gt 0 }
+1, 2, 3 | Should-All { $_ | Should-BeGreaterThan 0 }
+```
+
+[`Should-Any`](../commands/Should-Any.mdx) passes when **at least one** item matches the filter:
+
+```powershell
+1, 2, 3 | Should-Any { $_ -gt 2 }
+1, 2, 3 | Should-Any { $_ | Should-BeGreaterThan 2 }
+```
+
+### Assertion reference
+
+All `Should-*` assertions are listed below, grouped by the kind of check they perform. Follow a link to see the full syntax, parameters, and examples in the Command Reference.
+
+#### General
+
+- [`Should-Be`](../commands/Should-Be.mdx) — Compares the expected value to the actual value to see if they are equal.
+- [`Should-NotBe`](../commands/Should-NotBe.mdx) — Compares the expected value to the actual value to see if they are not equal.
+- [`Should-BeGreaterThan`](../commands/Should-BeGreaterThan.mdx) — Asserts that the actual value is greater than the expected value.
+- [`Should-BeGreaterThanOrEqual`](../commands/Should-BeGreaterThanOrEqual.mdx) — Asserts that the actual value is greater than or equal to the expected value.
+- [`Should-BeLessThan`](../commands/Should-BeLessThan.mdx) — Asserts that the actual value is less than the expected value.
+- [`Should-BeLessThanOrEqual`](../commands/Should-BeLessThanOrEqual.mdx) — Asserts that the actual value is less than or equal to the expected value.
+- [`Should-BeNull`](../commands/Should-BeNull.mdx) — Asserts that the input is `$null`.
+- [`Should-NotBeNull`](../commands/Should-NotBeNull.mdx) — Asserts that the input is not `$null`.
+- [`Should-BeSame`](../commands/Should-BeSame.mdx) — Asserts that the actual value is the same instance as the expected value.
+- [`Should-NotBeSame`](../commands/Should-NotBeSame.mdx) — Asserts that the actual value is not the same instance as the expected value.
+- [`Should-HaveType`](../commands/Should-HaveType.mdx) — Asserts that the input is of the expected type.
+- [`Should-NotHaveType`](../commands/Should-NotHaveType.mdx) — Asserts that the input is not of the expected type.
+
+#### Boolean
+
+- [`Should-BeTrue`](../commands/Should-BeTrue.mdx) — Asserts that the actual value is `$true`.
+- [`Should-BeFalse`](../commands/Should-BeFalse.mdx) — Asserts that the actual value is `$false`.
+- [`Should-BeTruthy`](../commands/Should-BeTruthy.mdx) — Asserts that the actual value is truthy.
+- [`Should-BeFalsy`](../commands/Should-BeFalsy.mdx) — Asserts that the actual value is falsy (`0`, `""`, `$null` or `@()`).
+
+#### String
+
+- [`Should-BeString`](../commands/Should-BeString.mdx) — Asserts that the actual value is equal to the expected string. Supports `-CaseSensitive`, `-IgnoreWhitespace` and `-TrimWhitespace`.
+- [`Should-NotBeString`](../commands/Should-NotBeString.mdx) — Asserts that the actual value is not equal to the expected string.
+- [`Should-BeEmptyString`](../commands/Should-BeEmptyString.mdx) — Asserts that the input is an empty string.
+- [`Should-NotBeEmptyString`](../commands/Should-NotBeEmptyString.mdx) — Asserts that the input is a string that is not `$null` or empty.
+- [`Should-NotBeWhiteSpaceString`](../commands/Should-NotBeWhiteSpaceString.mdx) — Asserts that the input is a string that is not `$null`, empty, or whitespace only.
+- [`Should-BeLikeString`](../commands/Should-BeLikeString.mdx) — Asserts that the actual value matches the expected wildcard pattern.
+- [`Should-NotBeLikeString`](../commands/Should-NotBeLikeString.mdx) — Asserts that the actual value does not match the expected wildcard pattern.
+- [`Should-MatchString`](../commands/Should-MatchString.mdx) — Asserts that the actual value matches the expected regular expression.
+- [`Should-NotMatchString`](../commands/Should-NotMatchString.mdx) — Asserts that the actual value does not match the expected regular expression.
+
+#### Collection
+
+- [`Should-BeCollection`](../commands/Should-BeCollection.mdx) — Compares collections for equality, by comparing their size and each item.
+- [`Should-ContainCollection`](../commands/Should-ContainCollection.mdx) — Asserts that the expected items are present in the provided collection, in order.
+- [`Should-NotContainCollection`](../commands/Should-NotContainCollection.mdx) — Asserts that the expected items are not present in the provided collection.
+- [`Should-All`](../commands/Should-All.mdx) — Asserts that every item in the collection matches a filter.
+- [`Should-Any`](../commands/Should-Any.mdx) — Asserts that at least one item in the collection matches a filter.
+
+#### Equivalency
+
+- [`Should-BeEquivalent`](../commands/Should-BeEquivalent.mdx) — Recursively compares two objects for equivalency, by comparing their properties.
+
+#### DateTime and TimeSpan
+
+- [`Should-BeBefore`](../commands/Should-BeBefore.mdx) — Asserts that the actual `[datetime]` is before the expected `[datetime]`.
+- [`Should-BeAfter`](../commands/Should-BeAfter.mdx) — Asserts that the actual `[datetime]` is after the expected `[datetime]`.
+- [`Should-BeFasterThan`](../commands/Should-BeFasterThan.mdx) — Asserts that the provided `[timespan]` or `[scriptblock]` is faster than the expected `[timespan]`.
+- [`Should-BeSlowerThan`](../commands/Should-BeSlowerThan.mdx) — Asserts that the provided `[timespan]` or `[scriptblock]` is slower than the expected `[timespan]`.
+
+#### Exception
+
+- [`Should-Throw`](../commands/Should-Throw.mdx) — Asserts that a script block throws an exception.
+
+#### Mock
+
+- [`Should-Invoke`](../commands/Should-Invoke.mdx) — Asserts that a mocked command was called the expected number of times. See [Mocking](../usage/mocking).
+- [`Should-NotInvoke`](../commands/Should-NotInvoke.mdx) — Asserts that a mocked command was not called. See [Mocking](../usage/mocking).
+
+#### Command parameters
+
+- [`Should-HaveParameter`](../commands/Should-HaveParameter.mdx) — Asserts that a command has the expected parameter, and optionally checks its type, default value, aliases, parameter set, mandatory status, and argument completer.
+- [`Should-NotHaveParameter`](../commands/Should-NotHaveParameter.mdx) — Asserts that a command does not have the given parameter.
 
 ## `Should` (v4/v5)
 

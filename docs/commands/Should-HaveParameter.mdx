@@ -1,0 +1,223 @@
+---
+id: Should-HaveParameter
+title: Should-HaveParameter
+description: Help page for the PowerShell Pester "Should-HaveParameter" command
+keywords:
+  - PowerShell
+  - Pester
+  - Help
+  - Documentation
+hide_title: false
+hide_table_of_contents: false
+custom_edit_url: null
+---
+
+:::info This page was generated
+Contributions are welcome in [Pester-repo](https://github.com/pester/pester).
+:::
+
+## SYNOPSIS
+
+Asserts that a command has the expected parameter.
+
+## SYNTAX
+
+```powershell
+Should-HaveParameter [[-ParameterName] <String>] [[-Type] <Object>] [[-DefaultValue] <String>] [-Mandatory]
+ [[-InParameterSet] <String>] [-HasArgumentCompleter] [[-Alias] <String[]>] [[-Actual] <Object>]
+ [[-Because] <String>] [<CommonParameters>]
+```
+
+## DESCRIPTION
+
+This assertion inspects command metadata and can also verify parameter details such as type, default value, aliases, parameter set membership, mandatory status, and argument completers.
+
+## EXAMPLES
+
+### EXAMPLE 1
+
+```powershell
+Get-Command "Invoke-WebRequest" | Should -HaveParameter Uri -Mandatory
+```
+
+This test passes, because it expected the parameter URI to exist and to
+be mandatory.
+
+## PARAMETERS
+
+### -ParameterName
+
+The name of the parameter to check.
+E.g.
+Uri
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Type
+
+The type of the parameter to check.
+E.g.
+[string]
+
+```yaml
+Type: Object
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 2
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -DefaultValue
+
+The default value of the parameter to check.
+E.g.
+"https://example.com"
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 3
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Mandatory
+
+Whether the parameter is mandatory or not.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -InParameterSet
+
+The parameter set that the parameter belongs to.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 4
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -HasArgumentCompleter
+
+Whether the parameter has an argument completer or not.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Alias
+
+The alias of the parameter to check.
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 5
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Actual
+
+The actual command to check.
+E.g.
+Get-Command "Invoke-WebRequest"
+
+```yaml
+Type: Object
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 6
+Default value: None
+Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
+
+### -Because
+
+The reason why the input should be the expected value.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 7
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### CommonParameters
+
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+## INPUTS
+
+## OUTPUTS
+
+## NOTES
+
+The attribute [ArgumentCompleter] was added with PSv5.
+Previously this
+assertion will not be able to use the -HasArgumentCompleter parameter
+if the attribute does not exist.
+
+## RELATED LINKS
+
+[https://pester.dev/docs/commands/Should-HaveParameter](https://pester.dev/docs/commands/Should-HaveParameter)
+
+[https://pester.dev/docs/assertions](https://pester.dev/docs/assertions)
+
+## VERSION
+
+*This page was generated using comment-based help in [Pester 6.0.0-alpha5](https://github.com/pester/pester).*

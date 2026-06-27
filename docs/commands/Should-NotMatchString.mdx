@@ -1,0 +1,137 @@
+---
+id: Should-NotMatchString
+title: Should-NotMatchString
+description: Help page for the PowerShell Pester "Should-NotMatchString" command
+keywords:
+  - PowerShell
+  - Pester
+  - Help
+  - Documentation
+hide_title: false
+hide_table_of_contents: false
+custom_edit_url: null
+---
+
+:::info This page was generated
+Contributions are welcome in [Pester-repo](https://github.com/pester/pester).
+:::
+
+## SYNOPSIS
+
+Tests whether a string does not match a regular expression pattern.
+
+## SYNTAX
+
+```powershell
+Should-NotMatchString [[-Actual] <Object>] [-Expected] <Object> [-CaseSensitive] [-Because <String>]
+ [<CommonParameters>]
+```
+
+## DESCRIPTION
+
+The `Should-NotMatchString` assertion compares the actual string to the expected regular expression pattern using the `-notmatch` operator.
+The `-notmatch` operator is case-insensitive by default, but you can make it case-sensitive by using the `-CaseSensitive` switch.
+
+## EXAMPLES
+
+### EXAMPLE 1
+
+```powershell
+"hello" | Should-NotMatchString "^world$"
+```
+
+This assertion will pass, because the actual value does not match the regular expression pattern.
+
+### EXAMPLE 2
+
+```powershell
+"hello" | Should-NotMatchString "h.*o" -CaseSensitive
+```
+
+This assertion will fail, because the actual value case-sensitively matches the regular expression pattern.
+
+## PARAMETERS
+
+### -Actual
+
+The actual value.
+
+```yaml
+Type: Object
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 2
+Default value: None
+Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
+
+### -Expected
+
+The expected regular expression pattern.
+
+```yaml
+Type: Object
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -CaseSensitive
+
+Indicates that the comparison should be case-sensitive.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Because
+
+The reason why the actual value should not match the regular expression pattern.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### CommonParameters
+
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+## INPUTS
+
+## OUTPUTS
+
+## NOTES
+
+## RELATED LINKS
+
+[https://pester.dev/docs/commands/Should-NotMatchString](https://pester.dev/docs/commands/Should-NotMatchString)
+
+[https://pester.dev/docs/assertions](https://pester.dev/docs/assertions)
+
+## VERSION
+
+*This page was generated using comment-based help in [Pester 6.0.0-alpha5](https://github.com/pester/pester).*
