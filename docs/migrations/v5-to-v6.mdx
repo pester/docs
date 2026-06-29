@@ -13,7 +13,7 @@ Your existing `Should -Be` assertions keep working, so you don't have to rewrite
 
 For most suites upgrading is low risk. Run through this list, then read the details below for anything that bites:
 
-1. Make sure you run **Windows PowerShell 5.1** or **PowerShell 7.2+**.
+1. Make sure you run **Windows PowerShell 5.1** or **PowerShell 7.4+**.
 2. Check any `-ForEach`/`-TestCases` that can be empty — it now throws unless you add `-AllowNullOrEmptyForEach`.
 3. Remove duplicate `BeforeAll`/`BeforeEach`/`AfterAll`/`AfterEach` in the same block.
 4. Replace `Assert-MockCalled` / `Assert-VerifiableMock` with `Should -Invoke` / `Should -InvokeVerifiable`.
@@ -22,9 +22,9 @@ For most suites upgrading is low risk. Run through this list, then read the deta
 
 ## Breaking changes
 
-### PowerShell 5.1 and 7.2+ only
+### PowerShell 5.1 and 7.4+ only
 
-Support for PowerShell 3, 4, 6 and early/unsupported 7 was removed — they are all out of support from Microsoft. Dropping them let us move the C# to .NET 8 (net462 for Windows PowerShell 5.1) and modernize the runtime. Pester 6 targets **Windows PowerShell 5.1** and **PowerShell 7.2+**.
+Support for PowerShell 3, 4, 6 and early/unsupported 7 was removed — they are all out of support from Microsoft. Dropping them let us move the C# to .NET 8 (net462 for Windows PowerShell 5.1) and modernize the runtime. Pester 6 targets **Windows PowerShell 5.1** and **PowerShell 7.4+**.
 
 **Symptom.** Pester does not import on an older PowerShell.
 
