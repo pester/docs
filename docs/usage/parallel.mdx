@@ -1,0 +1,84 @@
+---
+title: Parallel execution
+description: Pester v6 can run test files in parallel, each file in its own runspace, to cut the wall-clock time of large suites. This experimental feature is enabled with a single configuration option.
+---
+
+:::warning Experimental
+Parallel execution is experimental in Pester v6. Treat `Run.Parallel` as opt-in. The directive name, configuration shape, and behavior may still change before it is declared stable.
+:::
+
+Pester v6 can run test files concurrently, one file per runspace, using the PowerShell 7+ `ForEach-Object -Parallel` engine. On a multi-core machine this can cut the wall-clock time of a large suite.
+
+It is a configuration option, not a separate command. It builds on the [per-file Discovery and Run model](./discovery-and-run#per-file-discovery-and-run): because each file is discovered and run as a self-contained unit, files can be handed to separate runspaces and run in isolation.
+
+## Enabling parallel execution
+
+Set `Run.Parallel` to `$true`:
+
+```powershell
+$config = New-PesterConfiguration
+$config.Run.Path = './tests'
+$config.Run.Parallel = $true
+Invoke-Pester -Configuration $config
+```
+
+Each file is discovered and run inside its own runspace, then the results are merged back into a single run with correct aggregate counts and durations, so the summary and the `TestResult` report look the same as a sequential run.
+
+## Limiting concurrency
+
+By default Pester uses every available processor. Cap how many files run at once with `Run.ParallelThrottleLimit`, which is passed to `ForEach-Object -Parallel -ThrottleLimit`:
+
+```powershell
+$config = New-PesterConfiguration
+$config.Run.Path = './tests'
+$config.Run.Parallel = $true
+$config.Run.ParallelThrottleLimit = 4   # at most 4 files at a time; 0 (default) uses all processors
+Invoke-Pester -Configuration $config
+```
+
+## Shared per-file setup
+
+Each worker starts from a clean runspace, so anything the parent session would normally provide (imported modules, dot-sourced helpers) is not available unless you set it up. `Run.BeforeContainer` takes one or more script blocks that run before every test file is discovered and run, in both sequential and parallel runs:
+
+```powershell
+$config = New-PesterConfiguration
+$config.Run.Path = './tests'
+$config.Run.Parallel = $true
+$config.Run.BeforeContainer = { . './setup.ps1' }   # import modules, dot-source shared setup
+Invoke-Pester -Configuration $config
+```
+
+One script block is usually enough, since it can dot-source as many files as needed.
+
+If you don't set `Run.BeforeContainer`, Pester looks for a single `Pester.BeforeContainer.ps1` in the repository root (`Run.RepoRoot`, found from the nearest `.git` directory) and dot-sources it when present. That gives you a per-repo bootstrap with no configuration. Setting `Run.BeforeContainer` overrides the convention file.
+
+## Opting a file out
+
+A test file can opt out of parallelization with a `#pester:no-parallel` directive. It is parsed like `#requires`, matched only inside a real comment token and never inside a string:
+
+```powershell title="Integration.Tests.ps1"
+#pester:no-parallel
+Describe 'integration that must not share the box' {
+    # ...
+}
+```
+
+Files marked this way run in the parent session on the normal serial path, with shared session state and live output, while the other files run in parallel.
+
+## Requirements and fallback
+
+Parallel execution needs PowerShell 7+ and a file-based run (`Run.Path`). When a run can't be parallelized, Pester falls back to a normal sequential run and prints a warning, so your tests keep working unchanged. This fallback happens:
+
+- on Windows PowerShell 5.1,
+- for `ScriptBlock` / `Container` inputs (anything that isn't a file),
+- when `CodeCoverage` is enabled (coverage is always collected on the sequential path),
+- when `Run.SkipRemainingOnFailure = 'Run'` (a cross-file stop-on-failure can't span runspaces),
+- and when every file opts out with `#pester:no-parallel`.
+
+## Output and results
+
+Within a parallel run each worker runs silently, and the parent replays every file's output in discovery order, emitting the same plugin-event sequence as a serial run. Console output, the `TestResult` report (produced once from the merged result tree), and IDE adapters such as the VS Code adapter behave the same in both modes. Only the concurrency differs.
+
+:::note Reserved for follow-ups
+Code coverage in parallel (collect per worker, merge in the parent) currently falls back to the sequential path. For mixed runs where only some files opt out, those files' IDE-adapter events currently arrive after the parallel batch. Console output and results are unaffected.
+:::

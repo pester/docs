@@ -27,19 +27,18 @@ Checks that mocked command was not called and throws exception if it was.
 ```powershell
 Should-NotInvoke [-CommandName] <String> [[-Times] <Int32>] [-ParameterFilter <ScriptBlock>]
  [-ExclusiveFilter <ScriptBlock>] [-ModuleName <String>] [-Scope <String>] [-Exactly] [-Because <String>]
- [<CommonParameters>]
 ```
 
 ### ExclusiveFilter
 
 ```powershell
-Should-NotInvoke -ExclusiveFilter <ScriptBlock> [<CommonParameters>]
+Should-NotInvoke -ExclusiveFilter <ScriptBlock>
 ```
 
 ### Verifiable
 
 ```powershell
-Should-NotInvoke [-Because <String>] [-Verifiable] [<CommonParameters>]
+Should-NotInvoke [-Because <String>] [-Verifiable]
 ```
 
 ## DESCRIPTION

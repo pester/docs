@@ -125,6 +125,10 @@ Tests Passed: 1, Failed: 0, Skipped: 0, Total: 1, NotRun: 0
 
 ## PesterConfiguration Options
 
+:::tip TestResult and CodeCoverage auto-enable
+In Pester v6 you don't have to set `TestResult.Enabled` or `CodeCoverage.Enabled` separately. Setting **any** non-default option in the `TestResult` or `CodeCoverage` section automatically enables that feature, so a report you configured never silently goes unwritten. For example, setting `TestResult.OutputPath` is enough to produce a test-result file.
+:::
+
 <!--GENERATED_PESTER_CONFIGURATION_DOCS_START-->
 
 *This section was generated using Pester 6.0.0-rc2.*
@@ -146,7 +150,7 @@ General runtime options for Pester including tests containers to execute.
 | Run.PassThru | Return result object to the pipeline after finishing the test run. | `bool` | `$false` |
 | Run.SkipRun | Runs the discovery phase but skips run. Use it with PassThru to get object populated with all tests. | `bool` | `$false` |
 | Run.Parallel | EXPERIMENTAL: Run test files in parallel, each file in its own runspace, using PowerShell 7+ 'ForEach-Object -Parallel'. Files that contain the '#pester:no-parallel' directive run sequentially after the parallel batch. Falls back to a sequential run on Windows PowerShell 5.1, when non-file containers (ScriptBlock) are used, when CodeCoverage is enabled, or when Run.SkipRemainingOnFailure is set to 'Run'. | `bool` | `$false` |
-| Run.BeforeContainer | EXPERIMENTAL: One or more ScriptBlocks run before each test file is discovered and run, in both sequential and parallel runs. Use it to import helper modules or dot-source setup that the parent session would normally provide, e.g. { . './setup.ps1' } - this is especially useful in parallel runs, where each worker starts from a clean runspace. One scriptblock is usually enough and can dot-source as many files as needed. When set, the convention file is ignored; when not set, Pester dot-sources a 'Pester.BeforeContainer.ps1' from the repository root (Run.RepoRoot) if one is present. | `scriptblock[]` | `@()` |
+| Run.BeforeContainer | EXPERIMENTAL: One or more ScriptBlocks run before each test file is discovered and run, in both sequential and parallel runs. Use it to import helper modules or dot-source setup that the parent session would normally provide, e.g. \{ . './setup.ps1' \} - this is especially useful in parallel runs, where each worker starts from a clean runspace. One scriptblock is usually enough and can dot-source as many files as needed. When set, the convention file is ignored; when not set, Pester dot-sources a 'Pester.BeforeContainer.ps1' from the repository root (Run.RepoRoot) if one is present. | `scriptblock[]` | `@()` |
 | Run.ParallelThrottleLimit | EXPERIMENTAL: Maximum number of test files to run at the same time when Run.Parallel is enabled, passed through to 'ForEach-Object -Parallel -ThrottleLimit'. The default 0 uses all available processors ([Environment]::ProcessorCount). Set a lower number to cap how many runspaces run concurrently. Only used when Run.Parallel is enabled. | `int` | `0` |
 | Run.SkipRemainingOnFailure | Skips remaining tests after failure for selected scope, options are None, Run, Container and Block. | `string` | `'None'` |
 | Run.FailOnNullOrEmptyForEach | Fails discovery when -ForEach is provided $null or @() in a block or test. Can be overridden for a specific Describe/Context/It using -AllowNullOrEmptyForEach. | `bool` | `$true` |

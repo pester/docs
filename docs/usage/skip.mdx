@@ -126,3 +126,30 @@ Tests Passed: 1, Failed: 0, Skipped: 2 NotRun: 0
 :::tip Skipping during Run-phase
 In certain scenarios you might need to mark a test as skipped or inconclusive during execution. This is possible using [`Set-ItResult`](../commands/Set-ItResult). Be aware that setup and teardown-blocks will be executed, so use `-Skip` whenever possible.
 :::
+
+## Skipping the rest of a scope on failure
+
+Pester v6 can stop running the rest of a scope as soon as a test fails. This is useful when later tests can't meaningfully pass once an earlier one fails, for example when a shared resource failed to set up. Enable it with `Run.SkipRemainingOnFailure`:
+
+| Value | Effect |
+| --- | --- |
+| `None` (default) | Keep running every test. |
+| `Run` | Skip all remaining tests in the whole run after the first failure. |
+| `Container` | Skip the rest of the current file/container. |
+| `Block` | Skip the rest of the current `Describe`/`Context` block. |
+
+```powershell
+$config = New-PesterConfiguration
+$config.Run.Path = './tests'
+$config.Run.SkipRemainingOnFailure = 'Block'
+Invoke-Pester -Configuration $config
+```
+
+Remaining tests are also skipped when a block's setup or teardown fails.
+
+```
+  [+] first passes 33ms
+  [-] second fails 12ms
+  [!] third would pass 1ms
+  [!] fourth would pass 0ms
+```

@@ -44,7 +44,7 @@ This option lets you control how much of the stacktrace that will be printed usi
 ![Full stacktrace](./images/stacktrace-full.png)
 
 :::tip Error details are always available in the result-object
-The result-object returned from `Run.PassThru / -PassThru` includes a `ErrorRecord`-property in all blocks/tests with full stacktrace and more, even if you've limited the console output using the options above.
+The result-object returned from `Run.PassThru / -PassThru` includes a `ErrorRecord`-property in all blocks/tests with full stacktrace and more, even if you've limited the console output using the options above. See [The Result Object](./result-object) for the full shape.
 :::
 
 ### CIFormat
@@ -85,3 +85,37 @@ Pester supports multiple render modes for console output, including ANSI escape 
 - **ANSI**: Render using ANSI escape sequences. Colors are shown in ANSI-supported console hosts, redirected output, CI-logs etc.
 - **ConsoleColor**: Uses default `Write-Host` behavior. Colors are shown in console but not in CI, redirected output etc. This mode was used prior to Pester 5.4.
 - **Plaintext**: Render output without colors.
+
+### Test duration
+
+Each test and block prints how long it took. In Pester v6 this is a single value:
+
+```
+  [+] passes 39ms
+```
+
+In Pester v5 the duration was split into the time spent in your code and the Pester framework overhead, shown as `(user|framework)`:
+
+```
+  [+] passes 34ms (26ms|9ms)
+```
+
+Some sample outputs elsewhere in these docs still show the older `(user|framework)` format.
+
+### Showing when each test starts
+
+In a long-running suite it can be hard to tell which test is currently executing, or which one is stuck. Enable `Debug.ShowStartMarkers` to print a marker as each test starts, before its result line is written:
+
+```powershell
+$conf = New-PesterConfiguration
+$conf.Run.Path = '.'
+$conf.Output.Verbosity = 'Detailed'
+$conf.Debug.ShowStartMarkers = $true
+Invoke-Pester -Configuration $conf
+```
+
+```
+Describing Get-Emoji
+  [|] returns cactus...
+  [+] returns cactus 34ms
+```

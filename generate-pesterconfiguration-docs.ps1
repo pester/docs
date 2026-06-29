@@ -14,27 +14,17 @@ param (
 
 #region helpers
 
-# Some path-options (e.g. Run.RepoRoot) are resolved by New-PesterConfiguration at
-# runtime to the absolute path of the repository the generator runs in. We must not
-# bake that machine-specific build path into the published docs, so any default that
-# points at the generator's own working directory is replaced with an illustrative
-# placeholder repo root. We reuse 'C:\MyProject' to stay consistent with the
-# Run.Path examples elsewhere on the Configuration page.
+# Run.RepoRoot is resolved by New-PesterConfiguration to the absolute path of the
+# repository the generator runs in (machine-specific). We replace it with an
+# illustrative placeholder repo root so no build path leaks into the published docs.
 $repoRootPlaceholder = 'C:\MyProject'
-$environmentPaths = [System.Collections.Generic.HashSet[string]]::new([System.StringComparer]::OrdinalIgnoreCase)
-foreach ($p in @($PSScriptRoot, (Get-Location).Path)) {
-    if (-not [string]::IsNullOrEmpty($p)) {
-        $null = $environmentPaths.Add($p.TrimEnd('/', '\'))
-        try { $null = $environmentPaths.Add([System.IO.Path]::GetFullPath($p).TrimEnd('/', '\')) } catch { }
-    }
-}
 
-function Test-IsEnvironmentPath ($value) {
-    if ($value -is [string] -and -not [string]::IsNullOrEmpty($value)) {
-        $full = try { [System.IO.Path]::GetFullPath($value).TrimEnd('/', '\') } catch { $value.TrimEnd('/', '\') }
-        return ($environmentPaths.Contains($value.TrimEnd('/', '\')) -or $environmentPaths.Contains($full))
-    }
-    return $false
+function Format-MdxDescription ($text) {
+    # Escape characters that are structurally significant to MDX 3 / Markdown tables so raw
+    # PesterConfiguration help text (e.g. "{ . './setup.ps1' }") doesn't break the docs build.
+    # MDX 3 treats `{` as a JS expression and `<` as a JSX tag; `|` would corrupt a table row.
+    if ($null -eq $text) { return '' }
+    return ([string]$text) -replace '([{}<|])', '\$1'
 }
 
 function Format-NicelyMini ($value) {
@@ -85,10 +75,12 @@ function generateSectionsMarkdownAsTable {
             $optionName = $configOption.Name
             $option = $configOption.Value
             $rawDefault = $option.Default
-            if (Test-IsEnvironmentPath $rawDefault) { $rawDefault = $repoRootPlaceholder }
+            # Run.RepoRoot defaults to an auto-detected, machine-specific path. Render an illustrative placeholder (C:\MyProject) so the generated docs stay machine-independent.
+            if ($rawDefault -is [string] -and $rawDefault -eq $configObject.Run.RepoRoot.Value) { $rawDefault = $repoRootPlaceholder }
             $default = Format-NicelyMini $rawDefault
+            # Use the declared property type so options with a $null default (e.g. CodeCoverage.ReportRoot) still report their type.
             $type = $option.GetType().GetProperty('Default').PropertyType -as [string] -replace '^Pester\.'
-            "| $sectionName.$optionName | $($option.Description) | ``$type`` | ``$default`` |"
+            "| $sectionName.$optionName | $(Format-MdxDescription $option.Description) | ``$type`` | ``$default`` |"
         }
 
         @"
@@ -117,8 +109,10 @@ function generateSectionsMarkdownAsList {
             $optionName = $configOption.Name
             $option = $configOption.Value
             $rawDefault = $option.Default
-            if (Test-IsEnvironmentPath $rawDefault) { $rawDefault = $repoRootPlaceholder }
+            # Run.RepoRoot defaults to an auto-detected, machine-specific path. Render an illustrative placeholder (C:\MyProject) so the generated docs stay machine-independent.
+            if ($rawDefault -is [string] -and $rawDefault -eq $configObject.Run.RepoRoot.Value) { $rawDefault = $repoRootPlaceholder }
             $default = Format-NicelyMini $rawDefault
+            # Use the declared property type so options with a $null default (e.g. CodeCoverage.ReportRoot) still report their type.
             $type = $option.GetType().GetProperty('Default').PropertyType -as [string]
             @"
 #### $sectionName.$optionName
@@ -126,7 +120,7 @@ function generateSectionsMarkdownAsList {
 **Type:** ``$type``<br/>
 **Default:** ``$default``
 
-$($option.Description)
+$($option.Description | ForEach-Object { Format-MdxDescription $_ })
 
 "@
         }

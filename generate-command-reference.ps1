@@ -120,20 +120,28 @@ Write-Host 'Generating new MDX files' -ForegroundColor Magenta
 New-DocusaurusHelp @docusaurusOptions
 
 # -----------------------------------------------------------------------------
-# Strip the spurious ProgressAction common parameter that PlatyPS emits on
-# PowerShell 7.4+ (https://github.com/PowerShell/platyPS/issues/663). Pester 6
-# loads a .NET 8 assembly and therefore requires PowerShell 7.4+, so the docs
-# can no longer be generated on an older PowerShell to avoid this. Remove the
-# parameter from the generated MDX instead.
+# Post-process the generated MDX:
+#  * Strip the spurious ProgressAction common parameter that PlatyPS emits on
+#    PowerShell 7.4+ (https://github.com/PowerShell/platyPS/issues/663). Pester 6
+#    loads a .NET 8 assembly and therefore requires PowerShell 7.4+, so the docs
+#    can no longer be generated on an older PowerShell to avoid this.
+#  * Drop the '[<CommonParameters>]' entry from the SYNTAX blocks. It carries no
+#    useful information for these commands and, on 7.4+, the longer ProgressAction
+#    token made PlatyPS wrap it onto a dangling line of its own.
+# The replacements allow the token to sit inline or, when PlatyPS wrapped the
+# syntax line, on a continuation line of its own (optional leading line-break +
+# indentation) so no blank or dangling line is left behind.
 # -----------------------------------------------------------------------------
-Write-Host 'Removing spurious ProgressAction parameter from generated MDX files' -ForegroundColor Magenta
+Write-Host 'Removing ProgressAction and [<CommonParameters>] from generated MDX files' -ForegroundColor Magenta
 $commandsFolder = Join-Path -Path $docusaurusOptions.DocsFolder -ChildPath $docusaurusOptions.Sidebar
 Get-ChildItem -Path $commandsFolder -Filter '*.mdx' | ForEach-Object {
     $content = Get-Content -LiteralPath $_.FullName -Raw
-    # Remove from the SYNTAX code-blocks, e.g. ` [-ProgressAction <ActionPreference>]`
-    $updated = $content -replace ' \[-ProgressAction <ActionPreference>\]', ''
+    # Remove ' [-ProgressAction <ActionPreference>]' from the SYNTAX code-blocks
+    $updated = $content -replace '[ ]*(\r?\n[ ]*)?\[-ProgressAction <ActionPreference>\]', ''
     # Remove the dedicated '### -ProgressAction' section up to the next '### ' heading
     $updated = $updated -replace '(?ms)^### -ProgressAction\r?\n.*?(?=^### )', ''
+    # Remove ' [<CommonParameters>]' from the SYNTAX code-blocks
+    $updated = $updated -replace '[ ]*(\r?\n[ ]*)?\[<CommonParameters>\]', ''
     if ($updated -ne $content) {
         Set-Content -LiteralPath $_.FullName -Value $updated -NoNewline -Encoding utf8
     }

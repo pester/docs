@@ -9,7 +9,7 @@ description: Pester is a cross-platform PowerShell module for testing your Power
 
 Pester is a cross-platform module that runs on Windows, Linux, MacOS and anywhere else running a supported version of PowerShell. Pester currently requires and is tested with:
 - Windows PowerShell 5.1
-- PowerShell 7.2 and above
+- PowerShell 7.4 and above
 
 ## Installing from PowerShell Gallery
 
@@ -83,7 +83,7 @@ WARNING: Unable to resolve package source 'https://www.powershellgallery.com/api
 You don't have to use a package manager to install Pester. Another option is to download and installing it manually which can be useful in e.g. offline environments.
 
 1. Download the module on a machine with internet using either:
-    - `Save-Module -Name Pester -Path C:\Temp`. It will save it in a versioned folder, ex *C:\Temp\Pester\5.5.0*
+    - `Save-Module -Name Pester -Path C:\Temp`. It will save it in a versioned folder, ex *C:\Temp\Pester\6.0.0*
     - Or download the NuGet package from PowerShell Gallery and extract it, see [Manual Package Download](https://docs.microsoft.com/en-us/powershell/scripting/gallery/how-to/working-with-packages/manual-download)
 2. Copy the Pester-folder (ex. *C:\Temp\Pester*) to your destination computer and place it in one of your module directories defined by [$env:PSModulePath](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_psmodulepath). On a Windows-system the default locations include:
     - **Current user:** *$HOME\Documents\WindowsPowerShell\Modules*
@@ -91,7 +91,7 @@ You don't have to use a package manager to install Pester. Another option is to 
 3. Start PowerShell and start testing.
 
 :::note
-Step 2 is an optional step to enable simple import by name and module auto-loading. You could also import Pester using an absolute path like `Import-Module C:\Temp\Pester\5.5.0`.
+Step 2 is an optional step to enable simple import by name and module auto-loading. You could also import Pester using an absolute path like `Import-Module C:\Temp\Pester\6.0.0`.
 :::
 
 ## Alternative package sources

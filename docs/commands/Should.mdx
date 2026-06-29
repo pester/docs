@@ -26,140 +26,138 @@ Should is a keyword that is used to define an assertion inside an It block.
 
 ```powershell
 Should [[-ActualValue] <Object>] [-Be] [-Not] [-ExpectedValue <Object>]
- [-Because <Object>] [<CommonParameters>]
+ [-Because <Object>]
 ```
 
 ### BeExactly
 
 ```powershell
 Should [[-ActualValue] <Object>] [-Not] [-ExpectedValue <Object>]
- [-Because <Object>] [-BeExactly] [<CommonParameters>]
+ [-Because <Object>] [-BeExactly]
 ```
 
 ### BeGreaterThan
 
 ```powershell
 Should [[-ActualValue] <Object>] [-Not] [-ExpectedValue <Object>]
- [-Because <Object>] [-BeGreaterThan] [<CommonParameters>]
+ [-Because <Object>] [-BeGreaterThan]
 ```
 
 ### BeLessOrEqual
 
 ```powershell
 Should [[-ActualValue] <Object>] [-Not] [-ExpectedValue <Object>]
- [-Because <Object>] [-BeLessOrEqual] [<CommonParameters>]
+ [-Because <Object>] [-BeLessOrEqual]
 ```
 
 ### BeIn
 
 ```powershell
 Should [[-ActualValue] <Object>] [-Not] [-ExpectedValue <Object>]
- [-Because <Object>] [-BeIn] [<CommonParameters>]
+ [-Because <Object>] [-BeIn]
 ```
 
 ### BeLessThan
 
 ```powershell
 Should [[-ActualValue] <Object>] [-Not] [-ExpectedValue <Object>]
- [-Because <Object>] [-BeLessThan] [<CommonParameters>]
+ [-Because <Object>] [-BeLessThan]
 ```
 
 ### BeGreaterOrEqual
 
 ```powershell
 Should [[-ActualValue] <Object>] [-Not] [-ExpectedValue <Object>]
- [-Because <Object>] [-BeGreaterOrEqual] [<CommonParameters>]
+ [-Because <Object>] [-BeGreaterOrEqual]
 ```
 
 ### BeLike
 
 ```powershell
 Should [[-ActualValue] <Object>] [-Not] [-ExpectedValue <Object>]
- [-Because <Object>] [-BeLike] [<CommonParameters>]
+ [-Because <Object>] [-BeLike]
 ```
 
 ### BeLikeExactly
 
 ```powershell
 Should [[-ActualValue] <Object>] [-Not] [-ExpectedValue <Object>]
- [-Because <Object>] [-BeLikeExactly] [<CommonParameters>]
+ [-Because <Object>] [-BeLikeExactly]
 ```
 
 ### BeNullOrEmpty
 
 ```powershell
 Should [[-ActualValue] <Object>] [-Not] [-Because <Object>]
- [-BeNullOrEmpty] [<CommonParameters>]
+ [-BeNullOrEmpty]
 ```
 
 ### BeOfType
 
 ```powershell
 Should [[-ActualValue] <Object>] [-Not] [-Because <Object>] [-BeOfType]
- [-ExpectedType <Object>] [<CommonParameters>]
+ [-ExpectedType <Object>]
 ```
 
 ### BeTrue
 
 ```powershell
 Should [[-ActualValue] <Object>] [-Not] [-Because <Object>] [-BeTrue]
- [<CommonParameters>]
 ```
 
 ### BeFalse
 
 ```powershell
 Should [[-ActualValue] <Object>] [-Not] [-Because <Object>] [-BeFalse]
- [<CommonParameters>]
 ```
 
 ### Contain
 
 ```powershell
 Should [[-ActualValue] <Object>] [-Not] [-ExpectedValue <Object>]
- [-Because <Object>] [-Contain] [<CommonParameters>]
+ [-Because <Object>] [-Contain]
 ```
 
 ### Exist
 
 ```powershell
 Should [[-ActualValue] <Object>] [-Not] [-Because <Object>] [-Exist]
- [-LiteralPath] [<CommonParameters>]
+ [-LiteralPath]
 ```
 
 ### FileContentMatch
 
 ```powershell
 Should [[-ActualValue] <Object>] [-Not] [-Because <Object>]
- [-FileContentMatch] [-ExpectedContent <Object>] [<CommonParameters>]
+ [-FileContentMatch] [-ExpectedContent <Object>]
 ```
 
 ### FileContentMatchExactly
 
 ```powershell
 Should [[-ActualValue] <Object>] [-Not] [-Because <Object>]
- [-ExpectedContent <Object>] [-FileContentMatchExactly] [<CommonParameters>]
+ [-ExpectedContent <Object>] [-FileContentMatchExactly]
 ```
 
 ### FileContentMatchMultiline
 
 ```powershell
 Should [[-ActualValue] <Object>] [-Not] [-Because <Object>]
- [-ExpectedContent <Object>] [-FileContentMatchMultiline] [<CommonParameters>]
+ [-ExpectedContent <Object>] [-FileContentMatchMultiline]
 ```
 
 ### FileContentMatchMultilineExactly
 
 ```powershell
 Should [[-ActualValue] <Object>] [-Not] [-Because <Object>]
- [-ExpectedContent <Object>] [-FileContentMatchMultilineExactly] [<CommonParameters>]
+ [-ExpectedContent <Object>] [-FileContentMatchMultilineExactly]
 ```
 
 ### HaveCount
 
 ```powershell
 Should [[-ActualValue] <Object>] [-Not] [-ExpectedValue <Object>]
- [-Because <Object>] [-HaveCount] [<CommonParameters>]
+ [-Because <Object>] [-HaveCount]
 ```
 
 ### HaveParameter
@@ -167,35 +165,35 @@ Should [[-ActualValue] <Object>] [-Not] [-ExpectedValue <Object>]
 ```powershell
 Should [[-ActualValue] <Object>] [-Not] [-Because <Object>]
  [-HaveParameter] [-ParameterName <Object>] [-Type <Object>] [-DefaultValue <Object>] [-Mandatory]
- [-InParameterSet <Object>] [-HasArgumentCompleter] [-Alias <Object>] [<CommonParameters>]
+ [-InParameterSet <Object>] [-HasArgumentCompleter] [-Alias <Object>]
 ```
 
 ### Match
 
 ```powershell
 Should [[-ActualValue] <Object>] [-Not] [-Because <Object>] [-Match]
- [-RegularExpression <Object>] [<CommonParameters>]
+ [-RegularExpression <Object>]
 ```
 
 ### MatchExactly
 
 ```powershell
 Should [[-ActualValue] <Object>] [-Not] [-Because <Object>]
- [-RegularExpression <Object>] [-MatchExactly] [<CommonParameters>]
+ [-RegularExpression <Object>] [-MatchExactly]
 ```
 
 ### Throw
 
 ```powershell
 Should [[-ActualValue] <Object>] [-Not] [-Because <Object>] [-Throw]
- [-ExpectedMessage <Object>] [-ErrorId <Object>] [-ExceptionType <Object>] [-PassThru] [<CommonParameters>]
+ [-ExpectedMessage <Object>] [-ErrorId <Object>] [-ExceptionType <Object>] [-PassThru]
 ```
 
 ### InvokeVerifiable
 
 ```powershell
 Should [[-ActualValue] <Object>] [-Not] [-Because <Object>]
- [-InvokeVerifiable] [<CommonParameters>]
+ [-InvokeVerifiable]
 ```
 
 ### Invoke
@@ -203,7 +201,7 @@ Should [[-ActualValue] <Object>] [-Not] [-Because <Object>]
 ```powershell
 Should [[-ActualValue] <Object>] [-Not] [-Because <Object>] [-Invoke]
  [-CommandName <Object>] [-Times <Object>] [-ParameterFilter <Object>] [-ExclusiveFilter <Object>]
- [-ModuleName <Object>] [-Scope <Object>] [-Exactly] [-CallerSessionState <Object>] [<CommonParameters>]
+ [-ModuleName <Object>] [-Scope <Object>] [-Exactly] [-CallerSessionState <Object>]
 ```
 
 ## DESCRIPTION

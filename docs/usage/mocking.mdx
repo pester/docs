@@ -259,17 +259,79 @@ Describe "d" {
 
     BeforeAll {
         function f ($a) { "real" }
-        Mock f { "mock" } -ParameterFilter { $a -eq 10 }
+        Mock f { "default" }
+        Mock f { "ten" } -ParameterFilter { $a -eq 10 }
     }
 
     It "i" {
         f 10
-        Should -Invoke f -Exactly 1
+        Should -Invoke f -Exactly 1 -ParameterFilter { $a -eq 10 }
     }
 
     It "j" {
         f 20
-        Should -Invoke f -Exactly 0
+        Should -Invoke f -Exactly 0 -ParameterFilter { $a -eq 10 }
     }
 }
 ```
+
+## Changes in Pester v6
+
+### Mocks no longer fall through to the real command
+
+In Pester v5, calling a command whose `-ParameterFilter` mocks didn't match would silently **fall through to the real command**. Pester v6 removes this behavior to make mocks predictable: if none of the parameter filters match and there is no default (unfiltered) mock, the call fails with a clear error instead of running the real command.
+
+```powershell
+Describe "d" {
+    BeforeAll {
+        function Get-Thing ($Id) { "real:$Id" }
+        Mock Get-Thing { "mock" } -ParameterFilter { $Id -eq 1 }
+    }
+
+    It "throws when nothing matches" {
+        # In v5 this returned "real:2"; in v6 it throws:
+        { Get-Thing 2 } | Should -Throw "*no default mock to fall back to*"
+    }
+}
+```
+
+Add a default mock to handle the calls that don't match a specific filter:
+
+```powershell
+Mock Get-Thing { "default" }                             # handles everything else
+Mock Get-Thing { "one" } -ParameterFilter { $Id -eq 1 }  # specific case
+```
+
+### Mock history
+
+When a `Should -Invoke` assertion fails, Pester v6 prints the recorded mock history for the command. It lists every recorded call and marks whether each one matched your parameter filter, so you can see why a filter did or didn't match without adding your own `Write-Host` debugging.
+
+```powershell title="Order.Tests.ps1"
+BeforeAll {
+    function Send-Email ($To, $Subject) { }
+}
+
+Describe 'Order processing' {
+    It 'emails alice exactly twice' {
+        Mock Send-Email { }
+
+        Send-Email -To 'alice@example.com' -Subject 'Welcome'
+        Send-Email -To 'bob@example.com'   -Subject 'Receipt'
+
+        Should -Invoke Send-Email -Times 2 -Exactly -ParameterFilter { $To -eq 'alice@example.com' }
+    }
+}
+```
+
+The assertion fails because only one of the two calls matched the filter, and the failure lists both recorded calls:
+
+```
+[-] emails alice exactly twice
+ Expected Send-Email to be called 2 times exactly, but was called 1 times
+ Performed invocations:
+   [*] Send-Email -To 'alice@example.com' -Subject 'Welcome' from Order.Tests.ps1:7
+   [ ] Send-Email -To 'bob@example.com' -Subject 'Receipt' from Order.Tests.ps1:7
+ at Should -Invoke Send-Email -Times 2 -Exactly -ParameterFilter { $To -eq 'alice@example.com' }, Order.Tests.ps1:12
+```
+
+`[*]` marks a call that matched the parameter filter and `[ ]` marks one that didn't. Here `alice` matched and `bob` didn't, so the matched count is 1 instead of the expected 2.

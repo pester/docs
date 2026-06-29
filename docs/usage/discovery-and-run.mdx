@@ -110,6 +110,45 @@ In the run phase we take the internal tree of containers, blocks and tests and r
 We are done. All tests in this container are executed.
 
 
+## Per-file Discovery and Run
+
+In Pester v6, each file is discovered and run before the next file starts. Pester discovers the first file, runs it, then does the same for the next file:
+
+```
+File1.Tests.ps1 -> Discovery -> Run
+File2.Tests.ps1 -> Discovery -> Run
+```
+
+In Pester v5 the phases were global: every file was discovered first, and only then was every file run (`File1 Discovery`, `File2 Discovery`, `File1 Run`, `File2 Run`).
+
+Most suites won't notice the difference, but it matters when files share process-wide state. A file that changes the working directory, sets a global variable, or imports a module during Discovery no longer affects the Discovery of unrelated files, because each file is fully processed before the next one starts.
+
+You can observe the order with a quick experiment. Top-level code runs during Discovery, and `BeforeAll` runs during Run:
+
+```powershell title="A.Tests.ps1"
+Write-Host "A: discovery"
+Describe 'A' {
+    BeforeAll { Write-Host "A: run" }
+    It 'a' { $true }
+}
+```
+```powershell title="B.Tests.ps1"
+Write-Host "B: discovery"
+Describe 'B' {
+    BeforeAll { Write-Host "B: run" }
+    It 'b' { $true }
+}
+```
+
+```
+# Pester v6 runs each file's phases together
+A: discovery
+A: run
+B: discovery
+B: run
+```
+
+
 ## Common gotchas
 
 ### `BeforeAll` and `-TestCases`

@@ -13,7 +13,7 @@ Your existing `Should -Be` assertions keep working, so you don't have to rewrite
 
 For most suites upgrading is low risk. Run through this list, then read the details below for anything that bites:
 
-1. Make sure you run **Windows PowerShell 5.1** or **PowerShell 7.2+**.
+1. Make sure you run **Windows PowerShell 5.1** or **PowerShell 7.4+**.
 2. Check any `-ForEach`/`-TestCases` that can be empty — it now throws unless you add `-AllowNullOrEmptyForEach`.
 3. Remove duplicate `BeforeAll`/`BeforeEach`/`AfterAll`/`AfterEach` in the same block.
 4. Replace `Assert-MockCalled` / `Assert-VerifiableMock` with `Should -Invoke` / `Should -InvokeVerifiable`.
@@ -22,9 +22,9 @@ For most suites upgrading is low risk. Run through this list, then read the deta
 
 ## Breaking changes
 
-### PowerShell 5.1 and 7.2+ only
+### PowerShell 5.1 and 7.4+ only
 
-Support for PowerShell 3, 4, 6 and early/unsupported 7 was removed — they are all out of support from Microsoft. Dropping them let us move the C# to .NET 8 (net462 for Windows PowerShell 5.1) and modernize the runtime. Pester 6 targets **Windows PowerShell 5.1** and **PowerShell 7.2+**.
+Support for PowerShell 3, 4, 6 and early/unsupported 7 was removed — they are all out of support from Microsoft. Dropping them let us move the C# to .NET 8 (net462 for Windows PowerShell 5.1) and modernize the runtime. Pester 6 targets **Windows PowerShell 5.1** and **PowerShell 7.4+**.
 
 **Symptom.** Pester does not import on an older PowerShell.
 
@@ -57,6 +57,8 @@ Describe 'MyModule' {
 ```
 
 The on-screen output changes too: a run prints one `Running tests from N files.` banner, then per-file results, then a single grand total. The old `Starting discovery in N files.` / `Discovery found X tests` framing is gone for a normal run.
+
+The per-file model also powers the experimental parallel runner (`Run.Parallel`). It keeps the same result object, with a few differences worth knowing - see [The Result Object](../usage/result-object#parallel-runner-edge-cases).
 
 ### Empty or `$null` `-ForEach` throws
 
@@ -102,20 +104,24 @@ Describe 'd' {
 }
 ```
 
-### Test names only expand `-ForEach` data
+### Test names evaluate `<...>` templates as expressions
 
-`<...>` tokens in `Describe`/`Context`/`It` names now interpolate **only the current data item and its properties** — not arbitrary PowerShell expressions. This closes a code-injection vector where an expression embedded in a name ran during discovery.
+In v6 the content of every `<...>` token in a `Describe`/`Context`/`It` name is evaluated as a PowerShell expression in the test's run scope. You can reference the current `-ForEach`/`-TestCases` item and its properties, any in-scope variable, and full expressions such as arithmetic or method calls. Everything outside `<...>` (including `$`, `$(...)`, quotes, and backticks) is escaped and kept literal, so it can't break the name or run code.
 
-**Symptom.** A name that embedded an expression no longer evaluates it.
+In v5 only simple data, variable, and property references inside `<...>` were substituted; anything more complex was left verbatim. As a result a name that happens to contain expression-like content inside `<...>` now renders differently.
 
-**Fix.** Compute the value into a `-ForEach` property and reference that property by name:
+**Symptom.** A name with an expression inside `<...>` that used to render literally is now evaluated.
 
 ```powershell
-# v5 — arbitrary expression in the name
+# v5 renders literally:  adds up to <($a + $b)>
+# v6 evaluates:          adds up to 3
 It 'adds up to <($a + $b)>' -ForEach @(@{ a = 1; b = 2 }) { }
+```
 
-# v6 — put the value in the data, reference it by name
-It 'adds up to <sum>' -ForEach @(@{ a = 1; b = 2; sum = 3 }) { }
+**Fix (if you want the literal text).** Escape the leading `<` so it isn't treated as a template:
+
+```powershell
+It 'adds up to `<($a + $b)`>' -ForEach @(@{ a = 1; b = 2 }) { }
 ```
 
 ### `Assert-MockCalled` and `Assert-VerifiableMock` removed
@@ -228,6 +234,29 @@ Invoke-Pester -Configuration $config
 Pester 6 adds a new family of `Should-*` assertions — `Should-Be`, `Should-Throw`, `Should-Invoke` and around 40 more — with clearer failure messages. They are **not** part of upgrading: your existing `Should -Be` assertions keep working, and there is no need to rewrite them.
 
 If you want to try them, see the [command reference](../commands/Should-Be). A dedicated guide for moving from `Should -Be` to `Should-Be` will come later.
+
+### Piping vs. `-Actual`
+
+The new assertions take the actual value from the pipeline or from `-Actual`. The pipeline unwraps its input, so a **value** assertion sees `@(1)` as `1` and `@()` as `$null`, and a collection sent through the pipeline is re-collected as `[object[]]` — its original type (for example `[int[]]`) is lost. Use `-Actual` when you need the exact value or the concrete collection type:
+
+```powershell
+@(1) | Should-Be 1                                           # pipeline unwraps @(1) to 1
+Should-HaveType -Actual ([int[]](1, 2)) -Expected ([int[]])  # -Actual keeps the [int[]]
+```
+
+If a value or type assertion fails because the pipeline unwrapped a collection this way, the failure message adds a hint that explains what happened and points you back to `-Actual`:
+
+```powershell
+[int[]](1, 2) | Should-HaveType ([int[]])
+# Expected value to have type [int[]], but got [Object[]] @(1, 2).
+#
+# Hint: You piped a [int[]] into a type assertion, but the pipeline streams a multi-item
+# collection and re-collects it as [Object[]], so the assertion saw [Object[]], not the
+# [int[]] you piped. To assert the type of a collection, pass it as the -Actual argument
+# instead of piping it, e.g. -Actual $value.
+```
+
+The hint is best-effort. PowerShell can't reliably tell a single-item collection from a scalar, and a collection's original type isn't visible on the right-hand side of the pipeline. Pester recovers the piped value through pipeline tricks that work for common cases but not every one, so the hint won't appear in every situation. When you need the exact value or the concrete collection type, pass it with `-Actual` rather than relying on the hint.
 
 :::warning Pester 6.0.0 is in preview
 Some details may still change before the final release. To keep up with the latest development, see the release notes for 6.0.0 pre-release builds at https://github.com/pester/Pester/releases

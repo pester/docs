@@ -284,9 +284,39 @@ Describing Animals
 ```
 
 
+### Using expressions in `<>` template
+
+In Pester v6 the content of a `<>` template is evaluated as a PowerShell expression in the test's scope, so you are no longer limited to variable names and dot-navigation. You can call methods or compute values inline:
+
+```powershell
+Describe "Math" {
+    It 'sum of <a> and <b> is <($a + $b)>' -ForEach @(
+        @{ a = 1; b = 2 }
+        @{ a = 5; b = 7 }
+    ) {
+        # ...
+    }
+
+    It 'upper of <name> is <($name.ToUpper())>' -ForEach @(@{ Name = 'cow' }) {
+        # ...
+    }
+}
+```
+```
+Describing Math
+  [+] sum of 1 and 2 is 3
+  [+] sum of 5 and 7 is 12
+  [+] upper of cow is COW
+```
+
+:::tip Use single-quoted names
+Always wrap names that contain `<>` templates in single quotes. With double quotes, PowerShell expands `$a`, `$name`, and `$(...)` itself during discovery, before your data exists, which produces empty or wrong values. Single quotes let Pester expand the template at run time instead.
+:::
+
+
 ### Escaping
 
-Before the template string is expanded every `$` and `` ` `` in the text is escaped. This allows you to put literals, such as `$null` in your test names, and still use the template to expand the value:
+Before the name is expanded, every `` ` ``, `$` and `"` *outside* of a `<...>` template is escaped and kept literal. This allows you to put literals, such as `$null`, in your test names, and still use a template to expand the value:
 
 ```powershell
 Describe "Fruit" -ForEach "🍎", "🍐" {
@@ -344,27 +374,21 @@ Describing When x < 4, x: 4
 
 #### Internals
 
-The value in the string is escaped by adding `` ` `` before every `$` and `` ` ``. Every template is prefixed by `$`, and then the string is expanded:
+Pester rewrites *only* the `<...>` tokens in the name; the rest of the string is never re-parsed, so literal text can't break the name or run code. Each `<expression>` is turned into a sub-expression that evaluates the content and renders the result through Pester's formatter, every other `` ` ``, `$` and `"` is escaped so it stays literal, and the assembled string is then expanded in the test's (or block's) run scope:
 
 ```
-"<x> should not be `$null"
+# the name Pester receives (write it single-quoted so $null stays literal)
+'<x> should not be $null'
 
-# because this is double quoted string it will be
-# expanded by powershell to
+# only the <x> token becomes a sub-expression that evaluates $x and formats the
+# result; the literal `$` is escaped so it stays inert
+$(Format-NicelyForTemplate $x) should not be `$null
 
-<x> should not be $null
-
-# then escaped by us to
-<x> should not be `$null
-
-# template is replaced
-$x should not be `$null
-
-# and then it is evaluated in the appropriate script scope
+# that string is expanded in the appropriate script scope
 $x = 1
-& { "$x should not be `$null" }
+& { "$(Format-NicelyForTemplate $x) should not be `$null" }
 
-# giving the final text
+# the formatter renders the value, giving the final text
 1 should not be $null
 ```
 
