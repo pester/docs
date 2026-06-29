@@ -119,6 +119,81 @@ if (Test-Path -Path $outputFolder) {
 Write-Host 'Generating new MDX files' -ForegroundColor Magenta
 New-DocusaurusHelp @docusaurusOptions
 
+function Repair-ExampleFences {
+    <#
+        Pester's source comment-based help embeds Markdown code fences (```powershell
+        ... ```), including a 'powereshell' typo, inside its .EXAMPLE blocks. PlatyPS
+        double-wraps these, emitting mismatched fences - a bare ``` opening paired with
+        a ```powershell "closing" fence, sometimes doubled up. MDX 3 then mispairs the
+        fences, treating an example's PowerShell '@{ ... }' as a JSX expression, which
+        breaks the Docusaurus build ("Could not parse expression with acorn").
+
+        Normalize fences inside the EXAMPLES section only: collapse runs of adjacent
+        fence lines and alternate them open/close per example, so each example becomes a
+        single well-formed ```powershell code block followed by its description. The
+        SYNTAX and PARAMETERS sections (and their YAML blocks) are left untouched.
+    #>
+    param([string] $Content)
+
+    $eol = if ($Content -match "`r`n") { "`r`n" } else { "`n" }
+    $lines = $Content -split "`r?`n"
+
+    # Locate the EXAMPLES section: '## EXAMPLES' up to the next H2 heading.
+    $start = -1
+    for ($i = 0; $i -lt $lines.Count; $i++) {
+        if ($lines[$i] -match '^##\s+EXAMPLES\s*$') { $start = $i; break }
+    }
+    if ($start -lt 0) { return $Content }
+
+    $end = $lines.Count
+    for ($i = $start + 1; $i -lt $lines.Count; $i++) {
+        if ($lines[$i] -match '^##\s' -and $lines[$i] -notmatch '^###') { $end = $i; break }
+    }
+
+    $result = [System.Collections.Generic.List[string]]::new()
+    $inCode = $false
+    $i = 0
+    while ($i -lt $lines.Count) {
+        $line = $lines[$i]
+
+        # Outside the EXAMPLES section: pass through unchanged.
+        if ($i -le $start -or $i -ge $end) {
+            if ($i -eq $end -and $inCode) { $result.Add('```'); $inCode = $false }
+            $result.Add($line); $i++; continue
+        }
+
+        # A new example heading closes any block left open by the previous one.
+        if ($line -match '^###\s') {
+            if ($inCode) { $result.Add('```'); $inCode = $false }
+            $result.Add($line); $i++; continue
+        }
+
+        # Collapse a run of adjacent fence lines into a single open or close fence.
+        if ($line -match '^\s{0,3}```') {
+            $langs = @()
+            while ($i -lt $end -and $lines[$i] -match '^\s{0,3}```(.*)$') {
+                $langs += $Matches[1].Trim()
+                $i++
+            }
+            if (-not $inCode) {
+                $lang = $langs | Where-Object { $_ -ne '' } | Select-Object -First 1
+                if (-not $lang -or $lang -eq 'powereshell') { $lang = 'powershell' }
+                $result.Add('```' + $lang)
+                $inCode = $true
+            }
+            else {
+                $result.Add('```')
+                $inCode = $false
+            }
+            continue
+        }
+
+        $result.Add($line); $i++
+    }
+
+    return ($result -join $eol)
+}
+
 # -----------------------------------------------------------------------------
 # Post-process the generated MDX:
 #  * Strip the spurious ProgressAction common parameter that PlatyPS emits on
@@ -128,11 +203,14 @@ New-DocusaurusHelp @docusaurusOptions
 #  * Drop the '[<CommonParameters>]' entry from the SYNTAX blocks. It carries no
 #    useful information for these commands and, on 7.4+, the longer ProgressAction
 #    token made PlatyPS wrap it onto a dangling line of its own.
-# The replacements allow the token to sit inline or, when PlatyPS wrapped the
-# syntax line, on a continuation line of its own (optional leading line-break +
+#  * Repair the mismatched code fences PlatyPS emits for .EXAMPLE blocks that
+#    contain their own Markdown fences (see Repair-ExampleFences) so the MDX
+#    compiles.
+# The first two replacements allow the token to sit inline or, when PlatyPS wrapped
+# the syntax line, on a continuation line of its own (optional leading line-break +
 # indentation) so no blank or dangling line is left behind.
 # -----------------------------------------------------------------------------
-Write-Host 'Removing ProgressAction and [<CommonParameters>] from generated MDX files' -ForegroundColor Magenta
+Write-Host 'Post-processing generated MDX files (ProgressAction, [<CommonParameters>], example fences)' -ForegroundColor Magenta
 $commandsFolder = Join-Path -Path $docusaurusOptions.DocsFolder -ChildPath $docusaurusOptions.Sidebar
 Get-ChildItem -Path $commandsFolder -Filter '*.mdx' | ForEach-Object {
     $content = Get-Content -LiteralPath $_.FullName -Raw
@@ -142,6 +220,8 @@ Get-ChildItem -Path $commandsFolder -Filter '*.mdx' | ForEach-Object {
     $updated = $updated -replace '(?ms)^### -ProgressAction\r?\n.*?(?=^### )', ''
     # Remove ' [<CommonParameters>]' from the SYNTAX code-blocks
     $updated = $updated -replace '[ ]*(\r?\n[ ]*)?\[<CommonParameters>\]', ''
+    # Fix mismatched code fences inside the EXAMPLES section
+    $updated = Repair-ExampleFences -Content $updated
     if ($updated -ne $content) {
         Set-Content -LiteralPath $_.FullName -Value $updated -NoNewline -Encoding utf8
     }

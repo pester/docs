@@ -44,17 +44,15 @@ This example generates an equivalency option object that excludes the 'Id' and '
 
 ### EXAMPLE 2
 
-```
-```powereshell
+```powershell
 Should-BeEquivalent ... -ExcludePathsNotOnExpected
 ```
-```powershell
 
 This example generates an equivalency option object that excludes any paths not present on the expected object from the comparison, using the default deep comparison strategy.
 
 ### EXAMPLE 3
 
-```
+```powershell
 $expected = [PSCustomObject] @{
     Name = "Thomas"
 }
@@ -65,13 +63,13 @@ $actual = [PSCustomObject] @{
 }
 
 $actual | Should-BeEquivalent $expected
-```powershell
+```
 
 This will throw an error because the actual object has an additional property Age and the Name values are not equivalent.
 
 ### EXAMPLE 4
 
-```
+```powershell
 $expected = [PSCustomObject] @{
     Name = "Thomas"
 }
