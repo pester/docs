@@ -13,7 +13,19 @@ param (
 )
 
 #region helpers
+function Format-MdxDescription ($text) {
+    # Escape characters that are structurally significant to MDX 3 / Markdown tables so raw
+    # PesterConfiguration help text (e.g. "{ . './setup.ps1' }") doesn't break the docs build.
+    # MDX 3 treats `{` as a JS expression and `<` as a JSX tag; `|` would corrupt a table row.
+    if ($null -eq $text) { return '' }
+    return ([string]$text) -replace '([{}<|])', '\$1'
+}
+
 function Format-NicelyMini ($value) {
+    if ($null -eq $value) {
+        return '$null'
+    }
+
     if ($value -is [bool]) {
         if ($value) {
             '$true'
@@ -56,9 +68,13 @@ function generateSectionsMarkdownAsTable {
         $options = foreach ($configOption in $section.PSObject.Properties) {
             $optionName = $configOption.Name
             $option = $configOption.Value
-            $default = Format-NicelyMini $option.Default
-            $type = $option.Default.GetType() -as [string] -replace '^Pester\.'
-            "| $sectionName.$optionName | $($option.Description) | ``$type`` | ``$default`` |"
+            $rawDefault = $option.Default
+            # Run.RepoRoot defaults to an auto-detected, machine-specific path. Render it as $null so the generated docs stay machine-independent.
+            if ($rawDefault -is [string] -and $rawDefault -eq $configObject.Run.RepoRoot.Value) { $rawDefault = $null }
+            $default = Format-NicelyMini $rawDefault
+            # Use the declared property type so options with a $null default (e.g. CodeCoverage.ReportRoot) still report their type.
+            $type = $option.GetType().GetProperty('Default').PropertyType -as [string] -replace '^Pester\.'
+            "| $sectionName.$optionName | $(Format-MdxDescription $option.Description) | ``$type`` | ``$default`` |"
         }
 
         @"
@@ -86,15 +102,19 @@ function generateSectionsMarkdownAsList {
         $options = foreach ($configOption in $section.PSObject.Properties) {
             $optionName = $configOption.Name
             $option = $configOption.Value
-            $default = Format-NicelyMini $option.Default
-            $type = $option.Default.GetType() -as [string]
+            $rawDefault = $option.Default
+            # Run.RepoRoot defaults to an auto-detected, machine-specific path. Render it as $null so the generated docs stay machine-independent.
+            if ($rawDefault -is [string] -and $rawDefault -eq $configObject.Run.RepoRoot.Value) { $rawDefault = $null }
+            $default = Format-NicelyMini $rawDefault
+            # Use the declared property type so options with a $null default (e.g. CodeCoverage.ReportRoot) still report their type.
+            $type = $option.GetType().GetProperty('Default').PropertyType -as [string]
             @"
 #### $sectionName.$optionName
 
 **Type:** ``$type``<br/>
 **Default:** ``$default``
 
-$($option.Description)
+$($option.Description | ForEach-Object { Format-MdxDescription $_ })
 
 "@
         }

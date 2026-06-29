@@ -237,6 +237,23 @@ All `Should-*` assertions are listed below, grouped by the kind of check they pe
 - [`Should-HaveParameter`](../commands/Should-HaveParameter.mdx) — Asserts that a command has the expected parameter, and optionally checks its type, default value, aliases, parameter set, mandatory status, and argument completer.
 - [`Should-NotHaveParameter`](../commands/Should-NotHaveParameter.mdx) — Asserts that a command does not have the given parameter.
 
+### Choosing your assertion syntax
+
+The classic `Should -Be` assertions still ship and still work, and the new `Should-*` assertions sit alongside them. You can adopt them one test at a time, or mix both styles in the same suite while you migrate.
+
+When you are ready to commit to the new style, switch the old syntax off so it can't be used by accident:
+
+```powershell
+$config = New-PesterConfiguration
+$config.Should.DisableV5 = $true
+```
+
+With `Should.DisableV5` enabled, using the classic `Should -Be` syntax throws, pointing you at the new command:
+
+```
+Pester Should -Be syntax is disabled. Use Should-Be (without space), or enable it by setting: $PesterPreference.Should.DisableV5 = $false
+```
+
 ## `Should` (v4/v5)
 
 `Should` is used to do an assertion that fails or passes the test.
@@ -266,7 +283,7 @@ Other assertion types can be found in [Assertion Reference](.).
 
 `Should` can now be configured to continue on failure. This will report the error to Pester, but won't fail the test immediately. Instead, all the Should failures are collected and reported at the end of the test. This allows you to put multiple assertions into one It and still get complete information on failure.
 
-This new Should behavior is opt-in and can be enabled via `Should.ErrorAction = 'Continue'` on the configuration object or via `$PesterPreference`.
+This new Should behavior is opt-in and can be enabled via `Should.ErrorAction = 'Continue'` on the configuration object or via `$PesterPreference`. The new `Should-*` assertions honor this setting too, so you can collect multiple failures whichever syntax you use.
 
 ```powershell
  BeforeAll {
