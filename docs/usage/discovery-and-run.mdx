@@ -1,6 +1,6 @@
 ---
 title: Discovery and Run
-description: Pester runs your test files in two phases, Discovery and Run. This introduction explains how they work and how it affects they way your structure and write your tests
+description: Pester runs your test files in two phases, Discovery and Run. This introduction explains how they work and how it affects the way you structure and write your tests
 ---
 
 Pester runs your test files in two phases: Discovery and Run. During discovery, it quickly scans your test files and discovers all the Describes, Contexts, Its and other Pester blocks.
@@ -155,9 +155,9 @@ B: run
 
 `-TestCases` are evaluated during `Discovery`, but `BeforeAll` won't run until the `Run` phase. Using variables set in `BeforeAll` in `-TestCases` (or `-ForEach`) won't work. The variable from `BeforeAll` simply won't be defined until much after `-TestCases` and `-ForEach` are evaluated.
 
-### Generating test and blocks via `foreach` keyword
+### Generating tests and blocks via `foreach` keyword
 
-A common pattern in Pester v4 is to use `foreach` to generated tests and blocks based on external data, for example like this:
+A common pattern in Pester v4 is to use `foreach` to generate tests and blocks based on external data, for example like this:
 
 ```powershell
 BeforeAll {
