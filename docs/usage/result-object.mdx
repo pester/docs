@@ -196,7 +196,7 @@ In a normal sequential run the `Run.Duration` equals the sum of its container du
 ## Parallel runner edge cases
 
 :::warning Experimental
-The parallel runner is **experimental** in Pester 6 and its behaviour may still change. It requires **PowerShell 7+**.
+The parallel runner is **experimental** in Pester 6 and its behaviour may still change. It requires **PowerShell 7.4+**.
 :::
 
 Pester 6 can run each test **file** in its own runspace using `ForEach-Object -Parallel`. Enable it with:
@@ -237,7 +237,7 @@ Workers finish in an unpredictable order, but Pester **restores the original dis
 
 `Run.Parallel` only parallelizes **file-based** runs. Pester prints a warning and runs sequentially - producing an ordinary sequential result object - when any of these apply:
 
-- Running on **Windows PowerShell 5.1** (parallel needs PowerShell 7+).
+- Running on **Windows PowerShell 5.1** (parallel needs PowerShell 7.4+).
 - The run uses **script-block or `ContainerInfo` containers** rather than files.
 - **Code coverage is enabled** (see below).
 - **`Run.SkipRemainingOnFailure = 'Run'`** is set, because "stop the whole run on the first failure" cannot span isolated runspaces. The `Block` and `Container` scopes still work and stay parallel.

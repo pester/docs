@@ -167,13 +167,13 @@ Pester can be used to both test and mock the behavior commands that are exported
 Describe "Invoke-PublicMethod" {
     It "returns a value" {
         $result = Invoke-PublicMethod
-        $result | Should Be 'Invoke-PublicMethod called!'
+        $result | Should -Be 'Invoke-PublicMethod called!'
     }
 
     It "mocking exported command" {
         Mock Invoke-PublicMethod { 'mocked' }
         $result = Invoke-PublicMethod
-        $result | Should Be 'mocked'
+        $result | Should -Be 'mocked'
     }
 }
 ```
@@ -239,7 +239,7 @@ Describe 'Executing test code inside a dynamic module' {
 
 Pester supports Manifest modules, so both `Mock` and `InModuleScope` can be used without any workarounds. For earlier versions, see workaround below.
 
-Be aware that only code in nested scripts (`*.ps1`) execute directly from the manifest module. Nested script modules (`*.psm1`) or binary modules (`*.dll`) are executed in their own module state. In the example below, mocking calls made inside `Get-HelloWorld` would require `-ModuleName MyNestedModule` because it's was defined in `MyNestedModule.psm1`.
+Be aware that only code in nested scripts (`*.ps1`) execute directly from the manifest module. Nested script modules (`*.psm1`) or binary modules (`*.dll`) are executed in their own module state. In the example below, mocking calls made inside `Get-HelloWorld` would require `-ModuleName MyNestedModule` because it was defined in `MyNestedModule.psm1`.
 
 ```powershell
 Get-Command Get-HelloWorld

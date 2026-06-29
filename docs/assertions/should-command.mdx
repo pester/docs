@@ -15,7 +15,7 @@ In fact, Pester v6 actually includes two sets of assertions:
 - All new `Should-*` assertions introduced in Pester v6, e.g. `Should-BeString`, `Should-BeTrue` etc.
 - The `Should` command known from previous version of Pester, invoked using parameter sets like `Should -Be`, `Should -BeTrue` etc.
 
-Both types of assertions are supported side-by-side in Pester v6, but we recommend your try out and migrate to the newer assertions.
+Both types of assertions are supported side-by-side in Pester v6, but we recommend you try out and migrate to the newer assertions.
 
 ## `Should-*` assertions (v6)
 
@@ -23,7 +23,7 @@ Pester v6 comes with a new set of `Should-*` assertions that have been built fro
 If you've previously tested the [`Assert`](https://github.com/nohwnd/assert)-module, these will be familiar.
 Check out Command Reference in the sidebar to read more about the new assertions, e.g. [`Should-BeString`](../commands/Should-BeString.mdx).
 
-These new assertions are split these categories based on their usage:
+These new assertions are split into these categories based on their usage:
 
 - [Value](#value-assertions)
   - [Generic](#generic-value-assertions)
@@ -83,7 +83,7 @@ $null | Should-BeCollection -Expected $null
 
 #### Using the -Actual syntax
 
-The value provides to `-Actual`, is always exactly the same as provided.
+The value provided to `-Actual` is always exactly the same as provided.
 
 ```powershell
 Should-Be -Actual 1 -Expected 1

@@ -15,8 +15,8 @@ Basic scoping rules are implemented for the TestDrive:
 
 1. A clean TestDrive is created per container (test-file or scriptblock) on entry to the first top-level block (Describe or Context) in that container.
 2. All files and folders created by your setups and tests are available during the lifetime of that block, including inner blocks.
-3. When exiting a block, files and folders created during it's lifetime will be removed. Modifications to items created in parent blocks are not reversed, see caution below.
-4. When the whole container is finished, the TestDrive and all files and folders inside it is deleted.
+3. When exiting a block, files and folders created during its lifetime will be removed. Modifications to items created in parent blocks are not reversed, see caution below.
+4. When the whole container is finished, the TestDrive and all files and folders inside it are deleted.
 
 :::warning Modifications to existing items are not reversed
 Be aware that the TestDrive content is tracked by paths. When entering a block, all paths which already exists will be excluded during cleanup when exiting the block.

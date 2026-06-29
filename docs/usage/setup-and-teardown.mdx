@@ -53,8 +53,8 @@ Describe "API validation" {
 Describe "File parsing" {
     BeforeEach {
         # randomized path, to get fresh file for each test
-        $path = "$([IO.Path]::GetTempPath())/$([Guid]::NewGuid())_form.xml"
-        Copy-Item -Source $template -Destination $path -Force | Out-Null
+        $file = "$([IO.Path]::GetTempPath())/$([Guid]::NewGuid())_form.xml"
+        Copy-Item -Source $template -Destination $file -Force | Out-Null
     }
 
     It "Writes username" {
@@ -80,8 +80,8 @@ Describe "File parsing" {
 Describe "File parsing" {
     BeforeEach {
         # randomized path, to get fresh file for each test
-        $path = "$([IO.Path]::GetTempPath())/$([Guid]::NewGuid())_form.xml"
-        Copy-Item -Source $template -Destination $path -Force | Out-Null
+        $file = "$([IO.Path]::GetTempPath())/$([Guid]::NewGuid())_form.xml"
+        Copy-Item -Source $template -Destination $file -Force | Out-Null
     }
 
     It "Writes username" {
@@ -174,7 +174,7 @@ AfterAll {
 }
 ```
 ```
-Running tests from 'xxx'
+Running tests from '.\Setup.Tests.ps1'
 -> Top-level BeforeAll
 -> Describe BeforeAll
 -> Context BeforeAll

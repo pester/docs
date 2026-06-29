@@ -392,8 +392,6 @@ $x = 1
 1 should not be $null
 ```
 
-####
-
 ## Providing external data to tests
 
 `.Tests.ps1` script is a PowerShell script as any other and you can use the `param` block in it. Script parameters are available in both `Discovery` and `Run`. This is very useful when reusing a single test file with multiple data sets. For example when writing a generic test suite that ensures that correct style is used in a given script file:
@@ -534,9 +532,9 @@ Describe "File - <_>" -ForEach $files {
 
 ## Migrating from Pester v4
 
-There are two main things to take into account when Data driven tests in Pester v5+: The [execution is not top down](#execution-is-not-top-down) like in V4 but done in two phases `Discovery` and `Run`. Variables from `Discovery` are not available in `Run`, unless you explicitly attach them to a `Describe`, `Context` or `It` using `Foreach` or `TestCases`
+There are two main things to take into account when using Data driven tests in Pester v5+: The [execution is not top down](#execution-is-not-top-down) like in V4 but done in two phases `Discovery` and `Run`. Variables from `Discovery` are not available in `Run`, unless you explicitly attach them to a `Describe`, `Context` or `It` using `Foreach` or `TestCases`
 
-This has big impact the classic pattern of using `foreach` to generate tests.
+This has a big impact on the classic pattern of using `foreach` to generate tests.
 
 ### Execution is not top down
 

@@ -107,7 +107,7 @@ function Update-PesterTest {
 
     .EXAMPLE
 
-    Update-PesterTest -Path .\Pester3-Tests\Dumy.Tests.ps1 .\Pester4-Tests\Dumy.Tests.ps1
+    Update-PesterTest -Path .\Pester3-Tests\Dummy.Tests.ps1 .\Pester4-Tests\Dummy.Tests.ps1
 
     .NOTES
     Original author
@@ -189,7 +189,7 @@ function Update-PesterTest {
                 if ($_.Value -eq 'Contain') {
                     $script = $script.Remove($_.Extent.StartOffset, 7).Insert($_.Extent.StartOffset, '-FileContentMatch')
                 } else {
-                    $script = $script.Insert($_.Extent.Startoffset, '-')
+                    $script = $script.Insert($_.Extent.StartOffset, '-')
                 }
             }
 
