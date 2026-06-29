@@ -254,6 +254,8 @@ If a value or type assertion fails because the pipeline unwrapped a collection t
 # instead of piping it, e.g. -Actual $value.
 ```
 
+The hint is best-effort. PowerShell can't reliably tell a single-item collection from a scalar, and a collection's original type isn't visible on the right-hand side of the pipeline. Pester recovers the piped value through pipeline tricks that work for common cases but not every one, so the hint won't appear in every situation. When you need the exact value or the concrete collection type, pass it with `-Actual` rather than relying on the hint.
+
 :::warning Pester 6.0.0 is in preview
 Some details may still change before the final release. To keep up with the latest development, see the release notes for 6.0.0 pre-release builds at https://github.com/pester/Pester/releases
 :::
