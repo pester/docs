@@ -1,0 +1,267 @@
+---
+id: result-object
+title: The Result Object
+sidebar_label: Result Object
+description: Pester can return a rich result object describing the whole run - containers, blocks, tests, counts, durations and errors. Learn its shape and how it behaves under the experimental parallel runner.
+---
+
+When you run Pester with `-PassThru` (or `Run.PassThru = $true`) it returns a single **result object** that describes the whole run: every container, block and test, with their results, counts, durations and errors. This is the same in-memory object Pester builds internally and then uses to render console output and to export the [NUnit/JUnit reports](./test-results) - `-PassThru` simply hands it back to you so you can inspect or post-process it yourself.
+
+```powershell
+$result = Invoke-Pester -Path ./tests -PassThru
+$result.Result        # Passed / Failed
+$result.FailedCount   # number of failed tests
+```
+
+With the [advanced interface](./configuration#advanced-interface) the same object is returned when `Run.PassThru` is enabled:
+
+```powershell
+$config = New-PesterConfiguration
+$config.Run.Path = './tests'
+$config.Run.PassThru = $true
+$config.Output.Verbosity = 'None'   # often paired with PassThru for custom post-processing
+
+$result = Invoke-Pester -Configuration $config
+```
+
+:::tip
+Set `Output.Verbosity = 'None'` when you only care about the object and want to do your own reporting. Error details are always available on the object even when console output is suppressed.
+:::
+
+## Shape
+
+The object is a tree. A `Run` contains one `Container` per test file (or script block), each container contains `Blocks` (your `Describe`/`Context`), blocks can contain nested blocks, and the leaves are `Tests` (your `It`).
+
+```
+Run                                      (Pester.Run)
+├─ Container: Get-Emoji.Tests.ps1        (Pester.Container)
+│  └─ Block: Describe "Get-Emoji"        (Pester.Block)
+│     ├─ Block: Context "cactus"         (Pester.Block)
+│     │  └─ Test: It "returns a value"   (Pester.Test)
+│     └─ Test: It "is not empty"         (Pester.Test)
+└─ Container: Get-Planet.Tests.ps1
+   └─ Block: Describe "Get-Planet"
+      └─ Test: It "returns a planet"
+```
+
+For convenience the `Run` also exposes **flat** collections that cut across the tree, so you rarely have to walk it by hand:
+
+```powershell
+$result.Tests          # every test, regardless of nesting
+$result.Failed         # only the failed tests
+$result.Containers     # the per-file containers, in discovery order
+```
+
+## Run
+
+The root object, type `Pester.Run`. Calling `ToString()` (or just printing it) renders the result marker, e.g. `[+] Pester` for a passed run and `[-] Pester` for a failed one.
+
+<div className="table-wrapper">
+| Property | Type | Description |
+|--------|------|-------------|
+| Result | `string` | Overall result, `Passed` or `Failed` (`NotRun` before execution). |
+| Tests | `Test[]` | Every test in the run, flattened. |
+| Passed / Failed / Skipped / Inconclusive / NotRun | `Test[]` | Tests grouped by result. |
+| Containers | `Container[]` | One per test file or script block, in discovery order. |
+| FailedBlocks | `Block[]` | Blocks that failed in setup/teardown (e.g. a failing `BeforeAll`). |
+| FailedContainers | `Container[]` | Containers that failed during discovery or container-level setup. |
+| TotalCount | `int` | Total number of tests. |
+| PassedCount / FailedCount / SkippedCount / InconclusiveCount / NotRunCount | `int` | Counts per result. |
+| FailedBlocksCount / FailedContainersCount | `int` | Counts of failed blocks/containers. |
+| Duration | `TimeSpan` | Total run duration. See [Durations](#durations) - this is wall-clock time in a parallel run. |
+| UserDuration | `TimeSpan` | Time spent in your code (tests, setup, teardown). |
+| FrameworkDuration | `TimeSpan` | Time spent in Pester itself. |
+| DiscoveryDuration | `TimeSpan` | Time spent discovering tests. |
+| Executed | `bool` | Whether the run executed (`$false` when `Run.SkipRun` is used). |
+| ExecutedAt | `DateTime` | When the run started. |
+| CodeCoverage | `CodeCoverage` | Coverage summary when `CodeCoverage.Enabled` is set, otherwise `$null`. See [Code Coverage](./code-coverage). |
+| Configuration | `PesterConfiguration` | The effective configuration used for the run. |
+| Version | `string` | Pester version, e.g. `6.0.0`. |
+| PSVersion | `Version` | The PowerShell version that ran the tests. |
+</div>
+
+### Result values
+
+Every container, block and test carries a `Result` string. Tests use the full set; blocks and containers never report `Inconclusive`; the `Run` itself is only ever `Passed`, `Failed` or `NotRun`.
+
+<div className="table-wrapper">
+| Result | Marker | Applies to |
+|--------|:------:|------------|
+| `Passed` | `[+]` | Run, Container, Block, Test |
+| `Failed` | `[-]` | Run, Container, Block, Test |
+| `Skipped` | `[!]` | Container, Block, Test |
+| `Inconclusive` | `[?]` | Test |
+| `NotRun` | `[ ]` | Run, Container, Block, Test |
+</div>
+
+## Container
+
+Type `Pester.Container`. One per test file or script block.
+
+<div className="table-wrapper">
+| Property | Type | Description |
+|--------|------|-------------|
+| Name | `string` | Friendly name - the file path for a file, or a label for a script block. |
+| Type | `string` | `File` or `ScriptBlock`. |
+| Item | `object` | The underlying `FileInfo` (for files) or `ScriptBlock`. |
+| Data | `object` | The `-Data` passed via `New-PesterContainer`, available to the file's `param()` block. |
+| Result | `string` | Container result, see [Result values](#result-values). |
+| Passed | `bool` | `$true` when nothing in the container failed. |
+| Blocks | `Block[]` | The top-level blocks in this container. |
+| ErrorRecord | `object[]` | Errors raised at container level, e.g. a parse error or a failed top-level setup. |
+| TotalCount / PassedCount / FailedCount / SkippedCount / InconclusiveCount / NotRunCount | `int` | Counts for tests in this container. |
+| Duration / UserDuration / FrameworkDuration / DiscoveryDuration | `TimeSpan` | Timings for this container. |
+| ShouldRun / Skip / Executed | `bool` | Whether the container was selected, skipped, and ultimately executed. |
+| ExecutedAt | `DateTime` | When the container started running. |
+| StandardOutput | `object` | Output produced by the container that Pester captured. |
+</div>
+
+## Block
+
+Type `Pester.Block`. Represents a `Describe` or `Context`. Blocks can nest, so a block holds both child `Blocks` and `Tests`.
+
+<div className="table-wrapper">
+| Property | Type | Description |
+|--------|------|-------------|
+| Name | `string` | The block name as written. |
+| ExpandedName | `string` | The name with `<...>` data placeholders expanded (for data-driven blocks). |
+| Path | `string[]` | Names from the root block down to this one. |
+| ExpandedPath | `string` | The path joined with the expanded names. |
+| Result | `string` | Block result, see [Result values](#result-values). |
+| Passed | `bool` | `$true` when the block and everything in it passed. |
+| Blocks | `Block[]` | Nested blocks. |
+| Tests | `Test[]` | Tests directly inside this block. |
+| ErrorRecord | `object[]` | Errors from this block's setup/teardown (`BeforeAll`/`AfterAll`, etc.). |
+| Tag | `string[]` | Tags applied to the block. |
+| Skip / Focus | `bool` | Whether the block was skipped or focused. |
+| TotalCount / PassedCount / FailedCount / SkippedCount / InconclusiveCount / NotRunCount | `int` | Counts for all tests under this block (including nested). |
+| Own&#42;Count | `int` | The same counts but only for tests directly in this block, excluding nested blocks. |
+| Duration / UserDuration / FrameworkDuration / DiscoveryDuration | `TimeSpan` | Timings for the block. |
+| StartLine | `int` | Line where the block is declared. |
+| StandardOutput | `object` | Output Pester captured for this block. |
+</div>
+
+## Test
+
+Type `Pester.Test`. Represents a single `It`.
+
+<div className="table-wrapper">
+| Property | Type | Description |
+|--------|------|-------------|
+| Name | `string` | The test name as written. |
+| ExpandedName | `string` | The name with `<...>` data placeholders expanded. |
+| Path | `string[]` | Names from the root block down to and including this test. |
+| ExpandedPath | `string` | The path joined with expanded names. |
+| Result | `string` | Test result, see [Result values](#result-values). |
+| Passed / Skipped / Inconclusive | `bool` | Convenience flags matching `Result`. |
+| ErrorRecord | `object[]` | Failure details. See [Errors](#errors). |
+| Data | `object` | The `-ForEach`/`-TestCases` data item bound to this test. |
+| Duration / UserDuration / FrameworkDuration | `TimeSpan` | Timings for the test. |
+| Tag | `string[]` | Tags applied to the test. |
+| Skip / Focus | `bool` | Whether the test was skipped or focused. |
+| ShouldRun / Executed | `bool` | Whether the test was selected, and whether it actually ran. |
+| ExecutedAt | `DateTime?` | When the test ran (`$null` if it did not run). |
+| StartLine | `int` | Line where the test is declared. |
+| StandardOutput | `object` | Output the test wrote that Pester captured. |
+| Block | `object` | The parent block. |
+</div>
+
+### Errors
+
+When a test or block fails, the details are in its `ErrorRecord` collection - even if you suppressed console output with a lower `Output.Verbosity`. Each error is a standard `ErrorRecord` with two extra note properties Pester adds for convenience:
+
+- `DisplayErrorMessage` - the formatted message Pester would print.
+- `DisplayStackTrace` - the filtered stack trace.
+
+```powershell
+foreach ($test in $result.Failed) {
+    "{0} -> {1}" -f $test.ExpandedPath, $test.ErrorRecord[0].DisplayErrorMessage
+}
+```
+
+## Durations
+
+Every level reports four timings. The total `Duration` is the sum of the three phases:
+
+```
+Duration = DiscoveryDuration + UserDuration + FrameworkDuration
+```
+
+- **UserDuration** - time spent in your code: tests, `BeforeAll`, `AfterEach`, and so on.
+- **FrameworkDuration** - time Pester spent on its own bookkeeping.
+- **DiscoveryDuration** - time spent discovering tests before running them.
+
+In a normal sequential run the `Run.Duration` equals the sum of its container durations, which in turn equals the sum of the three phase totals. As you will see next, **that relationship changes under the parallel runner.**
+
+## Parallel runner edge cases
+
+:::warning Experimental
+The parallel runner is **experimental** in Pester 6 and its behaviour may still change. It requires **PowerShell 7+**.
+:::
+
+Pester 6 can run each test **file** in its own runspace using `ForEach-Object -Parallel`. Enable it with:
+
+```powershell
+$config = New-PesterConfiguration
+$config.Run.Path = './tests'
+$config.Run.Parallel = $true
+$config.Run.PassThru = $true
+# Optional: cap how many files run at once (default 0 = all processors)
+$config.Run.ParallelThrottleLimit = 4
+
+$result = Invoke-Pester -Configuration $config
+```
+
+The good news is that **the result object has the exact same shape** as a sequential run. Each file is executed by a full (silent) Pester run inside a worker runspace, and the parent merges the executed containers back into one `Run`, computing the counts, collections and overall `Result` the same way it does sequentially. The points below are the things that genuinely differ.
+
+### Durations no longer add up
+
+This is the most important difference. Because files overlap in time, summing their durations would overstate how long the run actually took. So in a parallel run:
+
+- **`Run.Duration` is the wall-clock elapsed time** of the whole run (`Now - ExecutedAt`), not the sum of the container durations.
+- **`Run.UserDuration`, `Run.FrameworkDuration` and `Run.DiscoveryDuration` are still the cumulative work** summed across all workers.
+
+As a result, the per-phase totals can **exceed** `Run.Duration` - that is expected, because several files were doing work at the same time. The `Duration = Discovery + User + Framework` identity that holds for a sequential run **does not hold** for a parallel `Run`. Per-container and per-test durations are unaffected: each reflects that worker's own time.
+
+```powershell
+# Parallel: UserDuration can be larger than the wall-clock Duration
+$result.Duration       # e.g. 00:00:04  (wall clock)
+$result.UserDuration   # e.g. 00:00:11  (work across all workers)
+```
+
+### Container order is preserved, not finish order
+
+Workers finish in an unpredictable order, but Pester **restores the original discovery order** of `Run.Containers` (and of the replayed console output) so the object is deterministic regardless of which file finished first.
+
+### When the run falls back to sequential
+
+`Run.Parallel` only parallelizes **file-based** runs. Pester prints a warning and runs sequentially - producing an ordinary sequential result object - when any of these apply:
+
+- Running on **Windows PowerShell 5.1** (parallel needs PowerShell 7+).
+- The run uses **script-block or `ContainerInfo` containers** rather than files.
+- **Code coverage is enabled** (see below).
+- **`Run.SkipRemainingOnFailure = 'Run'`** is set, because "stop the whole run on the first failure" cannot span isolated runspaces. The `Block` and `Container` scopes still work and stay parallel.
+
+### Code coverage is not merged yet
+
+Code coverage is **disabled inside the workers** and the parallel runner does not merge coverage across files yet. Enabling `CodeCoverage` forces the whole run back to sequential (see above), so `Run.CodeCoverage` is only populated on a sequential run. [Test result files](./test-results) are unaffected - the parent writes a single report from the merged tree.
+
+### Opting a file out with `#pester:no-parallel`
+
+A file can opt out of parallelization with a comment directive, parsed like `#requires`:
+
+```powershell
+#pester:no-parallel
+```
+
+Files marked this way run **sequentially, in the parent session, after the parallel batch**. They still appear in the same merged `Run.Containers`, in discovery order, so the result object looks no different. Use this for files that depend on shared session state (declaration order, global setup, cross-file mocks).
+
+### Each file is discovered in isolation
+
+Under parallel, each file is discovered and run in its own clean runspace, so it does **not** see state another file created at discovery time. A file that relied on another file's setup will fail - typically surfacing as a failed container (`Run.FailedContainers`) or a discovery error in the container's `ErrorRecord`. Make each file self-contained, and use `Run.BeforeContainer` (or a `Pester.BeforeContainer.ps1` in the repo root) for shared bootstrap that must run before every file. See [Discovery and Run](./discovery-and-run) and the [v5 to v6 migration guide](../migrations/v5-to-v6#discovery-and-run-now-happen-per-file).
+
+## Stable vs. internal properties
+
+The objects carry more properties than the tables above - things like `FrameworkData`, `PluginData` and the various `Own*` fields are used internally. Stick to the documented properties; internal ones can change between releases without notice.
+
+For debugging you can ask Pester to return the unfiltered object with `Debug.ReturnRawResultObject = $true`, but as the name says, **do not build on it** - non-public properties may be renamed without warning.
