@@ -29,57 +29,58 @@ Should-BeEquivalent [[-Actual] <Object>] [-Expected] <Object> [-Because <String>
 
 ## DESCRIPTION
 
-\{\{ Fill in the Description \}\}
+This assertion performs a deep comparison of the actual and expected objects, recursing through nested properties and collections.
+Use `-ExcludePath`, `-ExcludePathsNotOnExpected`, or `-Comparator Equality` to narrow what counts as equivalent.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 
+```powershell
+Should-BeEquivalent ...  -ExcludePath 'Id', 'Timestamp' -Comparator 'Equality'
 ```
-```powershell
-    Should-BeEquivalent ...  -ExcludePath 'Id', 'Timestamp' -Comparator 'Equality'
-```powershell
+
 This example generates an equivalency option object that excludes the 'Id' and 'Timestamp' properties from the comparison and uses a simple equality comparison strategy.
-```
 
 ### EXAMPLE 2
 
 ```
 ```powereshell
-    Should-BeEquivalent ... -ExcludePathsNotOnExpected
-```powershell
-This example generates an equivalency option object that excludes any paths not present on the expected object from the comparison, using the default deep comparison strategy.
+Should-BeEquivalent ... -ExcludePathsNotOnExpected
 ```
+```powershell
+
+This example generates an equivalency option object that excludes any paths not present on the expected object from the comparison, using the default deep comparison strategy.
 
 ### EXAMPLE 3
 
-```powershell
-    $expected = [PSCustomObject] @{
-        Name = "Thomas"
-    }
-
-    $actual = [PSCustomObject] @{
-        Name = "Jakub"
-        Age = 30
-    }
-
-    $actual | Should-BeEquivalent $expected
 ```
+$expected = [PSCustomObject] @{
+    Name = "Thomas"
+}
+
+$actual = [PSCustomObject] @{
+    Name = "Jakub"
+    Age = 30
+}
+
+$actual | Should-BeEquivalent $expected
+```powershell
 
 This will throw an error because the actual object has an additional property Age and the Name values are not equivalent.
 
 ### EXAMPLE 4
 
-```powershell
-    $expected = [PSCustomObject] @{
-        Name = "Thomas"
-    }
+```
+$expected = [PSCustomObject] @{
+    Name = "Thomas"
+}
 
-    $actual = [PSCustomObject] @{
-        Name = "Thomas"
-    }
+$actual = [PSCustomObject] @{
+    Name = "Thomas"
+}
 
-    $actual | Should-BeEquivalent $expected
+$actual | Should-BeEquivalent $expected
 ```
 
 This will pass because the actual object has the same properties as the expected object and the Name values are equivalent.
@@ -205,4 +206,4 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 6.0.0-alpha5](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.0.0-rc2](https://github.com/pester/pester).*

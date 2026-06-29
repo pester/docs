@@ -23,12 +23,14 @@ Asserts that the input is not of the expected type.
 ## SYNTAX
 
 ```powershell
-Should-NotHaveType [[-Actual] <Object>] [-Expected] <Type> [-Because <String>] [<CommonParameters>]
+Should-NotHaveType [[-Actual] <Object>] [-Expected] <Type> [-Because <String>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
 
-\{\{ Fill in the Description \}\}
+This assertion uses `-is` to verify that the actual value is not assignable to the expected type.
+Derived types and implemented interfaces still count as the expected type.
 
 ## EXAMPLES
 
@@ -111,4 +113,4 @@ This assertion is the opposite of `Should-HaveType`.
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 6.0.0-alpha5](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.0.0-rc2](https://github.com/pester/pester).*

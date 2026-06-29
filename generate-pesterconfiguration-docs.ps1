@@ -13,7 +13,35 @@ param (
 )
 
 #region helpers
+
+# Some path-options (e.g. Run.RepoRoot) are resolved by New-PesterConfiguration at
+# runtime to the absolute path of the repository the generator runs in. We must not
+# bake that machine-specific build path into the published docs, so any default that
+# points at the generator's own working directory is replaced with an illustrative
+# placeholder repo root. We reuse 'C:\MyProject' to stay consistent with the
+# Run.Path examples elsewhere on the Configuration page.
+$repoRootPlaceholder = 'C:\MyProject'
+$environmentPaths = [System.Collections.Generic.HashSet[string]]::new([System.StringComparer]::OrdinalIgnoreCase)
+foreach ($p in @($PSScriptRoot, (Get-Location).Path)) {
+    if (-not [string]::IsNullOrEmpty($p)) {
+        $null = $environmentPaths.Add($p.TrimEnd('/', '\'))
+        try { $null = $environmentPaths.Add([System.IO.Path]::GetFullPath($p).TrimEnd('/', '\')) } catch { }
+    }
+}
+
+function Test-IsEnvironmentPath ($value) {
+    if ($value -is [string] -and -not [string]::IsNullOrEmpty($value)) {
+        $full = try { [System.IO.Path]::GetFullPath($value).TrimEnd('/', '\') } catch { $value.TrimEnd('/', '\') }
+        return ($environmentPaths.Contains($value.TrimEnd('/', '\')) -or $environmentPaths.Contains($full))
+    }
+    return $false
+}
+
 function Format-NicelyMini ($value) {
+    if ($null -eq $value) {
+        return '$null'
+    }
+
     if ($value -is [bool]) {
         if ($value) {
             '$true'
@@ -56,8 +84,10 @@ function generateSectionsMarkdownAsTable {
         $options = foreach ($configOption in $section.PSObject.Properties) {
             $optionName = $configOption.Name
             $option = $configOption.Value
-            $default = Format-NicelyMini $option.Default
-            $type = $option.Default.GetType() -as [string] -replace '^Pester\.'
+            $rawDefault = $option.Default
+            if (Test-IsEnvironmentPath $rawDefault) { $rawDefault = $repoRootPlaceholder }
+            $default = Format-NicelyMini $rawDefault
+            $type = $option.GetType().GetProperty('Default').PropertyType -as [string] -replace '^Pester\.'
             "| $sectionName.$optionName | $($option.Description) | ``$type`` | ``$default`` |"
         }
 
@@ -86,8 +116,10 @@ function generateSectionsMarkdownAsList {
         $options = foreach ($configOption in $section.PSObject.Properties) {
             $optionName = $configOption.Name
             $option = $configOption.Value
-            $default = Format-NicelyMini $option.Default
-            $type = $option.Default.GetType() -as [string]
+            $rawDefault = $option.Default
+            if (Test-IsEnvironmentPath $rawDefault) { $rawDefault = $repoRootPlaceholder }
+            $default = Format-NicelyMini $rawDefault
+            $type = $option.GetType().GetProperty('Default').PropertyType -as [string]
             @"
 #### $sectionName.$optionName
 

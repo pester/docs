@@ -23,12 +23,14 @@ Asserts that the input is `$null`.
 ## SYNTAX
 
 ```powershell
-Should-BeNull [[-Actual] <Object>] [-Because <String>] [<CommonParameters>]
+Should-BeNull [[-Actual] <Object>] [-Because <String>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
 
-\{\{ Fill in the Description \}\}
+This assertion passes only when the actual value is exactly `$null.
+Empty strings, empty collections, and other falsy values do not count as null.
 
 ## EXAMPLES
 
@@ -92,4 +94,4 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 6.0.0-alpha5](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.0.0-rc2](https://github.com/pester/pester).*

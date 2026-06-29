@@ -37,26 +37,18 @@ The `-match` operator is case-insensitive by default, but you can make it case-s
 ### EXAMPLE 1
 
 ```powershell
-(New-Guid).Guid | Should-MatchString '^[0-9a-f-]{36}$'
+"hello" | Should-MatchString "h.*o"
 ```
 
-This assertion passes, because a GUID is made up of 36 lowercase hexadecimal and dash characters.
+This assertion will pass, because the actual value matches the regular expression pattern.
 
 ### EXAMPLE 2
 
 ```powershell
-'user-4f2a' | Should-MatchString '^user-[0-9a-f]{4}$'
+"hello" | Should-MatchString "H.*O" -CaseSensitive
 ```
 
-This assertion passes, because the generated id matches the expected `user-` prefix followed by four hexadecimal characters. This is handy for checking that a function returns ids, tokens or file names in the format you expect.
-
-### EXAMPLE 3
-
-```powershell
-'Pester 6.0.0' | Should-MatchString 'pester \d+\.\d+\.\d+' -CaseSensitive
-```
-
-This assertion fails, because with `-CaseSensitive` the lowercase `pester` in the pattern does not match the capitalized `Pester` in the actual value.
+This assertion will fail, because the actual value does not case-sensitively match the regular expression pattern.
 
 ## PARAMETERS
 
@@ -142,4 +134,4 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 6.0.0-alpha5](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.0.0-rc2](https://github.com/pester/pester).*

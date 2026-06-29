@@ -23,12 +23,13 @@ Compares the expected value to actual value, to see if the actual value is less 
 ## SYNTAX
 
 ```powershell
-Should-BeLessThan [[-Actual] <Object>] [-Expected] <Object> [-Because <String>] [<CommonParameters>]
+Should-BeLessThan [[-Actual] <Object>] [-Expected] <Object> [-Because <String>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
 
-\{\{ Fill in the Description \}\}
+This assertion uses PowerShell comparison semantics and passes only when the actual value is strictly less than the expected value.
 
 ## EXAMPLES
 
@@ -109,4 +110,4 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 6.0.0-alpha5](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.0.0-rc2](https://github.com/pester/pester).*

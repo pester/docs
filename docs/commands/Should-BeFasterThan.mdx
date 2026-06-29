@@ -23,12 +23,14 @@ Asserts that the provided [timespan] or [scriptblock] is faster than the expecte
 ## SYNTAX
 
 ```powershell
-Should-BeFasterThan [[-Actual] <Object>] [[-Expected] <Object>] [<CommonParameters>]
+Should-BeFasterThan [[-Actual] <Object>] [[-Expected] <Object>] [-Because <String>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
 
-\{\{ Fill in the Description \}\}
+This assertion accepts either a `[timespan]` or a script block to measure.
+Fluent time values such as `1s` are converted to a `[timespan]` before the comparison.
 
 ## EXAMPLES
 
@@ -82,6 +84,22 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -Because
+
+The reason why the actual value should be faster than the expected value.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### CommonParameters
 
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
@@ -102,4 +120,4 @@ The `Should-BeFasterThan` assertion is the opposite of the `Should-BeSlowerThan`
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 6.0.0-alpha5](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.0.0-rc2](https://github.com/pester/pester).*

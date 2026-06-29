@@ -119,6 +119,26 @@ if (Test-Path -Path $outputFolder) {
 Write-Host 'Generating new MDX files' -ForegroundColor Magenta
 New-DocusaurusHelp @docusaurusOptions
 
+# -----------------------------------------------------------------------------
+# Strip the spurious ProgressAction common parameter that PlatyPS emits on
+# PowerShell 7.4+ (https://github.com/PowerShell/platyPS/issues/663). Pester 6
+# loads a .NET 8 assembly and therefore requires PowerShell 7.4+, so the docs
+# can no longer be generated on an older PowerShell to avoid this. Remove the
+# parameter from the generated MDX instead.
+# -----------------------------------------------------------------------------
+Write-Host 'Removing spurious ProgressAction parameter from generated MDX files' -ForegroundColor Magenta
+$commandsFolder = Join-Path -Path $docusaurusOptions.DocsFolder -ChildPath $docusaurusOptions.Sidebar
+Get-ChildItem -Path $commandsFolder -Filter '*.mdx' | ForEach-Object {
+    $content = Get-Content -LiteralPath $_.FullName -Raw
+    # Remove from the SYNTAX code-blocks, e.g. ` [-ProgressAction <ActionPreference>]`
+    $updated = $content -replace ' \[-ProgressAction <ActionPreference>\]', ''
+    # Remove the dedicated '### -ProgressAction' section up to the next '### ' heading
+    $updated = $updated -replace '(?ms)^### -ProgressAction\r?\n.*?(?=^### )', ''
+    if ($updated -ne $content) {
+        Set-Content -LiteralPath $_.FullName -Value $updated -NoNewline -Encoding utf8
+    }
+}
+
 Write-Host 'Render completed successfully' -BackgroundColor DarkGreen
 Pop-Location
 

@@ -24,12 +24,14 @@ It does not convert input values to boolean, and will fail for any value is not 
 ## SYNTAX
 
 ```powershell
-Should-BeTrue [[-Actual] <Object>] [[-Because] <String>] [<CommonParameters>]
+Should-BeTrue [[-Actual] <Object>] [[-Because] <String>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
 
-\{\{ Fill in the Description \}\}
+This assertion only passes for the Boolean value `$true.
+It does not coerce input, so truthy non-Boolean values still fail.
 
 ## EXAMPLES
 
@@ -108,4 +110,4 @@ The `Should-BeTrue` assertion is the opposite of the `Should-BeFalse` assertion.
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 6.0.0-alpha5](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.0.0-rc2](https://github.com/pester/pester).*

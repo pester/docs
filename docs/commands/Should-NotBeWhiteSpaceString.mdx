@@ -23,12 +23,14 @@ Ensures that the input is a string, and that the input is not $null, empty, or w
 ## SYNTAX
 
 ```powershell
-Should-NotBeWhiteSpaceString [[-Actual] <Object>] [-Because <String>] [<CommonParameters>]
+Should-NotBeWhiteSpaceString [[-Actual] <Object>] [-Because <String>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
 
-\{\{ Fill in the Description \}\}
+This assertion requires a string that contains at least one non-whitespace character.
+It fails for `$null, `""`, whitespace-only strings, and non-string values.
 
 ## EXAMPLES
 
@@ -114,4 +116,4 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 6.0.0-alpha5](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.0.0-rc2](https://github.com/pester/pester).*

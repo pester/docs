@@ -25,24 +25,35 @@ Asserts that the provided [datetime] is before the expected [datetime].
 ### Now (Default)
 
 ```powershell
-Should-BeBefore [[-Actual] <Object>] [-Now] [<CommonParameters>]
+Should-BeBefore [[-Actual] <Object>] [-Now] [-Because <String>]
+ [<CommonParameters>]
 ```
 
-### Fluent
+### FluentFromNow
 
 ```powershell
-Should-BeBefore [[-Actual] <Object>] [[-Time] <Object>] [-Ago] [-FromNow] [<CommonParameters>]
+Should-BeBefore [[-Actual] <Object>] [[-Time] <String>] [-FromNow] [-Because <String>]
+ [<CommonParameters>]
+```
+
+### FluentAgo
+
+```powershell
+Should-BeBefore [[-Actual] <Object>] [[-Time] <String>] [-Ago] [-Because <String>]
+ [<CommonParameters>]
 ```
 
 ### Expected
 
 ```powershell
-Should-BeBefore [[-Actual] <Object>] [[-Expected] <DateTime>] [<CommonParameters>]
+Should-BeBefore [[-Actual] <Object>] [[-Expected] <DateTime>] [-Because <String>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
 
-\{\{ Fill in the Description \}\}
+This assertion accepts either an expected `[datetime]` or a fluent relative time expression.
+Use `-Now`, `-Ago`, or `-FromNow` to compare against the current local time.
 
 ## EXAMPLES
 
@@ -56,12 +67,11 @@ This assertion will pass, because the actual value is before the expected value.
 
 ### EXAMPLE 2
 
-```
 ```powershell
 (Get-Date).AddDays(1) | Should-BeBefore (Get-Date)
-```powershell
-This assertion will fail, because the actual value is not before the expected value.
 ```
+
+This assertion will fail, because the actual value is not before the expected value.
 
 ### EXAMPLE 3
 
@@ -107,7 +117,7 @@ Parameter Sets: Now
 Aliases:
 
 Required: False
-Position: 1
+Position: Named
 Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -120,8 +130,8 @@ This parameter uses fluent time syntax e.g.
 1minute.
 
 ```yaml
-Type: Object
-Parameter Sets: Fluent
+Type: String
+Parameter Sets: FluentFromNow, FluentAgo
 Aliases:
 
 Required: False
@@ -137,11 +147,11 @@ Indicates that the -Time should be subtracted from the current time.
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: Fluent
+Parameter Sets: FluentAgo
 Aliases:
 
-Required: False
-Position: 2
+Required: True
+Position: Named
 Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -153,11 +163,11 @@ Indicates that the -Time should be added to the current time.
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: Fluent
+Parameter Sets: FluentFromNow
 Aliases:
 
-Required: False
-Position: 2
+Required: True
+Position: Named
 Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -174,6 +184,22 @@ Aliases:
 
 Required: False
 Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Because
+
+The reason why the actual value should be before the expected value.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -199,4 +225,4 @@ The `Should-BeBefore` assertion is the opposite of the `Should-BeAfter` assertio
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 6.0.0-alpha5](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.0.0-rc2](https://github.com/pester/pester).*

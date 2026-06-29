@@ -23,12 +23,14 @@ Compares the expected value to actual value, to see if they are not equal.
 ## SYNTAX
 
 ```powershell
-Should-NotBe [[-Actual] <Object>] [-Expected] <Object> [-Because <String>] [<CommonParameters>]
+Should-NotBe [[-Actual] <Object>] [-Expected] <Object> [-Because <String>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
 
-\{\{ Fill in the Description \}\}
+This assertion compares values using PowerShell equality semantics and passes only when they are different.
+Use the collection-specific assertions when you need to compare arrays or other collections.
 
 ## EXAMPLES
 
@@ -109,4 +111,4 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 6.0.0-alpha5](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.0.0-rc2](https://github.com/pester/pester).*

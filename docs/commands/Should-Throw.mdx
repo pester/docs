@@ -24,12 +24,14 @@ Asserts that a script block throws an exception.
 
 ```powershell
 Should-Throw -ScriptBlock <ScriptBlock> [[-ExceptionMessage] <String>] [[-FullyQualifiedErrorId] <String>]
- [[-ExceptionType] <Type>] [[-Because] <String>] [-AllowNonTerminatingError] [<CommonParameters>]
+ [[-ExceptionType] <Type>] [[-Because] <String>] [-AllowNonTerminatingError]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
 
-\{\{ Fill in the Description \}\}
+This assertion executes the script block and expects it to throw.
+Optional filters let you match the exception type, message, or FullyQualifiedErrorId, and `-AllowNonTerminatingError` accepts non-terminating errors.
 
 ## EXAMPLES
 
@@ -174,4 +176,4 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 6.0.0-alpha5](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.0.0-rc2](https://github.com/pester/pester).*

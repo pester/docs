@@ -24,12 +24,14 @@ It converts input values to boolean, and will fail for any value is not $true, o
 ## SYNTAX
 
 ```powershell
-Should-BeTruthy [[-Actual] <Object>] [[-Because] <String>] [<CommonParameters>]
+Should-BeTruthy [[-Actual] <Object>] [[-Because] <String>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
 
-\{\{ Fill in the Description \}\}
+This assertion evaluates the input using PowerShell truthiness rules.
+It passes for values that PowerShell treats as true, not just the Boolean `$true.
 
 ## EXAMPLES
 
@@ -109,4 +111,4 @@ The `Should-BeTruthy` assertion is the opposite of the `Should-BeFalsy` assertio
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 6.0.0-alpha5](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.0.0-rc2](https://github.com/pester/pester).*

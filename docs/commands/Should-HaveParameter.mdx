@@ -37,49 +37,11 @@ This assertion inspects command metadata and can also verify parameter details s
 ### EXAMPLE 1
 
 ```powershell
-Get-Command Invoke-WebRequest | Should-HaveParameter Uri -Type ([uri]) -Mandatory
+Get-Command "Invoke-WebRequest" | Should -HaveParameter Uri -Mandatory
 ```
 
-This assertion passes, because `Invoke-WebRequest` has a mandatory `-Uri` parameter of type `[uri]`.
-
-### EXAMPLE 2
-
-```powershell
-function Get-Cat {
-    [CmdletBinding(DefaultParameterSetName = 'ByName')]
-    param(
-        [Parameter(ParameterSetName = 'ByName', Mandatory)]
-        [Alias('Id')]
-        [string] $Name,
-
-        [Parameter(ParameterSetName = 'ByIndex', Mandatory)]
-        [int] $Index,
-
-        [ValidateSet('Json', 'Xml')]
-        [string] $Format = 'Json'
-    )
-}
-
-Describe 'Get-Cat public contract' {
-    It 'requires a Name' {
-        Get-Command Get-Cat | Should-HaveParameter Name -Type ([string]) -Mandatory -Alias 'Id'
-    }
-
-    It 'defaults Format to Json' {
-        Get-Command Get-Cat | Should-HaveParameter Format -Type ([string]) -DefaultValue 'Json'
-    }
-}
-```
-
-A typical real-life use is locking down the public API of your own command. These assertions pass, because `-Name` is a mandatory `[string]` with the alias `Id`, and `-Format` is an optional `[string]` that defaults to `Json`.
-
-### EXAMPLE 3
-
-```powershell
-Get-Command Get-Cat | Should-HaveParameter Index -InParameterSet 'ByIndex'
-```
-
-This assertion passes, because the `-Index` parameter (from the `Get-Cat` function above) belongs to the `ByIndex` parameter set.
+This test passes, because it expected the parameter URI to exist and to
+be mandatory.
 
 ## PARAMETERS
 
@@ -258,4 +220,4 @@ if the attribute does not exist.
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 6.0.0-alpha5](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.0.0-rc2](https://github.com/pester/pester).*
