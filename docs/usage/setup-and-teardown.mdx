@@ -114,11 +114,15 @@ The teardown in `AfterEach` should be prepared to run at any place of `BeforeEac
 
 ### Multiple setups and teardowns
 
-When multiple `BeforeAll` are defined, they run in the order in which they were defined. `AfterAll` run in the opposite order.
+A block can contain at most **one** `BeforeAll`, `BeforeEach`, `AfterEach`, and `AfterAll`. In Pester v6 defining the same kind twice in a single block is an error and discovery fails:
 
-When multiple `BeforeEach` are defined, they run in the order in which they were defined, and they run right before the test they setup. `AfterEach` run right after the test is finished, in the opposite order.
+```
+BeforeAll is already defined in this block. Each block can only have one BeforeAll. Combine the code into a single BeforeAll block.
+```
 
-There can be only one setup or teardown of each kind in a block.
+Combine the code into a single block instead. (In Pester v5 the duplicates were silently merged.)
+
+Setups and teardowns from **nested** blocks still stack. When a test is surrounded by setups from several levels (top-level, `Describe`, `Context`), the `BeforeAll`/`BeforeEach` run from the outermost block inward, and the matching `AfterEach`/`AfterAll` run from the innermost block outward:
 
 ```powershell
 BeforeAll {

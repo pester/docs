@@ -5,7 +5,7 @@ sidebar_label: Test Results
 description: Pester can output tests results to NUnit and JUnit XML reports that can be consumed by test reporting tools and CI-solutions
 ---
 
-Pester can output test results to a XML file using the NUnit 2.5 or JUnit 4 schema.
+Pester can output test results to an XML file using the NUnit 2.5, NUnit 3, or JUnit 4 schema.
 
 ## [TeamCity](https://www.jetbrains.com/teamcity/)
 
@@ -19,20 +19,13 @@ If you are using the Pester .bat file to run your tests, test results are automa
 
 ### Using Invoke-Pester
 
-If you are not using the Pester .bat file and are instead calling Invoke-Pester directly from a build script, Make sure to specify a path using the `-OutputFile` and type include the "-OutputFormat" parameters. The path is relative to the TeamCity agent working directory.
-
-```powershell
-Invoke-Pester -OutputFile Test.xml -OutputFormat NUnitXml
-```
-
-#### Advanced Interface Configuration
-In Pester v5 a configuration object ([`PesterConfiguration`](https://pester.dev/docs/usage/configuration#advanced-interface)) was introduced. In addition to specifying an `OutputFormat` and `OutputPath` you will need to `Enable` test results for a file to be produced.
+If you are not using the Pester .bat file and are instead calling Invoke-Pester directly from a build script, configure test results through a [`PesterConfiguration`](https://pester.dev/docs/usage/configuration#advanced-interface) object. The legacy `-OutputFile` and `-OutputFormat` parameters were removed in Pester v6, so set the `OutputFormat` and `OutputPath` and `Enable` test results for a file to be produced. The path is relative to the TeamCity agent working directory.
 
 ```powershell
 $PesterConfig = New-PesterConfiguration
-$PesterConfig.TestResult.OutputFormat = "NUnitXml"
+$PesterConfig.TestResult.Enabled = $true
+$PesterConfig.TestResult.OutputFormat = "NUnitXml"   # NUnitXml, NUnit3 or JUnitXml
 $PesterConfig.TestResult.OutputPath = "Test.xml"
-$PesterConfig.TestResult.Enabled = $True
 Invoke-Pester -Configuration $PesterConfig
 ```
 
@@ -41,7 +34,7 @@ Invoke-Pester -Configuration $PesterConfig
 1. In your TeamCity build configuration settings, go to the "Build Step" page.
 1. Add the "XML Report Processing" Build Feature.
 1. The Report Type should be set to NUnit. You can select version 2.5.0.
-1. In the Monitoring Rules text box, enter the xml file path given to Pester's `-OutputXml` parameter. If you use the Pester.bat file, simply enter Test.xml.
+1. In the Monitoring Rules text box, enter the xml file path configured as Pester's `TestResult.OutputPath`. If you use the Pester.bat file, simply enter Test.xml.
 
 #### TeamCity Troubleshooting
 
@@ -54,7 +47,14 @@ If Pester does not seem to be available from your PowerShell build-step, here is
 Code coverage metrics are not included in the NUnit xml report so it is necessary to pass them to TeamCity separately using a PassThru variable and the [Build Interaction feature](https://confluence.jetbrains.com/display/TCD8/Build+Script+Interaction+with+TeamCity#BuildScriptInteractionwithTeamCity-ReportingBuildStatistics).
 
 ```powershell
-$testResults = Invoke-Pester -OutputFile Test.xml -OutputFormat NUnitXml -CodeCoverage (Get-ChildItem -Path $PSScriptRoot\*.ps1 -Exclude *.Tests.* ).FullName -PassThru
+$config = New-PesterConfiguration
+$config.TestResult.Enabled = $true
+$config.TestResult.OutputFormat = "NUnitXml"
+$config.TestResult.OutputPath = "Test.xml"
+$config.CodeCoverage.Enabled = $true
+$config.CodeCoverage.Path = (Get-ChildItem -Path $PSScriptRoot\*.ps1 -Exclude *.Tests.*).FullName
+$config.Run.PassThru = $true
+$testResults = Invoke-Pester -Configuration $config
 Write-Output "##teamcity[buildStatisticValue key='CodeCoverageAbsLTotal' value='$($testResults.CodeCoverage.CommandsAnalyzedCount)']"
 Write-Output "##teamcity[buildStatisticValue key='CodeCoverageAbsLCovered' value='$($testResults.CodeCoverage.CommandsExecutedCount)']"
 ```
@@ -69,7 +69,12 @@ Your [`appveyor.yml`](https://www.appveyor.com/docs/appveyor-yml) can contain se
 test_script:
     - ps: |
         $testResultsFile = ".\TestsResults.xml"
-        $res = Invoke-Pester -OutputFormat NUnitXml -OutputFile $testResultsFile -PassThru
+        $config = New-PesterConfiguration
+        $config.TestResult.Enabled = $true
+        $config.TestResult.OutputFormat = "NUnitXml"
+        $config.TestResult.OutputPath = $testResultsFile
+        $config.Run.PassThru = $true
+        $res = Invoke-Pester -Configuration $config
         (New-Object 'System.Net.WebClient').UploadFile("https://ci.appveyor.com/api/testresults/nunit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path $testResultsFile))
         if ($res.FailedCount -gt 0) {
             throw "$($res.FailedCount) tests failed."
@@ -98,7 +103,12 @@ Install-Module -Name Pester -Force -SkipPublisherCheck
 
 Import-Module Pester
 
-Invoke-Pester -Script $(System.DefaultWorkingDirectory)\MyFirstModule.test.ps1 -OutputFile $(System.DefaultWorkingDirectory)\Test-Pester.XML -OutputFormat NUnitXML
+$config = New-PesterConfiguration
+$config.Run.Path = "$(System.DefaultWorkingDirectory)\MyFirstModule.test.ps1"
+$config.TestResult.Enabled = $true
+$config.TestResult.OutputFormat = "NUnitXml"
+$config.TestResult.OutputPath = "$(System.DefaultWorkingDirectory)\Test-Pester.XML"
+Invoke-Pester -Configuration $config
 ```
 
 Then add a Publish Test Results task, it is important to change the Test Result format to NUnit to allow Azure DevOps to ingest the output file.

@@ -147,11 +147,11 @@ To exclude a function (or scriptblock) from code coverage. Place `[ExcludeFromCo
 
 ## Coverage Format
 
-By default, Pester generates a `coverage.xml` file in [JaCoCo](https://www.jacoco.org/) format. You have the flexibility to modify the output format, path, and encoding by using the following options:
+By default, Pester generates a `coverage.xml` file in [JaCoCo](https://www.jacoco.org/) format. It's read by most CI systems and coverage tools, so the default is a good choice for most projects. Pester v6 can also output [Cobertura](https://cobertura.github.io/cobertura/) format if you need it. You can change the output format, path, and encoding with the following options:
 
 ```powershell
 $config = New-PesterConfiguration
-$config.CodeCoverage.OutputFormat = 'CoverageGutters'
+$config.CodeCoverage.OutputFormat = 'Cobertura'   # 'JaCoCo' (default) or 'Cobertura'
 $config.CodeCoverage.OutputPath = 'cov.xml'
 $config.CodeCoverage.OutputEncoding = 'UTF8'
 
@@ -170,6 +170,28 @@ which involves placing the tests alongside the code you want to cover,
 or set the config `CodeCoverage.Path` option to the directory
 that contains the code to be covered.
 :::
+
+## Coverage performance
+
+By default Pester v6 collects coverage using a **profiler-based tracer**, which is considerably faster than the breakpoint-based collector used in Pester v5. No configuration is needed to get the faster behaviour. If you need the old breakpoint-based collector, set `CodeCoverage.UseBreakpoints` to `$true`:
+
+```powershell
+$config = New-PesterConfiguration
+$config.CodeCoverage.Enabled = $true
+$config.CodeCoverage.UseBreakpoints = $true   # Pester v5 behaviour, slower
+Invoke-Pester -Configuration $config
+```
+
+## Report paths and ReportRoot
+
+Coverage reports record file paths relative to a root directory so they stay stable across machines and CI agents. By default that root is the repository root (`Run.RepoRoot`, located by searching for the `.git` directory). Override it with `CodeCoverage.ReportRoot` when the code you cover lives outside the repository root:
+
+```powershell
+$config = New-PesterConfiguration
+$config.CodeCoverage.Enabled = $true
+$config.CodeCoverage.ReportRoot = "$PSScriptRoot/src"
+Invoke-Pester -Configuration $config
+```
 
 ## Integrating with GitHub Actions
 

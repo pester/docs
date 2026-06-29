@@ -6,6 +6,10 @@ description: Introduction to the built-in assertion operators in Pester to get y
 
 `Should` is a command that provides assertion convenience methods for comparing objects and throwing test failures when test expectations fail. `Should` is used inside `It` blocks of a Pester test script.
 
+:::tip New in Pester v6
+This page documents the classic `Should -Be` assertions, which still ship and work in Pester v6. Pester v6 also adds a set of specialized, type-aware [`Should-*` assertions](./should-command) (note the hyphen, no space) with clearer failure messages. Both styles work side by side, so you can adopt `Should-*` when it suits you and optionally turn off the classic syntax by setting `Should.DisableV5 = $true`.
+:::
+
 ## Common parameters
 
 ### Negative Assertions
@@ -212,7 +216,13 @@ Remove-Item $actual
 $actual | Should -Exist # Test will fail
 ```
 
-To test path containing `[ ]` wildcards, escape each bracket with two back-ticks as such `"TestDrive:\``[test``].txt"` or use `Test-Path -LiteralPath $something | Should -Be $true`.
+To test a path that contains `[ ]` wildcards, use the `-LiteralPath` switch (added in Pester v6) so the path is treated literally instead of as a wildcard pattern:
+
+```powershell
+'TestDrive:\[test].txt' | Should -Exist -LiteralPath
+```
+
+Alternatively, escape each bracket with two back-ticks as such `"TestDrive:\``[test``].txt"`, or use `Test-Path -LiteralPath $something | Should -Be $true`.
 
 ### FileContentMatch
 

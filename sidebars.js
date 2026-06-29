@@ -33,6 +33,7 @@ module.exports = {
       "usage/importing-tested-functions",
       "usage/test-file-structure",
       "usage/discovery-and-run",
+      "usage/parallel",
       "usage/data-driven-tests",
       "usage/setup-and-teardown",
       "usage/tags",
