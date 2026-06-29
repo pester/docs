@@ -46,6 +46,7 @@ module.exports = {
       "usage/code-coverage",
       "usage/configuration",
       "usage/output",
+      "usage/result-object",
       "usage/vscode",
       "usage/troubleshooting",
     ],
