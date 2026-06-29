@@ -5,46 +5,230 @@ sidebar_label: Pester v5 to v6
 description: See this guide for how to update your tests to be compatible with Pester v6.
 ---
 
-Pester v6 builds upon the new runtime introduced in v5 and behaves mostly the same which ensures backwards-compatibility. This guide will highlight any necessary steps to update your code and environment to run Pester v6.
+Pester v6 builds on v5 and behaves mostly the same, which keeps it backwards-compatible. Most v5 suites run on v6 without changes. This guide lists the breaking changes and how to fix each one, so you can get your existing suite green on v6.
 
-## Breaking Changes
+Your existing `Should -Be` assertions keep working, so you don't have to rewrite them to upgrade.
 
-### Removed support for PowerShell 3, 4, 5.0, 6, 7.0 and 7.1
+## Quick upgrade
 
-To be able to support new functionality and modernize the codebase, Pester 6.0.0 dropped support for unsupported versions of PowerShell.
-It currently requires Windows PowerShell 5.1 or PowerShell 7.2 and later, see [Installation](../introduction/installation#compatibility).
+For most suites upgrading is low risk. Run through this list, then read the details below for anything that bites:
 
-Make sure your computer and/or CI-systems are updated to run a supported version of PowerShell.
+1. Make sure you run **Windows PowerShell 5.1** or **PowerShell 7.2+**.
+2. Check any `-ForEach`/`-TestCases` that can be empty — it now throws unless you add `-AllowNullOrEmptyForEach`.
+3. Remove duplicate `BeforeAll`/`BeforeEach`/`AfterAll`/`AfterEach` in the same block.
+4. Replace `Assert-MockCalled` / `Assert-VerifiableMock` with `Should -Invoke` / `Should -InvokeVerifiable`.
+5. Add a default `Mock` for commands where some calls don't match a `-ParameterFilter` — mocks no longer fall through to the real command.
+6. If you script `Invoke-Pester` with v4-style parameters (`-Script`, `-OutputFile`, ...), switch to `New-PesterConfiguration`.
 
-### Removed `Assert-MockCalled` and `Assert-VerifiableMock`
+## Breaking changes
 
-Both functions were deprecated and replaced in Pester v5 and has been fully removed in Pester v6. Replace:
-- `Assert-MockCalled` with [Should -Invoke](../usage/mocking)
-- `Assert-VerifiableMock` with [Should -InvokeVerifiable](../usage/mocking)
+### PowerShell 5.1 and 7.2+ only
 
-### Removed `Set-ItResult -Pending`
+Support for PowerShell 3, 4, 6 and early/unsupported 7 was removed — they are all out of support from Microsoft. Dropping them let us move the C# to .NET 8 (net462 for Windows PowerShell 5.1) and modernize the runtime. Pester 6 targets **Windows PowerShell 5.1** and **PowerShell 7.2+**.
 
-The Pending result was never fully implemented in v5 and has been removed in v6.
+**Symptom.** Pester does not import on an older PowerShell.
 
-Replace any calls to `Set-ItResult -Pending` with `Set-ItResult -Inconclusive/-Skip` or mark the test using `It .. -Skip`.
+**Fix.** Update your machine and CI agents to a supported version, see [Installation](../introduction/installation#compatibility).
 
-### Discovery throws on empty `-ForEach` values
+### Discovery and run now happen per file
 
-[Data-driven tests](../usage/data-driven-tests) will throw when provided `$null` or an empty array to `-ForEach/TestCases`. This makes it easier to detect common errors like referencing a variable that is not defined in `BeforeDiscovery` or provided as external data. Previously these tests and blocks would be silently ignored.
+In v5 a run had two global phases: Pester discovered **every** file first, building the whole tree of `Describe`/`Context`/`It`, and only then ran them. In v6 the unit of work is a single file — Pester discovers a file and runs it before moving on to the next. This is what makes the experimental parallel runner possible, and serial runs follow the same model so the two behave the same.
 
-To allow empty data in specific blocks or tests, use the new `-AllowNullOrEmptyForEach` switch in `Describe/Context/It`.
-To disable the new behavior globally, set the configuration option `Run.FailOnNullOrEmptyForEach` to `$false`.
+**Symptom.** A test file that relied on something *another* file set up at discovery time fails — for example a module imported at the top of one file, or `-ForEach` data that a different file defined. Under parallel each file is discovered in its own runspace, so it definitely won't see the other file's state.
 
-## Changed Defaults
+**Fix.** Make each test file self-contained: do its own discovery-time setup in `BeforeDiscovery`, and import the modules it needs. When you need shared bootstrap for every file, use `Run.BeforeContainer` or a `Pester.BeforeContainer.ps1` file.
 
-### Code Coverage defaults to the newer Profiler-based tracer
+```powershell
+# Each file does its own discovery-time setup instead of
+# relying on another file having run first.
+BeforeDiscovery {
+    $cases = Get-Content "$PSScriptRoot/cases.json" | ConvertFrom-Json
+}
 
-When using Code Coverage it will now run using the newer and faster Profiler-based tracer instead of using breakpoints.
-The option `CodeCoverage.UseBreakpoints` is no longer experimental mode and the new default is `$false`.
+Describe 'MyModule' {
+    BeforeAll {
+        Import-Module "$PSScriptRoot/MyModule.psm1"
+    }
 
-To switch back to the older breakpoints-mode, set `CodeCoverage.UseBreakpoints` to `$true`.
+    It 'handles <Name>' -ForEach $cases {
+        Invoke-Thing $Name | Should -Be 'ok'
+    }
+}
+```
 
-:::warning Guide is incomplete
-Like the v6 preview docs in general this guide is incomplete and will be updated as we release new builds.
-To keep up with the latest development, see the release notes for 6.0.0 pre-release builds at https://github.com/pester/Pester/releases
+The on-screen output changes too: a run prints one `Running tests from N files.` banner, then per-file results, then a single grand total. The old `Starting discovery in N files.` / `Discovery found X tests` framing is gone for a normal run.
+
+### Empty or `$null` `-ForEach` throws
+
+[Data-driven tests](../usage/data-driven-tests) now throw when `-ForEach` (or `-TestCases`) gets `$null` or an empty array, instead of silently skipping the block or test. This catches the common mistake of pointing `-ForEach` at a variable that wasn't defined in `BeforeDiscovery`, or external data that didn't load.
+
+**Symptom.** Discovery fails with:
+
+```
+Value can not be null or empty array. If this is expected, use -AllowNullOrEmptyForEach
+on this Describe, or set the Run.FailOnNullOrEmptyForEach configuration option to $false
+to allow it for the whole run. (Parameter 'ForEach')
+```
+
+**Fix.** When the data really can be empty, allow it on that specific block or test:
+
+```powershell
+Describe 'Optional cases' -ForEach $cases -AllowNullOrEmptyForEach {
+    It 'runs only when there is data' { }
+}
+```
+
+You can also turn the check off for the whole run with `Run.FailOnNullOrEmptyForEach = $false`, but that is not a good long-term fix — it brings back the silent skipping and hides the same mistakes the check is there to catch. Prefer fixing the data, or using `-AllowNullOrEmptyForEach` where empty is expected.
+
+### Duplicate setup and teardown blocks throw
+
+A block can only have one of each setup and teardown. Two `BeforeAll` (or `BeforeEach`/`AfterAll`/`AfterEach`) in the same block was silently allowed in v5 and is a common copy-paste bug. v6 throws.
+
+**Symptom.**
+
+```
+BeforeAll is already defined in this block. Each block can only have one BeforeAll.
+Combine the code into a single BeforeAll block.
+```
+
+**Fix.** Combine them into one block:
+
+```powershell
+Describe 'd' {
+    BeforeAll {
+        $a = 1
+        $b = 2   # was a second BeforeAll
+    }
+}
+```
+
+### Test names only expand `-ForEach` data
+
+`<...>` tokens in `Describe`/`Context`/`It` names now interpolate **only the current data item and its properties** — not arbitrary PowerShell expressions. This closes a code-injection vector where an expression embedded in a name ran during discovery.
+
+**Symptom.** A name that embedded an expression no longer evaluates it.
+
+**Fix.** Compute the value into a `-ForEach` property and reference that property by name:
+
+```powershell
+# v5 — arbitrary expression in the name
+It 'adds up to <($a + $b)>' -ForEach @(@{ a = 1; b = 2 }) { }
+
+# v6 — put the value in the data, reference it by name
+It 'adds up to <sum>' -ForEach @(@{ a = 1; b = 2; sum = 3 }) { }
+```
+
+### `Assert-MockCalled` and `Assert-VerifiableMock` removed
+
+Both were deprecated back in v5 and are now fully removed.
+
+**Symptom.**
+
+```
+The term 'Assert-MockCalled' is not recognized as a name of a cmdlet, function, script file, or operable program.
+```
+
+**Fix.** Use the `Should` mock assertions, see [Mocking](../usage/mocking):
+
+```powershell
+# v5
+Assert-MockCalled Get-Thing -Times 1 -Exactly
+Assert-VerifiableMock
+
+# v6
+Should -Invoke Get-Thing -Times 1 -Exactly
+Should -InvokeVerifiable
+```
+
+### Mocks no longer fall through to the real command
+
+In v5, a call to a mocked command that matched none of your `-ParameterFilter` mocks quietly executed the **real** command. v6 removes that implicit fall-through, so an unmatched call fails instead of doing something unexpected.
+
+**Symptom.**
+
+```
+No mock for command 'Get-Thing' matched the call: none of the parameter filters matched,
+and there is no default mock to fall back to. Add a default mock (e.g. `Mock Get-Thing { ... }`)
+or adjust an existing -ParameterFilter.
+```
+
+**Fix.** Add a default mock (no `-ParameterFilter`) for the calls you don't filter on, or widen the filter:
+
+```powershell
+Mock Get-Thing -MockWith { 'default' }                              # handles everything else
+Mock Get-Thing -ParameterFilter { $Name -eq 'a' } -MockWith { 'a' } # special-cases Name 'a'
+```
+
+### `Set-ItResult -Pending` removed
+
+The `Pending` result was never fully implemented in v5, so it is gone in v6.
+
+**Symptom.** The test fails during run with:
+
+```
+Parameter set cannot be resolved using the specified named parameters.
+```
+
+**Fix.** Use `-Inconclusive` or `-Skipped` instead, or mark the test with `It .. -Skip`:
+
+```powershell
+Set-ItResult -Inconclusive -Because 'not implemented yet'
+```
+
+### Code coverage uses the Profiler tracer by default
+
+Code coverage used to set a breakpoint on every command. It now uses the same tracer the Profiler uses, which is much faster on large code bases. `CodeCoverage.UseBreakpoints` is no longer experimental and defaults to `$false`.
+
+**Symptom.** Coverage runs differently than in v5 and you want the old breakpoint behavior back.
+
+**Fix.** Switch back to breakpoints if you need the old numbers:
+
+```powershell
+$config.CodeCoverage.UseBreakpoints = $true
+```
+
+### `CodeCoverage.OutputFormat = 'CoverageGutters'` removed
+
+`CoverageGutters` only existed to produce repo-root-relative paths. In v6 *all* coverage output is already relative to the repo root (`Run.RepoRoot`, found from the `.git` directory), so plain `JaCoCo` works with the Coverage Gutters extension and similar tools.
+
+**Symptom.** Setting `OutputFormat` to `'CoverageGutters'` throws an invalid-value error.
+
+**Fix.** Use `JaCoCo` (the default) or `Cobertura`:
+
+```powershell
+$config.CodeCoverage.OutputFormat = 'JaCoCo'   # or 'Cobertura'
+```
+
+### `Invoke-Pester` legacy (v4) parameters removed
+
+The long-deprecated v4-style parameter set was removed from `Invoke-Pester`. Only the **Simple** set (`-Path`, `-Output`, `-Container`, `-Tag`, ...) and the **Advanced** set (`-Configuration`) remain.
+
+**Symptom.** Calls like `Invoke-Pester -Script ... -OutputFile ... -OutputFormat ... -EnableExit -CodeCoverage ...` fail with a parameter-binding error.
+
+**Fix.** Use a configuration object:
+
+```powershell
+# v5 (legacy v4 parameters)
+Invoke-Pester -Script ./tests -CodeCoverage ./src/*.ps1 -OutputFile result.xml -OutputFormat NUnitXml -EnableExit
+
+# v6
+$config = New-PesterConfiguration
+$config.Run.Path = './tests'
+$config.Run.Exit = $true
+$config.TestResult.Enabled = $true
+$config.TestResult.OutputPath = 'result.xml'
+$config.TestResult.OutputFormat = 'NUnitXml'
+$config.CodeCoverage.Enabled = $true
+$config.CodeCoverage.Path = './src'
+Invoke-Pester -Configuration $config
+```
+
+## New `Should-*` assertions (optional)
+
+Pester 6 adds a new family of `Should-*` assertions — `Should-Be`, `Should-Throw`, `Should-Invoke` and around 40 more — with clearer failure messages. They are **not** part of upgrading: your existing `Should -Be` assertions keep working, and there is no need to rewrite them.
+
+If you want to try them, see the [command reference](../commands/Should-Be). A dedicated guide for moving from `Should -Be` to `Should-Be` will come later.
+
+:::warning Pester 6.0.0 is in preview
+Some details may still change before the final release. To keep up with the latest development, see the release notes for 6.0.0 pre-release builds at https://github.com/pester/Pester/releases
 :::
