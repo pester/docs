@@ -235,6 +235,29 @@ Pester 6 adds a new family of `Should-*` assertions — `Should-Be`, `Should-Thr
 
 If you want to try them, see the [command reference](../commands/Should-Be). A dedicated guide for moving from `Should -Be` to `Should-Be` will come later.
 
+### Piping vs. `-Actual`
+
+The new assertions take the actual value from the pipeline or from `-Actual`. The pipeline unwraps its input, so a **value** assertion sees `@(1)` as `1` and `@()` as `$null`, and a collection sent through the pipeline is re-collected as `[object[]]` — its original type (for example `[int[]]`) is lost. Use `-Actual` when you need the exact value or the concrete collection type:
+
+```powershell
+@(1) | Should-Be 1                                           # pipeline unwraps @(1) to 1
+Should-HaveType -Actual ([int[]](1, 2)) -Expected ([int[]])  # -Actual keeps the [int[]]
+```
+
+If a value or type assertion fails because the pipeline unwrapped a collection this way, the failure message adds a hint that explains what happened and points you back to `-Actual`:
+
+```powershell
+[int[]](1, 2) | Should-HaveType ([int[]])
+# Expected value to have type [int[]], but got [Object[]] @(1, 2).
+#
+# Hint: You piped a [int[]] into a type assertion, but the pipeline streams a multi-item
+# collection and re-collects it as [Object[]], so the assertion saw [Object[]], not the
+# [int[]] you piped. To assert the type of a collection, pass it as the -Actual argument
+# instead of piping it, e.g. -Actual $value.
+```
+
+The hint is best-effort. PowerShell can't reliably tell a single-item collection from a scalar, and a collection's original type isn't visible on the right-hand side of the pipeline. Pester recovers the piped value through pipeline tricks that work for common cases but not every one, so the hint won't appear in every situation. When you need the exact value or the concrete collection type, pass it with `-Actual` rather than relying on the hint.
+
 :::warning Pester 6.0.0 is in preview
 Some details may still change before the final release. To keep up with the latest development, see the release notes for 6.0.0 pre-release builds at https://github.com/pester/Pester/releases
 :::
