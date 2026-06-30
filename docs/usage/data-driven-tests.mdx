@@ -206,8 +206,8 @@ Describe "<apple>" {
 ```
 ```
 Describing 🍎
-  [+] 🍎 🐛 5ms (3ms|2ms)
-  [+] 🍎 🐶 2ms (1ms|1ms)
+  [+] 🍎 🐛 5ms
+  [+] 🍎 🐶 2ms
 ```
 
 Additionally, the expansion of the string is postponed after the setup for the current block or test. This enables you to expand variables defined in `BeforeAll`, and `BeforeEach` of the current block, even though the code is visually below the name of the block:
@@ -230,7 +230,7 @@ Describe "<banana>" {
 
 ```
 Describing 🍌
-  [+] 🍌 🦒  7ms (5ms|3ms)
+  [+] 🍌 🦒  7ms
 ```
 
 #### `<_>` in template
@@ -246,8 +246,8 @@ Describe "Animals " {
 ```
 ```
 Describing Animals
-  [+] 🐛 7ms (2ms|5ms)
-  [+] 🐶 2ms (1ms|1ms)
+  [+] 🐛 7ms
+  [+] 🐶 2ms
 ```
 
 ### Using dot-navigation in `<>` template
@@ -279,8 +279,8 @@ Describe "Animals" {
 ```
 ```
 Describing Animals
-  [+] A 🐄 (cow) goes Mooo 12ms (1ms|11ms)
-  [+] A 🦊 (fox) goes Ring-ding-ding-ding-dingeringeding! 2ms (1ms|1ms)
+  [+] A 🐄 (cow) goes Mooo 12ms
+  [+] A 🦊 (fox) goes Ring-ding-ding-ding-dingeringeding! 2ms
 ```
 
 
@@ -333,12 +333,12 @@ Describe "Fruit" -ForEach "🍎", "🍐" {
 ```
 ```
 Describing Fruit
-  [+] Getting 🍎 returns $null 3ms (1ms|2ms)
-  [+] Getting 🍎 returns $null 2ms (1ms|1ms)
+  [+] Getting 🍎 returns $null 3ms
+  [+] Getting 🍎 returns $null 2ms
 
 Describing Fruit
-  [+] Getting 🍐 returns $null 3ms (1ms|3ms)
-  [+] Getting 🍐 returns $null 1ms (1ms|1ms)
+  [+] Getting 🍐 returns $null 3ms
+  [+] Getting 🍐 returns $null 1ms
 ```
 
 To avoid a `<` from being considered a template use  `` `< `` to escape it. This allows you to put greater than and less than in your test names. Or to wrap values in `<>`:
@@ -360,16 +360,16 @@ Describe "When x ``< 4, x: <_>" -ForEach @(1..4) {
 ```
 ```
 Describing When x < 4, x: 1
-  [+] x: <1> 3ms (1ms|3ms)
+  [+] x: <1> 3ms
 
 Describing When x < 4, x: 2
-  [+] x: <2> 6ms (0ms|6ms)
+  [+] x: <2> 6ms
 
 Describing When x < 4, x: 3
-  [+] x: <3> 5ms (1ms|5ms)
+  [+] x: <3> 5ms
 
 Describing When x < 4, x: 4
-  [+] x: <4> 4ms (0ms|4ms)
+  [+] x: <4> 4ms
 ```
 
 #### Internals
@@ -391,8 +391,6 @@ $x = 1
 # the formatter renders the value, giving the final text
 1 should not be $null
 ```
-
-####
 
 ## Providing external data to tests
 
@@ -429,13 +427,15 @@ Invoke-Pester -Container $container -Output Detailed
 ```
 
 ```
+Running tests from 1 files.
+
 Running tests from 'C:\p\style\CodingStyle.Tests.ps1'
 Describing File - Get-Emoji.ps1
  Context Whitespace
-   [+] There is no extra whitespace following a line 30ms (1ms|30ms)
-   [+] File ends with an empty line 2ms (1ms|1ms)
+   [+] There is no extra whitespace following a line 30ms
+   [+] File ends with an empty line 2ms
 Tests completed in 445ms
-Tests Passed: 2, Failed: 0, Skipped: 0 NotRun: 0
+Tests Passed: 2, Failed: 0, Skipped: 0, Inconclusive: 0, NotRun: 0
 ```
 
 :::note
@@ -534,9 +534,9 @@ Describe "File - <_>" -ForEach $files {
 
 ## Migrating from Pester v4
 
-There are two main things to take into account when Data driven tests in Pester v5+: The [execution is not top down](#execution-is-not-top-down) like in V4 but done in two phases `Discovery` and `Run`. Variables from `Discovery` are not available in `Run`, unless you explicitly attach them to a `Describe`, `Context` or `It` using `Foreach` or `TestCases`
+There are two main things to take into account when using Data driven tests in Pester v5+: The [execution is not top down](#execution-is-not-top-down) like in V4 but done in two phases `Discovery` and `Run`. Variables from `Discovery` are not available in `Run`, unless you explicitly attach them to a `Describe`, `Context` or `It` using `Foreach` or `TestCases`
 
-This has big impact the classic pattern of using `foreach` to generate tests.
+This has a big impact on the classic pattern of using `foreach` to generate tests.
 
 ### Execution is not top down
 
@@ -573,19 +573,16 @@ Write-Host "We are done with discovery!"
 ```
 
 ```
-Starting discovery in 1 files.
-Discovering in C:\p\g.Tests.ps1.
+Running tests from 1 files.
 We are starting with discovery.
 We are finding tests in this describe.
 We are leaving this describe.
 We are done with discovery!
-Found 1 tests. 35ms
-Discovery finished in 43ms.
 
 Running tests from 'C:\p\g.Tests.ps1'
 Describing d
 I am running!
-  [+] i 5ms (2ms|3ms)
+  [+] i 5ms
 Tests completed in 256ms
 ```
 
@@ -605,19 +602,15 @@ Describe "d" {
 }
 ```
 ```
-Starting discovery in 1 files.
-Discovering in C:\p\g.Tests.ps1.
-Found 1 tests. 21ms
-Discovery finished in 65ms.
+Running tests from 1 files.
 
 Running tests from 'C:\p\g.Tests.ps1'
 Describing d
-  [-] My name is: Jakub 106ms (103ms|3ms)
+  [-] My name is: Jakub 106ms
    Expected 'Jakub', but got $null.
    at $name | Should -be "Jakub", C:\p\g.Tests.ps1:5
-   at <ScriptBlock>, C:\p\g.Tests.ps1:5
 Tests completed in 436ms
-Tests Passed: 0, Failed: 1, Skipped: 0 NotRun: 0
+Tests Passed: 0, Failed: 1, Skipped: 0, Inconclusive: 0, NotRun: 0
 ```
 
 This is especially confusing because `$name` was correctly expanded in the name of the test. But if you think about it, it is logical. The script is running till the end, so the string `"My name is: $name"` is expanded during `Discovery` where the `$name` variable *is* available.

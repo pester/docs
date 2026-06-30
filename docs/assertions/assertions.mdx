@@ -211,9 +211,9 @@ Asserts that the collection contains value specified using PowerShell's -contain
 Does not perform any comparison but checks if the object calling Exist is present in a PS Provider. The object must have valid path syntax. It essentially must pass a Test-Path call.
 
 ```powershell
-$actual=(Dir . )[0].FullName
-Remove-Item $actual
-$actual | Should -Exist # Test will fail
+Set-Content -Path TestDrive:\file.txt -Value 'I exist'
+'TestDrive:\file.txt'    | Should -Exist # Test will pass, the file exists
+'TestDrive:\missing.txt' | Should -Exist # Test will fail, the file does not exist
 ```
 
 To test a path that contains `[ ]` wildcards, use the `-LiteralPath` switch (added in Pester v6) so the path is treated literally instead of as a wildcard pattern:

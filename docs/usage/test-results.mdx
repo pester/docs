@@ -19,7 +19,7 @@ If you are using the Pester .bat file to run your tests, test results are automa
 
 ### Using Invoke-Pester
 
-If you are not using the Pester .bat file and are instead calling Invoke-Pester directly from a build script, configure test results through a [`PesterConfiguration`](https://pester.dev/docs/usage/configuration#advanced-interface) object. The legacy `-OutputFile` and `-OutputFormat` parameters were removed in Pester v6, so set the `OutputFormat` and `OutputPath` and `Enable` test results for a file to be produced. The path is relative to the TeamCity agent working directory.
+If you are not using the Pester .bat file and are instead calling Invoke-Pester directly from a build script, configure test results through a [`PesterConfiguration`](https://pester.dev/docs/usage/configuration#advanced-interface) object. The legacy `-OutputFile` and `-OutputFormat` parameters were removed in Pester v6, so set `TestResult.Enabled`, `TestResult.OutputFormat`, and `TestResult.OutputPath` for a file to be produced. The path is relative to the TeamCity agent working directory.
 
 ```powershell
 $PesterConfig = New-PesterConfiguration

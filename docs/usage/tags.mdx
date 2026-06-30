@@ -53,18 +53,18 @@ Describe "Get-Beer" {
 ```
 
 ```
-Starting test discovery in 1 files.
-Discovering tests in ...\real-life-tagging-scenarios.tests.ps1.
-Found 7 tests. 482ms
-Test discovery finished. 800ms
+Running tests from 1 files.
+Filter 'Tag' set to ('Acceptance').
+Filter 'ExcludeTag' set to ('Flaky', 'Slow', 'LinuxOnly').
+Filters selected 2 tests to run.
 
 Running tests from '...\real-life-tagging-scenarios.tests.ps1'
 Describing Get-Beer
-  Context acceptance tests
-      [+] acceptance test 2 50ms (29ms|20ms)
-      [+] acceptance test 3 42ms (19ms|23ms)
+ Context acceptance tests
+   [+] acceptance test 2 50ms
+   [+] acceptance test 3 42ms
 Tests completed in 1.09s
-Tests Passed: 2, Failed: 0, Skipped: 0, Total: 7, NotRun: 5
+Tests Passed: 2, Failed: 0, Skipped: 0, Inconclusive: 0, NotRun: 5
 ```
 
 #### Tags use wildcards
@@ -75,16 +75,14 @@ The tags are now also compared as `-like` wildcards, so you don't have to spell 
 Invoke-Pester $path -ExcludeTagFilter "Accept*", "*nuxonly" | Out-Null
 ```
 ```
-Starting test discovery in 1 files.
-Discovering tests in ...\real-life-tagging-scenarios.tests.ps1.
-Found 7 tests. 59ms
-Test discovery finished. 97ms
-
+Running tests from 1 files.
+Filter 'ExcludeTag' set to ('Accept*', '*nuxonly').
+Filters selected 1 tests to run.
 
 Running tests from '...\real-life-tagging-scenarios.tests.ps1'
 Describing Get-Beer
- Context Unit tests
-   [+] unit test 1 15ms (7ms|8ms)
+ Context unit tests
+   [+] unit test 1 15ms
 Tests completed in 269ms
-Tests Passed: 1, Failed: 0, Skipped: 0, Total: 7, NotRun: 6
+Tests Passed: 1, Failed: 0, Skipped: 0, Inconclusive: 0, NotRun: 6
 ```

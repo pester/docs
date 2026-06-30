@@ -16,9 +16,9 @@ When `Should` calls your custom assertion, it will invoke it with the following 
 - **ActualValue**: The value passed to `Should` to assert.
 - **Negate**: Internal switch/bool parameter used to declare if the user called `Should -Not ...`.
 - **CallerSessionState**: Used by some internal assertions to invoke code in the user's state. This can usually be ignored.
-- *Remaining bound parameters*, typically matching the parameters your accept in your assertion, like `ExpectedValue`, `Because`, `MyCustomParameter` etc.
+- *Remaining bound parameters*, typically matching the parameters you accept in your assertion, like `ExpectedValue`, `Because`, `MyCustomParameter` etc.
 
-The function should return a object with the following properties:
+The function should return an object with the following properties:
 - **Succeeded**: Bool result of assert
 - **FailureMessage**: Message to the user explaining why the assert failed, typically in the format `Expected <expected value>, but got <actual value>`. If the function supports the commonly used `-Because` parameter, this property should include that message.
 
@@ -37,11 +37,11 @@ Advanced functions, typically enabled by using `[CmdletBinding()]` or `[Paramete
 - Support `-Not` for negative assertions. If not supported, throw an exception when used.
   - Note that this is passed as `$Negate` to the function.
 - Support `-Because` to let users customize the error message on failure.
-- Write tests for you custom assertions to make sure they work the way you intended.
+- Write tests for your custom assertions to make sure they work the way you intended.
   - `Should` will create error records for failed assertions with the `FullyQualifiedErrorId` set to `PesterAssertionFailed`.
 - Provide comment-based help with synopsis and examples so users can find it using `Get-ShouldOperator`.
   - If you register an operator with a different name than the internal function, specify `-InternalName YourFunctionName` in `Add-ShouldOperator`.
-    This is required for `Get-ShouldOperator` to retrieve your comment-bases help.
+    This is required for `Get-ShouldOperator` to retrieve your comment-based help.
 
 ## Register function as operator
 
@@ -61,7 +61,7 @@ Add-ShouldOperator -Name BeNumber `
 ```
 
 :::note Maximum number of Should operators
-Due to a limitation in PowerShell and the current design on `Should`, Pester is limited to a maximum of 32 Should operators. Pester currently includes 25 built-in operators, which limits how many custom operators you can register in a single session.
+Due to a limitation in PowerShell and the current design on `Should`, Pester is limited to a maximum of 32 Should operators. Pester currently includes 26 built-in operators, which limits how many custom operators you can register in a single session.
 The limitation is tracked in [this issue](https://github.com/pester/Pester/issues/1355)
 :::
 
@@ -140,15 +140,12 @@ Describe 'Testing Should -BeUpperCaseOnly' {
 ```powershell
 Invoke-Pester ./demo.tests.ps1
 
-Starting discovery in 1 files.
-Discovery found 4 tests in 181ms.
-Running tests.
-[-] Testing custom assertion.Failure 22ms (20ms|3ms)
+Running tests from 1 files.
+[-] Testing Should -BeUpperCaseOnly.Failure 22ms
  Expected 'HeLLo' to only contain uppercase letters because it looks cooler.
- at "HeLLo" | Should -BeUpperCaseOnly -Because "it looks cooler", /workspaces/Pester/Samples/demo.tests.ps1:11
- at <ScriptBlock>, /workspaces/Pester/Samples/demo.tests.ps1:11
+ at "HeLLo" | Should -BeUpperCaseOnly -Because "it looks cooler", C:\Pester\Samples\demo.tests.ps1:11
 Tests completed in 651ms
-Tests Passed: 3, Failed: 1, Skipped: 0 NotRun: 0
+Tests Passed: 3, Failed: 1, Skipped: 0, Inconclusive: 0, NotRun: 0
 ```
 
 ### SupportsArrayInput example
@@ -220,13 +217,10 @@ Describe 'Testing Should -ContainOnlyValuesOf' {
 ```powershell
 Invoke-Pester ./demo.tests.ps1
 
-Starting discovery in 1 files.
-Discovery found 2 tests in 25ms.
-Running tests.
-[-] Testing Should -ContainOnlyValuesOf.Failure 8ms (6ms|2ms)
+Running tests from 1 files.
+[-] Testing Should -ContainOnlyValuesOf.Failure 8ms
  Expected values not equal to 3 to be in collection @(3, 3, 3).
- at 3, 3, 3 | Should -Not -ContainOnlyValuesOf 3, /workspaces/Pester/Samples/demo.tests.ps1:11
- at <ScriptBlock>, /workspaces/Pester/Samples/demo.tests.ps1:11
+ at 3, 3, 3 | Should -Not -ContainOnlyValuesOf 3, C:\Pester\Samples\demo.tests.ps1:11
 Tests completed in 83ms
-Tests Passed: 1, Failed: 1, Skipped: 0 NotRun: 0
+Tests Passed: 1, Failed: 1, Skipped: 0, Inconclusive: 0, NotRun: 0
 ```

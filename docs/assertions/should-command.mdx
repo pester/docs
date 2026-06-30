@@ -3,10 +3,6 @@ title: Should
 description: Introduction to the Pester's built-in Should assertions which can be used to fail or pass a test
 ---
 
-:::warning Work in progress 🛠️
-This page is incomplete and will be updated as we get closer to release.
-:::
-
 ## Overview
 
 Pester includes a comprehensive set of assertions that you can use to either fail or pass a test.
@@ -15,7 +11,7 @@ In fact, Pester v6 actually includes two sets of assertions:
 - All new `Should-*` assertions introduced in Pester v6, e.g. `Should-BeString`, `Should-BeTrue` etc.
 - The `Should` command known from previous version of Pester, invoked using parameter sets like `Should -Be`, `Should -BeTrue` etc.
 
-Both types of assertions are supported side-by-side in Pester v6, but we recommend your try out and migrate to the newer assertions.
+Both types of assertions are supported side-by-side in Pester v6, but we recommend you try out and migrate to the newer assertions.
 
 ## `Should-*` assertions (v6)
 
@@ -23,7 +19,7 @@ Pester v6 comes with a new set of `Should-*` assertions that have been built fro
 If you've previously tested the [`Assert`](https://github.com/nohwnd/assert)-module, these will be familiar.
 Check out Command Reference in the sidebar to read more about the new assertions, e.g. [`Should-BeString`](../commands/Should-BeString.mdx).
 
-These new assertions are split these categories based on their usage:
+These new assertions are split into these categories based on their usage:
 
 - [Value](#value-assertions)
   - [Generic](#generic-value-assertions)
@@ -83,7 +79,7 @@ $null | Should-BeCollection -Expected $null
 
 #### Using the -Actual syntax
 
-The value provides to `-Actual`, is always exactly the same as provided.
+The value provided to `-Actual` is always exactly the same as provided.
 
 ```powershell
 Should-Be -Actual 1 -Expected 1
@@ -309,21 +305,22 @@ Describe "describe" {
 ```
 
 ```
-Starting test discovery in 1 files.
-Found 1 tests. 51ms
-Test discovery finished. 83ms
+Running tests from 1 files.
+
+Running tests from 'C:\t\describe.Tests.ps1'
 Describing describe
-  [-] user 124ms (109ms|15ms)
+  [-] user 124ms
    [0] Expected strings to be the same, but they were different.
    String lengths are both 5.
    Strings differ at index 0.
    Expected: 'Tomas'
    But was:  'Jakub'
-   at $user.Name | Should -Be "Tomas"
+              ^
+   at $user.Name | Should -Be "Tomas", C:\t\describe.Tests.ps1:15
    [1] Expected 27, but got 31.
-   at $user.Age | Should -Be 27
+   at $user.Age | Should -Be 27, C:\t\describe.Tests.ps1:16
 Tests completed in 286ms
-Tests Passed: 0, Failed: 1, Skipped: 0, Total: 1, NotRun: 0
+Tests Passed: 0, Failed: 1, Skipped: 0, Inconclusive: 0, NotRun: 0
 ```
 
 This allows you to check complex objects easily without writing It for each of the properties that you want to test. You can also use `-ErrorAction Stop` to force a failure when a pre-condition is not met. In our case if `$user` was null, there would be no point in testing the object further and we would fail the test immediately.
