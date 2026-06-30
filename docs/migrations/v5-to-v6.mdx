@@ -229,13 +229,23 @@ $config.CodeCoverage.Path = './src'
 Invoke-Pester -Configuration $config
 ```
 
-## New `Should-*` assertions (optional)
+## New in v6 (optional)
 
-Pester 6 adds a new family of `Should-*` assertions — `Should-Be`, `Should-Throw`, `Should-Invoke` and around 40 more — with clearer failure messages. They are **not** part of upgrading: your existing `Should -Be` assertions keep working, and there is no need to rewrite them.
+None of these are required to upgrade — your v5 suite keeps working without them. They are the main things v6 adds that you may want to adopt once your suite is green.
 
-If you want to try them, see the [command reference](../commands/Should-Be). A dedicated guide for moving from `Should -Be` to `Should-Be` will come later.
+### Run test files in parallel
 
-### Piping vs. `-Actual`
+The per-file model lets v6 run whole test files concurrently, each in its own runspace, which can cut the wall-clock time of a large suite. It is opt-in and still experimental — enable it with `Run.Parallel = $true`. Files that need shared bootstrap can use `Run.BeforeContainer` (or a `Pester.BeforeContainer.ps1` in the repository root) so each worker starts from a known state. See [Parallel execution](../usage/parallel) for the requirements, sequential fallbacks, and the `#pester:no-parallel` opt-out.
+
+### Show which test is currently running
+
+In a long or stuck suite it can be hard to tell which test is executing. Set `Debug.ShowStartMarkers = $true` to print a marker as each test starts, before its result line is written. See [Showing when each test starts](../usage/output#showing-when-each-test-starts).
+
+### New `Should-*` assertions
+
+Pester 6 adds a new family of `Should-*` assertions — `Should-Be`, `Should-Throw`, `Should-Invoke` and around 40 more — with clearer failure messages. They are **not** part of upgrading: your existing `Should -Be` assertions keep working, and there is no need to rewrite them. If you want to try them, see the [Should assertions overview](../assertions/should-command) and the per-command reference. You can adopt them incrementally, one file at a time.
+
+#### Piping vs. `-Actual`
 
 The new assertions take the actual value from the pipeline or from `-Actual`. The pipeline unwraps its input, so a **value** assertion sees `@(1)` as `1` and `@()` as `$null`, and a collection sent through the pipeline is re-collected as `[object[]]` — its original type (for example `[int[]]`) is lost. Use `-Actual` when you need the exact value or the concrete collection type:
 
