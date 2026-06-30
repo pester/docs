@@ -83,16 +83,13 @@ This code uses multiple Pester keywords, and we will go over them in detail soon
 In your console run `Invoke-Pester -Output Detailed C:\t\Planets\Get-Planet.Tests.ps1`:
 
 ```
-Starting discovery in 1 files.
-Discovering in C:\t\Planets\Get-Planet.Tests.ps1.
-Found 1 tests. 41ms
-Discovery finished in 77ms.
+Running tests from 1 files.
 
 Running tests from 'C:\t\Planets\Get-Planet.Tests.ps1'
 Describing Get-Planet
-  [+] Given no parameters, it lists all 8 planets 20ms (18ms|2ms)
+  [+] Given no parameters, it lists all 8 planets 20ms
 Tests completed in 179ms
-Tests Passed: 1, Failed: 0, Skipped: 0 NotRun: 0
+Tests Passed: 1, Failed: 0, Skipped: 0, Inconclusive: 0, NotRun: 0
 ```
 
 Looking at the last line of output you can see that we ran 1 test and it Passed. Good job, you just ran your first Pester test! 🥳🥳🥳
@@ -162,19 +159,15 @@ This will break the assertion that we have in our test, because we no longer ret
 ```
 Invoke-Pester -Output Detailed C:\t\Planets\Get-Planet.Tests.ps1
 
-Starting discovery in 1 files.
-Discovering in C:\t\Planets\Get-Planet.Tests.ps1.
-Found 1 tests. 9ms
-Discovery finished in 21ms.
+Running tests from 1 files.
 
 Running tests from 'C:\t\Planets\Get-Planet.Tests.ps1'
 Describing Get-Planet
-  [-] Given no parameters, it lists all 8 planets 19ms (12ms|7ms)
+  [-] Given no parameters, it lists all 8 planets 19ms
    Expected 8, but got 9.
    at $allPlanets.Count | Should -Be 8, C:\t\Planets\Get-Planet.Tests.ps1:22
-   at <ScriptBlock>, C:\t\Planets\Get-Planet.Tests.ps1:22
 Tests completed in 183ms
-Tests Passed: 0, Failed: 1, Skipped: 0 NotRun: 0
+Tests Passed: 0, Failed: 1, Skipped: 0, Inconclusive: 0, NotRun: 0
 ```
 
 The error is: `Expected 8, but got 9.`, this exactly reflects the change that we made to the tested function. We added one more item to the collection of planets, and the test confirms that the function is now broken.
@@ -185,10 +178,9 @@ The change that we just did is not the only change that we can make to break the
 
 ```
 Describing Get-Planet
-  [-] Given no parameters, it lists all 8 planets 25ms (21ms|4ms)
+  [-] Given no parameters, it lists all 8 planets 25ms
    Expected 1, but got 8.
    at $allPlanets.Count | Should -Be 1, C:\t\Planets\Get-Planet.Tests.ps1:21
-   at <ScriptBlock>, C:\t\Planets\Get-Planet.Tests.ps1:21
 Tests completed in 195ms
 ```
 
@@ -279,18 +271,16 @@ Describe 'Get-Planet' {
 If we now run the test, we will see that it breaks, because the function is no longer reachable from the test:
 
 ```
-Starting discovery in 1 files.
-Discovering in C:\t\Planets\Get-Planet.Tests.ps1.
-Found 1 tests. 14ms
-Discovery finished in 36ms.
+Running tests from 1 files.
 
 Running tests from 'C:\t\Planets\Get-Planet.Tests.ps1'
 Describing Get-Planet
-  [-] Given no parameters, it lists all 8 planets 40ms (37ms|3ms)
-   CommandNotFoundException: The term 'Get-Planet' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+  [-] Given no parameters, it lists all 8 planets 40ms
+   CommandNotFoundException: The term 'Get-Planet' is not recognized as a name of a cmdlet, function, script file, or executable program.
+   Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
    at <ScriptBlock>, C:\t\Planets\Get-Planet.Tests.ps1:7
 Tests completed in 214ms
-Tests Passed: 0, Failed: 1, Skipped: 0 NotRun: 0
+Tests Passed: 0, Failed: 1, Skipped: 0, Inconclusive: 0, NotRun: 0
 ```
 
 The error is `CommandNotFoundException: The term 'Get-Planet' is not recognized as the name of a cmdlet, function, script file, or operable program.`. This is because the function is not defined, and we need to make it available to the test.
@@ -315,16 +305,13 @@ Describe 'Get-Planet' {
 ```
 Invoke-Pester -Output Detailed C:\t\Planets\Get-Planet.Tests.ps1
 
-Starting discovery in 1 files.
-Discovering in C:\t\Planets\Get-Planet.Tests.ps1.
-Found 1 tests. 19ms
-Discovery finished in 31ms.
+Running tests from 1 files.
 
 Running tests from 'C:\t\Planets\Get-Planet.Tests.ps1'
 Describing Get-Planet
-  [+] Given no parameters, it lists all 8 planets 10ms (5ms|5ms)
+  [+] Given no parameters, it lists all 8 planets 10ms
 Tests completed in 189ms
-Tests Passed: 1, Failed: 0, Skipped: 0 NotRun: 0
+Tests Passed: 1, Failed: 0, Skipped: 0, Inconclusive: 0, NotRun: 0
 ```
 
 ## Summary
