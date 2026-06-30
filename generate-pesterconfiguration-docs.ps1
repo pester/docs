@@ -13,6 +13,12 @@ param (
 )
 
 #region helpers
+
+# Run.RepoRoot is resolved by New-PesterConfiguration to the absolute path of the
+# repository the generator runs in (machine-specific). We replace it with an
+# illustrative placeholder repo root so no build path leaks into the published docs.
+$repoRootPlaceholder = 'C:\MyProject'
+
 function Format-MdxDescription ($text) {
     # Escape characters that are structurally significant to MDX 3 / Markdown tables so raw
     # PesterConfiguration help text (e.g. "{ . './setup.ps1' }") doesn't break the docs build.
@@ -69,8 +75,8 @@ function generateSectionsMarkdownAsTable {
             $optionName = $configOption.Name
             $option = $configOption.Value
             $rawDefault = $option.Default
-            # Run.RepoRoot defaults to an auto-detected, machine-specific path. Render it as $null so the generated docs stay machine-independent.
-            if ($rawDefault -is [string] -and $rawDefault -eq $configObject.Run.RepoRoot.Value) { $rawDefault = $null }
+            # Run.RepoRoot defaults to an auto-detected, machine-specific path. Render an illustrative placeholder (C:\MyProject) so the generated docs stay machine-independent.
+            if ($rawDefault -is [string] -and $rawDefault -eq $configObject.Run.RepoRoot.Value) { $rawDefault = $repoRootPlaceholder }
             $default = Format-NicelyMini $rawDefault
             # Use the declared property type so options with a $null default (e.g. CodeCoverage.ReportRoot) still report their type.
             $type = $option.GetType().GetProperty('Default').PropertyType -as [string] -replace '^Pester\.'
@@ -103,8 +109,8 @@ function generateSectionsMarkdownAsList {
             $optionName = $configOption.Name
             $option = $configOption.Value
             $rawDefault = $option.Default
-            # Run.RepoRoot defaults to an auto-detected, machine-specific path. Render it as $null so the generated docs stay machine-independent.
-            if ($rawDefault -is [string] -and $rawDefault -eq $configObject.Run.RepoRoot.Value) { $rawDefault = $null }
+            # Run.RepoRoot defaults to an auto-detected, machine-specific path. Render an illustrative placeholder (C:\MyProject) so the generated docs stay machine-independent.
+            if ($rawDefault -is [string] -and $rawDefault -eq $configObject.Run.RepoRoot.Value) { $rawDefault = $repoRootPlaceholder }
             $default = Format-NicelyMini $rawDefault
             # Use the declared property type so options with a $null default (e.g. CodeCoverage.ReportRoot) still report their type.
             $type = $option.GetType().GetProperty('Default').PropertyType -as [string]

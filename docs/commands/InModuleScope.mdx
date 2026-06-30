@@ -56,11 +56,13 @@ Export-ModuleMember -Function PublicFunction
 
 # The test script:
 
-Import-Module MyModule
+BeforeAll {
+    Import-Module MyModule
+}
 
-InModuleScope MyModule {
-    Describe 'Testing MyModule' {
-        It 'Tests the Private function' {
+Describe 'Testing MyModule' {
+    It 'Tests the Private function' {
+        InModuleScope MyModule {
             PrivateFunction | Should -Be $true
         }
     }
@@ -69,7 +71,7 @@ InModuleScope MyModule {
 
 Normally you would not be able to access "PrivateFunction" from
 the PowerShell session, because the module only exported
-"PublicFunction". 
+"PublicFunction".
 Using InModuleScope allowed this call to
 "PrivateFunction" to work successfully.
 
@@ -204,4 +206,4 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 6.0.0-alpha5](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.0.0-rc2](https://github.com/pester/pester).*

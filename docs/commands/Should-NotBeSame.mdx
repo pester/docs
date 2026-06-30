@@ -28,19 +28,19 @@ Should-NotBeSame [[-Actual] <Object>] [-Expected] <Object> [-Because <String>] [
 
 ## DESCRIPTION
 
-\{\{ Fill in the Description \}\}
+This assertion checks reference inequality rather than value inequality.
+It passes when the two values are different instances, even if their contents are equal.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 
-```
 ```powershell
 $object = New-Object -TypeName PSObject
 $object | Should-NotBeSame $object
-```powershell
-This assertion will pass, because the actual value is not the same instance as the expected value.
 ```
+
+This assertion will pass, because the actual value is not the same instance as the expected value.
 
 ### EXAMPLE 2
 
@@ -121,4 +121,4 @@ The `Should-NotBeSame` assertion is the opposite of the `Should-BeSame` assertio
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 6.0.0-alpha5](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.0.0-rc2](https://github.com/pester/pester).*

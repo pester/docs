@@ -29,7 +29,8 @@ Should-All [[-Actual] <Object>] [-FilterScript] <ScriptBlock> [-Because <String>
 
 ## DESCRIPTION
 
-\{\{ Fill in the Description \}\}
+This assertion runs the filter script against every item in the collection.
+Nested Should-* failures are treated as filter failures and included in the reported reasons.
 
 ## EXAMPLES
 
@@ -120,4 +121,4 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 6.0.0-alpha5](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.0.0-rc2](https://github.com/pester/pester).*

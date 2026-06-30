@@ -1,0 +1,196 @@
+---
+id: Should-BeHashtable
+title: Should-BeHashtable
+description: Help page for the PowerShell Pester "Should-BeHashtable" command
+keywords:
+  - PowerShell
+  - Pester
+  - Help
+  - Documentation
+hide_title: false
+hide_table_of_contents: false
+custom_edit_url: null
+---
+
+:::info This page was generated
+Contributions are welcome in [Pester-repo](https://github.com/pester/pester).
+:::
+
+## SYNOPSIS
+
+Asserts that the input is a hashtable or dictionary, and optionally checks the number of
+entries, whether it is ordered, and that it contains specific keys.
+
+## SYNTAX
+
+```powershell
+Should-BeHashtable [[-Actual] <Object>] [-Count <Int32>] [-Key <String[]>] [-Ordered] [-Because <String>]
+ [<CommonParameters>]
+```
+
+## DESCRIPTION
+
+`Should-BeHashtable` is a shape assertion.
+It verifies that `$Actual` is a hashtable or
+dictionary (anything implementing `System.Collections.IDictionary`, such as `@\{\}`,
+`[ordered]@\{\}` or a generic `Dictionary[,]`).
+
+It does not compare the contents of the dictionary.
+Use the optional parameters to assert on
+the shape of the dictionary:
+
+- `-Count` checks the number of entries.
+- `-Ordered` checks that the value is an ordered dictionary (`[ordered]@\{\}`).
+- `-Key` checks that the given keys are present, ignoring their values.
+When combined with
+  `-Ordered`, the keys must also appear in the given relative order.
+
+To compare the keys *and values* of a dictionary against an expected dictionary use
+`Should-BeEquivalent` instead, which performs a deep, order-insensitive comparison.
+
+## EXAMPLES
+
+### EXAMPLE 1
+
+```powershell
+@{ Name = 'Jakub'; Age = 30 } | Should-BeHashtable
+[ordered]@{ a = 1; b = 2 } | Should-BeHashtable
+```
+
+These assertions pass, because the actual value is a hashtable or dictionary.
+
+### EXAMPLE 2
+
+```powershell
+@{ Name = 'Jakub'; Age = 30 } | Should-BeHashtable -Count 2
+@{ Name = 'Jakub'; Age = 30 } | Should-BeHashtable -Key Name, Age
+[ordered]@{ a = 1; b = 2 } | Should-BeHashtable -Ordered -Key a, b
+```
+
+These assertions pass.
+The dictionary has two entries, it contains the keys `Name` and `Age`,
+and the ordered dictionary contains the keys `a` and `b` in that order.
+
+### EXAMPLE 3
+
+```powershell
+@{ Name = 'Jakub' } | Should-BeHashtable -Ordered
+@(1, 2, 3) | Should-BeHashtable
+```
+
+These assertions fail.
+The first value is a plain (unordered) hashtable, and the second value
+is a collection, not a hashtable.
+
+## PARAMETERS
+
+### -Actual
+
+The value to test.
+It is expected to be a hashtable or dictionary.
+
+```yaml
+Type: Object
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 2
+Default value: None
+Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
+
+### -Count
+
+Checks that the dictionary has the expected number of entries.
+
+```yaml
+Type: Int32
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Key
+
+Checks that the dictionary contains the given keys.
+Only the presence of the keys is checked,
+not their values.
+When `-Ordered` is also specified, the keys must appear in the dictionary in
+the same relative order as they are listed here.
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Ordered
+
+Checks that the dictionary is an ordered dictionary (`System.Collections.Specialized.OrderedDictionary`),
+as produced by `[ordered]@\{\}`.
+A plain `[hashtable]` is unordered and fails this check.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Because
+
+The reason why the input should be a hashtable with the expected shape.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### CommonParameters
+
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+## INPUTS
+
+## OUTPUTS
+
+## NOTES
+
+`Should-BeHashtable` only asserts on the shape of the dictionary.
+To compare its keys and
+values against an expected dictionary, use `Should-BeEquivalent`.
+
+## RELATED LINKS
+
+[https://pester.dev/docs/commands/Should-BeHashtable](https://pester.dev/docs/commands/Should-BeHashtable)
+
+[https://pester.dev/docs/assertions](https://pester.dev/docs/assertions)
+
+## VERSION
+
+*This page was generated using comment-based help in [Pester 6.0.0-rc2](https://github.com/pester/pester).*

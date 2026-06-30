@@ -36,21 +36,19 @@ The `-ne` operator is case-insensitive by default, but you can make it case-sens
 
 ### EXAMPLE 1
 
-```
 ```powershell
 "hello" | Should-NotBeString "HELLO"
-```powershell
-This assertion will pass, because the actual value is not equal to the expected value.
 ```
+
+This assertion will pass, because the actual value is not equal to the expected value.
 
 ### EXAMPLE 2
 
-```
 ```powershell
 "hello" | Should-NotBeString "hello" -CaseSensitive
-```powershell
-This assertion will fail, because the actual value is equal to the expected value.
 ```
+
+This assertion will fail, because the actual value is equal to the expected value.
 
 ## PARAMETERS
 
@@ -154,4 +152,4 @@ The `Should-NotBeString` assertion is the opposite of the `Should-BeString` asse
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 6.0.0-alpha5](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.0.0-rc2](https://github.com/pester/pester).*

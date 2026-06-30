@@ -28,7 +28,8 @@ Should-NotBeEmptyString [[-Actual] <Object>] [-Because <String>] [<CommonParamet
 
 ## DESCRIPTION
 
-\{\{ Fill in the Description \}\}
+This assertion requires the actual value to be a string and fails for `$null, `""`, and non-string values.
+Use it when empty should not be accepted as a valid string value.
 
 ## EXAMPLES
 
@@ -113,4 +114,4 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 6.0.0-alpha5](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.0.0-rc2](https://github.com/pester/pester).*

@@ -27,7 +27,7 @@ Import-Module Pester
 # get default from static property
 $configuration = New-PesterConfiguration
 # adding properties & discover via intellisense
-$configuration.Run.Path = 'C:\projects\tst'
+$configuration.Run.Path = 'C:\MyProject\tests'
 $configuration.Filter.Tag = 'Acceptance'
 $configuration.Filter.ExcludeTag = 'WindowsOnly'
 $configuration.Should.ErrorAction = 'Continue'
@@ -38,7 +38,7 @@ $configuration.CodeCoverage.Enabled = $true
 # cast whole hashtable to configuration
 $configuration = [PesterConfiguration]@{
     Run = @{
-        Path = 'C:\projects\tst'
+        Path = 'C:\MyProject\tests'
     }
     Filter = @{
         Tag = 'Acceptance'
@@ -56,7 +56,7 @@ $configuration = [PesterConfiguration]@{
 ```powershell
 # cast from empty hashtable to get default
 $configuration = [PesterConfiguration]@{}
-$configuration.Run.Path = 'C:\projects\tst'
+$configuration.Run.Path = 'C:\MyProject\tests'
 # cast hashtable to section
 $configuration.Filter = @{
         Tag = 'Acceptance'
@@ -154,7 +154,7 @@ General runtime options for Pester including tests containers to execute.
 | Run.ParallelThrottleLimit | EXPERIMENTAL: Maximum number of test files to run at the same time when Run.Parallel is enabled, passed through to 'ForEach-Object -Parallel -ThrottleLimit'. The default 0 uses all available processors ([Environment]::ProcessorCount). Set a lower number to cap how many runspaces run concurrently. Only used when Run.Parallel is enabled. | `int` | `0` |
 | Run.SkipRemainingOnFailure | Skips remaining tests after failure for selected scope, options are None, Run, Container and Block. | `string` | `'None'` |
 | Run.FailOnNullOrEmptyForEach | Fails discovery when -ForEach is provided $null or @() in a block or test. Can be overridden for a specific Describe/Context/It using -AllowNullOrEmptyForEach. | `bool` | `$true` |
-| Run.RepoRoot | Root directory of the repository. Found by searching for the .git directory recursively. When not found, the current working directory is used. | `string` | `$null` |
+| Run.RepoRoot | Root directory of the repository. Found by searching for the .git directory recursively. When not found, the current working directory is used. | `string` | `'C:\MyProject'` |
 </div>
 
 ### Filter

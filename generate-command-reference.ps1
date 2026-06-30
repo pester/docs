@@ -119,6 +119,144 @@ if (Test-Path -Path $outputFolder) {
 Write-Host 'Generating new MDX files' -ForegroundColor Magenta
 New-DocusaurusHelp @docusaurusOptions
 
+function Repair-ExampleFences {
+    <#
+        Pester's source comment-based help embeds Markdown code fences (```powershell
+        ... ```), including a 'powereshell' typo, inside its .EXAMPLE blocks. PlatyPS
+        double-wraps these, emitting mismatched fences - a bare ``` opening paired with
+        a ```powershell "closing" fence, sometimes doubled up. MDX 3 then mispairs the
+        fences, treating an example's PowerShell '@{ ... }' as a JSX expression, which
+        breaks the Docusaurus build ("Could not parse expression with acorn").
+
+        Normalize fences inside the EXAMPLES section only: collapse runs of adjacent
+        fence lines and alternate them open/close per example, so each example becomes a
+        single well-formed ```powershell code block followed by its description. The
+        SYNTAX and PARAMETERS sections (and their YAML blocks) are left untouched.
+    #>
+    param([string] $Content)
+
+    $eol = if ($Content -match "`r`n") { "`r`n" } else { "`n" }
+    $lines = $Content -split "`r?`n"
+
+    # Locate the EXAMPLES section: '## EXAMPLES' up to the next H2 heading.
+    $start = -1
+    for ($i = 0; $i -lt $lines.Count; $i++) {
+        if ($lines[$i] -match '^##\s+EXAMPLES\s*$') { $start = $i; break }
+    }
+    if ($start -lt 0) { return $Content }
+
+    $end = $lines.Count
+    for ($i = $start + 1; $i -lt $lines.Count; $i++) {
+        if ($lines[$i] -match '^##\s' -and $lines[$i] -notmatch '^###') { $end = $i; break }
+    }
+
+    $result = [System.Collections.Generic.List[string]]::new()
+    $inCode = $false
+    $i = 0
+    while ($i -lt $lines.Count) {
+        $line = $lines[$i]
+
+        # Outside the EXAMPLES section: pass through unchanged.
+        if ($i -le $start -or $i -ge $end) {
+            if ($i -eq $end -and $inCode) { $result.Add('```'); $inCode = $false }
+            $result.Add($line); $i++; continue
+        }
+
+        # A new example heading closes any block left open by the previous one.
+        if ($line -match '^###\s') {
+            if ($inCode) { $result.Add('```'); $inCode = $false }
+            $result.Add($line); $i++; continue
+        }
+
+        # Collapse a run of adjacent fence lines into a single open or close fence.
+        if ($line -match '^\s{0,3}```') {
+            $langs = @()
+            while ($i -lt $end -and $lines[$i] -match '^\s{0,3}```(.*)$') {
+                $langs += $Matches[1].Trim()
+                $i++
+            }
+            if (-not $inCode) {
+                $lang = $langs | Where-Object { $_ -ne '' } | Select-Object -First 1
+                if (-not $lang -or $lang -eq 'powereshell') { $lang = 'powershell' }
+                $result.Add('```' + $lang)
+                $inCode = $true
+            }
+            else {
+                $result.Add('```')
+                $inCode = $false
+            }
+            continue
+        }
+
+        $result.Add($line); $i++
+    }
+
+    return ($result -join $eol)
+}
+
+function Format-SyntaxCommonParameters {
+    # After ProgressAction is removed, '[<CommonParameters>]' is collapsed back inline.
+    # PlatyPS keeps it inline only while the SYNTAX line stays within its wrap width
+    # (~110 chars, measured from prior generated output) and otherwise wraps it onto its
+    # own continuation line. Reproduce that so we neither leave overly long lines nor
+    # dangling orphans. Only lines that still carry content before the token are wrapped;
+    # lines that are already just ' [<CommonParameters>]' are left untouched.
+    param([string] $Content, [int] $MaxWidth = 110)
+
+    $eol = if ($Content -match "`r`n") { "`r`n" } else { "`n" }
+    $lines = $Content -split "`r?`n"
+    $out = [System.Collections.Generic.List[string]]::new()
+    foreach ($line in $lines) {
+        if ($line.Length -gt $MaxWidth -and $line -match '\S[ ]\[<CommonParameters>\][ ]*$') {
+            $head = $line -replace '[ ]*\[<CommonParameters>\][ ]*$', ''
+            $out.Add($head)
+            $out.Add(' [<CommonParameters>]')
+        }
+        else {
+            $out.Add($line)
+        }
+    }
+    return ($out -join $eol)
+}
+
+# -----------------------------------------------------------------------------
+# Post-process the generated MDX:
+#  * Strip the spurious ProgressAction common parameter that PlatyPS emits on
+#    PowerShell 7.4+ (https://github.com/PowerShell/platyPS/issues/663). Pester 6
+#    loads a .NET 8 assembly and therefore requires PowerShell 7.4+, so the docs
+#    can no longer be generated on an older PowerShell to avoid this.
+#  * Repair the mismatched code fences PlatyPS emits for .EXAMPLE blocks that
+#    contain their own Markdown fences (see Repair-ExampleFences) so the MDX
+#    compiles.
+# The '[<CommonParameters>]' SYNTAX entry and the '### CommonParameters' section are
+# kept as PlatyPS produces them. Because the ProgressAction token is longer than
+# '[<CommonParameters>]' and always sits right before it, removing ProgressAction can
+# leave '[<CommonParameters>]' orphaned on a wrapped continuation line. The first
+# replacement handles that case by pulling '[<CommonParameters>]' back onto the line
+# ProgressAction occupied; the second removes any remaining ProgressAction token,
+# whether inline or wrapped onto its own line. Format-SyntaxCommonParameters then wraps
+# '[<CommonParameters>]' back onto its own line where the result would exceed PlatyPS's
+# syntax wrap width, matching the layout PlatyPS produces without ProgressAction.
+# -----------------------------------------------------------------------------
+Write-Host 'Post-processing generated MDX files (ProgressAction, example fences)' -ForegroundColor Magenta
+$commandsFolder = Join-Path -Path $docusaurusOptions.DocsFolder -ChildPath $docusaurusOptions.Sidebar
+Get-ChildItem -Path $commandsFolder -Filter '*.mdx' | ForEach-Object {
+    $content = Get-Content -LiteralPath $_.FullName -Raw
+    # Pull '[<CommonParameters>]' back up when removing ProgressAction would orphan it
+    $updated = $content -replace '[ ]*\[-ProgressAction <ActionPreference>\][ ]*\r?\n[ ]*\[<CommonParameters>\]', ' [<CommonParameters>]'
+    # Remove any remaining ' [-ProgressAction <ActionPreference>]' from the SYNTAX code-blocks
+    $updated = $updated -replace '[ ]*(\r?\n[ ]*)?\[-ProgressAction <ActionPreference>\]', ''
+    # Remove the dedicated '### -ProgressAction' section up to the next '### ' heading
+    $updated = $updated -replace '(?ms)^### -ProgressAction\r?\n.*?(?=^### )', ''
+    # Re-wrap '[<CommonParameters>]' onto its own line where the SYNTAX line is too long
+    $updated = Format-SyntaxCommonParameters -Content $updated
+    # Fix mismatched code fences inside the EXAMPLES section
+    $updated = Repair-ExampleFences -Content $updated
+    if ($updated -ne $content) {
+        Set-Content -LiteralPath $_.FullName -Value $updated -NoNewline -Encoding utf8
+    }
+}
+
 Write-Host 'Render completed successfully' -BackgroundColor DarkGreen
 Pop-Location
 

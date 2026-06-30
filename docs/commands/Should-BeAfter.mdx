@@ -25,24 +25,31 @@ Asserts that the provided [datetime] is after the expected [datetime].
 ### Now (Default)
 
 ```powershell
-Should-BeAfter [[-Actual] <Object>] [-Now] [<CommonParameters>]
+Should-BeAfter [[-Actual] <Object>] [-Now] [-Because <String>] [<CommonParameters>]
 ```
 
-### Fluent
+### FluentFromNow
 
 ```powershell
-Should-BeAfter [[-Actual] <Object>] [[-Time] <Object>] [-Ago] [-FromNow] [<CommonParameters>]
+Should-BeAfter [[-Actual] <Object>] [[-Time] <String>] [-FromNow] [-Because <String>] [<CommonParameters>]
+```
+
+### FluentAgo
+
+```powershell
+Should-BeAfter [[-Actual] <Object>] [[-Time] <String>] [-Ago] [-Because <String>] [<CommonParameters>]
 ```
 
 ### Expected
 
 ```powershell
-Should-BeAfter [[-Actual] <Object>] [[-Expected] <DateTime>] [<CommonParameters>]
+Should-BeAfter [[-Actual] <Object>] [[-Expected] <DateTime>] [-Because <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
 
-\{\{ Fill in the Description \}\}
+This assertion accepts either an expected `[datetime]` or a fluent relative time expression.
+Use `-Now`, `-Ago`, or `-FromNow` to compare against the current local time.
 
 ## EXAMPLES
 
@@ -106,7 +113,7 @@ Parameter Sets: Now
 Aliases:
 
 Required: False
-Position: 1
+Position: Named
 Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -119,8 +126,8 @@ This parameter uses fluent time syntax e.g.
 1minute.
 
 ```yaml
-Type: Object
-Parameter Sets: Fluent
+Type: String
+Parameter Sets: FluentFromNow, FluentAgo
 Aliases:
 
 Required: False
@@ -136,11 +143,11 @@ Indicates that the -Time should be subtracted from the current time.
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: Fluent
+Parameter Sets: FluentAgo
 Aliases:
 
-Required: False
-Position: 2
+Required: True
+Position: Named
 Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -152,11 +159,11 @@ Indicates that the -Time should be added to the current time.
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: Fluent
+Parameter Sets: FluentFromNow
 Aliases:
 
-Required: False
-Position: 2
+Required: True
+Position: Named
 Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -173,6 +180,22 @@ Aliases:
 
 Required: False
 Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Because
+
+The reason why the actual value should be after the expected value.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -198,4 +221,4 @@ The `Should-BeAfter` assertion is the opposite of the `Should-BeBefore` assertio
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 6.0.0-alpha5](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.0.0-rc2](https://github.com/pester/pester).*
