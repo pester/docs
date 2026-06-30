@@ -28,18 +28,19 @@ and throws an exception if it has not.
 ```powershell
 Should-Invoke [-CommandName] <String> [[-Times] <Int32>] [-ParameterFilter <ScriptBlock>]
  [-ExclusiveFilter <ScriptBlock>] [-ModuleName <String>] [-Scope <String>] [-Exactly] [-Because <String>]
+ [<CommonParameters>]
 ```
 
 ### ExclusiveFilter
 
 ```powershell
-Should-Invoke -ExclusiveFilter <ScriptBlock>
+Should-Invoke -ExclusiveFilter <ScriptBlock> [<CommonParameters>]
 ```
 
 ### Verifiable
 
 ```powershell
-Should-Invoke [-Because <String>] [-Verifiable]
+Should-Invoke [-Because <String>] [-Verifiable] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

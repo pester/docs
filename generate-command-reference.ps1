@@ -194,32 +194,62 @@ function Repair-ExampleFences {
     return ($result -join $eol)
 }
 
+function Format-SyntaxCommonParameters {
+    # After ProgressAction is removed, '[<CommonParameters>]' is collapsed back inline.
+    # PlatyPS keeps it inline only while the SYNTAX line stays within its wrap width
+    # (~110 chars, measured from prior generated output) and otherwise wraps it onto its
+    # own continuation line. Reproduce that so we neither leave overly long lines nor
+    # dangling orphans. Only lines that still carry content before the token are wrapped;
+    # lines that are already just ' [<CommonParameters>]' are left untouched.
+    param([string] $Content, [int] $MaxWidth = 110)
+
+    $eol = if ($Content -match "`r`n") { "`r`n" } else { "`n" }
+    $lines = $Content -split "`r?`n"
+    $out = [System.Collections.Generic.List[string]]::new()
+    foreach ($line in $lines) {
+        if ($line.Length -gt $MaxWidth -and $line -match '\S[ ]\[<CommonParameters>\][ ]*$') {
+            $head = $line -replace '[ ]*\[<CommonParameters>\][ ]*$', ''
+            $out.Add($head)
+            $out.Add(' [<CommonParameters>]')
+        }
+        else {
+            $out.Add($line)
+        }
+    }
+    return ($out -join $eol)
+}
+
 # -----------------------------------------------------------------------------
 # Post-process the generated MDX:
 #  * Strip the spurious ProgressAction common parameter that PlatyPS emits on
 #    PowerShell 7.4+ (https://github.com/PowerShell/platyPS/issues/663). Pester 6
 #    loads a .NET 8 assembly and therefore requires PowerShell 7.4+, so the docs
 #    can no longer be generated on an older PowerShell to avoid this.
-#  * Drop the '[<CommonParameters>]' entry from the SYNTAX blocks. It carries no
-#    useful information for these commands and, on 7.4+, the longer ProgressAction
-#    token made PlatyPS wrap it onto a dangling line of its own.
 #  * Repair the mismatched code fences PlatyPS emits for .EXAMPLE blocks that
 #    contain their own Markdown fences (see Repair-ExampleFences) so the MDX
 #    compiles.
-# The first two replacements allow the token to sit inline or, when PlatyPS wrapped
-# the syntax line, on a continuation line of its own (optional leading line-break +
-# indentation) so no blank or dangling line is left behind.
+# The '[<CommonParameters>]' SYNTAX entry and the '### CommonParameters' section are
+# kept as PlatyPS produces them. Because the ProgressAction token is longer than
+# '[<CommonParameters>]' and always sits right before it, removing ProgressAction can
+# leave '[<CommonParameters>]' orphaned on a wrapped continuation line. The first
+# replacement handles that case by pulling '[<CommonParameters>]' back onto the line
+# ProgressAction occupied; the second removes any remaining ProgressAction token,
+# whether inline or wrapped onto its own line. Format-SyntaxCommonParameters then wraps
+# '[<CommonParameters>]' back onto its own line where the result would exceed PlatyPS's
+# syntax wrap width, matching the layout PlatyPS produces without ProgressAction.
 # -----------------------------------------------------------------------------
-Write-Host 'Post-processing generated MDX files (ProgressAction, [<CommonParameters>], example fences)' -ForegroundColor Magenta
+Write-Host 'Post-processing generated MDX files (ProgressAction, example fences)' -ForegroundColor Magenta
 $commandsFolder = Join-Path -Path $docusaurusOptions.DocsFolder -ChildPath $docusaurusOptions.Sidebar
 Get-ChildItem -Path $commandsFolder -Filter '*.mdx' | ForEach-Object {
     $content = Get-Content -LiteralPath $_.FullName -Raw
-    # Remove ' [-ProgressAction <ActionPreference>]' from the SYNTAX code-blocks
-    $updated = $content -replace '[ ]*(\r?\n[ ]*)?\[-ProgressAction <ActionPreference>\]', ''
+    # Pull '[<CommonParameters>]' back up when removing ProgressAction would orphan it
+    $updated = $content -replace '[ ]*\[-ProgressAction <ActionPreference>\][ ]*\r?\n[ ]*\[<CommonParameters>\]', ' [<CommonParameters>]'
+    # Remove any remaining ' [-ProgressAction <ActionPreference>]' from the SYNTAX code-blocks
+    $updated = $updated -replace '[ ]*(\r?\n[ ]*)?\[-ProgressAction <ActionPreference>\]', ''
     # Remove the dedicated '### -ProgressAction' section up to the next '### ' heading
     $updated = $updated -replace '(?ms)^### -ProgressAction\r?\n.*?(?=^### )', ''
-    # Remove ' [<CommonParameters>]' from the SYNTAX code-blocks
-    $updated = $updated -replace '[ ]*(\r?\n[ ]*)?\[<CommonParameters>\]', ''
+    # Re-wrap '[<CommonParameters>]' onto its own line where the SYNTAX line is too long
+    $updated = Format-SyntaxCommonParameters -Content $updated
     # Fix mismatched code fences inside the EXAMPLES section
     $updated = Repair-ExampleFences -Content $updated
     if ($updated -ne $content) {
