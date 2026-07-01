@@ -73,12 +73,7 @@ jobs:
           draft: false
           # Should always be reviewed by author to fix typos or other errors
           reviewers: ${{ github.actor }}
-          # Set user triggering the workflow as author (default in action)
-          #author: ${{ github.actor }} <${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com>
-          # Github Action as commit (explicit default)
-          committer: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
           commit-message: "Update generated docs to ${{ env.PESTER }}"
-          sign-commits: true
           add-paths: |
             docs
             versioned_docs
@@ -87,7 +82,7 @@ jobs:
             Updates generated documentation using the specified Pester-version.
 
             **Docs version:** ${{ env.DOCS }}
-            **Pester version:** ${{ env.PESTER }}d email address in the format `Display Name <email@address.com>`. Defaults to the user who triggered the workflow run.
+            **Pester version:** ${{ env.PESTER }}
 
             | Documentation updated | Result |
             |-----------------------|--------|
