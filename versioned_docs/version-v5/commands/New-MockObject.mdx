@@ -50,6 +50,10 @@ An .NET assembly for the particular type must be available in the system and loa
 $obj = New-MockObject -Type 'System.Diagnostics.Process'
 $obj.GetType().FullName
     System.Diagnostics.Process
+
+$obj = New-MockObject -Type ([System.Diagnostics.Process])
+$obj.GetType().FullName
+    System.Diagnostics.Process
 ```
 
 Creates a mock of a process-object with default property-values.
@@ -82,6 +86,18 @@ Call Arguments
 Create a mock of a process-object and mocks the object's `Kill()`-method.
 The mocked method will keep a history
 of any call and the associated arguments in a property named `_Kill`
+
+### EXAMPLE 4
+
+```powershell
+$someObj = Get-ObjectFromModule
+$mock = New-MockObject -Type $someObj.GetType()
+$mock.GetType().FullName
+    <c2510c5c>.MyInternalClass
+```
+
+Create a mock by providing a TypeInfo, e.g.
+to mock output using an internal module class.
 
 ## PARAMETERS
 
@@ -123,7 +139,7 @@ Accept wildcard characters: False
 
 ### -Properties
 
-Properties to define, specified as a hashtable, in format `@{ PropertyName = value }`.
+Properties to define, specified as a hashtable, in format `@\{ PropertyName = value \}`.
 
 ```yaml
 Type: Hashtable
@@ -139,7 +155,7 @@ Accept wildcard characters: False
 
 ### -Methods
 
-Methods to define, specified as a hashtable, in format `@{ MethodName = scriptBlock }`.
+Methods to define, specified as a hashtable, in format `@\{ MethodName = scriptBlock \}`.
 
 ScriptBlock can define param block, and it will receive arguments that were provided to the function call based on order.
 
@@ -194,4 +210,4 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 5.7.1](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 5.8.0](https://github.com/pester/pester).*
