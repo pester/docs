@@ -219,15 +219,7 @@ The good news is that **the result object has the exact same shape** as a sequen
 This is the most important difference. Because files overlap in time, summing their durations would overstate how long the run actually took. So in a parallel run:
 
 - **`Run.Duration` is the wall-clock elapsed time** of the whole run (`Now - ExecutedAt`), not the sum of the container durations.
-- **`Run.UserDuration`, `Run.FrameworkDuration` and `Run.DiscoveryDuration` are still the cumulative work** summed across all workers.
-
-As a result, the per-phase totals can **exceed** `Run.Duration` - that is expected, because several files were doing work at the same time. The `Duration = Discovery + User + Framework` identity that holds for a sequential run **does not hold** for a parallel `Run`. Per-container and per-test durations are unaffected: each reflects that worker's own time.
-
-```powershell
-# Parallel: UserDuration can be larger than the wall-clock Duration
-$result.Duration       # e.g. 00:00:04  (wall clock)
-$result.UserDuration   # e.g. 00:00:11  (work across all workers)
-```
+- **`Run.UserDuration`, `Run.FrameworkDuration` and `Run.DiscoveryDuration` are set to zero. Phase durations are still available per container, block and test.
 
 ### Container order is preserved, not finish order
 
