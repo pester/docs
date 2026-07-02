@@ -21,7 +21,7 @@ on:
 jobs:
   generate_docs:
     name: Docs PR
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     env:
       PESTER: ${{ github.event.inputs.pester_version }}
       DOCS: ${{ github.event.inputs.docs_version }}
@@ -35,7 +35,7 @@ jobs:
           echo "${{ env.PESTER }}" | grep -P '^\d+.\d+.\d+(?:-\w+)?$'
 
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       # Pester 6 ships a .NET 8 assembly and requires PowerShell 7.4+, so we use the
       # runner's default PowerShell. The spurious ProgressAction parameter that PlatyPS
@@ -62,7 +62,7 @@ jobs:
           $updated = $null -ne (git status -s | Select-String '/usage/Configuration.mdx')
           "updated=$updated" >> $env:GITHUB_OUTPUT
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@6d6857d36972b65feb161a90e484f2984215f83e # v6.0.5
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
         id: create-pr
         env:
           PR_BRANCH: "docs-update/${{ env.DOCS }}-v${{ env.PESTER }}"
@@ -73,10 +73,6 @@ jobs:
           draft: false
           # Should always be reviewed by author to fix typos or other errors
           reviewers: ${{ github.actor }}
-          # Set user triggering the workflow as author (default in action)
-          author: ${{ github.actor }} <${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com>
-          # Github Action as commit (explicit default)
-          committer: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
           commit-message: "Update generated docs to ${{ env.PESTER }}"
           add-paths: |
             docs
