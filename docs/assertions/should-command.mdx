@@ -1,6 +1,6 @@
 ---
 id: should-command
-title: Should
+title: "Should-* assertions (v6)"
 description: The Should-* assertions introduced in Pester v6, how they render output, the input-shape hints, and the classic Should -Be syntax.
 ---
 
@@ -10,11 +10,11 @@ Pester includes a comprehensive set of assertions that you can use to either fai
 In fact, Pester v6 includes two sets of assertions:
 
 - The new `Should-*` assertions introduced in Pester v6 (note the hyphen, no space), e.g. `Should-Be`, `Should-BeString`, `Should-BeTrue`. **These are the recommended way to assert in v6** and are the focus of this page.
-- The classic `Should` command known from previous versions of Pester, invoked using parameter sets like `Should -Be`, `Should -BeTrue`. This is the older syntax and is documented separately in the [Assertion Reference (v4/v5)](./assertions.mdx).
+- The classic `Should` command known from previous versions of Pester, invoked using parameter sets like `Should -Be`, `Should -BeTrue`. This is the older syntax and is documented separately in the [Classic assertions (v5)](./assertions.mdx).
 
 Both styles are supported side-by-side in Pester v6, so you can migrate one test at a time. We recommend you try out and move to the newer `Should-*` assertions.
 
-## `Should-*` assertions (v6)
+## The `Should-*` assertions
 
 Pester v6 comes with a new set of `Should-*` assertions that have been built from the ground up.
 If you've previously tested the [`Assert`](https://github.com/nohwnd/assert)-module, these will be familiar.
@@ -508,9 +508,9 @@ With `Should.DisableV5` enabled, using the classic `Should -Be` syntax throws, p
 Pester Should -Be syntax is disabled. Use Should-Be (without space), or enable it by setting: $PesterPreference.Should.DisableV5 = $false
 ```
 
-## `Should` (v4/v5)
+## `Should` (v5)
 
-`Should` is the classic assertion syntax from Pester v4 and v5. It is still fully supported in v6 and uses parameter sets like `Should -Be`, `Should -Match`, or `Should -Throw`:
+`Should` is the classic assertion syntax from Pester v5. It is still fully supported in v6 and uses parameter sets like `Should -Be`, `Should -Match`, or `Should -Throw`:
 
 ```powershell
 "Pester is bad." | Should -Be "Pester is awesome!"
@@ -528,7 +528,7 @@ But was:  'Pester is bad.'
            ----------^
 ```
 
-This is the older style. The full list of operators (`-Be`, `-BeExactly`, `-BeGreaterThan`, `-Match`, `-Throw`, `-HaveParameter`, and the rest) lives on the dedicated [Assertion Reference (v4/v5)](./assertions.mdx) page. For new tests, prefer the [`Should-*` assertions](#should--assertions-v6) above.
+This is the older style. The full list of operators (`-Be`, `-BeExactly`, `-BeGreaterThan`, `-Match`, `-Throw`, `-HaveParameter`, and the rest) lives on the dedicated [Classic assertions (v5)](./assertions.mdx) page. For new tests, prefer the [`Should-*` assertions](#the-should--assertions) above.
 
 ### Collect all Should failures
 
