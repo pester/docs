@@ -203,7 +203,8 @@ Should [[-ActualValue] <Object>] [-Not] [-Because <Object>]
 ```powershell
 Should [[-ActualValue] <Object>] [-Not] [-Because <Object>] [-Invoke]
  [-CommandName <Object>] [-Times <Object>] [-ParameterFilter <Object>] [-ExclusiveFilter <Object>]
- [-ModuleName <Object>] [-Scope <Object>] [-Exactly] [-CallerSessionState <Object>] [<CommonParameters>]
+ [-ModuleName <Object>] [-Scope <Object>] [-Exactly] [-CallerSessionState <Object>]
+ [-CommandDisplayName <Object>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -558,6 +559,23 @@ Accept wildcard characters: False
 ```
 
 ### -CallerSessionState
+
+Depends on operator being used.
+See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
+
+```yaml
+Type: Object
+Parameter Sets: Invoke
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -CommandDisplayName
 
 Depends on operator being used.
 See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
@@ -1203,4 +1221,4 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 6.0.0-rc2](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.0.0-rc5](https://github.com/pester/pester).*
