@@ -1,0 +1,122 @@
+---
+title: Soft assertions
+description: Soft assertions let Pester collect every assertion failure in a test instead of stopping at the first one. Enable them globally with Should.ErrorAction = 'Continue'.
+---
+
+## What are soft assertions?
+
+By default a Pester assertion is a **hard assertion**: the first time it fails it throws, the test stops immediately, and any assertions that come after it never run. If a test contains several checks you only ever see the first failure, fix it, run again, see the next one, and so on.
+
+**Soft assertions** change that behavior. When soft assertions are enabled, a failing assertion is *recorded* but does **not** stop the test. Pester keeps going, runs the remaining assertions, and then reports **all** of the collected failures together at the end of the test. This lets you put several related checks in a single `It` and learn everything that is wrong in one run.
+
+Soft assertions are controlled by the `Should.ErrorAction` configuration option:
+
+- `Should.ErrorAction = 'Stop'` (the default) — hard assertions. The test fails on the first assertion error.
+- `Should.ErrorAction = 'Continue'` — soft assertions. Failures are collected and reported at the end of the test.
+
+This single setting is honoured by **both** assertion styles in Pester v6: the classic `Should -Be` syntax and the new [`Should-*` assertions](./should-command). You do not have to opt in per assertion — turn it on once and every assertion in the run becomes soft.
+
+## Enable soft assertions for every assertion
+
+Soft assertions are enabled globally through the [configuration object](../usage/configuration). Set `Should.ErrorAction` to `'Continue'` and every assertion in the run is collected instead of throwing on the first failure.
+
+```powershell
+$config = New-PesterConfiguration
+$config.Should.ErrorAction = 'Continue'
+
+Invoke-Pester -Configuration $config
+```
+
+You can achieve the same when running interactively (for example with `F5` in VS Code) by setting `$PesterPreference`. This is also handy in a PowerShell profile to make soft assertions the default for your session:
+
+```powershell
+$PesterPreference = New-PesterConfiguration
+$PesterPreference.Should.ErrorAction = 'Continue'
+```
+
+:::note
+`Should.ErrorAction` defaults to `'Stop'`, so assertions are hard unless you opt in to `'Continue'`. See [`Should.ErrorAction`](../usage/configuration) in the configuration reference.
+:::
+
+### Example
+
+With soft assertions enabled you can validate several properties of an object in a single `It` and still get the full picture when more than one check fails:
+
+```powershell
+BeforeAll {
+    function Get-User {
+        @{
+            Name = "Jakub"
+            Age  = 31
+        }
+    }
+}
+
+Describe "Get-User" {
+    It "returns the expected user" {
+        $user = Get-User
+
+        $user      | Should -Not -BeNullOrEmpty -ErrorAction Stop
+        $user.Name | Should -Be "Tomas"
+        $user.Age  | Should -Be 27
+    }
+}
+```
+
+Both the `Name` and the `Age` assertions fail, and both are reported at the end of the test:
+
+```
+Running tests from 1 files.
+
+Running tests from 'C:\t\describe.Tests.ps1'
+Describing Get-User
+  [-] returns the expected user 124ms
+   [0] Expected strings to be the same, but they were different.
+   String lengths are both 5.
+   Strings differ at index 0.
+   Expected: 'Tomas'
+   But was:  'Jakub'
+              ^
+   at $user.Name | Should -Be "Tomas", C:\t\describe.Tests.ps1:15
+   [1] Expected 27, but got 31.
+   at $user.Age | Should -Be 27, C:\t\describe.Tests.ps1:16
+Tests completed in 286ms
+Tests Passed: 0, Failed: 1, Skipped: 0, Inconclusive: 0, NotRun: 0
+```
+
+The same works with the new `Should-*` assertions, because they honour `Should.ErrorAction` too:
+
+```powershell
+Describe "Get-User" {
+    It "returns the expected user" {
+        $user = Get-User
+
+        $user      | Should-NotBeNull -ErrorAction Stop
+        $user.Name | Should-Be "Tomas"
+        $user.Age  | Should-Be 27
+    }
+}
+```
+
+## Override the behavior on a single assertion
+
+`Should.ErrorAction` sets the default for the whole run, but you can override it on any individual assertion with the `-ErrorAction` parameter. This works for both `Should -Be` and `Should-*` assertions.
+
+- `-ErrorAction Stop` — make a single assertion hard even when soft assertions are enabled globally. Use it to guard a **precondition**: if that check fails, there is no point continuing, so fail the test immediately. In the example above, `Should -Not -BeNullOrEmpty -ErrorAction Stop` stops the test when `$user` is `$null`, because inspecting `.Name` and `.Age` on a null object would be meaningless.
+
+  ```powershell
+  # Soft assertions are on globally, but this precondition hard-fails the test.
+  $user | Should -Not -BeNullOrEmpty -ErrorAction Stop
+  ```
+
+- `-ErrorAction Continue` — make a single assertion soft even when the run defaults to hard assertions (`Should.ErrorAction = 'Stop'`). The failure is collected and the test keeps going.
+
+  ```powershell
+  # Default run (hard assertions), but collect this failure instead of stopping.
+  $user.Name | Should -Be "Tomas" -ErrorAction Continue
+  ```
+
+## Related
+
+- [`Should` assertions](./should-command) — the classic `Should -Be` and new `Should-*` syntaxes that soft assertions apply to.
+- [Configuration — `Should.ErrorAction`](../usage/configuration) — the full configuration reference.
