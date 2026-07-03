@@ -133,7 +133,7 @@ Type `Pester.Block`. Represents a `Describe` or `Context`. Blocks can nest, so a
 | Tests | `Test[]` | Tests directly inside this block. |
 | ErrorRecord | `object[]` | Errors from this block's setup/teardown (`BeforeAll`/`AfterAll`, etc.). |
 | Tag | `string[]` | Tags applied to the block. |
-| Skip / Focus | `bool` | Whether the block was skipped or focused. |
+| Skip | `bool` | Whether the block was skipped. |
 | TotalCount / PassedCount / FailedCount / SkippedCount / InconclusiveCount / NotRunCount | `int` | Counts for all tests under this block (including nested). |
 | Own&#42;Count | `int` | The same counts but only for tests directly in this block, excluding nested blocks. |
 | Duration / UserDuration / FrameworkDuration / DiscoveryDuration | `TimeSpan` | Timings for the block. |
@@ -158,7 +158,7 @@ Type `Pester.Test`. Represents a single `It`.
 | Data | `object` | The `-ForEach`/`-TestCases` data item bound to this test. |
 | Duration / UserDuration / FrameworkDuration | `TimeSpan` | Timings for the test. |
 | Tag | `string[]` | Tags applied to the test. |
-| Skip / Focus | `bool` | Whether the test was skipped or focused. |
+| Skip | `bool` | Whether the test was skipped. |
 | ShouldRun / Executed | `bool` | Whether the test was selected, and whether it actually ran. |
 | ExecutedAt | `DateTime?` | When the test ran (`$null` if it did not run). |
 | StartLine | `int` | Line where the test is declared. |
