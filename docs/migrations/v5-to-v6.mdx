@@ -274,6 +274,14 @@ $config.CodeCoverage.Path = './src'
 Invoke-Pester -Configuration $config
 ```
 
+### `None` is now a reserved tag-filter value
+
+`None` (case-insensitive) is now a special value for `-TagFilter` / `Filter.Tag` and `-ExcludeTagFilter` / `Filter.ExcludeTag` that means "tests that have no tags" — no tag on the test itself or on any of its parent blocks. Previously `None` was an ordinary string that only matched a literal tag named `None`.
+
+**Symptom.** If you used `None` as a real tag, `-TagFilter "None"` now also selects every untagged test, and `-ExcludeTagFilter "None"` now also skips every untagged test, instead of matching only the tests you tagged `None`.
+
+**Fix.** Rename the tag to something other than `None` if you relied on the old literal match. A test that is still literally tagged `None` keeps being selected — or, with the exclude filter, skipped — together with the untagged tests, so nothing falls through silently. See [Tags](../usage/tags#run-tests-that-have-no-tags).
+
 ## New in v6 (optional)
 
 None of these are required to upgrade — your v5 suite keeps working without them. They are the main things v6 adds that you may want to adopt once your suite is green.

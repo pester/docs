@@ -88,3 +88,32 @@ Describing Get-Beer
 Tests completed in 269ms
 Tests Passed: 1, Failed: 0, Skipped: 0, Inconclusive: 0, NotRun: 6
 ```
+
+#### Run tests that have no tags
+
+Use the reserved tag `None` to select the tests that have **no tags at all**. `-TagFilter "None"` runs only the tests that have no tag on themselves or on any of their parent blocks, and `-ExcludeTagFilter "None"` does the opposite and skips them, so you run only the tagged tests. `None` is matched case-insensitively.
+
+Because tags are inherited, a test without its own tag that sits inside a tagged `Describe` or `Context` counts as tagged and is **not** selected by `None`. In the suite above, `acceptance test 2` has no tag of its own, but it lives in a `Context` tagged `Acceptance`, so `-TagFilter "None"` skips it and runs only the genuinely untagged `unit test 1`:
+
+```powershell
+Invoke-Pester $path -TagFilter "None" | Out-Null
+```
+```
+# Output level: Detailed
+Running tests from 1 files.
+Filter 'Tag' set to ('None').
+Filters selected 1 tests to run.
+
+Running tests from '...\real-life-tagging-scenarios.tests.ps1'
+Describing Get-Beer
+ Context unit tests
+   [+] unit test 1 15ms
+Tests completed in 269ms
+Tests Passed: 1, Failed: 0, Skipped: 0, Inconclusive: 0, NotRun: 6
+```
+
+You can combine `None` with real tags, for example `-TagFilter "None", "Acceptance"` runs the untagged tests **and** the acceptance tests.
+
+:::note Reserved since Pester 6
+`None` is a reserved filter value starting in Pester 6. If you use `None` as a real tag, filtering by it now also selects &mdash; or, with `-ExcludeTagFilter`, skips &mdash; every untagged test. A test that is literally tagged `None` is still matched by the filter, so it is included (or excluded) together with the untagged tests.
+:::
