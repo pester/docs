@@ -6,8 +6,10 @@ description: Introduction to the built-in assertion operators in Pester to get y
 
 `Should` is a command that provides assertion convenience methods for comparing objects and throwing test failures when test expectations fail. `Should` is used inside `It` blocks of a Pester test script.
 
+This page is the reference for the **classic** `Should -Be` operators — the assertion style from Pester v4 and v5. They still ship and work in Pester v6, but for new tests we recommend the newer, type-aware [`Should-*` assertions](./should-command).
+
 :::tip New in Pester v6
-This page documents the classic `Should -Be` assertions, which still ship and work in Pester v6. Pester v6 also adds a set of specialized, type-aware [`Should-*` assertions](./should-command) (note the hyphen, no space) with clearer failure messages. Both styles work side by side, so you can adopt `Should-*` when it suits you and optionally turn off the classic syntax by setting `Should.DisableV5 = $true`.
+Pester v6 adds a set of specialized [`Should-*` assertions](./should-command) (note the hyphen, no space) with clearer failure messages, input-shape hints, and a dedicated [`Should-BeEquivalent`](./should-beequivalent) for deep object comparison. Both styles work side by side, so you can adopt `Should-*` when it suits you and optionally turn off the classic syntax by setting `Should.DisableV5 = $true`.
 :::
 
 ## Common parameters

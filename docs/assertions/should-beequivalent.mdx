@@ -1,0 +1,304 @@
+---
+id: should-beequivalent
+title: Should-BeEquivalent
+description: Recursively compare objects, hashtables, PSCustomObjects, nested structures, and collections by value with Should-BeEquivalent, including -ExcludePath, -ExcludePathsNotOnExpected and -Comparator.
+---
+
+## Overview
+
+[`Should-BeEquivalent`](../commands/Should-BeEquivalent.mdx) recursively compares two objects — or collections of objects — **by value**. It walks every property, descends into nested objects and collections, and reports each place the two structures differ. It is the assertion to reach for when [`Should-Be`](../commands/Should-Be.mdx) (a single scalar) and [`Should-BeCollection`](../commands/Should-BeCollection.mdx) (a flat collection) are not enough.
+
+Key behaviors:
+
+- **Deep** — nested objects, hashtables, and collections are compared recursively, and the failure message tells you the exact path (`.Property`, `.Nested.City`) that differs.
+- **By value, not by reference** — two different objects with the same contents are equivalent.
+- **Order-insensitive for collections** — `@(1, 2, 3)` is equivalent to `@(3, 2, 1)`.
+
+When the two structures are not equivalent, the assertion throws a message with four parts: an `Expected:` dump, an `Actual:` dump, a `Summary:` that lists every difference by path, and — when you pass options — a `Used options:` footer.
+
+## Comparing hashtables
+
+```powershell
+@{ Name = 'Jakub'; Age = 31 } | Should-BeEquivalent @{ Name = 'Tomas'; Age = 31 }
+```
+
+```
+Expected and actual are not equivalent!
+Expected:
+@{Age=31; Name='Tomas'}
+
+Actual:
+@{Age=31; Name='Jakub'}
+
+Summary:
+Expected hashtable @{Age=31; Name='Tomas'}, but got @{Age=31; Name='Jakub'}.
+Expected property .Name with value 'Tomas' to be equivalent to the actual value, but got 'Jakub'.
+```
+
+The `Age` values match, so only `.Name` shows up in the summary. Key order does not matter — a hashtable with the same keys and values in a different order is equivalent:
+
+```powershell
+@{ Name = 'Jakub'; Age = 31 } | Should-BeEquivalent @{ Age = 31; Name = 'Jakub' }
+```
+
+This passes.
+
+## Comparing PSCustomObjects
+
+Objects are compared property by property, exactly like hashtables. The dump uses `PSObject{ ... }` so you can see the shape:
+
+```powershell
+$expected = [PSCustomObject]@{ Name = 'Tomas'; Age = 31 }
+[PSCustomObject]@{ Name = 'Jakub'; Age = 31 } | Should-BeEquivalent $expected
+```
+
+```
+Expected and actual are not equivalent!
+Expected:
+PSObject{
+    Age=31;
+    Name='Tomas';
+}
+
+Actual:
+PSObject{
+    Age=31;
+    Name='Jakub';
+}
+
+Summary:
+Expected property .Name with value 'Tomas' to be equivalent to the actual value, but got 'Jakub'.
+```
+
+### Nested objects
+
+Equivalency descends into nested objects, and the summary path grows to point at the exact leaf that differs — here `.Nested.City`:
+
+```powershell
+$expected = [PSCustomObject]@{ Name = 'Jakub'; Nested = [PSCustomObject]@{ City = 'Brno' } }
+$actual   = [PSCustomObject]@{ Name = 'Jakub'; Nested = [PSCustomObject]@{ City = 'Praha' } }
+
+$actual | Should-BeEquivalent $expected
+```
+
+```
+Expected and actual are not equivalent!
+Expected:
+PSObject{
+    Name='Jakub';
+    Nested=PSObject{
+        City='Brno';
+    };
+}
+
+Actual:
+PSObject{
+    Name='Jakub';
+    Nested=PSObject{
+        City='Praha';
+    };
+}
+
+Summary:
+Expected property .Nested.City with value 'Brno' to be equivalent to the actual value, but got 'Praha'.
+```
+
+When every nested value matches, the assertion passes:
+
+```powershell
+$expected = [PSCustomObject]@{ Name = 'Jakub'; Nested = [PSCustomObject]@{ City = 'Brno' } }
+$actual   = [PSCustomObject]@{ Name = 'Jakub'; Nested = [PSCustomObject]@{ City = 'Brno' } }
+
+$actual | Should-BeEquivalent $expected
+```
+
+## Comparing collections
+
+Collections are compared by value and are **order-insensitive**. A missing value is listed in the summary:
+
+```powershell
+1, 2, 3 | Should-BeEquivalent @(1, 2, 4)
+```
+
+```
+Expected and actual are not equivalent!
+Expected:
+@(1, 2, 4)
+
+Actual:
+@(1, 2, 3)
+
+Summary:
+Expected collection @(1, 2, 4) to be equivalent to @(1, 2, 3) but some values were missing: @(4).
+```
+
+Because order does not matter, the same values in a different order are equivalent:
+
+```powershell
+1, 2, 3 | Should-BeEquivalent @(3, 2, 1)
+```
+
+This passes.
+
+## Ignoring properties with `-ExcludePath`
+
+Real objects often carry volatile fields — a database `Id`, a `Timestamp`, a run-specific GUID — that you do not want to compare. Pass their paths to `-ExcludePath` (dot notation, e.g. `Nested.City`) to drop them from the comparison.
+
+Without the exclusion the volatile fields fail the comparison:
+
+```powershell
+$expected = [PSCustomObject]@{ Name = 'Jakub'; Id = 1; Timestamp = [datetime]'2024-01-01' }
+$actual   = [PSCustomObject]@{ Name = 'Jakub'; Id = 2; Timestamp = [datetime]'2025-06-30' }
+
+$actual | Should-BeEquivalent $expected
+```
+
+```
+Expected and actual are not equivalent!
+Expected:
+PSObject{
+    Id=1;
+    Name='Jakub';
+    Timestamp=01/01/2024 00:00:00;
+}
+
+Actual:
+PSObject{
+    Id=2;
+    Name='Jakub';
+    Timestamp=06/30/2025 00:00:00;
+}
+
+Summary:
+Expected property .Id with value 1 to be equivalent to the actual value, but got 2.
+Expected property .Timestamp with value 01/01/2024 00:00:00 to be equivalent to the actual value, but got 06/30/2025 00:00:00.
+```
+
+Exclude `Id` and `Timestamp` and the comparison passes, because only `Name` is left to compare:
+
+```powershell
+$actual | Should-BeEquivalent $expected -ExcludePath 'Id', 'Timestamp'
+```
+
+When excluding paths still leaves a real difference, the assertion fails and echoes the options it used in a `Used options:` footer, so it is clear what was and was not compared:
+
+```powershell
+$expected = [PSCustomObject]@{ Name = 'Tomas'; Id = 1 }
+$actual   = [PSCustomObject]@{ Name = 'Jakub'; Id = 2 }
+
+$actual | Should-BeEquivalent $expected -ExcludePath 'Id'
+```
+
+```
+Expected and actual are not equivalent!
+Expected:
+PSObject{
+    Id=1;
+    Name='Tomas';
+}
+
+Actual:
+PSObject{
+    Id=2;
+    Name='Jakub';
+}
+
+Summary:
+Expected property .Name with value 'Tomas' to be equivalent to the actual value, but got 'Jakub'.
+
+Used options:
+Exclude path 'Id'.
+```
+
+## Comparing a subset with `-ExcludePathsNotOnExpected`
+
+By default every property on **both** sides must match — an extra property on the actual object is a difference:
+
+```powershell
+$expected = [PSCustomObject]@{ Name = 'Jakub' }
+$actual   = [PSCustomObject]@{ Name = 'Jakub'; Age = 31; Email = 'jakub@example.com' }
+
+$actual | Should-BeEquivalent $expected
+```
+
+```
+Expected and actual are not equivalent!
+Expected:
+PSObject{
+    Name='Jakub';
+}
+
+Actual:
+PSObject{
+    Age=31;
+    Email='jakub@example.com';
+    Name='Jakub';
+}
+
+Summary:
+Expected is missing property 'Age' that the actual object has.
+Expected is missing property 'Email' that the actual object has.
+```
+
+Add `-ExcludePathsNotOnExpected` to compare **only** the properties present on `Expected` and ignore any extras on `Actual`. This is ideal for asserting that an object contains an expected subset:
+
+```powershell
+$actual | Should-BeEquivalent $expected -ExcludePathsNotOnExpected
+```
+
+This passes, because `Name` — the only property on `Expected` — matches.
+
+## Choosing the comparison strategy with `-Comparator`
+
+`-Comparator` controls how **leaf values** are compared. It does not change how objects, hashtables, or collections are walked — those are always recursive.
+
+- `Equivalency` (the default) — a lenient, value-based comparison. Among other things, scriptblocks are compared by their **text**, and the string `'False'` is treated as equivalent to the boolean `$false`.
+- `Equality` — a strict comparison of the leaf values.
+
+The difference is visible with a scriptblock property. Under the default `Equivalency`, two scriptblocks with the same body are equivalent:
+
+```powershell
+$expected = [PSCustomObject]@{ Name = 'Jakub'; Action = { Get-Process } }
+$actual   = [PSCustomObject]@{ Name = 'Jakub'; Action = { Get-Process } }
+
+$actual | Should-BeEquivalent $expected
+```
+
+This passes. With `-Comparator Equality` the two scriptblocks are compared strictly (by reference) and the assertion fails — notice the summary now says "to be **equal**" instead of "to be **equivalent**":
+
+```powershell
+$actual | Should-BeEquivalent $expected -Comparator Equality
+```
+
+```
+Expected and actual are not equivalent!
+Expected:
+PSObject{
+    Action={ Get-Process };
+    Name='Jakub';
+}
+
+Actual:
+PSObject{
+    Action={ Get-Process };
+    Name='Jakub';
+}
+
+Summary:
+Expected property .Action with value { Get-Process } to be equal to the actual value, but got { Get-Process }.
+```
+
+## When to prefer `Should-BeEquivalent`
+
+:::tip
+Reach for `Should-BeEquivalent` instead of [`Should-Be`](../commands/Should-Be.mdx) or [`Should-BeCollection`](../commands/Should-BeCollection.mdx) when:
+
+- you are comparing whole objects, hashtables, or `PSCustomObject`s rather than a single scalar,
+- the data is **nested** and you want a precise `.Path.To.Property` in the failure message,
+- collection **order** should not matter,
+- you want to ignore volatile fields with `-ExcludePath`, or assert on a subset with `-ExcludePathsNotOnExpected`.
+
+Use `Should-Be` for a single scalar value, and `Should-BeCollection` when you need an ordered, size-and-item comparison of a flat collection.
+:::
+
+See the [`Should-BeEquivalent` command reference](../commands/Should-BeEquivalent.mdx) for the full parameter list.
