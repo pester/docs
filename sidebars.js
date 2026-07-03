@@ -52,6 +52,7 @@ module.exports = {
     ],
     "Assertions": [
       "assertions/should-command",
+      "assertions/should-beequivalent",
       "assertions/soft-assertions",
       "assertions/assertions",
       "assertions/custom-assertions",

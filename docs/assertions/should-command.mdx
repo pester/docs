@@ -1,17 +1,18 @@
 ---
+id: should-command
 title: Should
-description: Introduction to the Pester's built-in Should assertions which can be used to fail or pass a test
+description: The Should-* assertions introduced in Pester v6, how they render output, the input-shape hints, and the classic Should -Be syntax.
 ---
 
 ## Overview
 
 Pester includes a comprehensive set of assertions that you can use to either fail or pass a test.
-In fact, Pester v6 actually includes two sets of assertions:
+In fact, Pester v6 includes two sets of assertions:
 
-- All new `Should-*` assertions introduced in Pester v6, e.g. `Should-BeString`, `Should-BeTrue` etc.
-- The `Should` command known from previous version of Pester, invoked using parameter sets like `Should -Be`, `Should -BeTrue` etc.
+- The new `Should-*` assertions introduced in Pester v6 (note the hyphen, no space), e.g. `Should-Be`, `Should-BeString`, `Should-BeTrue`. **These are the recommended way to assert in v6** and are the focus of this page.
+- The classic `Should` command known from previous versions of Pester, invoked using parameter sets like `Should -Be`, `Should -BeTrue`. This is the older syntax and is documented separately in the [Assertion Reference (v4/v5)](./assertions.mdx).
 
-Both types of assertions are supported side-by-side in Pester v6, but we recommend you try out and migrate to the newer assertions.
+Both styles are supported side-by-side in Pester v6, so you can migrate one test at a time. We recommend you try out and move to the newer `Should-*` assertions.
 
 ## `Should-*` assertions (v6)
 
@@ -88,6 +89,10 @@ Should-Be -Actual 1 -Expected 1
 Should-Be -Actual @(1) -Expected 1
 ```
 
+:::tip
+The pipeline is convenient, but it reshapes your input. When the exact shape matters — a single-item collection, an empty collection, `$null`, or a dictionary — prefer `-Actual`, which preserves the value exactly. See [Input-shape hints](#input-shape-hints) for the failures this causes and the hints Pester prints to help.
+:::
+
 ### Value assertions
 
 #### Generic value assertions
@@ -107,6 +112,26 @@ The assertions in the above examples will both pass:
 - `1` converts to `bool`-value as `$true`, which is the expected value.
 - `Get-Process` retrieves the `Idle` process (on Windows). This process object gets converted to `string` which is equal to the expected value.
 
+When an assertion fails it throws, and the message shows the expected and the actual value:
+
+```powershell
+2 | Should-Be 1
+```
+
+```
+Expected [int] 1, but got [int] 2.
+```
+
+Use `-Because` to append the reason the test should pass; it is woven into the message:
+
+```powershell
+2 | Should-Be 1 -Because 'the config default must be 1'
+```
+
+```
+Expected [int] 1, because the config default must be 1, but got [int] 2.
+```
+
 #### Type specific value assertions
 
 Type specific assertions are for asserting on a single value of a given type like `boolean`.
@@ -114,6 +139,54 @@ These assertions take the advantage of being more specialized to provide a type 
 
 - `$Expected` accepts input that has the same type as the assertion type. E.g. `Should-BeString -Expected "my string"`.
 - `$Actual` accepts input that has the same type as the assertion type. The input is **not** converted to the destination type unless the assertion specifies it, e.g. `Should-BeFalsy` will convert to `bool`.
+
+For example, [`Should-BeTrue`](../commands/Should-BeTrue.mdx) asserts on a boolean:
+
+```powershell
+$true | Should-BeTrue   # passes
+$false | Should-BeTrue  # fails
+```
+
+```
+Expected [bool] $true, but got: [bool] $false.
+```
+
+[`Should-BeString`](../commands/Should-BeString.mdx) compares strings and points at the first character that differs:
+
+```powershell
+'Jakub' | Should-BeString 'Tomas'
+```
+
+```
+Expected strings to be the same, but they were different.
+String lengths are both 5.
+Strings differ at index 0.
+Expected: 'Tomas'
+But was:  'Jakub'
+          ^
+```
+
+[`Should-HaveType`](../commands/Should-HaveType.mdx) asserts on the type of a value:
+
+```powershell
+'hello' | Should-HaveType ([string])   # passes
+1 | Should-HaveType ([string])         # fails
+```
+
+```
+Expected value to have type [string], but got [int] 1.
+```
+
+[`Should-BeGreaterThan`](../commands/Should-BeGreaterThan.mdx) is a comparison assertion and reports the actual value that failed the comparison:
+
+```powershell
+10 | Should-BeGreaterThan 5   # passes
+1 | Should-BeGreaterThan 5    # fails
+```
+
+```
+Expected the actual value to be greater than [int] 5, but it was not. Actual: [int] 1
+```
 
 ### Collection assertions
 
@@ -127,8 +200,14 @@ Collection assertions operate on the whole collection provided to `$Actual` inst
 1, 2, 3 | Should-BeCollection @(1, 2, 3)
 @(1)    | Should-BeCollection @(1)
 
-# This fails, the collections have different sizes.
-1, 2, 3, 4 | Should-BeCollection @(1, 2, 3)
+# This fails, one item differs.
+1, 2, 3 | Should-BeCollection @(1, 2, 4)
+```
+
+```
+Expected [Object[]] @(1, 2, 4) to be present in [Object[]] @(1, 2, 3) in any order, but some values were not.
+Missing in actual: '4 (index 2)'
+Extra in actual: '3 (index 2)'
 ```
 
 You can also assert on the size of a collection without comparing items, by using `-Count`:
@@ -151,16 +230,191 @@ Combinator assertions take a `-FilterScript` and run it against every item in th
 [`Should-All`](../commands/Should-All.mdx) passes when **every** item matches the filter:
 
 ```powershell
-1, 2, 3 | Should-All { $_ -gt 0 }
+1, 2, 3 | Should-All { $_ -gt 0 }        # passes
 1, 2, 3 | Should-All { $_ | Should-BeGreaterThan 0 }
+
+1, 2, 3 | Should-All { $_ -gt 1 }        # fails
+```
+
+```
+Expected all items in collection @(1, 2, 3) to pass filter { $_ -gt 1 }, but 1 of them 1 did not pass the filter.
 ```
 
 [`Should-Any`](../commands/Should-Any.mdx) passes when **at least one** item matches the filter:
 
 ```powershell
-1, 2, 3 | Should-Any { $_ -gt 2 }
+1, 2, 3 | Should-Any { $_ -gt 2 }        # passes
 1, 2, 3 | Should-Any { $_ | Should-BeGreaterThan 2 }
+
+1, 2, 3 | Should-Any { $_ -gt 5 }        # fails
 ```
+
+```
+Expected at least one item in collection @(1, 2, 3) to pass filter { $_ -gt 5 }, but none of the items passed the filter.
+```
+
+### Deep object comparison
+
+To compare whole objects, hashtables, or nested structures **by value** — instead of a single scalar or a flat collection — use [`Should-BeEquivalent`](../commands/Should-BeEquivalent.mdx). It walks properties and nested objects recursively and is order-insensitive for collections.
+
+```powershell
+@{ Name = 'Jakub'; Age = 31 } | Should-BeEquivalent @{ Name = 'Tomas'; Age = 31 }
+```
+
+```
+Expected and actual are not equivalent!
+Expected:
+@{Age=31; Name='Tomas'}
+
+Actual:
+@{Age=31; Name='Jakub'}
+
+Summary:
+Expected hashtable @{Age=31; Name='Tomas'}, but got @{Age=31; Name='Jakub'}.
+Expected property .Name with value 'Tomas' to be equivalent to the actual value, but got 'Jakub'.
+```
+
+See the dedicated [Should-BeEquivalent](./should-beequivalent) page for a deep dive: PSCustomObjects, nested objects, collections, and the `-ExcludePath`, `-ExcludePathsNotOnExpected`, and `-Comparator` options.
+
+### Input-shape hints
+
+The `Should-*` assertions accept their input through the pipeline (`| Should-…`) or the `-Actual` parameter. The pipeline is convenient, but PowerShell **reshapes** whatever is on the left side before the assertion ever sees it:
+
+- a **one-item collection** is unwrapped to its single element,
+- a **multi-item collection** is streamed and re-collected as a fresh `[object[]]` (its original type is lost),
+- a **dictionary/hashtable** is passed through as one object and is **never** enumerated,
+- `$null` stays `$null` and an empty collection `@()` sends nothing at all.
+
+Passing the value with `-Actual` instead preserves it exactly.
+
+When an assertion **fails** and Pester detects that the input was very likely the wrong shape, it appends an extra line that starts with `Hint:` to the failure message. The hint **never** changes whether an assertion passes or fails — it only appears on a failure, to explain the gotcha and how to fix it.
+
+:::note
+Hints are best-effort diagnostics shown only on failure. A passing assertion never prints a hint, and an ordinary mismatch (for example a plain scalar that simply is not equal) does not print one either.
+:::
+
+#### Collection assertions — scalar, `$null`, or a dictionary
+
+[`Should-BeCollection`](../commands/Should-BeCollection.mdx) compares the whole input as one collection. Piping a lone scalar, `$null`, or a dictionary is almost never what you meant, so all three get a hint.
+
+A scalar:
+
+```powershell
+5 | Should-BeCollection @(1)
+```
+
+```
+Expected [Object[]] @(1) to be present in [Object[]] @(5) in any order, but some values were not.
+Missing in actual: '1 (index 0)'
+Extra in actual: '5 (index 0)'
+
+Hint: You piped a single [int] into a collection assertion. It is treated as a single item. To assert on a one-item collection wrap it as ,$actual, or use Should-Be for a scalar value.
+```
+
+`$null` (treated as a single `$null` item, not an empty collection):
+
+```powershell
+$null | Should-BeCollection @(1)
+```
+
+```
+Expected [Object[]] @(1) to be present in [Object[]] @($null) in any order, but some values were not.
+Missing in actual: '1 (index 0)'
+Extra in actual: '$null (index 0)'
+
+Hint: You piped $null into a collection assertion. It is treated as a single $null item, not an empty collection. Use @() to represent an empty collection.
+```
+
+A dictionary/hashtable (passed through as one object):
+
+```powershell
+@{ Name = 'Jakub'; Age = 31 } | Should-BeCollection @(1)
+```
+
+```
+Expected [Object[]] @(1) to be present in [Object[]] @(@{Age=31; Name='Jakub'}) in any order, but some values were not.
+Missing in actual: '1 (index 0)'
+Extra in actual: '@{Age=31; Name='Jakub'} (index 0)'
+
+Hint: You piped a single [hashtable] into a collection assertion. PowerShell treats a dictionary as a single object, not a collection. To assert on it as a hashtable use Should-BeHashtable, or compare its contents with Should-BeEquivalent.
+```
+
+The same wrong shapes get a hint through `-Actual` too, with slightly different wording because nothing was piped:
+
+```powershell
+Should-BeCollection -Actual @{ Name = 'Jakub'; Age = 31 } -Expected @(1)
+```
+
+```
+Actual [hashtable] @{Age=31; Name='Jakub'} is not a collection.
+
+Hint: -Actual is a single [hashtable], which is not a collection. PowerShell treats a dictionary as a single object, not a collection. To assert on it as a hashtable use Should-BeHashtable, or compare its contents with Should-BeEquivalent.
+```
+
+#### Item-wise collection assertions — a dictionary
+
+[`Should-All`](../commands/Should-All.mdx), [`Should-Any`](../commands/Should-Any.mdx), [`Should-ContainCollection`](../commands/Should-ContainCollection.mdx) and [`Should-NotContainCollection`](../commands/Should-NotContainCollection.mdx) iterate or search the input **item by item**. A lone scalar or `$null` is a perfectly valid one-item collection here, so they are not flagged. A dictionary is the genuine gotcha — PowerShell passes it through as a single object instead of enumerating it:
+
+```powershell
+@{ Name = 'Jakub'; Age = 31 } | Should-All { $_ -gt 0 }
+```
+
+```
+Expected all items in collection @(@{Age=31; Name='Jakub'}) to pass filter { $_ -gt 0 }, but 1 of them @{Age=31; Name='Jakub'} did not pass the filter.
+Reasons :
+Cannot compare "System.Collections.Hashtable" because it is not IComparable.
+
+Hint: You piped a single [hashtable] into a collection assertion. PowerShell treats a dictionary as a single object, so it is passed through as one item instead of being iterated. Enumerate it first, e.g. with $actual.GetEnumerator(), or its .Keys or .Values, or assert on it directly with Should-BeHashtable.
+```
+
+#### Type assertions — a piped collection
+
+[`Should-HaveType`](../commands/Should-HaveType.mdx) and [`Should-NotHaveType`](../commands/Should-NotHaveType.mdx) check a **single** value against a type. Piping a collection unwraps it, so the type you meant to check is lost before the assertion runs. A single-item collection collapses to its one element:
+
+```powershell
+[string[]]('a') | Should-HaveType ([string[]])
+```
+
+```
+Expected value to have type [string[]], but got [string] 'a'.
+
+Hint: You piped a [string[]] into a type assertion, but the pipeline unwraps a single-item collection to its one element, so the assertion saw a single [string], not the [string[]] you piped. To assert the type of a collection, pass it as the -Actual argument instead of piping it, e.g. -Actual $value.
+```
+
+A multi-item collection is streamed and re-collected as `[object[]]`:
+
+```powershell
+[string[]]('a', 'b') | Should-HaveType ([string[]])
+```
+
+```
+Expected value to have type [string[]], but got [Object[]] @('a', 'b').
+
+Hint: You piped a [string[]] into a type assertion, but the pipeline streams a multi-item collection and re-collects it as [Object[]], so the assertion saw [Object[]], not the [string[]] you piped. To assert the type of a collection, pass it as the -Actual argument instead of piping it, e.g. -Actual $value.
+```
+
+As the hint says, pass the collection with `-Actual` to keep its real type — `Should-HaveType -Actual ([string[]]('a', 'b')) -Expected ([string[]])` passes.
+
+#### Single-value assertions — a piped collection
+
+[`Should-Be`](../commands/Should-Be.mdx) and the other single-value assertions (the comparison, boolean, string, `$null`, and time assertions) inspect **one** value. Piping a collection collapses it into a single value, so the assertion silently compares the collapsed value instead of the collection:
+
+```powershell
+1, 2, 3 | Should-Be 1
+```
+
+```
+Expected [int] 1, but got [Object[]] @(1, 2, 3).
+
+Hint: You piped a [Object[]] into a single-value assertion, but the pipeline streams a multi-item collection and re-collects it into a single [Object[]], so the whole collection was inspected as one value. To assert on a collection use Should-BeCollection or Should-BeEquivalent; to assert on a single value pass it as the -Actual argument instead of piping it, e.g. -Actual $value.
+```
+
+#### Pipeline vs. `-Actual`
+
+The hints all point at the same root cause: **the pipeline reshapes your input, `-Actual` does not.**
+
+- Pipe a value when you want the convenient, unwrapped behavior and the shape does not matter.
+- Use `-Actual` (or the assertion the hint suggests — `Should-BeCollection`, `Should-BeEquivalent`, `Should-BeHashtable`) when the exact shape matters: a collection whose type you care about, a one-item collection, an empty collection, `$null`, or a dictionary.
 
 ### Assertion reference
 
@@ -208,9 +462,13 @@ All `Should-*` assertions are listed below, grouped by the kind of check they pe
 - [`Should-All`](../commands/Should-All.mdx) — Asserts that every item in the collection matches a filter.
 - [`Should-Any`](../commands/Should-Any.mdx) — Asserts that at least one item in the collection matches a filter.
 
+#### Hashtable
+
+- [`Should-BeHashtable`](../commands/Should-BeHashtable.mdx) — Compares a dictionary/hashtable against expected keys and values.
+
 #### Equivalency
 
-- [`Should-BeEquivalent`](../commands/Should-BeEquivalent.mdx) — Recursively compares two objects for equivalency, by comparing their properties.
+- [`Should-BeEquivalent`](../commands/Should-BeEquivalent.mdx) — Recursively compares two objects for equivalency, by comparing their properties. See the dedicated [Should-BeEquivalent](./should-beequivalent) page for a walkthrough with rendered output.
 
 #### DateTime and TimeSpan
 
@@ -252,9 +510,7 @@ Pester Should -Be syntax is disabled. Use Should-Be (without space), or enable i
 
 ## `Should` (v4/v5)
 
-`Should` is used to do an assertion that fails or passes the test.
-
-An example of assertion is comparing two strings in case insensitive manner:
+`Should` is the classic assertion syntax from Pester v4 and v5. It is still fully supported in v6 and uses parameter sets like `Should -Be`, `Should -Match`, or `Should -Throw`:
 
 ```powershell
 "Pester is bad." | Should -Be "Pester is awesome!"
@@ -272,8 +528,7 @@ But was:  'Pester is bad.'
            ----------^
 ```
 
-Other assertion types can be found in [Assertion Reference](.).
-
+This is the older style. The full list of operators (`-Be`, `-BeExactly`, `-BeGreaterThan`, `-Match`, `-Throw`, `-HaveParameter`, and the rest) lives on the dedicated [Assertion Reference (v4/v5)](./assertions.mdx) page. For new tests, prefer the [`Should-*` assertions](#should--assertions-v6) above.
 
 ### Collect all Should failures
 
