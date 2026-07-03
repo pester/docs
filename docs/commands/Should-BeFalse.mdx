@@ -101,6 +101,12 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 The `Should-BeFalse` assertion is the opposite of the `Should-BeTrue` assertion.
 
+Use the `-ErrorAction` parameter to control soft-assertion behavior for this assertion.
+`-ErrorAction Continue` records the failure and lets the rest of the test run (a soft assertion), while `-ErrorAction Stop` fails the test immediately, for example to guard a precondition before continuing.
+
+When `-ErrorAction` is not specified, the behavior comes from `Should.ErrorAction` in the configuration, which defaults to `Stop`.
+See https://pester.dev/docs/assertions/soft-assertions for more about soft assertions.
+
 ## RELATED LINKS
 
 [https://pester.dev/docs/commands/Should-BeFalse](https://pester.dev/docs/commands/Should-BeFalse)
@@ -109,4 +115,4 @@ The `Should-BeFalse` assertion is the opposite of the `Should-BeTrue` assertion.
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 6.0.0-rc2](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.0.0-rc5](https://github.com/pester/pester).*

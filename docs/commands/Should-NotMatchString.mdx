@@ -37,18 +37,28 @@ The `-notmatch` operator is case-insensitive by default, but you can make it cas
 ### EXAMPLE 1
 
 ```powershell
-"hello" | Should-NotMatchString "^world$"
+'Hello Jakub, your order #4821 shipped.' | Should-NotMatchString '\{\{.*?\}\}'
 ```
 
-This assertion will pass, because the actual value does not match the regular expression pattern.
+This assertion passes, because the rendered text contains no leftover `\{\{ ...
+\}\}` template placeholders.
+This is a common check after expanding a template to make sure every token was replaced.
 
 ### EXAMPLE 2
 
 ```powershell
-"hello" | Should-NotMatchString "h.*o" -CaseSensitive
+'level=info msg="started"' | Should-NotMatchString 'password='
 ```
 
-This assertion will fail, because the actual value case-sensitively matches the regular expression pattern.
+This assertion passes, because the log line does not leak a `password=` value.
+
+### EXAMPLE 3
+
+```powershell
+'Build failed' | Should-NotMatchString 'failed' -CaseSensitive
+```
+
+This assertion fails, because the actual value case-sensitively contains `failed`.
 
 ## PARAMETERS
 
@@ -126,6 +136,12 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## NOTES
 
+Use the `-ErrorAction` parameter to control soft-assertion behavior for this assertion.
+`-ErrorAction Continue` records the failure and lets the rest of the test run (a soft assertion), while `-ErrorAction Stop` fails the test immediately, for example to guard a precondition before continuing.
+
+When `-ErrorAction` is not specified, the behavior comes from `Should.ErrorAction` in the configuration, which defaults to `Stop`.
+See https://pester.dev/docs/assertions/soft-assertions for more about soft assertions.
+
 ## RELATED LINKS
 
 [https://pester.dev/docs/commands/Should-NotMatchString](https://pester.dev/docs/commands/Should-NotMatchString)
@@ -134,4 +150,4 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 6.0.0-rc2](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.0.0-rc5](https://github.com/pester/pester).*
