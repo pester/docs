@@ -13,7 +13,11 @@ const config = {
   organizationName: 'pester', // Usually your GitHub org/user name.
   projectName: 'docs', // Usually your repo name.
   onBrokenLinks: 'warn',
-  onBrokenMarkdownLinks: 'warn',
+  markdown: {
+    hooks: {
+      onBrokenMarkdownLinks: 'warn',
+    },
+  },
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
@@ -179,9 +183,9 @@ const config = {
     ],
   ],
   future: {
-    experimental_faster: true, // Use new @docusaurus/faster features for faster build
+    faster: true, // Use new @docusaurus/faster features for faster build
     v4: {
-      removeLegacyPostBuildHeadAttribute: true, // To support SSG worker threads (experimental_faster.ssgWorkerThreads)
+      removeLegacyPostBuildHeadAttribute: true, // To support SSG worker threads (faster.ssgWorkerThreads)
     },
   }
 };
