@@ -20,6 +20,43 @@ For most suites upgrading is low risk. Run through this list, then read the deta
 5. Add a default `Mock` for commands where some calls don't match a `-ParameterFilter` — mocks no longer fall through to the real command.
 6. If you script `Invoke-Pester` with v4-style parameters (`-Script`, `-OutputFile`, ...), switch to `New-PesterConfiguration`.
 
+## Migrate with an AI assistant
+
+If you use an AI coding agent that supports the [Agent Skills](https://agentskills.io/specification) spec (such as GitHub Copilot or Claude), two community **skills** in [github/awesome-copilot](https://github.com/github/awesome-copilot) teach the agent to do these migrations the way this guide describes. The agent loads a skill on demand when you ask it to upgrade a suite, so instead of guessing it follows the documented symptom → fix steps, runs your tests, and fixes them file by file.
+
+:::note Experimental / preview
+Both skills track Pester 6 while it is a release candidate, so their guidance may change alongside the release. Always review the diff and re-run your suite afterward — treat the agent as an assistant, not an unchecked bulk-editor.
+:::
+
+| Skill | What it does |
+|---|---|
+| [`pester-migration`](https://github.com/github/awesome-copilot/tree/main/skills/pester-migration) | The main upgrade skill. Takes a suite across major versions — v3→v4, v4→v5, and **v5→v6** — one major at a time: the Discovery/Run model, moving setup into `BeforeAll`, the mock changes, `Invoke-Pester` → `New-PesterConfiguration`, `-ForEach`/`-TestCases`, and every v6 breaking change on this page. |
+| [`pester-should-migration`](https://github.com/github/awesome-copilot/tree/main/skills/pester-should-migration) | The *optional* assertion move: rewrites classic `Should -Be` (v5) to the new [`Should-*`](#should-assertions) (v6) syntax and handles the behavioral gotchas (truthy vs. true, `BeNullOrEmpty`, collection semantics). |
+
+### Install the skills
+
+Install with the [GitHub CLI](https://github.blog/changelog/2026-04-16-manage-agent-skills-with-github-cli/) (v2.90.0 or newer):
+
+```powershell
+# The main migration skill (any version -> v6)
+gh skills install github/awesome-copilot pester-migration
+
+# Optional: migrate Should -Be to the new Should-Be syntax
+gh skills install github/awesome-copilot pester-should-migration
+```
+
+You can also copy the skill folder from the repo into your agent's skills directory by hand. The full catalog is in the [awesome-copilot skills list](https://github.com/github/awesome-copilot/blob/main/docs/README.skills.md).
+
+### Use them
+
+Once a skill is installed, ask your agent in plain language and it picks up the matching skill automatically:
+
+- *"Upgrade this Pester test suite to v6."*
+- *"My `*.Tests.ps1` files broke after I bumped Pester — fix them."*
+- *"Convert the `Should -Be` assertions in `./tests` to the new `Should-*` syntax."*
+
+The agent records a baseline run, applies the changes, and re-runs until the suite is green — the same loop this guide describes. Review the diff before you commit.
+
 ## Breaking changes
 
 ### PowerShell 5.1 and 7.4+ only
@@ -241,9 +278,9 @@ The per-file model lets v6 run whole test files concurrently, each in its own ru
 
 In a long or stuck suite it can be hard to tell which test is executing. Set `Debug.ShowStartMarkers = $true` to print a marker as each test starts, before its result line is written. See [Showing when each test starts](../usage/output#showing-when-each-test-starts).
 
-### New `Should-*` assertions
+### New `Should-*` assertions {#should-assertions}
 
-Pester 6 adds a new family of `Should-*` assertions — `Should-Be`, `Should-Throw`, `Should-Invoke` and around 40 more — with clearer failure messages. They are **not** part of upgrading: your existing `Should -Be` assertions keep working, and there is no need to rewrite them. If you want to try them, see the [Should assertions overview](../assertions/should-command) and the per-command reference. You can adopt them incrementally, one file at a time.
+Pester 6 adds a new family of `Should-*` assertions — `Should-Be`, `Should-Throw`, `Should-Invoke` and around 40 more — with clearer failure messages. They are **not** part of upgrading: your existing `Should -Be` assertions keep working, and there is no need to rewrite them. If you want to try them, see the [Should assertions overview](../assertions/should-command) and the per-command reference. You can adopt them incrementally, one file at a time — or let the [`pester-should-migration` skill](#migrate-with-an-ai-assistant) convert a suite for you.
 
 #### Piping vs. `-Actual`
 

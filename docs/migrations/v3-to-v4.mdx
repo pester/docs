@@ -7,6 +7,10 @@ description: Migration from Pester v3 to v4 may require minor changes to your te
 
 Migration from Pester 3 to 4 typically involves minor changes to test code. Sometimes the migration requires no changes at all. This guide is meant to help you understand and make the necessary changes to your existing test code to accommodate Pester 4.
 
+:::tip Migrate with an AI assistant
+The [`pester-migration` skill](./v5-to-v6#migrate-with-an-ai-assistant) for GitHub Copilot and other agents can do this v3→v4 upgrade for you — it follows this guide, runs your tests, and fixes them file by file. Install it with `gh skills install github/awesome-copilot pester-migration`.
+:::
+
 ## Update to New Names
 
 We recommend performing string replacement on tests written for Pester 3 and earlier as follows:
