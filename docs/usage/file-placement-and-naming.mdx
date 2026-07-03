@@ -21,6 +21,16 @@ src/public/Get-Emoji.ps1
 tests/public/Get-Emoji.Tests.ps1
 ```
 
+## Hidden files and folders
+
+On macOS and Linux a file or folder whose name starts with a dot — such as `.github` — is *hidden* (on Windows the equivalent is the *Hidden* file attribute). This matters when you mirror your source layout, because tests for code that lives in `.github` naturally end up in `tests/.github`.
+
+Pester v6 discovers test files inside hidden folders by default, so this mirrored layout works even for dotted paths — `tests/.github` is picked up automatically. Version-control directories (`.git`, `.svn` and `.hg`) are always skipped.
+
+:::note Pester v5 excludes hidden items
+In Pester v5 and earlier, discovery follows the PowerShell default and ignores hidden items, so a recursive run silently skips tests under a hidden folder like `tests/.github`. On v5, pass the folder as an explicit path (`Invoke-Pester -Path ./tests/.github`) to include the non-hidden files inside it; test files that are themselves hidden must still be named explicitly. This changed in v6 — see [Migrating from Pester v5 to v6](../migrations/v5-to-v6#hidden-files-and-folders-are-now-discovered).
+:::
+
 ## Custom conventions
 
 The convention above is the default that most projects use, but Pester is not prescriptive about how you should name or place your files. The default extension can be customized by setting the `Run.TestExtension` configuration option. The relative position of files can be then adjusted by changing the code you use to import files into tests. See [Importing tested functions](importing-tested-functions).

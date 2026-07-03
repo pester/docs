@@ -60,6 +60,14 @@ The on-screen output changes too: a run prints one `Running tests from N files.`
 
 The per-file model also powers the experimental parallel runner (`Run.Parallel`). It keeps the same result object, with a few differences worth knowing - see [The Result Object](../usage/result-object#parallel-runner-edge-cases).
 
+### Hidden files and folders are now discovered
+
+In v5, discovery followed the PowerShell default and ignored hidden items, so files and folders whose names start with a dot on macOS/Linux (or carry the Hidden attribute on Windows) — such as `tests/.github` — were silently skipped by a recursive run. v6 discovers them by default; version-control directories (`.git`, `.svn` and `.hg`) are still skipped. See [File placement and naming](../usage/file-placement-and-naming#hidden-files-and-folders).
+
+**Symptom.** Test files that never ran under v5 — typically under a dot-prefixed folder like `tests/.github` — now run on v6 and can surface failures that were previously hidden.
+
+**Fix.** Usually none; this is the intended behavior, so fix or remove the newly discovered tests. To keep a path out of a run, exclude it with `Run.ExcludePath` (or `-ExcludePath`).
+
 ### Empty or `$null` `-ForEach` throws
 
 [Data-driven tests](../usage/data-driven-tests) now throw when `-ForEach` (or `-TestCases`) gets `$null` or an empty array, instead of silently skipping the block or test. This catches the common mistake of pointing `-ForEach` at a variable that wasn't defined in `BeforeDiscovery`, or external data that didn't load.
