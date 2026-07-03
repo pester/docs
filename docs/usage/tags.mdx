@@ -53,6 +53,7 @@ Describe "Get-Beer" {
 ```
 
 ```
+# Output level: Detailed
 Running tests from 1 files.
 Filter 'Tag' set to ('Acceptance').
 Filter 'ExcludeTag' set to ('Flaky', 'Slow', 'LinuxOnly').
@@ -75,6 +76,7 @@ The tags are now also compared as `-like` wildcards, so you don't have to spell 
 Invoke-Pester $path -ExcludeTagFilter "Accept*", "*nuxonly" | Out-Null
 ```
 ```
+# Output level: Detailed
 Running tests from 1 files.
 Filter 'ExcludeTag' set to ('Accept*', '*nuxonly').
 Filters selected 1 tests to run.
