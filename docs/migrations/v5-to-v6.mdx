@@ -24,8 +24,8 @@ For most suites upgrading is low risk. Run through this list, then read the deta
 
 If you use an AI coding agent that supports the [Agent Skills](https://agentskills.io/specification) spec (such as GitHub Copilot or Claude), two community **skills** in [github/awesome-copilot](https://github.com/github/awesome-copilot) teach the agent to do these migrations the way this guide describes. The agent loads a skill on demand when you ask it to upgrade a suite, so instead of guessing it follows the documented symptom → fix steps, runs your tests, and fixes them file by file.
 
-:::note Experimental / preview
-Both skills track Pester 6 while it is a release candidate, so their guidance may change alongside the release. Always review the diff and re-run your suite afterward — treat the agent as an assistant, not an unchecked bulk-editor.
+:::note Review the changes
+These skills teach the agent the documented migration steps, but they don't run or vet your suite for you. Always review the diff and re-run your suite afterward — treat the agent as an assistant, not an unchecked bulk-editor.
 :::
 
 | Skill | What it does |
@@ -320,7 +320,3 @@ If a value or type assertion fails because the pipeline unwrapped a collection t
 ```
 
 The hint is best-effort. PowerShell can't reliably tell a single-item collection from a scalar, and a collection's original type isn't visible on the right-hand side of the pipeline. Pester recovers the piped value through pipeline tricks that work for common cases but not every one, so the hint won't appear in every situation. When you need the exact value or the concrete collection type, pass it with `-Actual` rather than relying on the hint.
-
-:::warning Pester 6.0.0 is in preview
-Some details may still change before the final release. To keep up with the latest development, see the release notes for 6.0.0 pre-release builds at https://github.com/pester/Pester/releases
-:::
