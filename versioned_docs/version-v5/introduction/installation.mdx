@@ -7,7 +7,25 @@ description: Pester is a cross-platform PowerShell module for testing your Power
 
 ## Compatibility
 
-Pester is a cross-platform module that runs on Windows, Linux, MacOS and anywhere else supported by PowerShell. It is tested and compatible with:
+Pester is a cross-platform module that runs on Windows, Linux, MacOS and anywhere else supported by PowerShell.
+
+:::note Pester 5 is in maintenance mode
+Following the release of Pester 6 (July 2026), Pester 5 is in maintenance mode and receives
+critical bug and security fixes only. As of Pester **5.9.0** it is tested only on the PowerShell
+versions Microsoft still supports — Windows PowerShell 5.1 and PowerShell 7.4 (LTS) and above.
+
+Older PowerShell versions (Windows PowerShell 3.0 / 4.0 and PowerShell 6.x) reached
+[end-of-support](https://learn.microsoft.com/en-us/powershell/scripting/install/powershell-support-lifecycle)
+and are no longer tested. The module manifest keeps its existing minimum version rather than
+requiring 5.1, so Pester should still load on those versions, but running it there is unsupported
+and at your own risk.
+:::
+
+Pester 5 is tested and supported on:
+- Windows PowerShell 5.1
+- PowerShell 7.4 (LTS) and above
+
+Earlier Pester 5 releases (5.8.0 and below) were also tested on:
 - Windows PowerShell 3.0 - 5.1
 - PowerShell 6.0.4 and above
 
