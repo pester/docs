@@ -1,99 +1,419 @@
 /**
- * CSS files with the .module.css suffix will be treated as CSS modules
- * and scoped locally.
+ * Landing page styles. CSS modules — class names are scoped locally.
  */
 
-.container {
-  --ifm-container-width: 900px;
+/* ------------------------------------------------------------------ shared */
+.section {
+  padding: 5rem 0;
+}
+.sectionAlt {
+  background: var(--home-alt-bg);
+}
+.sectionInner {
+  max-width: 1080px;
+}
+.sectionHead {
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto 3rem;
+}
+.sectionTitle {
+  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+}
+.sectionLead {
+  font-size: 1.15rem;
+  color: var(--home-muted);
+  margin: 0;
 }
 
-.heroBanner {
-  padding: 8rem 0;
-  text-align: center;
+/* --------------------------------------------------------------------- hero */
+.hero {
   position: relative;
   overflow: hidden;
-  background: #0072c6;
-  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 6vw), 0 100%);
+  padding: 5rem 0 7rem;
+  text-align: center;
+  color: #fff;
+  background: radial-gradient(1200px 600px at 50% -10%, #2a93e6 0%, rgba(42, 147, 230, 0) 60%),
+    linear-gradient(160deg, #004a92 0%, #0072c6 55%, #0086dd 100%);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 4vw), 0 100%);
 }
-
-html[data-theme='dark'] .heroBanner {
-  --ifm-hero-text-color: var(--ifm-font-color-base);
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+  background-size: 42px 42px;
+  mask-image: radial-gradient(700px 380px at 50% 20%, #000 0%, transparent 75%);
+  pointer-events: none;
 }
-
-.heroLogo img {
-  width: 86%;
+.heroInner {
+  position: relative;
+  z-index: 1;
 }
-
-.buttons {
+.heroBadges {
   display: flex;
-  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
   justify-content: center;
+  margin-bottom: 1.6rem;
+}
+.badge {
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.32rem 0.85rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(4px);
+}
+.heroTitle {
+  font-size: clamp(2.4rem, 6vw, 4.2rem);
+  font-weight: 800;
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+  margin: 0 0 1.2rem;
+}
+.heroTitleAccent {
+  color: #bfe3ff;
+}
+.heroSubtitle {
+  font-size: clamp(1.05rem, 2vw, 1.35rem);
+  max-width: 640px;
+  margin: 0 auto 2rem;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.5;
+}
+.heroButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+  justify-content: center;
+  margin-bottom: 1.6rem;
+}
+.primaryButton {
+  background: #fff;
+  color: #0061a8;
+  border: none;
+  font-weight: 700;
+  padding: 0.85rem 2rem;
+}
+.primaryButton:hover {
+  background: #eef6ff;
+  color: #00508b;
+  transform: translateY(-1px);
+}
+.githubButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  font-weight: 600;
+}
+.githubButton:hover {
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
+}
+.secondaryButton {
+  background: transparent;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  font-weight: 600;
+}
+.secondaryButton:hover {
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
 }
 
-.features {
-  display: flex;
+.installBox {
+  display: inline-flex;
   align-items: center;
-  padding: 2rem 0;
+  gap: 0.7rem;
+  margin: 0 auto;
+  padding: 0.7rem 0.7rem 0.7rem 1.1rem;
+  border-radius: 10px;
+  background: rgba(3, 20, 40, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  cursor: pointer;
+  font-family: var(--ifm-font-family-monospace);
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.installBox:hover {
+  border-color: rgba(255, 255, 255, 0.5);
+}
+.installPrompt {
+  color: #7ee787;
+  font-weight: 700;
+}
+.installText {
+  color: #fff;
+  background: transparent;
+  border: none;
+  font-size: 1rem;
+  padding: 0;
+}
+.installCopy {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #cfe6ff;
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 6px;
+  padding: 0.28rem 0.6rem;
+}
+
+.platforms {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.4rem;
+  justify-content: center;
+  margin-top: 1.6rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.75);
+  text-transform: uppercase;
+}
+.platforms span {
+  position: relative;
+}
+.platforms span::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #8fd0ff;
+  margin-right: 0.5rem;
+  vertical-align: middle;
+}
+
+.heroShot {
+  margin: 3.2rem auto 0;
+  max-width: 900px;
+}
+.heroShot img {
   width: 100%;
+  height: auto;
+  border-radius: 14px;
+  box-shadow: 0 30px 70px -25px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.08);
 }
 
-.featureImage {
+/* ---------------------------------------------------------------- code grid */
+.codeGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
   align-items: center;
-  justify-content: center;
-  display: flex;
-  height: 100%;
 }
-
-.featureImageSecond {
-  order: 2;
+.codeCol :global(.theme-code-block) {
+  box-shadow: 0 18px 45px -25px rgba(0, 0, 0, 0.5);
 }
-
-.openCollective {
-  border: 1px solid #dadde1;
-  border-radius: 16px;
-  margin-bottom: 5rem;
-  padding-left: 20px;
+.shotFrame img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 18px 45px -25px rgba(0, 0, 0, 0.5);
+}
+.shotCaption {
+  margin-top: 1rem;
+  color: var(--home-muted);
+  font-size: 0.98rem;
   text-align: center;
 }
 
-/*
- * CSS overrides for mobile
- */
-@media (max-width: 996px) {
-  .heroBanner {
-    padding: 4rem 0;
-  }
+/* ------------------------------------------------------------- feature grid */
+.featureGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+.featureCard {
+  background: var(--home-card-bg);
+  border: 1px solid var(--home-border);
+  border-radius: 14px;
+  padding: 1.8rem;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+.featureCard:hover {
+  transform: translateY(-3px);
+  border-color: var(--ifm-color-primary);
+  box-shadow: 0 18px 40px -28px rgba(0, 114, 198, 0.55);
+}
+.featureIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  color: var(--ifm-color-primary);
+  background: var(--home-icon-bg);
+  margin-bottom: 1.1rem;
+}
+.featureTitle {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+.featureDesc {
+  color: var(--home-muted);
+  font-size: 0.98rem;
+  line-height: 1.55;
+  margin: 0;
+}
 
-  .heroContent {
-    order: 1;
-  }
+/* -------------------------------------------------------------- credibility */
+.credibility {
+  text-align: center;
+}
+.statRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 1.6rem;
+}
+.stat img {
+  height: 30px;
+}
+.credibilityNote {
+  max-width: 640px;
+  margin: 0 auto 2.4rem;
+  font-size: 1.1rem;
+  color: var(--home-muted);
+}
+.logoWall {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 3.5rem;
+  margin: 0 auto;
+}
+.logoImg {
+  height: 60px;
+  width: auto;
+  object-fit: contain;
+  opacity: 0.9;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+.logoImg:hover {
+  opacity: 1;
+  transform: translateY(-2px);
+}
+/* Monochrome marks (e.g. GitHub) render dark on light; flip them on dark. */
+:global([data-theme='dark']) .logoAdaptive {
+  filter: invert(1);
+}
+.placeholderHint {
+  margin-top: 1.4rem;
+  font-size: 0.62rem;
+  letter-spacing: 0.01em;
+  color: var(--home-muted);
+  opacity: 0.55;
+}
 
-  .heroLogo img {
-    width: initial;
-  }
+/* ------------------------------------------------------------------ sponsors */
+.sponsors {
+  text-align: center;
+}
+.sponsorHeading {
+  margin-top: 2.2rem;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+.sponsorLogos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  align-items: center;
+  justify-content: center;
+}
+.ocSponsors {
+  margin-top: 1.8rem;
+  display: flex;
+  justify-content: center;
+}
+.ocSponsors img {
+  max-width: 100%;
+  height: auto;
+}
 
-  .heroTitle {
-    font-size: 36px;
-    text-align: center;
-  }
+/* ----------------------------------------------------------------------- cta */
+.cta {
+  text-align: center;
+  padding: 5rem 0;
+  color: #fff;
+  background: linear-gradient(120deg, #00508b 0%, #0072c6 100%);
+}
+.ctaTitle {
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  font-weight: 800;
+  margin-bottom: 0.8rem;
+}
+.ctaLead {
+  font-size: 1.15rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 2rem;
+}
 
-  .featureDescCol {
-    order: 2;
-    padding-bottom: 2.5rem !important;
-    padding-top: 2.5rem !important;
-  }
+/* --------------------------------------------------------------- theme vars */
+:global(:root) {
+  --home-alt-bg: #f6f8fb;
+  --home-card-bg: #ffffff;
+  --home-border: #e2e8f0;
+  --home-icon-bg: rgba(0, 114, 198, 0.1);
+  --home-muted: #5b6b7f;
+}
+:global([data-theme='dark']) {
+  --home-alt-bg: #12181f;
+  --home-card-bg: #1a222c;
+  --home-border: #2a3542;
+  --home-icon-bg: rgba(2, 148, 255, 0.16);
+  --home-muted: #9fb0c3;
+}
 
-  .openCollective {
-    margin-bottom: 3rem;
+/* --------------------------------------------------------------------- print */
+@media print {
+  .heroButtons,
+  .installBox {
+    display: none;
   }
 }
 
-@media print {
-  .heroLogo img {
-    filter: invert(1);
+/* -------------------------------------------------------------------- mobile */
+@media (max-width: 996px) {
+  .section {
+    padding: 3.5rem 0;
   }
+  .hero {
+    padding: 3.5rem 0 5rem;
+  }
+  .codeGrid {
+    grid-template-columns: 1fr;
+  }
+  .featureGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .logoWall {
+    gap: 2.5rem;
+  }
+}
 
-  .buttons {
-    display: none;
+@media (max-width: 640px) {
+  .featureGrid {
+    grid-template-columns: 1fr;
+  }
+  .logoWall {
+    gap: 2rem;
+  }
+  .platforms {
+    gap: 0.8rem 1.1rem;
   }
 }
