@@ -217,3 +217,18 @@ table {
   padding: 10px;
   vertical-align: middle;
 }
+/* Custom ":::experimental" admonition palette (purple "danger zone" look).
+   Mirrors how Infima's built-in alert variants set the --ifm-alert-* vars. */
+.alert--experimental {
+  --ifm-alert-background-color: #f6f0ff;
+  --ifm-alert-background-color-highlight: rgba(146, 84, 222, 0.15);
+  --ifm-alert-foreground-color: #4b1f8f;
+  --ifm-alert-border-color: #9254de;
+}
+
+[data-theme='dark'] .alert--experimental {
+  --ifm-alert-background-color: #2a1d3d;
+  --ifm-alert-background-color-highlight: rgba(179, 136, 255, 0.15);
+  --ifm-alert-foreground-color: #e2d1ff;
+  --ifm-alert-border-color: #b388ff;
+}

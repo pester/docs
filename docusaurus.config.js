@@ -160,6 +160,12 @@ const config = {
         docs: {
           sidebarPath: './sidebars.js',
           editUrl: 'https://github.com/pester/docs/edit/main',
+          // Register the custom ":::experimental" admonition (see
+          // src/theme/Admonition) alongside the built-in note/tip/info/warning/danger.
+          admonitions: {
+            keywords: ['experimental'],
+            extendDefaults: true,
+          },
           // Define which version ("current" vs versioned docs like "v5") that will use unversioned URIs /docs/...
           // "current" (v6) is the latest stable version.
           // When updated, also update static/_redirects to always support versioned URIs
