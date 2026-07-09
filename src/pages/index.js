@@ -113,7 +113,7 @@ const sampleTest = `BeforeAll {
 Describe 'Get-Planet' {
     It 'lists all 8 planets' {
         $planets = Get-Planet
-        $planets.Count | Should -Be 8
+        $planets.Count | Should-Be 8
     }
 }`;
 
@@ -279,13 +279,13 @@ function Credibility() {
       <div className={clsx('container', styles.sectionInner)}>
         <div className={styles.statRow}>
           <div className={styles.stat}>
-            <img alt="GitHub stars" src="https://img.shields.io/github/stars/pester/pester?style=flat-square&label=GitHub%20stars&color=0072c6" />
+            <img alt="GitHub stars" src="https://img.shields.io/github/stars/pester/pester?style=flat-square&label=GitHub%20stars&color=0072c5" />
           </div>
           <div className={styles.stat}>
-            <img alt="PowerShell Gallery downloads" src="https://img.shields.io/powershellgallery/dt/Pester?style=flat-square&label=Gallery%20downloads&color=0072c6" />
+            <img alt="PowerShell Gallery downloads" src="https://img.shields.io/powershellgallery/dt/Pester?style=flat-square&label=Gallery%20downloads&color=0072c5" />
           </div>
           <div className={styles.stat}>
-            <img alt="Latest Pester version" src="https://img.shields.io/powershellgallery/v/Pester?style=flat-square&label=latest&color=0072c6" />
+            <img alt="Latest Pester version" src="https://img.shields.io/powershellgallery/v/Pester?style=flat-square&label=latest&color=0072c5" />
           </div>
         </div>
 
