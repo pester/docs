@@ -44,7 +44,7 @@ Describe "Get-Emoji" {
         @{ Name = "cactus"; Expected = '🌵'}
         @{ Name = "giraffe"; Expected = '🦒'}
     ) {
-        Get-Emoji -Name $name | Should -Be $expected
+        Get-Emoji -Name $name | Should-Be $expected
     }
 }
 
@@ -83,11 +83,11 @@ Container: Get-Emoji.Tests.ps1
         Tests:
             Test: Returns <expected> (<name>)
             Data: @{ Name = "cactus"; Expected = '🌵'}
-            ScriptBlock: { Get-Emoji -Name $name | Should -Be $expected }
+            ScriptBlock: { Get-Emoji -Name $name | Should-Be $expected }
 
             Test: Returns <expected> (<name>)
             Data: @{ Name = "giraffe"; Expected = '🦒'}
-            ScriptBlock: { Get-Emoji -Name $name | Should -Be $expected }
+            ScriptBlock: { Get-Emoji -Name $name | Should-Be $expected }
 ```
 
 Now we would go through all the objects, check filters and propagate them down and back up. This gives us the final overview of what needs to run. In this case there are no filters, so nothing changes and all tests will be invoked.
