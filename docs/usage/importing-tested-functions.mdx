@@ -55,7 +55,7 @@ $sut = (Split-Path -Leaf $MyInvocation.MyCommand.Path).Replace(".Tests.", ".")
 
 Describe "Get-Cactus" {
     It "Returns 🌵" {
-        Get-Cactus | Should -Be '🌵'
+        Get-Cactus | Should-Be '🌵'
     }
 }
 ```
@@ -70,7 +70,7 @@ BeforeAll {
 
 Describe "Get-Cactus" {
     It "Returns 🌵" {
-        Get-Cactus | Should -Be '🌵'
+        Get-Cactus | Should-Be '🌵'
     }
 }
 ```

@@ -73,7 +73,7 @@ BeforeAll {
 Describe 'Get-Planet' {
     It 'Given no parameters, it lists all 8 planets' {
         $allPlanets = Get-Planet
-        $allPlanets.Count | Should -Be 8
+        $allPlanets.Count | Should-Be 8
     }
 }
 ```
@@ -114,7 +114,7 @@ Here are few examples:
 ```powershell
 It 'Earth is the third planet in our Solar System' {
     $allPlanets = Get-Planet
-    $allPlanets[2].Name | Should -Be 'Earth'
+    $allPlanets[2].Name | Should-Be 'Earth'
 }
 ```
 
@@ -122,7 +122,7 @@ It 'Earth is the third planet in our Solar System' {
 It 'Pluto is not part of our Solar System' {
     $allPlanets = Get-Planet
     $plutos = $allPlanets | Where-Object Name -EQ 'Pluto'
-    $plutos.Count | Should -Be 0
+    $plutos.Count | Should-Be 0
 }
 ```
 
@@ -130,7 +130,7 @@ It 'Pluto is not part of our Solar System' {
 It 'Planets have this order: Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune' {
     $allPlanets = Get-Planet
     $planetsInOrder = $allPlanets.Name -join ', '
-    $planetsInOrder | Should -Be 'Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune'
+    $planetsInOrder | Should-Be 'Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune'
 }
 ```
 
@@ -164,27 +164,27 @@ Running tests from 1 files.
 Running tests from 'C:\t\Planets\Get-Planet.Tests.ps1'
 Describing Get-Planet
   [-] Given no parameters, it lists all 8 planets 19ms
-   Expected 8, but got 9.
-   at $allPlanets.Count | Should -Be 8, C:\t\Planets\Get-Planet.Tests.ps1:22
+   Expected [int] 8, but got [int] 9.
+   at $allPlanets.Count | Should-Be 8, C:\t\Planets\Get-Planet.Tests.ps1:22
 Tests completed in 183ms
 Tests Passed: 0, Failed: 1, Skipped: 0, Inconclusive: 0, NotRun: 0
 ```
 
-The error is: `Expected 8, but got 9.`, this exactly reflects the change that we made to the tested function. We added one more item to the collection of planets, and the test confirms that the function is now broken.
+The error is: `Expected [int] 8, but got [int] 9.`, this exactly reflects the change that we made to the tested function. We added one more item to the collection of planets, and the test confirms that the function is now broken.
 
 ### Breaking our test, by breaking the test expectation
 
-The change that we just did is not the only change that we can make to break the test. There are other ways to do it. We can change the expected count to be 1, saying that there is just one planet orbiting the Sun, by changing the `Should` to `$allPlanets.Count | Should -Be 1`. This will also break the test:
+The change that we just did is not the only change that we can make to break the test. There are other ways to do it. We can change the expected count to be 1, saying that there is just one planet orbiting the Sun, by changing the `Should` to `$allPlanets.Count | Should-Be 1`. This will also break the test:
 
 ```
 Describing Get-Planet
   [-] Given no parameters, it lists all 8 planets 25ms
-   Expected 1, but got 8.
-   at $allPlanets.Count | Should -Be 1, C:\t\Planets\Get-Planet.Tests.ps1:21
+   Expected [int] 1, but got [int] 8.
+   at $allPlanets.Count | Should-Be 1, C:\t\Planets\Get-Planet.Tests.ps1:21
 Tests completed in 195ms
 ```
 
-The error is: `Expected 1, but got 8.`, this again reflects exactly what we did in the test, but it no longer reflects the real world.
+The error is: `Expected [int] 1, but got [int] 8.`, this again reflects exactly what we did in the test, but it no longer reflects the real world.
 
 ### How tests break
 
@@ -263,7 +263,7 @@ BeforeAll {
 Describe 'Get-Planet' {
     It 'Given no parameters, it lists all 8 planets' {
         $allPlanets = Get-Planet
-        $allPlanets.Count | Should -Be 8
+        $allPlanets.Count | Should-Be 8
     }
 }
 ```
@@ -297,7 +297,7 @@ BeforeAll {
 Describe 'Get-Planet' {
     It 'Given no parameters, it lists all 8 planets' {
         $allPlanets = Get-Planet
-        $allPlanets.Count | Should -Be 8
+        $allPlanets.Count | Should-Be 8
     }
 }
 ```
