@@ -23,7 +23,7 @@ Converts a Pester result-object to an JUnit-compatible XML report
 ## SYNTAX
 
 ```powershell
-ConvertTo-JUnitReport [-Result] <Run> [-AsString] [<CommonParameters>]
+ConvertTo-JUnitReport [-Result] <Run> [-AsString]
 ```
 
 ## DESCRIPTION
@@ -66,6 +66,27 @@ The returned object is a string.
 
 ## PARAMETERS
 
+### -AsString
+
+Returns the XML-report as a string.
+
+```yaml
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: False
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
+
 ### -Result
 
 Result object from a Pester-run.
@@ -73,52 +94,46 @@ This can be retrieved using Invoke-Pester
 -Passthru or by using the Run.PassThru configuration-option.
 
 ```yaml
-Type: Run
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: 1
-Default value: None
-Accept pipeline input: True (ByValue)
-Accept wildcard characters: False
-```
-
-### -AsString
-
-Returns the XML-report as a string.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: Pester.Run
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: 0
+  IsRequired: true
+  ValueFromPipeline: true
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### CommonParameters
 
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable,
+-InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable,
+-ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see
+[about_CommonParameters](https://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
+
+### Pester.Run
 
 ## OUTPUTS
 
 ### System.Xml.XmlDocument
 
 ### System.String
+
 ## NOTES
 
 ## RELATED LINKS
 
-[https://pester.dev/docs/commands/ConvertTo-JUnitReport](https://pester.dev/docs/commands/ConvertTo-JUnitReport)
-
-[https://pester.dev/docs/commands/Invoke-Pester](https://pester.dev/docs/commands/Invoke-Pester)
+- [https://pester.dev/docs/commands/ConvertTo-JUnitReport](https://pester.dev/docs/commands/ConvertTo-JUnitReport)
+- [https://pester.dev/docs/commands/Invoke-Pester](https://pester.dev/docs/commands/Invoke-Pester)
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 6.0.0-rc5](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.0.0](https://github.com/pester/pester).*

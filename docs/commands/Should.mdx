@@ -22,189 +22,8 @@ Should is a keyword that is used to define an assertion inside an It block.
 
 ## SYNTAX
 
-### Be
-
 ```powershell
-Should [[-ActualValue] <Object>] [-Be] [-Not] [-ExpectedValue <Object>]
- [-Because <Object>] [<CommonParameters>]
-```
-
-### BeExactly
-
-```powershell
-Should [[-ActualValue] <Object>] [-Not] [-ExpectedValue <Object>]
- [-Because <Object>] [-BeExactly] [<CommonParameters>]
-```
-
-### BeGreaterThan
-
-```powershell
-Should [[-ActualValue] <Object>] [-Not] [-ExpectedValue <Object>]
- [-Because <Object>] [-BeGreaterThan] [<CommonParameters>]
-```
-
-### BeLessOrEqual
-
-```powershell
-Should [[-ActualValue] <Object>] [-Not] [-ExpectedValue <Object>]
- [-Because <Object>] [-BeLessOrEqual] [<CommonParameters>]
-```
-
-### BeIn
-
-```powershell
-Should [[-ActualValue] <Object>] [-Not] [-ExpectedValue <Object>]
- [-Because <Object>] [-BeIn] [<CommonParameters>]
-```
-
-### BeLessThan
-
-```powershell
-Should [[-ActualValue] <Object>] [-Not] [-ExpectedValue <Object>]
- [-Because <Object>] [-BeLessThan] [<CommonParameters>]
-```
-
-### BeGreaterOrEqual
-
-```powershell
-Should [[-ActualValue] <Object>] [-Not] [-ExpectedValue <Object>]
- [-Because <Object>] [-BeGreaterOrEqual] [<CommonParameters>]
-```
-
-### BeLike
-
-```powershell
-Should [[-ActualValue] <Object>] [-Not] [-ExpectedValue <Object>]
- [-Because <Object>] [-BeLike] [<CommonParameters>]
-```
-
-### BeLikeExactly
-
-```powershell
-Should [[-ActualValue] <Object>] [-Not] [-ExpectedValue <Object>]
- [-Because <Object>] [-BeLikeExactly] [<CommonParameters>]
-```
-
-### BeNullOrEmpty
-
-```powershell
-Should [[-ActualValue] <Object>] [-Not] [-Because <Object>]
- [-BeNullOrEmpty] [<CommonParameters>]
-```
-
-### BeOfType
-
-```powershell
-Should [[-ActualValue] <Object>] [-Not] [-Because <Object>] [-BeOfType]
- [-ExpectedType <Object>] [<CommonParameters>]
-```
-
-### BeTrue
-
-```powershell
-Should [[-ActualValue] <Object>] [-Not] [-Because <Object>] [-BeTrue]
- [<CommonParameters>]
-```
-
-### BeFalse
-
-```powershell
-Should [[-ActualValue] <Object>] [-Not] [-Because <Object>] [-BeFalse]
- [<CommonParameters>]
-```
-
-### Contain
-
-```powershell
-Should [[-ActualValue] <Object>] [-Not] [-ExpectedValue <Object>]
- [-Because <Object>] [-Contain] [<CommonParameters>]
-```
-
-### Exist
-
-```powershell
-Should [[-ActualValue] <Object>] [-Not] [-Because <Object>] [-Exist]
- [-LiteralPath] [<CommonParameters>]
-```
-
-### FileContentMatch
-
-```powershell
-Should [[-ActualValue] <Object>] [-Not] [-Because <Object>]
- [-FileContentMatch] [-ExpectedContent <Object>] [<CommonParameters>]
-```
-
-### FileContentMatchExactly
-
-```powershell
-Should [[-ActualValue] <Object>] [-Not] [-Because <Object>]
- [-ExpectedContent <Object>] [-FileContentMatchExactly] [<CommonParameters>]
-```
-
-### FileContentMatchMultiline
-
-```powershell
-Should [[-ActualValue] <Object>] [-Not] [-Because <Object>]
- [-ExpectedContent <Object>] [-FileContentMatchMultiline] [<CommonParameters>]
-```
-
-### FileContentMatchMultilineExactly
-
-```powershell
-Should [[-ActualValue] <Object>] [-Not] [-Because <Object>]
- [-ExpectedContent <Object>] [-FileContentMatchMultilineExactly] [<CommonParameters>]
-```
-
-### HaveCount
-
-```powershell
-Should [[-ActualValue] <Object>] [-Not] [-ExpectedValue <Object>]
- [-Because <Object>] [-HaveCount] [<CommonParameters>]
-```
-
-### HaveParameter
-
-```powershell
-Should [[-ActualValue] <Object>] [-Not] [-Because <Object>]
- [-HaveParameter] [-ParameterName <Object>] [-Type <Object>] [-DefaultValue <Object>] [-Mandatory]
- [-InParameterSet <Object>] [-HasArgumentCompleter] [-Alias <Object>] [<CommonParameters>]
-```
-
-### Match
-
-```powershell
-Should [[-ActualValue] <Object>] [-Not] [-Because <Object>] [-Match]
- [-RegularExpression <Object>] [<CommonParameters>]
-```
-
-### MatchExactly
-
-```powershell
-Should [[-ActualValue] <Object>] [-Not] [-Because <Object>]
- [-RegularExpression <Object>] [-MatchExactly] [<CommonParameters>]
-```
-
-### Throw
-
-```powershell
-Should [[-ActualValue] <Object>] [-Not] [-Because <Object>] [-Throw]
- [-ExpectedMessage <Object>] [-ErrorId <Object>] [-ExceptionType <Object>] [-PassThru] [<CommonParameters>]
-```
-
-### InvokeVerifiable
-
-```powershell
-Should [[-ActualValue] <Object>] [-Not] [-Because <Object>]
- [-InvokeVerifiable] [<CommonParameters>]
-```
-
-### Invoke
-
-```powershell
-Should [[-ActualValue] <Object>] [-Not] [-Because <Object>] [-Invoke]
- [-CommandName <Object>] [-Times <Object>] [-ParameterFilter <Object>] [-ExclusiveFilter <Object>]
- [-ModuleName <Object>] [-Scope <Object>] [-Exactly] [-CallerSessionState <Object>]
- [-CommandDisplayName <Object>] [<CommonParameters>]
+Should [[-ActualValue] <Object>]
 ```
 
 ## DESCRIPTION
@@ -296,32 +115,41 @@ The actual value that was obtained in the test which should be verified against
 a expected value.
 
 ```yaml
-Type: Object
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 1
-Default value: None
-Accept pipeline input: True (ByValue)
-Accept wildcard characters: False
+Type: System.Object
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: 0
+  IsRequired: false
+  ValueFromPipeline: true
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: true
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -Alias
 
-Depends on operator being used.
-See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
+Depends on operator being used. See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
 
 ```yaml
-Type: Object
-Parameter Sets: HaveParameter
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Object
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: HaveParameter
+  Position: 7
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -Be
@@ -329,49 +157,214 @@ Accept wildcard characters: False
 Compares one object with another for equality and throws if the two objects are not the same.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: Be
-Aliases: EQ
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases:
+- EQ
+ParameterSets:
+- Name: Be
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -Because
 
-Depends on operator being used.
-See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
+Depends on operator being used. See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
 
 ```yaml
-Type: Object
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Object
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Be
+  Position: 2
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeExactly
+  Position: 2
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeGreaterThan
+  Position: 2
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeLessOrEqual
+  Position: 2
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeIn
+  Position: 2
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeLessThan
+  Position: 2
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeGreaterOrEqual
+  Position: 2
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeLike
+  Position: 2
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeLikeExactly
+  Position: 2
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeNullOrEmpty
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeOfType
+  Position: 2
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeTrue
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeFalse
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: Contain
+  Position: 2
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: Exist
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: FileContentMatch
+  Position: 2
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: FileContentMatchExactly
+  Position: 2
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: FileContentMatchMultiline
+  Position: 2
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: FileContentMatchMultilineExactly
+  Position: 2
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: HaveCount
+  Position: 2
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: HaveParameter
+  Position: 8
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: Match
+  Position: 2
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: MatchExactly
+  Position: 2
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: Throw
+  Position: 4
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: InvokeVerifiable
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: Invoke
+  Position: 8
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -BeExactly
 
-Compares one object with another for equality and throws if the two objects are not the same.
-This comparison is case sensitive.
+Compares one object with another for equality and throws if the two objects are not the same. This comparison is case sensitive.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: BeExactly
-Aliases: CEQ
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases:
+- CEQ
+ParameterSets:
+- Name: BeExactly
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -BeFalse
@@ -379,151 +372,192 @@ Accept wildcard characters: False
 Asserts that the value is false, or falsy.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: BeFalse
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: BeFalse
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -BeGreaterOrEqual
 
-Asserts that a number (or other comparable value) is greater than or equal to an expected value.
-Uses PowerShell's -ge operator to compare the two values.
+Asserts that a number (or other comparable value) is greater than or equal to an expected value. Uses PowerShell's -ge operator to compare the two values.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: BeGreaterOrEqual
-Aliases: GE
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases:
+- GE
+ParameterSets:
+- Name: BeGreaterOrEqual
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -BeGreaterThan
 
-Asserts that a number (or other comparable value) is greater than an expected value.
-Uses PowerShell's -gt operator to compare the two values.
+Asserts that a number (or other comparable value) is greater than an expected value. Uses PowerShell's -gt operator to compare the two values.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: BeGreaterThan
-Aliases: GT
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases:
+- GT
+ParameterSets:
+- Name: BeGreaterThan
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -BeIn
 
-Asserts that a collection of values contain a specific value.
-Uses PowerShell's -contains operator to confirm.
+Asserts that a collection of values contain a specific value. Uses PowerShell's -contains operator to confirm.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: BeIn
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: BeIn
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -BeLessOrEqual
 
-Asserts that a number (or other comparable value) is lower than, or equal to an expected value.
-Uses PowerShell's -le operator to compare the two values.
+Asserts that a number (or other comparable value) is lower than, or equal to an expected value. Uses PowerShell's -le operator to compare the two values.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: BeLessOrEqual
-Aliases: LE
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases:
+- LE
+ParameterSets:
+- Name: BeLessOrEqual
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -BeLessThan
 
-Asserts that a number (or other comparable value) is lower than an expected value.
-Uses PowerShell's -lt operator to compare the two values.
+Asserts that a number (or other comparable value) is lower than an expected value. Uses PowerShell's -lt operator to compare the two values.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: BeLessThan
-Aliases: LT
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases:
+- LT
+ParameterSets:
+- Name: BeLessThan
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -BeLike
 
-Asserts that the actual value matches a wildcard pattern using PowerShell's -like operator.
-This comparison is not case-sensitive.
+Asserts that the actual value matches a wildcard pattern using PowerShell's -like operator. This comparison is not case-sensitive.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: BeLike
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: BeLike
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -BeLikeExactly
 
-Asserts that the actual value matches a wildcard pattern using PowerShell's -like operator.
-This comparison is case-sensitive.
+Asserts that the actual value matches a wildcard pattern using PowerShell's -like operator. This comparison is case-sensitive.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: BeLikeExactly
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: BeLikeExactly
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -BeNullOrEmpty
 
-Checks values for null or empty (strings).
-The static [String]::IsNullOrEmpty() method is used to do the comparison.
+Checks values for null or empty (strings). The static [String]::IsNullOrEmpty() method is used to do the comparison.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: BeNullOrEmpty
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: BeNullOrEmpty
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -BeOfType
@@ -531,15 +565,21 @@ Accept wildcard characters: False
 Asserts that the actual value should be an object of a specified type (or a subclass of the specified type) using PowerShell's -is operator.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: BeOfType
-Aliases: HaveType
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases:
+- HaveType
+ParameterSets:
+- Name: BeOfType
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -BeTrue
@@ -547,288 +587,434 @@ Accept wildcard characters: False
 Asserts that the value is true, or truthy.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: BeTrue
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: BeTrue
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -CallerSessionState
 
-Depends on operator being used.
-See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
+Depends on operator being used. See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
 
 ```yaml
-Type: Object
-Parameter Sets: Invoke
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Object
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Invoke
+  Position: 9
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -CommandDisplayName
 
-Depends on operator being used.
-See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
+Depends on operator being used. See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
 
 ```yaml
-Type: Object
-Parameter Sets: Invoke
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Object
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Invoke
+  Position: 10
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -CommandName
 
-Depends on operator being used.
-See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
+Depends on operator being used. See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
 
 ```yaml
-Type: Object
-Parameter Sets: Invoke
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Object
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Invoke
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -Contain
 
-Asserts that collection contains a specific value.
-Uses PowerShell's -contains operator to confirm.
+Asserts that collection contains a specific value. Uses PowerShell's -contains operator to confirm.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: Contain
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Contain
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -DefaultValue
 
-Depends on operator being used.
-See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
+Depends on operator being used. See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
 
 ```yaml
-Type: Object
-Parameter Sets: HaveParameter
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Object
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: HaveParameter
+  Position: 3
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -ErrorId
 
-Depends on operator being used.
-See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
+Depends on operator being used. See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
 
 ```yaml
-Type: Object
-Parameter Sets: Throw
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Object
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Throw
+  Position: 2
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -Exactly
 
-Depends on operator being used.
-See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
+Depends on operator being used. See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: Invoke
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Invoke
+  Position: 7
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -ExceptionType
 
-Depends on operator being used.
-See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
+Depends on operator being used. See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
 
 ```yaml
-Type: Object
-Parameter Sets: Throw
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Object
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Throw
+  Position: 3
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -ExclusiveFilter
 
-Depends on operator being used.
-See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
+Depends on operator being used. See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
 
 ```yaml
-Type: Object
-Parameter Sets: Invoke
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Object
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Invoke
+  Position: 4
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -Exist
 
-Does not perform any comparison, but checks if the object calling Exist is present in a PS Provider.
-The object must have valid path syntax.
-It essentially must pass a Test-Path call.
+Does not perform any comparison, but checks if the object calling Exist is present in a PS Provider. The object must have valid path syntax. It essentially must pass a Test-Path call.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: Exist
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Exist
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -ExpectedContent
 
-Depends on operator being used.
-See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
+Depends on operator being used. See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
 
 ```yaml
-Type: Object
-Parameter Sets: FileContentMatch, FileContentMatchExactly, FileContentMatchMultiline, FileContentMatchMultilineExactly
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Object
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: FileContentMatch
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: FileContentMatchExactly
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: FileContentMatchMultiline
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: FileContentMatchMultilineExactly
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -ExpectedMessage
 
-Depends on operator being used.
-See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
+Depends on operator being used. See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
 
 ```yaml
-Type: Object
-Parameter Sets: Throw
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Object
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Throw
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -ExpectedType
 
-Depends on operator being used.
-See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
+Depends on operator being used. See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
 
 ```yaml
-Type: Object
-Parameter Sets: BeOfType
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Object
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: BeOfType
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -ExpectedValue
 
-Depends on operator being used.
-See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
+Depends on operator being used. See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
 
 ```yaml
-Type: Object
-Parameter Sets: Be, BeExactly, BeGreaterThan, BeLessOrEqual, BeIn, BeLessThan, BeGreaterOrEqual, BeLike, BeLikeExactly, Contain, HaveCount
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Object
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Be
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeExactly
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeGreaterThan
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeLessOrEqual
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeIn
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeLessThan
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeGreaterOrEqual
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeLike
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeLikeExactly
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: Contain
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: HaveCount
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -FileContentMatch
 
-Checks to see if a file contains the specified text.
-This search is not case sensitive and uses regular expressions.
+Checks to see if a file contains the specified text. This search is not case sensitive and uses regular expressions.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: FileContentMatch
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: FileContentMatch
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -FileContentMatchExactly
 
-Checks to see if a file contains the specified text.
-This search is case sensitive and uses regular expressions to match the text.
+Checks to see if a file contains the specified text. This search is case sensitive and uses regular expressions to match the text.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: FileContentMatchExactly
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: FileContentMatchExactly
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -FileContentMatchMultiline
@@ -838,15 +1024,20 @@ As opposed to FileContentMatch and FileContentMatchExactly operators, FileConten
 When using FileContentMatchMultiline operator, '^' and '$' represent the beginning and end of the whole file, instead of the beginning and end of a line
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: FileContentMatchMultiline
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: FileContentMatchMultiline
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -FileContentMatchMultilineExactly
@@ -856,32 +1047,41 @@ As opposed to FileContentMatch and FileContentMatchExactly operators, FileConten
 When using FileContentMatchMultilineExactly operator, '^' and '$' represent the beginning and end of the whole file, instead of the beginning and end of a line.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: FileContentMatchMultilineExactly
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: FileContentMatchMultilineExactly
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -HasArgumentCompleter
 
-Depends on operator being used.
-See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
+Depends on operator being used. See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: HaveParameter
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: HaveParameter
+  Position: 6
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -HaveCount
@@ -889,15 +1089,20 @@ Accept wildcard characters: False
 Asserts that a collection has the expected amount of items.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: HaveCount
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: HaveCount
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -HaveParameter
@@ -905,32 +1110,41 @@ Accept wildcard characters: False
 Asserts that a command has the expected parameter.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: HaveParameter
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: HaveParameter
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -InParameterSet
 
-Depends on operator being used.
-See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
+Depends on operator being used. See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
 
 ```yaml
-Type: Object
-Parameter Sets: HaveParameter
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Object
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: HaveParameter
+  Position: 5
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -Invoke
@@ -938,117 +1152,147 @@ Accept wildcard characters: False
 Checks if a Mocked command has been called a certain number of times and throws an exception if it has not.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: Invoke
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Invoke
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -InvokeVerifiable
 
-Checks if any Verifiable Mock has not been invoked.
-If so, this will throw an exception.
+Checks if any Verifiable Mock has not been invoked. If so, this will throw an exception.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: InvokeVerifiable
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: InvokeVerifiable
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -LiteralPath
 
-Depends on operator being used.
-See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
+Depends on operator being used. See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: Exist
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Exist
+  Position: 2
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -Mandatory
 
-Depends on operator being used.
-See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
+Depends on operator being used. See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: HaveParameter
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: HaveParameter
+  Position: 4
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -Match
 
-Uses a regular expression to compare two objects.
-This comparison is not case sensitive.
+Uses a regular expression to compare two objects. This comparison is not case sensitive.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: Match
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Match
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -MatchExactly
 
-Uses a regular expression to compare two objects.
-This comparison is case sensitive.
+Uses a regular expression to compare two objects. This comparison is case sensitive.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: MatchExactly
-Aliases: CMATCH
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases:
+- CMATCH
+ParameterSets:
+- Name: MatchExactly
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -ModuleName
 
-Depends on operator being used.
-See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
+Depends on operator being used. See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
 
 ```yaml
-Type: Object
-Parameter Sets: Invoke
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Object
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Invoke
+  Position: 5
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -Not
@@ -1056,158 +1300,356 @@ Accept wildcard characters: False
 Reverse the assertion
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Be
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeExactly
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeGreaterThan
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeLessOrEqual
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeIn
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeLessThan
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeGreaterOrEqual
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeLike
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeLikeExactly
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeNullOrEmpty
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeOfType
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeTrue
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeFalse
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: Contain
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: Exist
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: FileContentMatch
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: FileContentMatchExactly
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: FileContentMatchMultiline
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: FileContentMatchMultilineExactly
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: HaveCount
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: HaveParameter
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: Match
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: MatchExactly
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: Throw
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: InvokeVerifiable
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: Invoke
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -ParameterFilter
 
-Depends on operator being used.
-See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
+Depends on operator being used. See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
 
 ```yaml
-Type: Object
-Parameter Sets: Invoke
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Object
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Invoke
+  Position: 3
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -ParameterName
 
-Depends on operator being used.
-See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
+Depends on operator being used. See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
 
 ```yaml
-Type: Object
-Parameter Sets: HaveParameter
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Object
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: HaveParameter
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -PassThru
 
-Depends on operator being used.
-See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
+Depends on operator being used. See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: Throw
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Throw
+  Position: 5
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -RegularExpression
 
-Depends on operator being used.
-See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
+Depends on operator being used. See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
 
 ```yaml
-Type: Object
-Parameter Sets: Match, MatchExactly
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Object
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Match
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: MatchExactly
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -Scope
 
-Depends on operator being used.
-See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
+Depends on operator being used. See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
 
 ```yaml
-Type: Object
-Parameter Sets: Invoke
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Object
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Invoke
+  Position: 6
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -Throw
 
-Checks if an exception was thrown.
-Enclose input in a scriptblock.
+Checks if an exception was thrown. Enclose input in a scriptblock.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: Throw
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Throw
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -Times
 
-Depends on operator being used.
-See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
+Depends on operator being used. See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
 
 ```yaml
-Type: Object
-Parameter Sets: Invoke
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Object
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Invoke
+  Position: 2
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -Type
 
-Depends on operator being used.
-See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
+Depends on operator being used. See `Get-ShouldOperator -Name <Operator>` or https://pester.dev/docs/assertions/ for help.
 
 ```yaml
-Type: Object
-Parameter Sets: HaveParameter
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Object
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: HaveParameter
+  Position: 2
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### CommonParameters
 
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable,
+-InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable,
+-ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see
+[about_CommonParameters](https://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
+
+### System.Object
 
 ## OUTPUTS
 
@@ -1215,10 +1657,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[https://pester.dev/docs/commands/Should](https://pester.dev/docs/commands/Should)
-
-[https://pester.dev/docs/assertions](https://pester.dev/docs/assertions)
+- [https://pester.dev/docs/commands/Should](https://pester.dev/docs/commands/Should)
+- [https://pester.dev/docs/assertions](https://pester.dev/docs/assertions)
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 6.0.0-rc5](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.0.0](https://github.com/pester/pester).*

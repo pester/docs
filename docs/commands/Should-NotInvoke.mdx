@@ -25,28 +25,28 @@ Checks that mocked command was not called and throws exception if it was.
 ### Default (Default)
 
 ```powershell
-Should-NotInvoke [-CommandName] <String> [[-Times] <Int32>] [-ParameterFilter <ScriptBlock>]
- [-ExclusiveFilter <ScriptBlock>] [-ModuleName <String>] [-Scope <String>] [-Exactly] [-Because <String>]
- [<CommonParameters>]
+Should-NotInvoke [-CommandName] <string> [[-Times] <int>] [-ParameterFilter <scriptblock>]
+ [-ExclusiveFilter <scriptblock>] [-ModuleName <string>] [-Scope <string>] [-Exactly]
+ [-Because <string>]
 ```
 
 ### ExclusiveFilter
 
 ```powershell
-Should-NotInvoke -ExclusiveFilter <ScriptBlock> [<CommonParameters>]
+Should-NotInvoke -ExclusiveFilter <scriptblock>
 ```
 
 ### Verifiable
 
 ```powershell
-Should-NotInvoke [-Because <String>] [-Verifiable] [<CommonParameters>]
+Should-NotInvoke [-Because <string>] [-Verifiable]
 ```
 
 ## DESCRIPTION
 
 This command verifies that a mocked command has not been called a certain number
-of times. 
-If the call history of the mocked command does not match the parameters
+of times.
+ If the call history of the mocked command does not match the parameters
 passed to Should-NotInvoke, Should-NotInvoke will throw an exception.
 
 ## EXAMPLES
@@ -103,37 +103,135 @@ Describe 'Remove-TempFile' {
 
 ## PARAMETERS
 
+### -Because
+
+The reason why the mock should be called.
+
+```yaml
+Type: System.String
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Verifiable
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: Default
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
+
 ### -CommandName
 
 The mocked command whose call history should be checked.
 
 ```yaml
-Type: String
-Parameter Sets: Default
-Aliases:
-
-Required: True
-Position: 1
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.String
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Default
+  Position: 0
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
-### -Times
+### -Exactly
 
-The number of times that the mock must be called to avoid an exception
-from throwing.
+If this switch is present, the number specified in Times must match
+exactly the number of times the mock has been called.
+Otherwise it
+must match "at least" the number of times specified.
+ If the value
+passed to the Times parameter is zero, the Exactly switch is implied.
 
 ```yaml
-Type: Int32
-Parameter Sets: Default
-Aliases:
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: False
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Default
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
 
-Required: False
-Position: 2
-Default value: 1
-Accept pipeline input: False
-Accept wildcard characters: False
+### -ExclusiveFilter
+
+Like ParameterFilter, except when you use ExclusiveFilter, and there
+were any calls to the mocked command which do not match the filter,
+an exception will be thrown.
+ This is a convenient way to avoid needing
+to have two calls to Should-NotInvoke like this:
+
+Should-NotInvoke SomeCommand -Times 1 -ParameterFilter \{ $something -eq $true \}
+Should-NotInvoke SomeCommand -Times 0 -ParameterFilter \{ $something -ne $true \}
+
+```yaml
+Type: System.Management.Automation.ScriptBlock
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: ExclusiveFilter
+  Position: Named
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: Default
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
+
+### -ModuleName
+
+The module where the mock being checked was injected.
+ This is optional,
+and must match the ModuleName that was used when setting up the Mock.
+
+```yaml
+Type: System.String
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Default
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -ParameterFilter
@@ -144,68 +242,20 @@ calls to the mock whose parameters cause this filter to return true
 will be counted.
 
 ```yaml
-Type: ScriptBlock
-Parameter Sets: Default
-Aliases:
-
-Required: False
-Position: Named
-Default value: { $True }
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ExclusiveFilter
-
-Like ParameterFilter, except when you use ExclusiveFilter, and there
-were any calls to the mocked command which do not match the filter,
-an exception will be thrown. 
-This is a convenient way to avoid needing
-to have two calls to Should-NotInvoke like this:
-
-Should-NotInvoke SomeCommand -Times 1 -ParameterFilter \{ $something -eq $true \}
-Should-NotInvoke SomeCommand -Times 0 -ParameterFilter \{ $something -ne $true \}
-
-```yaml
-Type: ScriptBlock
-Parameter Sets: Default
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-```yaml
-Type: ScriptBlock
-Parameter Sets: ExclusiveFilter
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ModuleName
-
-The module where the mock being checked was injected. 
-This is optional,
-and must match the ModuleName that was used when setting up the Mock.
-
-```yaml
-Type: String
-Parameter Sets: Default
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.ScriptBlock
+DefaultValue: '{ $True }'
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Default
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -Scope
@@ -222,52 +272,42 @@ Context, the command will identify all calls to the mocked command in the
 current Describe / Context block, as well as all child scopes of that block.
 
 ```yaml
-Type: String
-Parameter Sets: Default
-Aliases:
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.String
+DefaultValue: 0
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Default
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
-### -Exactly
+### -Times
 
-If this switch is present, the number specified in Times must match
-exactly the number of times the mock has been called.
-Otherwise it
-must match "at least" the number of times specified. 
-If the value
-passed to the Times parameter is zero, the Exactly switch is implied.
+The number of times that the mock must be called to avoid an exception
+from throwing.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: Default
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Because
-
-The reason why the mock should be called.
-
-```yaml
-Type: String
-Parameter Sets: Default, Verifiable
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Int32
+DefaultValue: 1
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Default
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -Verifiable
@@ -275,20 +315,28 @@ Accept wildcard characters: False
 Makes sure that all verifiable mocks were called.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: Verifiable
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: False
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Verifiable
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### CommonParameters
 
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable,
+-InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable,
+-ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see
+[about_CommonParameters](https://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
@@ -297,10 +345,10 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## NOTES
 
 The parameter filter passed to Should-NotInvoke does not necessarily have to match the parameter filter
-(if any) which was used to create the Mock. 
-Should-NotInvoke will find any entry in the command history
-which matches its parameter filter, regardless of how the Mock was created. 
-However, if any calls to the
+(if any) which was used to create the Mock.
+ Should-NotInvoke will find any entry in the command history
+which matches its parameter filter, regardless of how the Mock was created.
+ However, if any calls to the
 mocked command are made which did not match any mock's parameter filter (resulting in the original command
 being executed instead of a mock), these calls to the original command are not tracked in the call history.
 In other words, Should-NotInvoke can only be used to check for calls to the mocked implementation, not
@@ -314,10 +362,9 @@ See https://pester.dev/docs/assertions/soft-assertions for more about soft asser
 
 ## RELATED LINKS
 
-[https://pester.dev/docs/commands/Should-NotInvoke](https://pester.dev/docs/commands/Should-NotInvoke)
-
-[https://pester.dev/docs/assertions](https://pester.dev/docs/assertions)
+- [https://pester.dev/docs/commands/Should-NotInvoke](https://pester.dev/docs/commands/Should-NotInvoke)
+- [https://pester.dev/docs/assertions](https://pester.dev/docs/assertions)
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 6.0.0-rc5](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.0.0](https://github.com/pester/pester).*

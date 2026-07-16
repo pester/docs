@@ -24,23 +24,23 @@ entries, whether it is ordered, and that it contains specific keys.
 ## SYNTAX
 
 ```powershell
-Should-BeHashtable [[-Actual] <Object>] [-Count <Int32>] [-Key <String[]>] [-Ordered] [-Because <String>]
- [<CommonParameters>]
+Should-BeHashtable [[-Actual] <Object>] [-Count <int>] [-Key <string[]>] [-Ordered]
+ [-Because <string>]
 ```
 
 ## DESCRIPTION
 
 `Should-BeHashtable` is a shape assertion.
 It verifies that `$Actual` is a hashtable or
-dictionary (anything implementing `System.Collections.IDictionary`, such as `@\{\}`,
-`[ordered]@\{\}` or a generic `Dictionary[,]`).
+dictionary (anything implementing `System.Collections.IDictionary`, such as `@{}`,
+`[ordered]@{}` or a generic `Dictionary[,]`).
 
 It does not compare the contents of the dictionary.
 Use the optional parameters to assert on
 the shape of the dictionary:
 
 - `-Count` checks the number of entries.
-- `-Ordered` checks that the value is an ordered dictionary (`[ordered]@\{\}`).
+- `-Ordered` checks that the value is an ordered dictionary (`[ordered]@{}`).
 - `-Key` checks that the given keys are present, ignoring their values.
 When combined with
   `-Ordered`, the keys must also appear in the given relative order.
@@ -90,15 +90,41 @@ The value to test.
 It is expected to be a hashtable or dictionary.
 
 ```yaml
-Type: Object
-Parameter Sets: (All)
-Aliases:
+Type: System.Object
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: true
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
 
-Required: False
-Position: 2
-Default value: None
-Accept pipeline input: True (ByValue)
-Accept wildcard characters: False
+### -Because
+
+The reason why the input should be a hashtable with the expected shape.
+
+```yaml
+Type: System.String
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -Count
@@ -106,15 +132,20 @@ Accept wildcard characters: False
 Checks that the dictionary has the expected number of entries.
 
 ```yaml
-Type: Int32
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Int32
+DefaultValue: 0
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -Key
@@ -126,56 +157,55 @@ When `-Ordered` is also specified, the keys must appear in the dictionary in
 the same relative order as they are listed here.
 
 ```yaml
-Type: String[]
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.String[]
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -Ordered
 
 Checks that the dictionary is an ordered dictionary (`System.Collections.Specialized.OrderedDictionary`),
-as produced by `[ordered]@\{\}`.
+as produced by `[ordered]@{}`.
 A plain `[hashtable]` is unordered and fails this check.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Because
-
-The reason why the input should be a hashtable with the expected shape.
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: False
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### CommonParameters
 
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable,
+-InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable,
+-ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see
+[about_CommonParameters](https://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
+
+### System.Object
 
 ## OUTPUTS
 
@@ -193,10 +223,9 @@ See https://pester.dev/docs/assertions/soft-assertions for more about soft asser
 
 ## RELATED LINKS
 
-[https://pester.dev/docs/commands/Should-BeHashtable](https://pester.dev/docs/commands/Should-BeHashtable)
-
-[https://pester.dev/docs/assertions](https://pester.dev/docs/assertions)
+- [https://pester.dev/docs/commands/Should-BeHashtable](https://pester.dev/docs/commands/Should-BeHashtable)
+- [https://pester.dev/docs/assertions](https://pester.dev/docs/assertions)
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 6.0.0-rc5](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.0.0](https://github.com/pester/pester).*

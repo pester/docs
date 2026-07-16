@@ -23,7 +23,7 @@ Exports a Pester result-object to an NUnit-compatible XML-report
 ## SYNTAX
 
 ```powershell
-Export-NUnitReport [-Result] <Run> [-Path] <String> [[-Format] <String>] [<CommonParameters>]
+Export-NUnitReport [-Result] <Run> [-Path] <string> [[-Format] <string>]
 ```
 
 ## DESCRIPTION
@@ -53,22 +53,25 @@ exports it as an NUnit 2.5-compatible XML-report.
 
 ## PARAMETERS
 
-### -Result
+### -Format
 
-Result object from a Pester-run.
-This can be retrieved using Invoke-Pester
--Passthru or by using the Run.PassThru configuration-option.
+Specifies the NUnit-schema to be used.
 
 ```yaml
-Type: Run
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: 1
-Default value: None
-Accept pipeline input: True (ByValue)
-Accept wildcard characters: False
+Type: System.String
+DefaultValue: NUnit2.5
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: 2
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -Path
@@ -76,38 +79,55 @@ Accept wildcard characters: False
 The path where the XML-report should be saved.
 
 ```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: 2
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.String
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: 1
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
-### -Format
+### -Result
 
-Specifies the NUnit-schema to be used.
+Result object from a Pester-run.
+This can be retrieved using Invoke-Pester
+-Passthru or by using the Run.PassThru configuration-option.
 
 ```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 3
-Default value: NUnit2.5
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: Pester.Run
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: 0
+  IsRequired: true
+  ValueFromPipeline: true
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### CommonParameters
 
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable,
+-InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable,
+-ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see
+[about_CommonParameters](https://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
+
+### Pester.Run
 
 ## OUTPUTS
 
@@ -115,10 +135,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[https://pester.dev/docs/commands/Export-NUnitReport](https://pester.dev/docs/commands/Export-NUnitReport)
-
-[https://pester.dev/docs/commands/Invoke-Pester](https://pester.dev/docs/commands/Invoke-Pester)
+- [https://pester.dev/docs/commands/Export-NUnitReport](https://pester.dev/docs/commands/Export-NUnitReport)
+- [https://pester.dev/docs/commands/Invoke-Pester](https://pester.dev/docs/commands/Invoke-Pester)
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 6.0.0-rc5](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.0.0](https://github.com/pester/pester).*

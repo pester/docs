@@ -24,7 +24,7 @@ the current Context or Describe block.
 ## SYNTAX
 
 ```powershell
-BeforeEach [-Scriptblock] <ScriptBlock> [<CommonParameters>]
+BeforeEach [-Scriptblock] <scriptblock>
 ```
 
 ## DESCRIPTION
@@ -72,20 +72,28 @@ The example uses BeforeEach to ensure a clean sample-file is used for each test.
 A scriptblock with steps to be executed during setup.
 
 ```yaml
-Type: ScriptBlock
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: 2
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.ScriptBlock
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: 1
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### CommonParameters
 
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable,
+-InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable,
+-ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see
+[about_CommonParameters](https://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
@@ -95,10 +103,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[https://pester.dev/docs/commands/BeforeEach](https://pester.dev/docs/commands/BeforeEach)
-
-[https://pester.dev/docs/usage/setup-and-teardown](https://pester.dev/docs/usage/setup-and-teardown)
+- [https://pester.dev/docs/commands/BeforeEach](https://pester.dev/docs/commands/BeforeEach)
+- [https://pester.dev/docs/usage/setup-and-teardown](https://pester.dev/docs/usage/setup-and-teardown)
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 6.0.0-rc5](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.0.0](https://github.com/pester/pester).*

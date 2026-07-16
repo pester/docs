@@ -24,7 +24,7 @@ and another one that contains its tests.
 ## SYNTAX
 
 ```powershell
-New-Fixture [-Name] <String> [[-Path] <String>] [<CommonParameters>]
+New-Fixture [-Name] <string> [[-Path] <string>]
 ```
 
 ## DESCRIPTION
@@ -90,15 +90,20 @@ Creates a new folder named Cleaner in the current directory and creates the scri
 Defines the name of the function and the name of the test to be created.
 
 ```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: 1
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.String
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: 0
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -Path
@@ -107,20 +112,28 @@ Defines path where the test and the function should be created, you can use full
 If the parameter is not specified the scripts are created in the current directory.
 
 ```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 2
-Default value: $PWD
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.String
+DefaultValue: $PWD
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### CommonParameters
 
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable,
+-InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable,
+-ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see
+[about_CommonParameters](https://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
@@ -132,16 +145,12 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[https://pester.dev/docs/commands/New-Fixture](https://pester.dev/docs/commands/New-Fixture)
-
-[https://pester.dev/docs/commands/Describe](https://pester.dev/docs/commands/Describe)
-
-[https://pester.dev/docs/commands/Context](https://pester.dev/docs/commands/Context)
-
-[https://pester.dev/docs/commands/It](https://pester.dev/docs/commands/It)
-
-[https://pester.dev/docs/commands/Should](https://pester.dev/docs/commands/Should)
+- [https://pester.dev/docs/commands/New-Fixture](https://pester.dev/docs/commands/New-Fixture)
+- [https://pester.dev/docs/commands/Describe](https://pester.dev/docs/commands/Describe)
+- [https://pester.dev/docs/commands/Context](https://pester.dev/docs/commands/Context)
+- [https://pester.dev/docs/commands/It](https://pester.dev/docs/commands/It)
+- [https://pester.dev/docs/commands/Should](https://pester.dev/docs/commands/Should)
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 6.0.0-rc5](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.0.0](https://github.com/pester/pester).*

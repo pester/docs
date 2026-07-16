@@ -25,15 +25,15 @@ Runs Pester tests
 ### Simple (Default)
 
 ```powershell
-Invoke-Pester [[-Path] <String[]>] [-ExcludePath <String[]>] [-TagFilter <String[]>]
- [-ExcludeTagFilter <String[]>] [-FullNameFilter <String[]>] [-CI] [-Output <String>] [-PassThru]
- [-Container <ContainerInfo[]>] [<CommonParameters>]
+Invoke-Pester [[-Path] <string[]>] [-ExcludePath <string[]>] [-TagFilter <string[]>]
+ [-ExcludeTagFilter <string[]>] [-FullNameFilter <string[]>] [-CI] [-Output <string>] [-PassThru]
+ [-Container <ContainerInfo[]>]
 ```
 
 ### Advanced
 
 ```powershell
-Invoke-Pester [-Configuration <PesterConfiguration>] [<CommonParameters>]
+Invoke-Pester [-Configuration <PesterConfiguration>]
 ```
 
 ## DESCRIPTION
@@ -121,94 +121,6 @@ to see other testresult options like  output path and format and their default v
 
 ## PARAMETERS
 
-### -Path
-
-Specifies one or more paths to files containing tests.
-The value is a path\file
-name or name pattern.
-Wildcards are permitted.
-
-```yaml
-Type: String[]
-Parameter Sets: Simple
-Aliases:
-
-Required: False
-Position: 1
-Default value: .
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ExcludePath
-
-Specifies one or more paths to exclude from the test run.
-Equivalent to ConfigurationProperty Run.ExcludePath.
-
-```yaml
-Type: String[]
-Parameter Sets: Simple
-Aliases:
-
-Required: False
-Position: Named
-Default value: @()
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -TagFilter
-
-Specifies tags to include in the test run.
-Only tests with matching tags will run.
-Equivalent to ConfigurationProperty Filter.Tag.
-
-```yaml
-Type: String[]
-Parameter Sets: Simple
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ExcludeTagFilter
-
-Specifies tags to exclude from the test run.
-Equivalent to ConfigurationProperty Filter.ExcludeTag.
-
-```yaml
-Type: String[]
-Parameter Sets: Simple
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -FullNameFilter
-
-Specifies test full names (including Describe/Context/It path) to run.
-Equivalent to ConfigurationProperty Filter.FullName.
-
-```yaml
-Type: String[]
-Parameter Sets: Simple
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -CI
 
 Enable Test Results and Exit after Run.
@@ -221,15 +133,133 @@ To also enable CodeCoverage use this configuration option:
     CodeCoverage.Enabled = $true
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: Simple
-Aliases:
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: False
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Simple
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
 
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
+### -Configuration
+
+[PesterConfiguration] object for Advanced Configuration created using `New-PesterConfiguration`.
+For help on each option see about_PesterConfiguration or inspect the object.
+
+```yaml
+Type: PesterConfiguration
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Advanced
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
+
+### -Container
+
+Specifies one or more ContainerInfo-objects that define containers with tests.
+ContainerInfo-objects are generated using New-PesterContainer.
+Useful for
+scenarios where data-driven test are generated, e.g.
+parametrized test files.
+
+```yaml
+Type: Pester.ContainerInfo[]
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Simple
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
+
+### -ExcludePath
+
+Specifies one or more paths to exclude from the test run.
+Equivalent to ConfigurationProperty Run.ExcludePath.
+
+```yaml
+Type: System.String[]
+DefaultValue: '@()'
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Simple
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
+
+### -ExcludeTagFilter
+
+Specifies tags to exclude from the test run.
+Equivalent to ConfigurationProperty Filter.ExcludeTag.
+
+```yaml
+Type: System.String[]
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Simple
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
+
+### -FullNameFilter
+
+Specifies test full names (including Describe/Context/It path) to run.
+Equivalent to ConfigurationProperty Filter.FullName.
+
+```yaml
+Type: System.String[]
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Simple
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -Output
@@ -241,15 +271,20 @@ Equivalent to ConfigurationProperty Output.Verbosity.
 Default value is: Normal
 
 ```yaml
-Type: String
-Parameter Sets: Simple
-Aliases:
-
-Required: False
-Position: Named
-Default value: Normal
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.String
+DefaultValue: Normal
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Simple
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -PassThru
@@ -262,57 +297,75 @@ Equivalent to ConfigurationProperty Run.PassThru.
 To suppress the host output, use the Output parameter with value None.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: Simple
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: False
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Simple
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
-### -Container
+### -Path
 
-Specifies one or more ContainerInfo-objects that define containers with tests.
-ContainerInfo-objects are generated using New-PesterContainer.
-Useful for
-scenarios where data-driven test are generated, e.g.
-parametrized test files.
+Specifies one or more paths to files containing tests.
+The value is a path\file
+name or name pattern.
+Wildcards are permitted.
 
 ```yaml
-Type: ContainerInfo[]
-Parameter Sets: Simple
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.String[]
+DefaultValue: .
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Simple
+  Position: 0
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
-### -Configuration
+### -TagFilter
 
-[PesterConfiguration] object for Advanced Configuration created using `New-PesterConfiguration`.
-For help on each option see about_PesterConfiguration or inspect the object.
+Specifies tags to include in the test run.
+Only tests with matching tags will run.
+Equivalent to ConfigurationProperty Filter.Tag.
 
 ```yaml
-Type: PesterConfiguration
-Parameter Sets: Advanced
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.String[]
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Simple
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### CommonParameters
 
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable,
+-InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable,
+-ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see
+[about_CommonParameters](https://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
@@ -324,10 +377,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[https://pester.dev/docs/commands/Invoke-Pester](https://pester.dev/docs/commands/Invoke-Pester)
-
-[https://pester.dev/docs/quick-start](https://pester.dev/docs/quick-start)
+- [https://pester.dev/docs/commands/Invoke-Pester](https://pester.dev/docs/commands/Invoke-Pester)
+- [https://pester.dev/docs/quick-start](https://pester.dev/docs/quick-start)
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 6.0.0-rc5](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.0.0](https://github.com/pester/pester).*

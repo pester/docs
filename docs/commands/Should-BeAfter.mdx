@@ -25,25 +25,25 @@ Asserts that the provided [datetime] is after the expected [datetime].
 ### Now (Default)
 
 ```powershell
-Should-BeAfter [[-Actual] <Object>] [-Now] [-Because <String>] [<CommonParameters>]
+Should-BeAfter [[-Actual] <Object>] [-Now] [-Because <string>]
 ```
 
 ### FluentFromNow
 
 ```powershell
-Should-BeAfter [[-Actual] <Object>] [[-Time] <String>] [-FromNow] [-Because <String>] [<CommonParameters>]
+Should-BeAfter [[-Time] <string>] [[-Actual] <Object>] -FromNow [-Because <string>]
 ```
 
 ### FluentAgo
 
 ```powershell
-Should-BeAfter [[-Actual] <Object>] [[-Time] <String>] [-Ago] [-Because <String>] [<CommonParameters>]
+Should-BeAfter [[-Time] <string>] [[-Actual] <Object>] -Ago [-Because <string>]
 ```
 
 ### Expected
 
 ```powershell
-Should-BeAfter [[-Actual] <Object>] [[-Expected] <DateTime>] [-Because <String>] [<CommonParameters>]
+Should-BeAfter [[-Expected] <datetime>] [[-Actual] <Object>] [-Because <string>]
 ```
 
 ## DESCRIPTION
@@ -92,15 +92,104 @@ This assertion will pass, because the actual value is after the expected value.
 The actual [datetime] value.
 
 ```yaml
-Type: Object
-Parameter Sets: (All)
-Aliases:
+Type: System.Object
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: 2
+  IsRequired: false
+  ValueFromPipeline: true
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
 
-Required: False
-Position: 3
-Default value: None
-Accept pipeline input: True (ByValue)
-Accept wildcard characters: False
+### -Ago
+
+Indicates that the -Time should be subtracted from the current time.
+
+```yaml
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: False
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: FluentAgo
+  Position: Named
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
+
+### -Because
+
+The reason why the actual value should be after the expected value.
+
+```yaml
+Type: System.String
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
+
+### -Expected
+
+The expected [datetime] value.
+
+```yaml
+Type: System.DateTime
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Expected
+  Position: 0
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
+
+### -FromNow
+
+Indicates that the -Time should be added to the current time.
+
+```yaml
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: False
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: FluentFromNow
+  Position: Named
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -Now
@@ -108,15 +197,20 @@ Accept wildcard characters: False
 Indicates that the current time should be used as the expected time.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: Now
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: False
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Now
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -Time
@@ -126,86 +220,38 @@ This parameter uses fluent time syntax e.g.
 1minute.
 
 ```yaml
-Type: String
-Parameter Sets: FluentFromNow, FluentAgo
-Aliases:
-
-Required: False
-Position: 1
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Ago
-
-Indicates that the -Time should be subtracted from the current time.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: FluentAgo
-Aliases:
-
-Required: True
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -FromNow
-
-Indicates that the -Time should be added to the current time.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: FluentFromNow
-Aliases:
-
-Required: True
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Expected
-
-The expected [datetime] value.
-
-```yaml
-Type: DateTime
-Parameter Sets: Expected
-Aliases:
-
-Required: False
-Position: 1
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Because
-
-The reason why the actual value should be after the expected value.
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.String
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: FluentFromNow
+  Position: 0
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: FluentAgo
+  Position: 0
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### CommonParameters
 
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable,
+-InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable,
+-ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see
+[about_CommonParameters](https://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
+
+### System.Object
 
 ## OUTPUTS
 
@@ -221,10 +267,9 @@ See https://pester.dev/docs/assertions/soft-assertions for more about soft asser
 
 ## RELATED LINKS
 
-[https://pester.dev/docs/commands/Should-BeAfter](https://pester.dev/docs/commands/Should-BeAfter)
-
-[https://pester.dev/docs/assertions](https://pester.dev/docs/assertions)
+- [https://pester.dev/docs/commands/Should-BeAfter](https://pester.dev/docs/commands/Should-BeAfter)
+- [https://pester.dev/docs/assertions](https://pester.dev/docs/assertions)
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 6.0.0-rc5](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.0.0](https://github.com/pester/pester).*

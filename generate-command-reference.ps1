@@ -32,9 +32,9 @@ Write-Host 'Generating MDX files for website Command Reference' -BackgroundColor
 # Install required modules
 # -----------------------------------------------------------------------------
 $ModuleList = [ordered]@{
-    'PlatyPS'                    = $PlatyPSVersion
-    'Alt3.Docusaurus.PowerShell' = $DocusaurusVersion
-    'Pester'                     = $PesterVersion
+    'Microsoft.PowerShell.PlatyPS'   = $PlatyPSVersion
+    'Alt3.Docusaurus.PowerShell'     = $DocusaurusVersion
+    'Pester'                         = $PesterVersion
 }
 # Can't use the original enumerator here because we may modify the dictionary mid-process
 $ModuleList.Keys.Clone() | ForEach-Object {
@@ -238,24 +238,24 @@ function Format-SyntaxCommonParameters {
 # '[<CommonParameters>]' back onto its own line where the result would exceed PlatyPS's
 # syntax wrap width, matching the layout PlatyPS produces without ProgressAction.
 # -----------------------------------------------------------------------------
-Write-Host 'Post-processing generated MDX files (ProgressAction, example fences)' -ForegroundColor Magenta
-$commandsFolder = Join-Path -Path $docusaurusOptions.DocsFolder -ChildPath $docusaurusOptions.Sidebar
-Get-ChildItem -Path $commandsFolder -Filter '*.mdx' | ForEach-Object {
-    $content = Get-Content -LiteralPath $_.FullName -Raw
-    # Pull '[<CommonParameters>]' back up when removing ProgressAction would orphan it
-    $updated = $content -replace '[ ]*\[-ProgressAction <ActionPreference>\][ ]*\r?\n[ ]*\[<CommonParameters>\]', ' [<CommonParameters>]'
-    # Remove any remaining ' [-ProgressAction <ActionPreference>]' from the SYNTAX code-blocks
-    $updated = $updated -replace '[ ]*(\r?\n[ ]*)?\[-ProgressAction <ActionPreference>\]', ''
-    # Remove the dedicated '### -ProgressAction' section up to the next '### ' heading
-    $updated = $updated -replace '(?ms)^### -ProgressAction\r?\n.*?(?=^### )', ''
-    # Re-wrap '[<CommonParameters>]' onto its own line where the SYNTAX line is too long
-    $updated = Format-SyntaxCommonParameters -Content $updated
-    # Fix mismatched code fences inside the EXAMPLES section
-    $updated = Repair-ExampleFences -Content $updated
-    if ($updated -ne $content) {
-        Set-Content -LiteralPath $_.FullName -Value $updated -NoNewline -Encoding utf8
-    }
-}
+# Write-Host 'Post-processing generated MDX files (ProgressAction, example fences)' -ForegroundColor Magenta
+# $commandsFolder = Join-Path -Path $docusaurusOptions.DocsFolder -ChildPath $docusaurusOptions.Sidebar
+# Get-ChildItem -Path $commandsFolder -Filter '*.mdx' | ForEach-Object {
+#     $content = Get-Content -LiteralPath $_.FullName -Raw
+#     # Pull '[<CommonParameters>]' back up when removing ProgressAction would orphan it
+#     $updated = $content -replace '[ ]*\[-ProgressAction <ActionPreference>\][ ]*\r?\n[ ]*\[<CommonParameters>\]', ' [<CommonParameters>]'
+#     # Remove any remaining ' [-ProgressAction <ActionPreference>]' from the SYNTAX code-blocks
+#     $updated = $updated -replace '[ ]*(\r?\n[ ]*)?\[-ProgressAction <ActionPreference>\]', ''
+#     # Remove the dedicated '### -ProgressAction' section up to the next '### ' heading
+#     $updated = $updated -replace '(?ms)^### -ProgressAction\r?\n.*?(?=^### )', ''
+#     # Re-wrap '[<CommonParameters>]' onto its own line where the SYNTAX line is too long
+#     $updated = Format-SyntaxCommonParameters -Content $updated
+#     # Fix mismatched code fences inside the EXAMPLES section
+#     $updated = Repair-ExampleFences -Content $updated
+#     if ($updated -ne $content) {
+#         Set-Content -LiteralPath $_.FullName -Value $updated -NoNewline -Encoding utf8
+#     }
+# }
 
 Write-Host 'Render completed successfully' -BackgroundColor DarkGreen
 Pop-Location

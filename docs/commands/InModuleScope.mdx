@@ -24,8 +24,8 @@ scope of a PowerShell script or manifest module.
 ## SYNTAX
 
 ```powershell
-InModuleScope [-ModuleName] <String> [-ScriptBlock] <ScriptBlock> [[-Parameters] <Hashtable>]
- [[-ArgumentList] <Object[]>] [<CommonParameters>]
+InModuleScope [-ModuleName] <string> [-ScriptBlock] <scriptblock> [[-Parameters] <hashtable>]
+ [[-ArgumentList] <Object[]>]
 ```
 
 ## DESCRIPTION
@@ -122,6 +122,27 @@ them in using `-Parameters` or `-ArgumentList`.
 
 ## PARAMETERS
 
+### -ArgumentList
+
+A optional list of arguments to be passed to the scriptblock.
+
+```yaml
+Type: System.Object[]
+DefaultValue: '@()'
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: 3
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
+
 ### -ModuleName
 
 The name of the module into which the test code should be
@@ -130,31 +151,20 @@ This module must already be loaded into the current
 PowerShell session.
 
 ```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: 1
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ScriptBlock
-
-The code to be executed within the script or manifest module.
-
-```yaml
-Type: ScriptBlock
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: 2
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.String
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: 0
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -Parameters
@@ -163,36 +173,49 @@ A optional hashtable of parameters to be passed to the scriptblock.
 Parameters are automatically made available as variables in the scriptblock.
 
 ```yaml
-Type: Hashtable
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 3
-Default value: @{}
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Collections.Hashtable
+DefaultValue: '@{}'
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: 2
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
-### -ArgumentList
+### -ScriptBlock
 
-A optional list of arguments to be passed to the scriptblock.
+The code to be executed within the script or manifest module.
 
 ```yaml
-Type: Object[]
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 4
-Default value: @()
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.ScriptBlock
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: 1
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### CommonParameters
 
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable,
+-InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable,
+-ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see
+[about_CommonParameters](https://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
@@ -202,8 +225,8 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[https://pester.dev/docs/commands/InModuleScope](https://pester.dev/docs/commands/InModuleScope)
+- [https://pester.dev/docs/commands/InModuleScope](https://pester.dev/docs/commands/InModuleScope)
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 6.0.0-rc5](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.0.0](https://github.com/pester/pester).*

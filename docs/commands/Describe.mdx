@@ -23,8 +23,8 @@ Creates a logical group of tests.
 ## SYNTAX
 
 ```powershell
-Describe [-Name] <String> [-Tag <String[]>] [[-Fixture] <ScriptBlock>] [-Skip] [-AllowNullOrEmptyForEach]
- [-ForEach <Object>] [<CommonParameters>]
+Describe [-Name] <string> [[-Fixture] <scriptblock>] [-Tag <string[]>] [-Skip]
+ [-AllowNullOrEmptyForEach] [-ForEach <Object>]
 ```
 
 ## DESCRIPTION
@@ -32,8 +32,8 @@ Describe [-Name] <String> [-Tag <String[]>] [[-Fixture] <ScriptBlock>] [-Skip] [
 Creates a logical group of tests.
 All Mocks, TestDrive and TestRegistry contents
 defined within a Describe block are scoped to that Describe; they
-will no longer be present when the Describe block exits. 
-A Describe
+will no longer be present when the Describe block exits.
+ A Describe
 block may contain any number of Context and It blocks.
 
 ## EXAMPLES
@@ -74,41 +74,26 @@ Using Describe to group tests logically at the root of the script/container
 
 ## PARAMETERS
 
-### -Name
+### -AllowNullOrEmptyForEach
 
-The name of the test group.
-This is often an expressive phrase describing
-the scenario being tested.
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: 1
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Tag
-
-Optional parameter containing an array of strings.
-When calling Invoke-Pester,
-it is possible to specify a -Tag parameter which will only execute Describe blocks
-containing the same Tag.
+Allows empty or null values for -ForEach when Run.FailOnNullOrEmptyForEach is enabled.
+This might be excepted in certain scenarios like using external data.
 
 ```yaml
-Type: String[]
-Parameter Sets: (All)
-Aliases: Tags
-
-Required: False
-Position: Named
-Default value: @()
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: False
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -Fixture
@@ -122,50 +107,20 @@ Assertions are
 typically performed by the Should command within the It blocks.
 
 ```yaml
-Type: ScriptBlock
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 2
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Skip
-
-Use this parameter to explicitly mark the block to be skipped.
-This is preferable to temporarily
-commenting out a block, because it remains listed in the output.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -AllowNullOrEmptyForEach
-
-Allows empty or null values for -ForEach when Run.FailOnNullOrEmptyForEach is enabled.
-This might be excepted in certain scenarios like using external data.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.ScriptBlock
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -ForEach
@@ -177,20 +132,99 @@ When the array is an array of hashtables, it additionally
 defines each key in the hashtable as variable.
 
 ```yaml
-Type: Object
-Parameter Sets: (All)
-Aliases:
+Type: System.Object
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
 
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+### -Name
+
+The name of the test group.
+This is often an expressive phrase describing
+the scenario being tested.
+
+```yaml
+Type: System.String
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: 0
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
+
+### -Skip
+
+Use this parameter to explicitly mark the block to be skipped.
+This is preferable to temporarily
+commenting out a block, because it remains listed in the output.
+
+```yaml
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: False
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
+
+### -Tag
+
+Optional parameter containing an array of strings.
+When calling Invoke-Pester,
+it is possible to specify a -Tag parameter which will only execute Describe blocks
+containing the same Tag.
+
+```yaml
+Type: System.String[]
+DefaultValue: '@()'
+SupportsWildcards: false
+Aliases:
+- Tags
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### CommonParameters
 
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable,
+-InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable,
+-ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see
+[about_CommonParameters](https://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
@@ -200,14 +234,11 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[https://pester.dev/docs/commands/Describe](https://pester.dev/docs/commands/Describe)
-
-[https://pester.dev/docs/usage/test-file-structure](https://pester.dev/docs/usage/test-file-structure)
-
-[https://pester.dev/docs/usage/mocking](https://pester.dev/docs/usage/mocking)
-
-[https://pester.dev/docs/usage/testdrive](https://pester.dev/docs/usage/testdrive)
+- [https://pester.dev/docs/commands/Describe](https://pester.dev/docs/commands/Describe)
+- [https://pester.dev/docs/usage/test-file-structure](https://pester.dev/docs/usage/test-file-structure)
+- [https://pester.dev/docs/usage/mocking](https://pester.dev/docs/usage/mocking)
+- [https://pester.dev/docs/usage/testdrive](https://pester.dev/docs/usage/testdrive)
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 6.0.0-rc5](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.0.0](https://github.com/pester/pester).*
