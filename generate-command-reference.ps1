@@ -121,13 +121,6 @@ New-DocusaurusHelp @docusaurusOptions
 
 function Repair-ExampleFences {
     <#
-        Pester's source comment-based help embeds Markdown code fences (```powershell
-        ... ```), including a 'powereshell' typo, inside its .EXAMPLE blocks. PlatyPS
-        double-wraps these, emitting mismatched fences - a bare ``` opening paired with
-        a ```powershell "closing" fence, sometimes doubled up. MDX 3 then mispairs the
-        fences, treating an example's PowerShell '@{ ... }' as a JSX expression, which
-        breaks the Docusaurus build ("Could not parse expression with acorn").
-
         Normalize fences inside the EXAMPLES section only: collapse runs of adjacent
         fence lines and alternate them open/close per example, so each example becomes a
         single well-formed ```powershell code block followed by its description. The
@@ -177,7 +170,7 @@ function Repair-ExampleFences {
             }
             if (-not $inCode) {
                 $lang = $langs | Where-Object { $_ -ne '' } | Select-Object -First 1
-                if (-not $lang -or $lang -eq 'powereshell') { $lang = 'powershell' }
+                if (-not $lang) { $lang = 'powershell' }
                 $result.Add('```' + $lang)
                 $inCode = $true
             }
@@ -205,6 +198,7 @@ $commandsFolder = Join-Path -Path $docusaurusOptions.DocsFolder -ChildPath $docu
 Get-ChildItem -Path $commandsFolder -Filter '*.mdx' | ForEach-Object {
     $content = Get-Content -LiteralPath $_.FullName -Raw
     # Fix mismatched code fences inside the EXAMPLES section
+    # TODO: Remove? Not really needed. Only fixed two earlier typos in pester/pester repo.
     $updated = Repair-ExampleFences -Content $content
     if ($updated -ne $content) {
         Set-Content -LiteralPath $_.FullName -Value $updated -NoNewline -Encoding utf8
