@@ -23,8 +23,8 @@ param (
     [ValidateSet('Current','v4','v5')]
     [string] $DocsVersion = 'Current'
 )
-Set-StrictMode -Version Latest
-$PSDefaultParameterValues['*:ErrorAction'] = 'Stop'
+# Set-StrictMode -Version Latest
+# $PSDefaultParameterValues['*:ErrorAction'] = 'Stop'
 
 Write-Host 'Generating MDX files for website Command Reference' -BackgroundColor DarkGreen
 
@@ -32,9 +32,9 @@ Write-Host 'Generating MDX files for website Command Reference' -BackgroundColor
 # Install required modules
 # -----------------------------------------------------------------------------
 $ModuleList = [ordered]@{
-    'Microsoft.PowerShell.PlatyPS'   = $PlatyPSVersion
-    'Alt3.Docusaurus.PowerShell'     = $DocusaurusVersion
-    'Pester'                         = $PesterVersion
+    'Microsoft.PowerShell.PlatyPS' = $PlatyPSVersion
+    'Alt3.Docusaurus.PowerShell'   = $DocusaurusVersion
+    'Pester'                       = $PesterVersion
 }
 # Can't use the original enumerator here because we may modify the dictionary mid-process
 $ModuleList.Keys.Clone() | ForEach-Object {
@@ -72,7 +72,6 @@ $ModuleList.Keys.Clone() | ForEach-Object {
 # Use below settings to manipulate the rendered MDX files
 # -----------------------------------------------------------------------------
 $docusaurusOptions = @{
-    Module          = 'Pester'
     DocsFolder      = switch ($DocsVersion) {
         'Current' { "$PSScriptRoot/docs" }
         'v5' { "$PSScriptRoot/versioned_docs/version-v5" }
@@ -86,7 +85,6 @@ $docusaurusOptions = @{
         'SafeGetCommand'
         'Set-DynamicParameterVariable'
     )
-    MetaDescription = 'Help page for the PowerShell Pester "%1" command'
     MetaKeywords    = @(
         'PowerShell'
         'Pester'
@@ -117,7 +115,11 @@ if (Test-Path -Path $outputFolder) {
 }
 
 Write-Host 'Generating new MDX files' -ForegroundColor Magenta
-New-DocusaurusHelp @docusaurusOptions
+$commandHelp = New-CommandHelp -CommandInfo (Get-Command -Module Pester -CommandType Cmdlet, Function)
+$commandHelp | ForEach-Object {
+    $_.Metadata['description'] = "Help page for the PowerShell Pester '$($_.Title)' command - $($_.Synopsis.ReplaceLineEndings(''))"
+}
+New-DocusaurusHelp @docusaurusOptions -CommandHelp $commandHelp
 
 function Repair-ExampleFences {
     <#

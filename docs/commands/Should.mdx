@@ -1,7 +1,7 @@
 ---
 id: Should
 title: Should
-description: Help page for the PowerShell Pester "Should" command
+description: Help page for the PowerShell Pester 'Should' command - Should is a keyword that is used to define an assertion inside an It block.
 keywords:
   - PowerShell
   - Pester
@@ -22,8 +22,179 @@ Should is a keyword that is used to define an assertion inside an It block.
 
 ## SYNTAX
 
+### Be
+
 ```powershell
-Should [[-ActualValue] <Object>]
+Should [[-ActualValue] <Object>] [[-ExpectedValue] <Object>] [[-Because] <Object>] [-Be] [-Not]
+```
+
+### BeExactly
+
+```powershell
+Should [[-ActualValue] <Object>] [[-ExpectedValue] <Object>] [[-Because] <Object>] [-Not]
+ [-BeExactly]
+```
+
+### BeGreaterThan
+
+```powershell
+Should [[-ActualValue] <Object>] [[-ExpectedValue] <Object>] [[-Because] <Object>] [-Not]
+ [-BeGreaterThan]
+```
+
+### BeLessOrEqual
+
+```powershell
+Should [[-ActualValue] <Object>] [[-ExpectedValue] <Object>] [[-Because] <Object>] [-Not]
+ [-BeLessOrEqual]
+```
+
+### BeIn
+
+```powershell
+Should [[-ActualValue] <Object>] [[-ExpectedValue] <Object>] [[-Because] <Object>] [-Not] [-BeIn]
+```
+
+### BeLessThan
+
+```powershell
+Should [[-ActualValue] <Object>] [[-ExpectedValue] <Object>] [[-Because] <Object>] [-Not]
+ [-BeLessThan]
+```
+
+### BeGreaterOrEqual
+
+```powershell
+Should [[-ActualValue] <Object>] [[-ExpectedValue] <Object>] [[-Because] <Object>] [-Not]
+ [-BeGreaterOrEqual]
+```
+
+### BeLike
+
+```powershell
+Should [[-ActualValue] <Object>] [[-ExpectedValue] <Object>] [[-Because] <Object>] [-Not] [-BeLike]
+```
+
+### BeLikeExactly
+
+```powershell
+Should [[-ActualValue] <Object>] [[-ExpectedValue] <Object>] [[-Because] <Object>] [-Not]
+ [-BeLikeExactly]
+```
+
+### BeNullOrEmpty
+
+```powershell
+Should [[-ActualValue] <Object>] [[-Because] <Object>] [-Not] [-BeNullOrEmpty]
+```
+
+### BeOfType
+
+```powershell
+Should [[-ActualValue] <Object>] [[-ExpectedType] <Object>] [[-Because] <Object>] [-Not] [-BeOfType]
+```
+
+### BeTrue
+
+```powershell
+Should [[-ActualValue] <Object>] [[-Because] <Object>] [-Not] [-BeTrue]
+```
+
+### BeFalse
+
+```powershell
+Should [[-ActualValue] <Object>] [[-Because] <Object>] [-Not] [-BeFalse]
+```
+
+### Contain
+
+```powershell
+Should [[-ActualValue] <Object>] [[-ExpectedValue] <Object>] [[-Because] <Object>] [-Not] [-Contain]
+```
+
+### Exist
+
+```powershell
+Should [[-ActualValue] <Object>] [[-Because] <Object>] [-LiteralPath] [-Not] [-Exist]
+```
+
+### FileContentMatch
+
+```powershell
+Should [[-ActualValue] <Object>] [[-ExpectedContent] <Object>] [[-Because] <Object>] [-Not]
+ [-FileContentMatch]
+```
+
+### FileContentMatchExactly
+
+```powershell
+Should [[-ActualValue] <Object>] [[-ExpectedContent] <Object>] [[-Because] <Object>] [-Not]
+ [-FileContentMatchExactly]
+```
+
+### FileContentMatchMultiline
+
+```powershell
+Should [[-ActualValue] <Object>] [[-ExpectedContent] <Object>] [[-Because] <Object>] [-Not]
+ [-FileContentMatchMultiline]
+```
+
+### FileContentMatchMultilineExactly
+
+```powershell
+Should [[-ActualValue] <Object>] [[-ExpectedContent] <Object>] [[-Because] <Object>] [-Not]
+ [-FileContentMatchMultilineExactly]
+```
+
+### HaveCount
+
+```powershell
+Should [[-ActualValue] <Object>] [[-ExpectedValue] <Object>] [[-Because] <Object>] [-Not]
+ [-HaveCount]
+```
+
+### HaveParameter
+
+```powershell
+Should [[-ActualValue] <Object>] [[-ParameterName] <Object>] [[-Type] <Object>]
+ [[-DefaultValue] <Object>] [-Mandatory] [[-InParameterSet] <Object>] [-HasArgumentCompleter]
+ [[-Alias] <Object>] [[-Because] <Object>] [-Not] [-HaveParameter]
+```
+
+### Match
+
+```powershell
+Should [[-ActualValue] <Object>] [[-RegularExpression] <Object>] [[-Because] <Object>] [-Not]
+ [-Match]
+```
+
+### MatchExactly
+
+```powershell
+Should [[-ActualValue] <Object>] [[-RegularExpression] <Object>] [[-Because] <Object>] [-Not]
+ [-MatchExactly]
+```
+
+### Throw
+
+```powershell
+Should [[-ActualValue] <Object>] [[-ExpectedMessage] <Object>] [[-ErrorId] <Object>]
+ [[-ExceptionType] <Object>] [[-Because] <Object>] [-PassThru] [-Not] [-Throw]
+```
+
+### InvokeVerifiable
+
+```powershell
+Should [[-ActualValue] <Object>] [[-Because] <Object>] [-Not] [-InvokeVerifiable]
+```
+
+### Invoke
+
+```powershell
+Should [[-ActualValue] <Object>] [[-CommandName] <Object>] [[-Times] <Object>]
+ [[-ParameterFilter] <Object>] [[-ExclusiveFilter] <Object>] [[-ModuleName] <Object>]
+ [[-Scope] <Object>] [-Exactly] [[-Because] <Object>] [[-CallerSessionState] <Object>]
+ [[-CommandDisplayName] <Object>] [-Not] [-Invoke]
 ```
 
 ## DESCRIPTION
