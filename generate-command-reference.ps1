@@ -8,8 +8,17 @@
   .EXAMPLE
     .\generate-command-reference.ps1
 
+    Update current (latest) docs using latest Pester version
+
   .EXAMPLE
-    .\generate-command-reference.ps1 -PesterVersion 4.10.1
+    .\generate-command-reference.ps1 -PesterVersion 6.0.0
+
+    Update current (latest) docs using Pester 6.0.0 explicitly
+
+  .EXAMPLE
+    .\generate-command-reference.ps1 -PesterVersion 5.9.0 -DocsVersion v5
+
+    Update versioned docs for v5 using explicit version 5.9.0
 
   .LINK
     https://docusaurus-powershell.netlify.app/docs/faq/ci-cd
@@ -23,10 +32,10 @@ param (
     [ValidateSet('Current','v4','v5')]
     [string] $DocsVersion = 'Current'
 )
-# Set-StrictMode -Version Latest
-# $PSDefaultParameterValues['*:ErrorAction'] = 'Stop'
+Set-StrictMode -Version Latest
+$PSDefaultParameterValues['*:ErrorAction'] = 'Stop'
 
-Write-Host 'Generating MDX files for website Command Reference' -BackgroundColor DarkGreen
+Write-Host 'Generating MDX files for Command Reference-section of website' -BackgroundColor DarkGreen
 
 # -----------------------------------------------------------------------------
 # Install required modules
@@ -68,10 +77,23 @@ $ModuleList.Keys.Clone() | ForEach-Object {
     }
 }
 
+Write-Host 'Pre-processing CommandHelp-objects' -ForegroundColor Magenta
+$commandHelp = & {
+    # Workaround: Strict mode breaks PlatyPS (https://github.com/PowerShell/platyPS/issues/800)
+    Set-StrictMode -Off
+    New-CommandHelp -CommandInfo (Get-Command -Module Pester -CommandType Cmdlet, Function)
+}
+$commandHelp | ForEach-Object {
+    # Customize the description metadata for each command to include the synopsis
+    # Synopsis is guaranteed by Help.Tests.ps1 in pester/pester-repo, so not checking for "Fill in ..." placeholders
+    $_.Metadata['description'] = "Help for Pester command '$($_.Title)'. $($_.Synopsis -replace '\s+', ' ')"
+}
+
 # -----------------------------------------------------------------------------
 # Use below settings to manipulate the rendered MDX files
 # -----------------------------------------------------------------------------
 $docusaurusOptions = @{
+    CommandHelp     = $commandHelp
     DocsFolder      = switch ($DocsVersion) {
         'Current' { "$PSScriptRoot/docs" }
         'v5' { "$PSScriptRoot/versioned_docs/version-v5" }
@@ -115,11 +137,7 @@ if (Test-Path -Path $outputFolder) {
 }
 
 Write-Host 'Generating new MDX files' -ForegroundColor Magenta
-$commandHelp = New-CommandHelp -CommandInfo (Get-Command -Module Pester -CommandType Cmdlet, Function)
-$commandHelp | ForEach-Object {
-    $_.Metadata['description'] = "Help page for the PowerShell Pester '$($_.Title)' command - $($_.Synopsis.ReplaceLineEndings(''))"
-}
-New-DocusaurusHelp @docusaurusOptions -CommandHelp $commandHelp
+New-DocusaurusHelp @docusaurusOptions
 
 function Repair-ExampleFences {
     <#
@@ -195,7 +213,7 @@ function Repair-ExampleFences {
 #    contain their own Markdown fences (see Repair-ExampleFences) so the MDX
 #    compiles.
 # -----------------------------------------------------------------------------
-Write-Host 'Post-processing generated MDX files (ProgressAction, example fences)' -ForegroundColor Magenta
+Write-Host 'Post-processing generated MDX files' -ForegroundColor Magenta
 $commandsFolder = Join-Path -Path $docusaurusOptions.DocsFolder -ChildPath $docusaurusOptions.Sidebar
 Get-ChildItem -Path $commandsFolder -Filter '*.mdx' | ForEach-Object {
     $content = Get-Content -LiteralPath $_.FullName -Raw
