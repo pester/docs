@@ -1,7 +1,7 @@
 ---
 id: Should-BeString
 title: Should-BeString
-description: Help page for the PowerShell Pester "Should-BeString" command
+description: Help for Pester command 'Should-BeString'. Asserts that the actual value is equal to the expected value.
 keywords:
   - PowerShell
   - Pester
@@ -23,8 +23,8 @@ Asserts that the actual value is equal to the expected value.
 ## SYNTAX
 
 ```powershell
-Should-BeString [[-Actual] <Object>] [-Expected] <String> [-Because <String>] [-CaseSensitive]
- [-IgnoreWhitespace] [-TrimWhitespace] [<CommonParameters>]
+Should-BeString [-Expected] <string> [[-Actual] <Object>] [-Because <string>] [-CaseSensitive]
+ [-IgnoreWhitespace] [-TrimWhitespace]
 ```
 
 ## DESCRIPTION
@@ -57,31 +57,20 @@ This assertion will fail, because the actual value is not equal to the expected 
 The actual value.
 
 ```yaml
-Type: Object
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 2
-Default value: None
-Accept pipeline input: True (ByValue)
-Accept wildcard characters: False
-```
-
-### -Expected
-
-The expected value.
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: 1
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Object
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: true
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -Because
@@ -89,15 +78,20 @@ Accept wildcard characters: False
 The reason why the actual value should be equal to the expected value.
 
 ```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.String
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -CaseSensitive
@@ -105,15 +99,41 @@ Accept wildcard characters: False
 Indicates that the comparison should be case-sensitive.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: False
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
 
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
+### -Expected
+
+The expected value.
+
+```yaml
+Type: System.String
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: 0
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -IgnoreWhitespace
@@ -121,15 +141,20 @@ Accept wildcard characters: False
 Indicates that the comparison should ignore whitespace.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: False
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -TrimWhitespace
@@ -137,22 +162,32 @@ Accept wildcard characters: False
 Trims whitespace at the start and end of the string.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: False
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### CommonParameters
 
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable,
+-InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable,
+-ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see
+[about_CommonParameters](https://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
+
+### System.Object
 
 ## OUTPUTS
 
@@ -168,10 +203,9 @@ See https://pester.dev/docs/assertions/soft-assertions for more about soft asser
 
 ## RELATED LINKS
 
-[https://pester.dev/docs/commands/Should-BeString](https://pester.dev/docs/commands/Should-BeString)
-
-[https://pester.dev/docs/assertions](https://pester.dev/docs/assertions)
+- [https://pester.dev/docs/commands/Should-BeString](https://pester.dev/docs/commands/Should-BeString)
+- [https://pester.dev/docs/assertions](https://pester.dev/docs/assertions)
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 6.0.0-rc5](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.0.0](https://github.com/pester/pester).*

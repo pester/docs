@@ -1,7 +1,7 @@
 ---
 id: Should-BeTruthy
 title: Should-BeTruthy
-description: Help page for the PowerShell Pester "Should-BeTruthy" command
+description: Help for Pester command 'Should-BeTruthy'. Compares the actual value to a boolean $true. It converts input values to boolean, and will fail for any value is not $true, or truthy.
 keywords:
   - PowerShell
   - Pester
@@ -18,13 +18,12 @@ Contributions are welcome in [Pester-repo](https://github.com/pester/pester).
 
 ## SYNOPSIS
 
-Compares the actual value to a boolean $true.
-It converts input values to boolean, and will fail for any value is not $true, or truthy.
+Compares the actual value to a boolean $true. It converts input values to boolean, and will fail for any value is not $true, or truthy.
 
 ## SYNTAX
 
 ```powershell
-Should-BeTruthy [[-Actual] <Object>] [[-Because] <String>] [<CommonParameters>]
+Should-BeTruthy [[-Actual] <Object>] [[-Because] <string>]
 ```
 
 ## DESCRIPTION
@@ -63,15 +62,20 @@ All of these assertions will fail, because the actual value is not $true or trut
 The actual value to compare to $true.
 
 ```yaml
-Type: Object
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 1
-Default value: None
-Accept pipeline input: True (ByValue)
-Accept wildcard characters: False
+Type: System.Object
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: 0
+  IsRequired: false
+  ValueFromPipeline: true
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -Because
@@ -79,22 +83,32 @@ Accept wildcard characters: False
 The reason why the input should be the expected value.
 
 ```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 2
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.String
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### CommonParameters
 
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable,
+-InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable,
+-ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see
+[about_CommonParameters](https://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
+
+### System.Object
 
 ## OUTPUTS
 
@@ -110,10 +124,9 @@ See https://pester.dev/docs/assertions/soft-assertions for more about soft asser
 
 ## RELATED LINKS
 
-[https://pester.dev/docs/commands/Should-BeTruthy](https://pester.dev/docs/commands/Should-BeTruthy)
-
-[https://pester.dev/docs/assertions](https://pester.dev/docs/assertions)
+- [https://pester.dev/docs/commands/Should-BeTruthy](https://pester.dev/docs/commands/Should-BeTruthy)
+- [https://pester.dev/docs/assertions](https://pester.dev/docs/assertions)
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 6.0.0-rc5](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.0.0](https://github.com/pester/pester).*

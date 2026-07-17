@@ -1,7 +1,7 @@
 ---
 id: Should-BeLessThanOrEqual
 title: Should-BeLessThanOrEqual
-description: Help page for the PowerShell Pester "Should-BeLessThanOrEqual" command
+description: Help for Pester command 'Should-BeLessThanOrEqual'. Compares the expected value to actual value, to see if the actual value is less than or equal to the expected value.
 keywords:
   - PowerShell
   - Pester
@@ -23,7 +23,7 @@ Compares the expected value to actual value, to see if the actual value is less 
 ## SYNTAX
 
 ```powershell
-Should-BeLessThanOrEqual [[-Actual] <Object>] [-Expected] <Object> [-Because <String>] [<CommonParameters>]
+Should-BeLessThanOrEqual [-Expected] <Object> [[-Actual] <Object>] [-Because <string>]
 ```
 
 ## DESCRIPTION
@@ -56,31 +56,20 @@ This assertion will fail, because the actual value is not less than or equal to 
 The actual value.
 
 ```yaml
-Type: Object
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 2
-Default value: None
-Accept pipeline input: True (ByValue)
-Accept wildcard characters: False
-```
-
-### -Expected
-
-The expected value.
-
-```yaml
-Type: Object
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: 1
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Object
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: true
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -Because
@@ -88,22 +77,53 @@ Accept wildcard characters: False
 The reason why the input should be the expected value.
 
 ```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
+Type: System.String
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
 
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+### -Expected
+
+The expected value.
+
+```yaml
+Type: System.Object
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: 0
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### CommonParameters
 
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable,
+-InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable,
+-ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see
+[about_CommonParameters](https://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
+
+### System.Object
 
 ## OUTPUTS
 
@@ -119,10 +139,9 @@ See https://pester.dev/docs/assertions/soft-assertions for more about soft asser
 
 ## RELATED LINKS
 
-[https://pester.dev/docs/commands/Should-BeLessThanOrEqual](https://pester.dev/docs/commands/Should-BeLessThanOrEqual)
-
-[https://pester.dev/docs/assertions](https://pester.dev/docs/assertions)
+- [https://pester.dev/docs/commands/Should-BeLessThanOrEqual](https://pester.dev/docs/commands/Should-BeLessThanOrEqual)
+- [https://pester.dev/docs/assertions](https://pester.dev/docs/assertions)
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 6.0.0-rc5](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.0.0](https://github.com/pester/pester).*

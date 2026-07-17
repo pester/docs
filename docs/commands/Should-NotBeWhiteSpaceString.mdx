@@ -1,7 +1,7 @@
 ---
 id: Should-NotBeWhiteSpaceString
 title: Should-NotBeWhiteSpaceString
-description: Help page for the PowerShell Pester "Should-NotBeWhiteSpaceString" command
+description: Help for Pester command 'Should-NotBeWhiteSpaceString'. Ensures that the input is a string, and that the input is not $null, empty, or whitespace only string.
 keywords:
   - PowerShell
   - Pester
@@ -23,7 +23,7 @@ Ensures that the input is a string, and that the input is not $null, empty, or w
 ## SYNTAX
 
 ```powershell
-Should-NotBeWhiteSpaceString [[-Actual] <Object>] [-Because <String>] [<CommonParameters>]
+Should-NotBeWhiteSpaceString [[-Actual] <Object>] [-Because <string>]
 ```
 
 ## DESCRIPTION
@@ -70,15 +70,20 @@ All the tests above will fail, the input is not a string.
 The actual value that will be compared.
 
 ```yaml
-Type: Object
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 1
-Default value: None
-Accept pipeline input: True (ByValue)
-Accept wildcard characters: False
+Type: System.Object
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: 0
+  IsRequired: false
+  ValueFromPipeline: true
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -Because
@@ -86,22 +91,32 @@ Accept wildcard characters: False
 The reason why the input should be a string that is not $null, empty, or whitespace only string.
 
 ```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.String
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### CommonParameters
 
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable,
+-InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable,
+-ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see
+[about_CommonParameters](https://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
+
+### System.Object
 
 ## OUTPUTS
 
@@ -115,10 +130,9 @@ See https://pester.dev/docs/assertions/soft-assertions for more about soft asser
 
 ## RELATED LINKS
 
-[https://pester.dev/docs/commands/Should-NotBeWhiteSpaceString](https://pester.dev/docs/commands/Should-NotBeWhiteSpaceString)
-
-[https://pester.dev/docs/assertions](https://pester.dev/docs/assertions)
+- [https://pester.dev/docs/commands/Should-NotBeWhiteSpaceString](https://pester.dev/docs/commands/Should-NotBeWhiteSpaceString)
+- [https://pester.dev/docs/assertions](https://pester.dev/docs/assertions)
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 6.0.0-rc5](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.0.0](https://github.com/pester/pester).*

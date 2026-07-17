@@ -1,7 +1,7 @@
 ---
 id: It
 title: It
-description: Help page for the PowerShell Pester "It" command
+description: Help for Pester command 'It'. Validates the results of a test inside of a Describe block.
 keywords:
   - PowerShell
   - Pester
@@ -25,15 +25,15 @@ Validates the results of a test inside of a Describe block.
 ### Normal (Default)
 
 ```powershell
-It [-Name] <String> [[-Test] <ScriptBlock>] [-ForEach <Object[]>] [-Tag <String[]>] [-AllowNullOrEmptyForEach]
- [<CommonParameters>]
+It [-Name] <string> [[-Test] <scriptblock>] [-ForEach <Object[]>] [-Tag <string[]>]
+ [-AllowNullOrEmptyForEach]
 ```
 
 ### Skip
 
 ```powershell
-It [-Name] <String> [[-Test] <ScriptBlock>] [-ForEach <Object[]>] [-Tag <String[]>] [-Skip]
- [-AllowNullOrEmptyForEach] [<CommonParameters>]
+It [-Name] <string> [[-Test] <scriptblock>] [-ForEach <Object[]>] [-Tag <string[]>] [-Skip]
+ [-AllowNullOrEmptyForEach]
 ```
 
 ## DESCRIPTION
@@ -121,20 +121,121 @@ current hashtable are made available as variables inside It.
 
 ## PARAMETERS
 
+### -AllowNullOrEmptyForEach
+
+Allows empty or null values for -ForEach when Run.FailOnNullOrEmptyForEach is enabled.
+This might be excepted in certain scenarios like using external data.
+
+```yaml
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: False
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
+
+### -ForEach
+
+(Formerly called TestCases.) Optional array of hashtable (or any IDictionary) objects.
+If this parameter is used, Pester will call the test script block once for each table in
+the ForEach array, splatting the dictionary to the test script block as input.
+ If you want
+the name of the test to appear differently for each test case, you can embed tokens into the Name
+parameter with the syntax 'Adds numbers &lt;A&gt; and &lt;B&gt;' (assuming you have keys named A and B
+in your ForEach hashtables.)
+
+```yaml
+Type: System.Object[]
+DefaultValue: ''
+SupportsWildcards: false
+Aliases:
+- TestCases
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
+
 ### -Name
 
 An expressive phrase describing the expected test outcome.
 
 ```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
+Type: System.String
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: 0
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
 
-Required: True
-Position: 1
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+### -Skip
+
+Use this parameter to explicitly mark the test to be skipped.
+This is preferable to temporarily
+commenting out a test, because the test remains listed in the output.
+
+```yaml
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: False
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Skip
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
+
+### -Tag
+
+Optional parameter containing an array of strings.
+When calling Invoke-Pester,
+it is possible to include or exclude tests containing the same Tag.
+
+```yaml
+Type: System.String[]
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -Test
@@ -145,95 +246,28 @@ AAA pattern (Arrange-Act-Assert), this typically holds the
 Assert.
 
 ```yaml
-Type: ScriptBlock
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 2
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ForEach
-
-(Formerly called TestCases.) Optional array of hashtable (or any IDictionary) objects.
-If this parameter is used, Pester will call the test script block once for each table in
-the ForEach array, splatting the dictionary to the test script block as input. 
-If you want
-the name of the test to appear differently for each test case, you can embed tokens into the Name
-parameter with the syntax 'Adds numbers &lt;A&gt; and &lt;B&gt;' (assuming you have keys named A and B
-in your ForEach hashtables.)
-
-```yaml
-Type: Object[]
-Parameter Sets: (All)
-Aliases: TestCases
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Tag
-
-Optional parameter containing an array of strings.
-When calling Invoke-Pester,
-it is possible to include or exclude tests containing the same Tag.
-
-```yaml
-Type: String[]
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Skip
-
-Use this parameter to explicitly mark the test to be skipped.
-This is preferable to temporarily
-commenting out a test, because the test remains listed in the output.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Skip
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -AllowNullOrEmptyForEach
-
-Allows empty or null values for -ForEach when Run.FailOnNullOrEmptyForEach is enabled.
-This might be excepted in certain scenarios like using external data.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.ScriptBlock
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### CommonParameters
 
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable,
+-InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable,
+-ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see
+[about_CommonParameters](https://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
@@ -243,14 +277,11 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[https://pester.dev/docs/commands/It](https://pester.dev/docs/commands/It)
-
-[https://pester.dev/docs/commands/Describe](https://pester.dev/docs/commands/Describe)
-
-[https://pester.dev/docs/commands/Context](https://pester.dev/docs/commands/Context)
-
-[https://pester.dev/docs/commands/Set-ItResult](https://pester.dev/docs/commands/Set-ItResult)
+- [https://pester.dev/docs/commands/It](https://pester.dev/docs/commands/It)
+- [https://pester.dev/docs/commands/Describe](https://pester.dev/docs/commands/Describe)
+- [https://pester.dev/docs/commands/Context](https://pester.dev/docs/commands/Context)
+- [https://pester.dev/docs/commands/Set-ItResult](https://pester.dev/docs/commands/Set-ItResult)
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 6.0.0-rc5](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.0.0](https://github.com/pester/pester).*

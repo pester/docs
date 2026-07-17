@@ -1,7 +1,7 @@
 ---
 id: New-MockObject
 title: New-MockObject
-description: Help page for the PowerShell Pester "New-MockObject" command
+description: Help for Pester command 'New-MockObject'. This function instantiates a .NET object from a type.
 keywords:
   - PowerShell
   - Pester
@@ -25,15 +25,15 @@ This function instantiates a .NET object from a type.
 ### Type (Default)
 
 ```powershell
-New-MockObject [-Type] <Type> [-Properties <Hashtable>] [-Methods <Hashtable>] [-MethodHistoryPrefix <String>]
- [<CommonParameters>]
+New-MockObject [-Type] <type> [-Properties <hashtable>] [-Methods <hashtable>]
+ [-MethodHistoryPrefix <string>]
 ```
 
 ### InputObject
 
 ```powershell
-New-MockObject -InputObject <Object> [-Properties <Hashtable>] [-Methods <Hashtable>]
- [-MethodHistoryPrefix <String>] [<CommonParameters>]
+New-MockObject -InputObject <Object> [-Properties <hashtable>] [-Methods <hashtable>]
+ [-MethodHistoryPrefix <string>]
 ```
 
 ## DESCRIPTION
@@ -101,78 +101,26 @@ to mock output using an internal module class.
 
 ## PARAMETERS
 
-### -Type
-
-The .NET type to create.
-This creates the object without calling any of its constructors or initializers.
-Use this to instantiate an object that does not have a public constructor.
-If your object has a constructor, or is giving you errors, try using the constructor and provide the object using the InputObject parameter to decorate it.
-
-```yaml
-Type: Type
-Parameter Sets: Type
-Aliases:
-
-Required: True
-Position: 1
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -InputObject
 
 An already constructed object to decorate.
 Use `New-Object` or `[typeName]::new()` to create it.
 
 ```yaml
-Type: Object
-Parameter Sets: InputObject
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Properties
-
-Properties to define, specified as a hashtable, in format `@\{ PropertyName = value \}`.
-
-```yaml
-Type: Hashtable
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Methods
-
-Methods to define, specified as a hashtable, in format `@\{ MethodName = scriptBlock \}`.
-
-ScriptBlock can define param block, and it will receive arguments that were provided to the function call based on order.
-
-Method overloads are not supported because ScriptMethods are used to decorate the object, and ScriptMethods do not support method overloads.
-
-For each method a property named `_MethodName` (if using default `-MethodHistoryPrefix`) is defined which holds history of the invocations of the method and the arguments that were provided.
-
-```yaml
-Type: Hashtable
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Object
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: InputObject
+  Position: Named
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -MethodHistoryPrefix
@@ -181,20 +129,112 @@ Prefix for the history-property created for each mocked method.
 Default is '_' which would create the property '_MethodName'.
 
 ```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
+Type: System.String
+DefaultValue: _
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
 
-Required: False
-Position: Named
-Default value: _
-Accept pipeline input: False
-Accept wildcard characters: False
+### -Methods
+
+Methods to define, specified as a hashtable, in format `@{ MethodName = scriptBlock }`.
+
+ScriptBlock can define param block, and it will receive arguments that were provided to the function call based on order.
+
+Method overloads are not supported because ScriptMethods are used to decorate the object, and ScriptMethods do not support method overloads.
+
+For each method a property named `_MethodName` (if using default `-MethodHistoryPrefix`) is defined which holds history of the invocations of the method and the arguments that were provided.
+
+```yaml
+Type: System.Collections.Hashtable
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: InputObject
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: Type
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
+
+### -Properties
+
+Properties to define, specified as a hashtable, in format `@{ PropertyName = value }`.
+
+```yaml
+Type: System.Collections.Hashtable
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: InputObject
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: Type
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
+
+### -Type
+
+The .NET type to create.
+This creates the object without calling any of its constructors or initializers.
+Use this to instantiate an object that does not have a public constructor.
+If your object has a constructor, or is giving you errors, try using the constructor and provide the object using the InputObject parameter to decorate it.
+
+```yaml
+Type: System.Type
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Type
+  Position: 0
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### CommonParameters
 
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable,
+-InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable,
+-ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see
+[about_CommonParameters](https://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
@@ -204,10 +244,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[https://pester.dev/docs/commands/New-MockObject](https://pester.dev/docs/commands/New-MockObject)
-
-[https://pester.dev/docs/usage/mocking](https://pester.dev/docs/usage/mocking)
+- [https://pester.dev/docs/commands/New-MockObject](https://pester.dev/docs/commands/New-MockObject)
+- [https://pester.dev/docs/usage/mocking](https://pester.dev/docs/usage/mocking)
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 6.0.0-rc5](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.0.0](https://github.com/pester/pester).*

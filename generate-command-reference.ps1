@@ -8,8 +8,17 @@
   .EXAMPLE
     .\generate-command-reference.ps1
 
+    Update current (latest) docs using latest Pester version
+
   .EXAMPLE
-    .\generate-command-reference.ps1 -PesterVersion 4.10.1
+    .\generate-command-reference.ps1 -PesterVersion 6.0.0
+
+    Update current (latest) docs using Pester 6.0.0 explicitly
+
+  .EXAMPLE
+    .\generate-command-reference.ps1 -PesterVersion 5.9.0 -DocsVersion v5
+
+    Update versioned docs for v5 using explicit version 5.9.0
 
   .LINK
     https://docusaurus-powershell.netlify.app/docs/faq/ci-cd
@@ -26,15 +35,15 @@ param (
 Set-StrictMode -Version Latest
 $PSDefaultParameterValues['*:ErrorAction'] = 'Stop'
 
-Write-Host 'Generating MDX files for website Command Reference' -BackgroundColor DarkGreen
+Write-Host 'Generating MDX files for Command Reference-section of website' -BackgroundColor DarkGreen
 
 # -----------------------------------------------------------------------------
 # Install required modules
 # -----------------------------------------------------------------------------
 $ModuleList = [ordered]@{
-    'PlatyPS'                    = $PlatyPSVersion
-    'Alt3.Docusaurus.PowerShell' = $DocusaurusVersion
-    'Pester'                     = $PesterVersion
+    'Microsoft.PowerShell.PlatyPS' = $PlatyPSVersion
+    'Alt3.Docusaurus.PowerShell'   = $DocusaurusVersion
+    'Pester'                       = $PesterVersion
 }
 # Can't use the original enumerator here because we may modify the dictionary mid-process
 $ModuleList.Keys.Clone() | ForEach-Object {
@@ -68,11 +77,23 @@ $ModuleList.Keys.Clone() | ForEach-Object {
     }
 }
 
+Write-Host 'Pre-processing CommandHelp-objects' -ForegroundColor Magenta
+$commandHelp = & {
+    # Workaround: Strict mode breaks PlatyPS (https://github.com/PowerShell/platyPS/issues/800)
+    Set-StrictMode -Off
+    New-CommandHelp -CommandInfo (Get-Command -Module Pester -CommandType Cmdlet, Function)
+}
+$commandHelp | ForEach-Object {
+    # Customize the description metadata for each command to include the synopsis
+    # Synopsis is guaranteed by Help.Tests.ps1 in pester/pester-repo, so not checking for "Fill in ..." placeholders
+    $_.Metadata['description'] = "Help for Pester command '$($_.Title)'. $($_.Synopsis -replace '\s+', ' ')"
+}
+
 # -----------------------------------------------------------------------------
 # Use below settings to manipulate the rendered MDX files
 # -----------------------------------------------------------------------------
 $docusaurusOptions = @{
-    Module          = 'Pester'
+    CommandHelp     = $commandHelp
     DocsFolder      = switch ($DocsVersion) {
         'Current' { "$PSScriptRoot/docs" }
         'v5' { "$PSScriptRoot/versioned_docs/version-v5" }
@@ -86,7 +107,6 @@ $docusaurusOptions = @{
         'SafeGetCommand'
         'Set-DynamicParameterVariable'
     )
-    MetaDescription = 'Help page for the PowerShell Pester "%1" command'
     MetaKeywords    = @(
         'PowerShell'
         'Pester'
@@ -121,13 +141,6 @@ New-DocusaurusHelp @docusaurusOptions
 
 function Repair-ExampleFences {
     <#
-        Pester's source comment-based help embeds Markdown code fences (```powershell
-        ... ```), including a 'powereshell' typo, inside its .EXAMPLE blocks. PlatyPS
-        double-wraps these, emitting mismatched fences - a bare ``` opening paired with
-        a ```powershell "closing" fence, sometimes doubled up. MDX 3 then mispairs the
-        fences, treating an example's PowerShell '@{ ... }' as a JSX expression, which
-        breaks the Docusaurus build ("Could not parse expression with acorn").
-
         Normalize fences inside the EXAMPLES section only: collapse runs of adjacent
         fence lines and alternate them open/close per example, so each example becomes a
         single well-formed ```powershell code block followed by its description. The
@@ -177,7 +190,7 @@ function Repair-ExampleFences {
             }
             if (-not $inCode) {
                 $lang = $langs | Where-Object { $_ -ne '' } | Select-Object -First 1
-                if (-not $lang -or $lang -eq 'powereshell') { $lang = 'powershell' }
+                if (-not $lang) { $lang = 'powershell' }
                 $result.Add('```' + $lang)
                 $inCode = $true
             }
@@ -194,64 +207,19 @@ function Repair-ExampleFences {
     return ($result -join $eol)
 }
 
-function Format-SyntaxCommonParameters {
-    # After ProgressAction is removed, '[<CommonParameters>]' is collapsed back inline.
-    # PlatyPS keeps it inline only while the SYNTAX line stays within its wrap width
-    # (~110 chars, measured from prior generated output) and otherwise wraps it onto its
-    # own continuation line. Reproduce that so we neither leave overly long lines nor
-    # dangling orphans. Only lines that still carry content before the token are wrapped;
-    # lines that are already just ' [<CommonParameters>]' are left untouched.
-    param([string] $Content, [int] $MaxWidth = 110)
-
-    $eol = if ($Content -match "`r`n") { "`r`n" } else { "`n" }
-    $lines = $Content -split "`r?`n"
-    $out = [System.Collections.Generic.List[string]]::new()
-    foreach ($line in $lines) {
-        if ($line.Length -gt $MaxWidth -and $line -match '\S[ ]\[<CommonParameters>\][ ]*$') {
-            $head = $line -replace '[ ]*\[<CommonParameters>\][ ]*$', ''
-            $out.Add($head)
-            $out.Add(' [<CommonParameters>]')
-        }
-        else {
-            $out.Add($line)
-        }
-    }
-    return ($out -join $eol)
-}
-
 # -----------------------------------------------------------------------------
 # Post-process the generated MDX:
-#  * Strip the spurious ProgressAction common parameter that PlatyPS emits on
-#    PowerShell 7.4+ (https://github.com/PowerShell/platyPS/issues/663). Pester 6
-#    loads a .NET 8 assembly and therefore requires PowerShell 7.4+, so the docs
-#    can no longer be generated on an older PowerShell to avoid this.
 #  * Repair the mismatched code fences PlatyPS emits for .EXAMPLE blocks that
 #    contain their own Markdown fences (see Repair-ExampleFences) so the MDX
 #    compiles.
-# The '[<CommonParameters>]' SYNTAX entry and the '### CommonParameters' section are
-# kept as PlatyPS produces them. Because the ProgressAction token is longer than
-# '[<CommonParameters>]' and always sits right before it, removing ProgressAction can
-# leave '[<CommonParameters>]' orphaned on a wrapped continuation line. The first
-# replacement handles that case by pulling '[<CommonParameters>]' back onto the line
-# ProgressAction occupied; the second removes any remaining ProgressAction token,
-# whether inline or wrapped onto its own line. Format-SyntaxCommonParameters then wraps
-# '[<CommonParameters>]' back onto its own line where the result would exceed PlatyPS's
-# syntax wrap width, matching the layout PlatyPS produces without ProgressAction.
 # -----------------------------------------------------------------------------
-Write-Host 'Post-processing generated MDX files (ProgressAction, example fences)' -ForegroundColor Magenta
+Write-Host 'Post-processing generated MDX files' -ForegroundColor Magenta
 $commandsFolder = Join-Path -Path $docusaurusOptions.DocsFolder -ChildPath $docusaurusOptions.Sidebar
 Get-ChildItem -Path $commandsFolder -Filter '*.mdx' | ForEach-Object {
     $content = Get-Content -LiteralPath $_.FullName -Raw
-    # Pull '[<CommonParameters>]' back up when removing ProgressAction would orphan it
-    $updated = $content -replace '[ ]*\[-ProgressAction <ActionPreference>\][ ]*\r?\n[ ]*\[<CommonParameters>\]', ' [<CommonParameters>]'
-    # Remove any remaining ' [-ProgressAction <ActionPreference>]' from the SYNTAX code-blocks
-    $updated = $updated -replace '[ ]*(\r?\n[ ]*)?\[-ProgressAction <ActionPreference>\]', ''
-    # Remove the dedicated '### -ProgressAction' section up to the next '### ' heading
-    $updated = $updated -replace '(?ms)^### -ProgressAction\r?\n.*?(?=^### )', ''
-    # Re-wrap '[<CommonParameters>]' onto its own line where the SYNTAX line is too long
-    $updated = Format-SyntaxCommonParameters -Content $updated
     # Fix mismatched code fences inside the EXAMPLES section
-    $updated = Repair-ExampleFences -Content $updated
+    # TODO: Remove? Not really needed. Only fixed two earlier typos in pester/pester repo.
+    $updated = Repair-ExampleFences -Content $content
     if ($updated -ne $content) {
         Set-Content -LiteralPath $_.FullName -Value $updated -NoNewline -Encoding utf8
     }

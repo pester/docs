@@ -1,7 +1,7 @@
 ---
 id: New-PesterContainer
 title: New-PesterContainer
-description: Help page for the PowerShell Pester "New-PesterContainer" command
+description: Help for Pester command 'New-PesterContainer'. Generates ContainerInfo-objects used as for Invoke-Pester -Container
 keywords:
   - PowerShell
   - Pester
@@ -25,13 +25,13 @@ Generates ContainerInfo-objects used as for Invoke-Pester -Container
 ### Path (Default)
 
 ```powershell
-New-PesterContainer -Path <String[]> [-Data <IDictionary[]>] [<CommonParameters>]
+New-PesterContainer -Path <string[]> [-Data <IDictionary[]>]
 ```
 
 ### ScriptBlock
 
 ```powershell
-New-PesterContainer -ScriptBlock <ScriptBlock[]> [-Data <IDictionary[]>] [<CommonParameters>]
+New-PesterContainer -ScriptBlock <scriptblock[]> [-Data <IDictionary[]>]
 ```
 
 ## DESCRIPTION
@@ -80,6 +80,28 @@ the required ContainerInfo-object that enables us to do this directly.
 
 ## PARAMETERS
 
+### -Data
+
+Allows a dictionary to be provided with parameter-values that should be used during
+execution of the test containers defined in Path or ScriptBlock.
+
+```yaml
+Type: System.Collections.IDictionary[]
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
+
 ### -Path
 
 Specifies one or more paths to files containing tests.
@@ -88,15 +110,20 @@ name or name pattern.
 Wildcards are permitted.
 
 ```yaml
-Type: String[]
-Parameter Sets: Path
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.String[]
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Path
+  Position: Named
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -ScriptBlock
@@ -104,37 +131,28 @@ Accept wildcard characters: False
 Specifies one or more scriptblocks containing tests.
 
 ```yaml
-Type: ScriptBlock[]
-Parameter Sets: ScriptBlock
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Data
-
-Allows a dictionary to be provided with parameter-values that should be used during
-execution of the test containers defined in Path or ScriptBlock.
-
-```yaml
-Type: IDictionary[]
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.ScriptBlock[]
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: ScriptBlock
+  Position: Named
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### CommonParameters
 
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable,
+-InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable,
+-ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see
+[about_CommonParameters](https://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
@@ -146,12 +164,10 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[https://pester.dev/docs/commands/New-PesterContainer](https://pester.dev/docs/commands/New-PesterContainer)
-
-[https://pester.dev/docs/commands/Invoke-Pester](https://pester.dev/docs/commands/Invoke-Pester)
-
-[https://pester.dev/docs/usage/data-driven-tests](https://pester.dev/docs/usage/data-driven-tests)
+- [https://pester.dev/docs/commands/New-PesterContainer](https://pester.dev/docs/commands/New-PesterContainer)
+- [https://pester.dev/docs/commands/Invoke-Pester](https://pester.dev/docs/commands/Invoke-Pester)
+- [https://pester.dev/docs/usage/data-driven-tests](https://pester.dev/docs/usage/data-driven-tests)
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 6.0.0-rc5](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.0.0](https://github.com/pester/pester).*
