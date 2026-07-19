@@ -1,0 +1,111 @@
+---
+id: a-real-dependency
+title: Giving the module a dependency
+description: Move the planet data out of the function and into a CSV file shipped with the module, creating a real dependency worth isolating in tests
+---
+
+There is nothing to mock yet. `Get-Planet` holds its data in a hard-coded array, so it has no dependencies and always behaves identically. That is convenient and unrealistic — real functions read files, call APIs and query databases.
+
+This page moves the data into a file. The next two pages deal with the consequences.
+
+## Moving the data into a file
+
+Create a `Data` folder in the module and put the planets in a CSV:
+
+```powershell
+New-Item -Path ./Planetarium/Data -ItemType Directory -Force
+```
+
+```csv title="Planetarium/Data/planets.csv"
+Name,Order,DistanceFromSunKm
+Mercury,1,57909050
+Venus,2,108208000
+Earth,3,149598023
+Mars,4,227939200
+Jupiter,5,778570000
+Saturn,6,1433530000
+Uranus,7,2872460000
+Neptune,8,4495060000
+```
+
+## Reading it
+
+Add a private helper that loads the file. It is private because it is an implementation detail — users ask for planets, not for the file the planets happen to live in.
+
+```powershell title="Planetarium/Private/Get-PlanetData.ps1"
+function Get-PlanetData {
+    [CmdletBinding()]
+    param ()
+
+    $path = Join-Path $PSScriptRoot '../Data/planets.csv'
+
+    Import-Csv -Path $path | ForEach-Object {
+        [PSCustomObject] @{
+            Name              = $_.Name
+            Order             = [int] $_.Order
+            DistanceFromSunKm = [double] $_.DistanceFromSunKm
+        }
+    }
+}
+```
+
+Two things here are load-bearing.
+
+**`$PSScriptRoot` resolves to the folder of the file that defines the function** — `Private/` — even though the function is dot-sourced into the module. That is what makes `../Data/planets.csv` correct regardless of the directory the user happens to be in when they call your module.
+
+**The `ForEach-Object` block re-types the data.** `Import-Csv` returns every column as a string, so without this `Order` would be `'3'` rather than `3`, and the astronomical-unit arithmetic would be doing string division. Your existing tests would catch it — `$planet.Order | Should-Be 3` fails against `'3'`, which is exactly the kind of thing the type in Pester's failure message is there to reveal.
+
+## Simplifying Get-Planet
+
+`Get-Planet` now just filters whatever the data source hands back:
+
+```powershell title="Planetarium/Public/Get-Planet.ps1"
+function Get-Planet {
+    [CmdletBinding()]
+    param (
+        [string] $Name = '*'
+    )
+
+    # diff-remove-start
+    $planets = @(
+        [PSCustomObject] @{ Name = 'Mercury'; Order = 1; DistanceFromSunKm = 57909050 }
+        # ...six more planets...
+        [PSCustomObject] @{ Name = 'Neptune'; Order = 8; DistanceFromSunKm = 4495060000 }
+    )
+
+    $planets | Where-Object Name -Like $Name
+    # diff-remove-end
+    # diff-add
+    Get-PlanetData | Where-Object Name -Like $Name
+}
+```
+
+## Nothing should have broken
+
+This was a refactor: the behaviour is meant to be identical. Your test suite is how you find out whether it actually is.
+
+```powershell
+./test.ps1
+```
+
+```
+Tests Passed: 15, Failed: 0, Skipped: 0, Inconclusive: 0, NotRun: 0
+```
+
+Fifteen tests, all still green, without a single test file changing. That is the return on the work from the previous module — you just restructured how the module gets its data and confirmed in under a second that nothing regressed.
+
+:::note This is also the moment the tests got worse
+Every one of those tests now reads a real file from disk. They still pass, but they are no longer testing `Get-Planet` alone — they are testing `Get-Planet`, plus `Get-PlanetData`, plus `Import-Csv`, plus the filesystem, plus the contents of `planets.csv`. Edit that CSV and unrelated tests start failing.
+
+That coupling is what the next page removes.
+:::
+
+<TutorialChecklist items={[
+  {id: 'csv', label: 'I created Data/planets.csv with the planet data'},
+  {id: 'helper', label: 'I added the private Get-PlanetData helper that reads it'},
+  {id: 'psscriptroot', label: 'I can explain why $PSScriptRoot makes the data path reliable'},
+  {id: 'retype', label: 'I understand why the CSV columns have to be cast back to int and double'},
+  {id: 'still-green', label: 'All 15 existing tests still pass after the refactor'},
+]} />
+
+Next: cutting the tests loose from that file.

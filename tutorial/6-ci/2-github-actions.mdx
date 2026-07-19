@@ -1,0 +1,126 @@
+---
+id: github-actions
+title: Running on every push
+description: Wire the test script into a GitHub Actions workflow that installs Pester, runs the suite across operating systems and publishes the results
+---
+
+The test script is the hard part and it is already done. A CI workflow is mostly plumbing: check out the code, install Pester, run `./test.ps1`, keep the artifacts.
+
+## The workflow
+
+```yaml title=".github/workflows/test.yml"
+name: Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Pester
+        shell: pwsh
+        run: Install-Module Pester -MinimumVersion 6.0.0 -Force -Scope CurrentUser
+
+      - name: Run tests
+        shell: pwsh
+        run: ./test.ps1
+
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: |
+            testResults.xml
+            coverage.xml
+```
+
+Commit that and push. Every push to `main` and every pull request now runs your 26 tests.
+
+Three details are doing real work.
+
+**`shell: pwsh`** on every PowerShell step. The default shell on `ubuntu-latest` is bash, and PowerShell 7 is preinstalled but not the default. Omit this and the step tries to run PowerShell as bash. On Windows runners the default is `powershell` — Windows PowerShell 5.1 — which is a *different* shell from `pwsh`, so being explicit avoids a second, subtler version of the same problem.
+
+**`-Scope CurrentUser`** on the install. The runner user is not an administrator, and an all-users install needs elevation.
+
+**`if: always()`** on the upload. Without it, the artifact step is skipped whenever a previous step fails — which is precisely when you most want the test results. This one line is the difference between a red build you can diagnose from the artifact and one you have to reproduce locally.
+
+## Testing on more than one platform
+
+A PowerShell module that claims Windows PowerShell 5.1 support should be tested on it. A matrix runs the same job several times:
+
+```yaml title=".github/workflows/test.yml"
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Pester
+        shell: pwsh
+        run: Install-Module Pester -MinimumVersion 6.0.0 -Force -Scope CurrentUser
+
+      - name: Run tests
+        shell: pwsh
+        run: ./test.ps1
+
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-${{ matrix.os }}
+          path: |
+            testResults.xml
+            coverage.xml
+```
+
+`fail-fast: false` matters here. The default cancels every other job the moment one fails, so a Windows-only bug would abort the Linux and macOS runs and hide whether the failure is platform-specific. Turning it off costs a few runner minutes and tells you far more.
+
+The artifact name has to include `${{ matrix.os }}` — three jobs uploading to the same artifact name is an error.
+
+:::note This is where the cross-platform bugs show up
+`Join-Path` and `$TestDrive` have been quietly protecting you. Hard-coded `\` separators, case-sensitivity assumptions, and `C:\temp` paths all work on your machine and fail on Linux. A matrix is how you find them, and it is the main reason this module is worth doing even for a small module.
+:::
+
+## Where to go from here
+
+The workflow above is a complete, working setup. Natural next steps, in rough order of value:
+
+- **Publish the test results** as a check run so failures annotate the pull request directly, using something like `dorny/test-reporter`, which reads the NUnit file you are already producing.
+- **Send `coverage.xml` to a coverage service** — the JaCoCo format is widely supported.
+- **Require the check** in branch protection, so a red build actually blocks the merge. Until you do this, CI is advisory.
+- **Cache the Pester install** if the install step becomes a meaningful share of the run time.
+
+## You are done
+
+Starting from an empty folder, you have built a PowerShell module with a manifest, a loader, public and private functions, an external data file and a function that writes reports — and tested all of it:
+
+- 26 tests across six test files
+- Public functions tested through the module's real front door, which proves they are exported
+- Private helpers reached with `InModuleScope`, sparingly
+- A data source replaced by mocks so tests own their data
+- File operations isolated in `TestDrive`, leaving nothing behind
+- 100% coverage, arrived at by reading `CommandsMissed` rather than chasing a number
+- A test script that fails correctly, running on three operating systems on every push
+
+The reference documentation goes deeper on everything here: [mocking](../../docs/usage/mocking), [TestDrive](../../docs/usage/testdrive), [code coverage](../../docs/usage/code-coverage), [configuration](../../docs/usage/configuration) and [the result object](../../docs/usage/result-object). If you write assertions you wish existed, [custom assertions](../../docs/assertions/custom-assertions) is the next thing worth reading.
+
+<TutorialChecklist items={[
+  {id: 'workflow', label: 'I added .github/workflows/test.yml and pushed it'},
+  {id: 'shell-pwsh', label: 'I can explain why every PowerShell step needs shell: pwsh'},
+  {id: 'always', label: 'I understand why the upload step needs if: always()'},
+  {id: 'matrix', label: 'I extended the workflow to a matrix and know why fail-fast: false helps'},
+  {id: 'finished', label: 'My suite runs green in CI'},
+]} />

@@ -16,16 +16,21 @@ The module is called **Planetarium**. It is small enough to keep in your head an
 Planetarium/
 ├── Planetarium.psd1
 ├── Planetarium.psm1
+├── Data/
+│   └── planets.csv
 ├── Public/
 │   ├── Get-Planet.ps1
 │   ├── Get-PlanetDistance.ps1
 │   └── Export-PlanetReport.ps1
 └── Private/
     ├── ConvertTo-AstronomicalUnit.ps1
+    ├── Get-PlanetData.ps1
     └── Test-PlanetName.ps1
 ```
 
-It has public functions that users call, private helpers that they should not, a function that writes files to disk, and a dependency worth faking. Each of those is a testing problem with its own chapter.
+It has public functions that users call, private helpers that they should not, a data file worth faking and a function that writes reports to disk. Each of those is a testing problem with its own chapter.
+
+You will not build it all at once. It starts as an empty folder and grows a piece at a time, with tests arriving alongside each piece.
 
 ## How the tutorial is organised
 
@@ -35,12 +40,12 @@ The tutorial is split into modules, and each module into pages. You are on the f
 | --- | --- |
 | **Introduction** | What you need installed before you start |
 | **Testing our module** | Building Planetarium and testing it end to end |
-| Mocking | Replacing dependencies your code calls |
-| Working with files | Isolating file operations with `TestDrive` |
-| Code coverage | Finding out what your tests never touch |
-| Setting up CI | Running the whole thing on every push |
+| **Mocking** | Replacing the data source your code depends on |
+| **Working with files** | Isolating file operations with `TestDrive` |
+| **Code coverage** | Finding the code your tests never touch |
+| **Setting up CI** | Running the whole thing on every push |
 
-The first two modules are written. The rest are on their way — you will see them greyed out in the progress panel.
+They are meant to be done in order — each one builds on the module the previous one left behind.
 
 ## Tracking your progress
 

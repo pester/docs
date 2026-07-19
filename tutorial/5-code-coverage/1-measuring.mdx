@@ -1,0 +1,132 @@
+---
+id: measuring
+title: Measuring coverage
+description: Turn on Pester's code coverage to find out which parts of the Planetarium module the test suite never executes
+---
+
+Twenty-four tests pass. That tells you the things you thought to test work. It says nothing about the code you forgot.
+
+Code coverage answers a narrower question than people usually assume: *which lines of my code ran while the tests ran?* Not whether they were tested well — just whether they executed at all. Lines that never execute are definitionally untested, and that is worth knowing.
+
+## Turning it on
+
+Coverage is a configuration setting, so it goes in `test.ps1` alongside everything else:
+
+```powershell title="test.ps1"
+$config = New-PesterConfiguration
+$config.Run.Path = './Planetarium'
+$config.Output.Verbosity = 'Detailed'
+$config.TestResult.Enabled = $true
+$config.TestResult.OutputPath = './testResults.xml'
+# diff-add-start
+$config.CodeCoverage.Enabled = $true
+$config.CodeCoverage.Path = './Planetarium'
+# diff-add-end
+
+Invoke-Pester -Configuration $config
+```
+
+```powershell
+./test.ps1
+```
+
+```
+Tests completed in 870ms
+Tests Passed: 24, Failed: 0, Skipped: 0, Inconclusive: 0, NotRun: 0
+Processing code coverage result.
+Covered 100% / 75%. 40 analyzed Commands in 7 Files.
+```
+
+Read that last line carefully — it trips people up. **`100%` is what you achieved; `75%` is the target you are being measured against.** The target is `CodeCoverage.CoveragePercentTarget`, which defaults to 75.
+
+:::warning Set `CodeCoverage.Path` or you may measure nothing
+`Run.Path` says which *tests* to run; `CodeCoverage.Path` says which *code* to measure. If you leave the second one out and run from a directory that does not contain your source, you get an empty report and a confusing 0%. Setting both explicitly costs one line and avoids a genuinely baffling afternoon.
+:::
+
+Pester v6 uses a profiler-based tracer by default, which is fast enough to leave on routinely. If you need the older breakpoint-based collector, `CodeCoverage.UseBreakpoints = $true` brings it back — slower, and rarely what you want.
+
+## 100% is not the finish line
+
+The module is at 100%, and it would be a mistake to read that as "fully tested".
+
+Coverage measures execution, not assertion. This test would give `ConvertTo-AstronomicalUnit` full coverage while checking nothing at all:
+
+```powershell
+It 'Runs' {
+    InModuleScope Planetarium { ConvertTo-AstronomicalUnit -Kilometre 149597870.7 }
+}
+```
+
+The line ran, so it is covered. Nothing was asserted, so it is untested. Coverage cannot tell those apart — which is why chasing a coverage number as a goal reliably produces tests that execute code without checking it.
+
+What coverage is genuinely good at is the opposite direction: **it finds code you forgot entirely.** A 100% score is weak evidence of quality; an uncovered line is strong evidence of a gap.
+
+## Adding a feature
+
+Time to create a real gap the way it actually happens — by adding a feature.
+
+`Export-PlanetReport` currently overwrites without asking, which is unfriendly for something that writes files. Add a guard:
+
+```powershell title="Planetarium/Public/Export-PlanetReport.ps1"
+function Export-PlanetReport {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory)]
+        [string] $Path,
+
+        # diff-remove
+        [string] $Name = '*'
+        # diff-add-start
+        [string] $Name = '*',
+
+        [switch] $Force
+        # diff-add-end
+    )
+
+    $planets = @(Get-Planet -Name $Name)
+
+    if ($planets.Count -eq 0) {
+        throw "No planets matched '$Name'."
+    }
+
+    # diff-add-start
+    if ((Test-Path -Path $Path) -and -not $Force) {
+        throw "'$Path' already exists. Use -Force to overwrite it."
+    }
+    # diff-add-end
+
+    $report = foreach ($planet in $planets) {
+        '{0,-8} {1} AU' -f $planet.Name, (ConvertTo-AstronomicalUnit -Kilometre $planet.DistanceFromSunKm)
+    }
+
+    Set-Content -Path $Path -Value $report
+}
+```
+
+Run the suite:
+
+```powershell
+./test.ps1
+```
+
+```
+Tests Passed: 24, Failed: 0, Skipped: 0, Inconclusive: 0, NotRun: 0
+```
+
+Still all green. Every existing test writes to a fresh path in TestDrive, so none of them hits the new branch — and none of them fails. Nothing in that output hints that you just shipped an untested code path.
+
+Coverage does:
+
+```
+Covered 95.00% / 75%. 44 analyzed Commands in 7 Files.
+```
+
+<TutorialChecklist items={[
+  {id: 'enabled', label: 'I enabled code coverage and read the achieved-versus-target percentages'},
+  {id: 'two-paths', label: 'I understand the difference between Run.Path and CodeCoverage.Path'},
+  {id: 'not-quality', label: 'I can explain why 100% coverage does not mean well tested'},
+  {id: 'added-force', label: 'I added the -Force guard to Export-PlanetReport'},
+  {id: 'saw-drop', label: 'I saw the suite stay green while coverage dropped to 95%'},
+]} />
+
+Next: finding the exact line and closing it.

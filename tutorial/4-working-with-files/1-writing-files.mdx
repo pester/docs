@@ -1,0 +1,87 @@
+---
+id: writing-files
+title: A function that writes files
+description: Add Export-PlanetReport to the module and see why testing code that touches the filesystem needs more care than testing code that returns values
+---
+
+Every function so far has returned a value. Testing those is easy: call it, look at what came back. This page adds a function whose entire purpose is a side effect — it writes a file and returns nothing useful.
+
+## Export-PlanetReport
+
+```powershell title="Planetarium/Public/Export-PlanetReport.ps1"
+function Export-PlanetReport {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory)]
+        [string] $Path,
+
+        [string] $Name = '*'
+    )
+
+    $planets = @(Get-Planet -Name $Name)
+
+    if ($planets.Count -eq 0) {
+        throw "No planets matched '$Name'."
+    }
+
+    $report = foreach ($planet in $planets) {
+        '{0,-8} {1} AU' -f $planet.Name, (ConvertTo-AstronomicalUnit -Kilometre $planet.DistanceFromSunKm)
+    }
+
+    Set-Content -Path $Path -Value $report
+}
+```
+
+It leans on almost everything built so far: `Get-Planet` for the data, the private `ConvertTo-AstronomicalUnit` for the conversion, and the module loader to wire them together. It goes in `Public/`, so it is exported automatically.
+
+Note `@(Get-Planet -Name $Name)`. Without the array subexpression, a single match returns a bare object with no `.Count`, and the emptiness check would misbehave. This is a normal PowerShell trap rather than a Pester one, but it is the kind of thing a test catches and a quick manual check does not.
+
+Try it:
+
+```powershell
+Import-Module ./Planetarium/Planetarium.psd1 -Force
+Export-PlanetReport -Path ./report.txt
+Get-Content ./report.txt
+```
+
+```
+Mercury  0.387 AU
+Venus    0.723 AU
+Earth    1 AU
+Mars     1.524 AU
+Jupiter  5.204 AU
+Saturn   9.582 AU
+Uranus   19.201 AU
+Neptune  30.047 AU
+```
+
+## The problem with testing this
+
+You have just created a file in your source folder. Delete it:
+
+```powershell
+Remove-Item ./report.txt
+```
+
+Now think about what a test for this function has to do. It needs a path to write to, and afterwards that file should not still be there. Doing this by hand goes wrong quickly:
+
+- **Writing into the repo** leaves junk in `git status`, and one forgotten cleanup means a test that passes only because a previous run left the file behind.
+- **Writing to a fixed temp path** breaks the moment two tests use the same name, and breaks harder when two Pester runs happen at once.
+- **Cleaning up in `AfterEach`** is correct until a test fails midway and the cleanup never runs — so the failure poisons the next run too.
+
+Every one of these produces the same nasty class of bug: tests whose result depends on what previous runs left lying around. They pass on your machine, fail in CI, and pass again after you delete something by hand.
+
+:::note Could you just mock `Set-Content`?
+You could — `Mock Set-Content` and `Should-Invoke` would tell you the function tried to write. But it would not tell you the file has eight lines, or that Earth's line reads `Earth    1 AU`. You would be asserting that your code called a command, not that it produced a correct report.
+
+Mock the filesystem when the write itself is the behaviour. When the *content* matters, write real files somewhere disposable — which is exactly what the next page is about.
+:::
+
+<TutorialChecklist items={[
+  {id: 'export-fn', label: 'I added Export-PlanetReport to Public/ and ran it once by hand'},
+  {id: 'array-subexpression', label: 'I understand why Get-Planet is wrapped in @( ) before checking .Count'},
+  {id: 'why-hard', label: 'I can explain why fixed paths and AfterEach cleanup are unreliable in tests'},
+  {id: 'mock-vs-real', label: 'I can explain when to mock the filesystem and when to write real files'},
+]} />
+
+Next: the disposable filesystem Pester gives you for free.

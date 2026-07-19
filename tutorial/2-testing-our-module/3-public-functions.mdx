@@ -21,6 +21,9 @@ Change the `BeforeAll` in your test file:
 
 ```powershell title="Planetarium/Public/Get-Planet.Tests.ps1"
 BeforeAll {
+    # diff-remove
+    . $PSCommandPath.Replace('.Tests.ps1', '.ps1')
+    # diff-add
     Import-Module $PSScriptRoot/../Planetarium.psd1 -Force
 }
 ```

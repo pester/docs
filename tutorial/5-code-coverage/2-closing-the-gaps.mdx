@@ -1,0 +1,144 @@
+---
+id: closing-the-gaps
+title: Closing the gaps
+description: Read the missed-command list from the result object, write the tests it points at, and produce a coverage report file for CI to consume
+---
+
+Coverage says 95%. It will also tell you exactly which line it means.
+
+## Finding the missed lines
+
+The percentage is on screen; the detail is on the result object, so ask for it with `Run.PassThru`.
+
+This one is a throwaway — run it in the console rather than adding it to `test.ps1`:
+
+```powershell
+$config = New-PesterConfiguration
+$config.Run.Path = './Planetarium'
+$config.Run.PassThru = $true
+$config.CodeCoverage.Enabled = $true
+$config.CodeCoverage.Path = './Planetarium'
+$config.Output.Verbosity = 'None'
+
+$result = Invoke-Pester -Configuration $config
+
+'Coverage: {0:N2}%' -f $result.CodeCoverage.CoveragePercent
+$result.CodeCoverage.CommandsMissed |
+    ForEach-Object { '  {0}:{1}  {2}' -f (Split-Path $_.File -Leaf), $_.Line, $_.Command }
+```
+
+:::tip Why `PassThru` does not belong in `test.ps1`
+With `Run.PassThru` set, `Invoke-Pester` returns the result object — and anything a script returns without capturing gets printed. Leave it on in `test.ps1` and every run ends in a wall of formatted object properties after the test output. Keep it for the runs where you actually want the object.
+:::
+
+```
+Coverage: 95.00%
+Missed commands:
+  Export-PlanetReport.ps1:19  throw "'$Path' already exists. Use -Force to overwrite it."
+  Export-PlanetReport.ps1:19  throw "'$Path' already exists. Use -Force to overwrite it."
+```
+
+File, line number and the actual source text of what never ran. No hunting.
+
+The line appears twice because Pester counts commands rather than lines, and that statement contains more than one — the `throw` and the string expansion inside it. Two entries, one gap.
+
+`CommandsMissed` is the single most useful thing in the coverage result. Printing it beats reading a percentage, because a percentage tells you that you have a problem while this tells you where it is.
+
+## Writing the missing tests
+
+The uncovered branch has two behaviours worth pinning: it refuses by default, and `-Force` overrides it.
+
+```powershell title="Planetarium/Public/Export-PlanetReport.Tests.ps1"
+    It 'Refuses to overwrite an existing report' {
+        $path = Join-Path $TestDrive 'existing.txt'
+        Export-PlanetReport -Path $path
+
+        { Export-PlanetReport -Path $path } |
+            Should-Throw -ExceptionMessage "*already exists. Use -Force to overwrite it."
+    }
+
+    It 'Overwrites an existing report when -Force is used' {
+        $path = Join-Path $TestDrive 'forced.txt'
+        Export-PlanetReport -Path $path
+        Export-PlanetReport -Path $path -Name 'Earth' -Force
+
+        Get-Content -Path $path | Should-Be 'Earth    1 AU'
+    }
+```
+
+Both call `Export-PlanetReport` twice: once to create the file, once against the now-existing path. This is exactly the scenario every earlier test avoided by using a fresh filename each time — which is why the branch went uncovered.
+
+The leading `*` in the expected message matters. The real message starts with the full TestDrive path, which is randomised per run, so matching it literally would fail. `-ExceptionMessage` accepts wildcards; match the stable part.
+
+The second test asserts *content*, not just that no error occurred. Writing `Earth` over an eight-planet report and then checking the file holds exactly one line proves the overwrite really happened rather than the write being skipped.
+
+## Back to green
+
+Run the throwaway again:
+
+```
+Coverage: 100.00%
+Missed: 0
+```
+
+And the suite itself:
+
+```powershell
+./test.ps1
+```
+
+```
+Tests Passed: 26, Failed: 0, Skipped: 0, Inconclusive: 0, NotRun: 0
+Covered 100% / 75%. 44 analyzed Commands in 7 Files.
+```
+
+Twenty-six tests, no uncovered commands.
+
+## A report file for CI
+
+Like test results, coverage can be written to a file for other tools. Add it to `test.ps1`:
+
+```powershell title="test.ps1"
+$config.CodeCoverage.Enabled = $true
+$config.CodeCoverage.Path = './Planetarium'
+# diff-add
+$config.CodeCoverage.OutputPath = './coverage.xml'
+```
+
+```xml title="coverage.xml"
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE report PUBLIC "-//JACOCO//DTD Report 1.1//EN" "report.dtd"[]>
+<report name="Pester ()">
+  <sessioninfo id="this" start="1784497576207" ...
+```
+
+The default format is **JaCoCo**, which most coverage services understand. `Cobertura` is the other option via `CodeCoverage.OutputFormat`. Note that `CoverageGutters` was removed in v6 — if you are copying a v5 config, that value will now be rejected.
+
+Add it to `.gitignore` alongside the test results:
+
+```
+testResults.xml
+coverage.xml
+```
+
+## Using coverage well
+
+The habit worth forming is not "keep the number high". It is:
+
+1. Run coverage after adding a feature, not on a schedule.
+2. Read `CommandsMissed`, not the percentage.
+3. For each missed line, decide honestly — is this a gap, or code that does not need a test?
+4. Write tests for the gaps. Leave the rest.
+
+Sometimes the right answer to an uncovered line is deleting it. Coverage is good at surfacing code that no longer has a reason to exist, and `[ExcludeFromCodeCoverage()]` before a `param()` block is there for the genuine exceptions.
+
+<TutorialChecklist items={[
+  {id: 'commands-missed', label: 'I printed CommandsMissed and found the exact uncovered line'},
+  {id: 'wrote-tests', label: 'I wrote the two tests covering the -Force guard'},
+  {id: 'wildcard', label: 'I understand why the expected exception message needs a leading wildcard'},
+  {id: 'back-to-100', label: 'My suite reports 26 tests and 100% coverage'},
+  {id: 'coverage-file', label: 'I generated coverage.xml and gitignored it'},
+  {id: 'habit', label: 'I can explain why reading CommandsMissed beats chasing the percentage'},
+]} />
+
+Last module: running all of this automatically on every push.

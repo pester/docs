@@ -17,10 +17,7 @@ export const TUTORIAL_PLUGIN_ID = 'tutorial';
  * These have no docs, so they cannot come from the sidebar. They are shown in the tracker,
  * greyed out and not linkable, so the shape of the whole tutorial is visible up front. Delete
  * an entry when its module is written — the sidebar will pick it up automatically.
+ *
+ * Format: {id: string, label: string}
  */
-export const upcomingModules = [
-  { id: 'mocking', label: 'Mocking' },
-  { id: 'testdrive', label: 'Working with files' },
-  { id: 'code-coverage', label: 'Code coverage' },
-  { id: 'ci', label: 'Setting up CI' },
-];
+export const upcomingModules = [];

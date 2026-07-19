@@ -135,41 +135,42 @@ testResults.xml
 
 ## Putting it together
 
-A single configuration usually covers a whole project. This is a reasonable one to keep as `build.ps1` at the root of the tutorial folder:
+Retyping that configuration every time gets old fast. Save it as `test.ps1` in the root of your working folder — the one containing `Planetarium`:
 
-```powershell title="build.ps1"
+```powershell title="test.ps1"
 $config = New-PesterConfiguration
 $config.Run.Path = './Planetarium'
-$config.Run.PassThru = $true
 $config.Output.Verbosity = 'Detailed'
 $config.TestResult.Enabled = $true
 $config.TestResult.OutputPath = './testResults.xml'
 
-$result = Invoke-Pester -Configuration $config
-
-if ($result.FailedCount -gt 0) {
-    throw "$($result.FailedCount) test(s) failed."
-}
+Invoke-Pester -Configuration $config
 ```
 
 ```powershell
-./build.ps1
+./test.ps1
 ```
 
-That last block is the part people forget. A failing test does not, on its own, make `Invoke-Pester` fail your build — so a pipeline without an explicit check will happily report success over a suite full of red. Throwing on `FailedCount` is what turns a test run into a gate, and it is exactly what the CI module later in this tutorial builds on.
+**This is how you run the suite for the rest of the tutorial.** Every later module adds to this file rather than starting a new one, and the additions are shown as diffs so you can see exactly what changed.
+
+It is named `test.ps1` rather than `build.ps1` because running tests is all it does — nothing here compiles, packages or publishes.
+
+When you are iterating on one file, `Invoke-Pester -Path ./Planetarium/Public/Get-Planet.Tests.ps1` is still the quicker loop. `./test.ps1` is for "is everything still green".
+
+:::note This script does not fail yet
+A failing test does not, on its own, make `Invoke-Pester` return an error — so depending on how this script is invoked, a pipeline can report success over a suite full of red. The [CI module](../ci/test-script) fixes that with one more line, once there is a pipeline to fix it for.
+:::
 
 <TutorialChecklist items={[
   {id: 'config-object', label: 'I can build a configuration with New-PesterConfiguration and pass it to Invoke-Pester'},
   {id: 'verbosity', label: 'I ran the suite at Normal and Detailed verbosity and can describe the difference'},
   {id: 'passthru', label: 'I used Run.PassThru to get the result object and read counts from it'},
   {id: 'test-results', label: 'I generated a testResults.xml file and gitignored it'},
-  {id: 'gate', label: 'I understand why a failing test does not fail the build without an explicit check'},
+  {id: 'script', label: 'I saved test.ps1 and know it is how I run the suite from here on'},
 ]} />
 
 ## What you have built
 
-Starting from an empty folder, you now have a PowerShell module with a manifest, a loader, public and private functions, and fifteen tests covering all of it — exported behaviour, error cases, wildcard filtering and internal helpers — plus a build script that gates on failures and emits a results file.
+Starting from an empty folder, you now have a PowerShell module with a manifest, a loader, public and private functions, and fifteen tests covering all of it — exported behaviour, error cases, wildcard filtering and internal helpers — plus a script that gates on failures and emits a results file.
 
-The remaining tutorial modules pick up from exactly here. `Get-PlanetDistance` will get a real external dependency worth mocking, `Export-PlanetReport` will write files that need isolating with `TestDrive`, code coverage will show you the branches these tests never touch, and the CI module will run the whole thing on every push.
-
-Those pages are being written. In the meantime the reference documentation covers all four: [Mocking](../../docs/usage/mocking), [TestDrive](../../docs/usage/testdrive), [Code coverage](../../docs/usage/code-coverage) and [Test results](../../docs/usage/test-results).
+The remaining modules pick up from exactly here. The planet data moves out of the function and into a file, which finally gives you a dependency worth mocking. `Export-PlanetReport` arrives and needs `TestDrive` to test without leaving debris. Code coverage finds a branch none of these tests touch. And the whole thing ends up running on three operating systems on every push.
