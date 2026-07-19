@@ -1,18 +1,21 @@
 import React from 'react';
 import clsx from 'clsx';
 import Link from '@docusaurus/Link';
+import TOCItems from '@theme/TOCItems';
+import { useCollapsible, Collapsible } from '@docusaurus/theme-common';
+import { useDoc } from '@docusaurus/plugin-content-docs/client';
 import { getPageIndex } from '@site/src/tutorial/tutorialData';
 import { useTutorialOutline } from '@site/src/tutorial/useTutorialOutline';
 import styles from './styles.module.css';
 
 function CheckIcon() {
   return (
-    <svg className={styles.icon} viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+    <svg className={styles.icon} viewBox="0 0 16 16" width="12" height="12" aria-hidden="true">
       <path
         d="M13 4.5 6.5 11 3 7.5"
         fill="none"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth="2.5"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -29,45 +32,57 @@ function warnUnknownPage(currentPageId) {
   }
 }
 
-export default function TutorialTracker({ currentPageId }) {
-  const { hydrated, modules, currentModule, totalPages, totalDone, percent } =
-    useTutorialOutline(currentPageId);
+/**
+ * Headings of the current page, nested under it in the page list.
+ *
+ * `highlight` drives whether useTOCHighlight tracks the active heading. It must be enabled on
+ * exactly one TOC per page: the desktop and mobile trackers are both in the DOM at all times
+ * (CSS decides which is visible), so the mobile one opts out to avoid two components fighting
+ * over the same active-link classes.
+ */
+function PageHeadings({ highlight }) {
+  const { toc, frontMatter } = useDoc();
 
-  warnUnknownPage(currentPageId);
+  if (!toc || toc.length === 0) {
+    return null;
+  }
 
   return (
-    <aside className={styles.tracker} aria-label="Tutorial progress">
-      <div className={styles.header}>
-        <div className={styles.headerText}>
-          <span className={styles.eyebrow}>Tutorial progress</span>
-          {/* Before hydration we have no stored progress, so show a placeholder rather than
-              a confidently wrong "0 of 12". */}
-          <strong className={styles.count} aria-busy={!hydrated}>
-            {hydrated ? `${totalDone} of ${totalPages} pages complete` : `${totalPages} pages`}
-          </strong>
-        </div>
-        <span className={styles.percent} aria-hidden={!hydrated}>
-          {hydrated ? `${percent}%` : ''}
-        </span>
-      </div>
+    <TOCItems
+      toc={toc}
+      minHeadingLevel={frontMatter.toc_min_heading_level}
+      maxHeadingLevel={frontMatter.toc_max_heading_level}
+      className={styles.headings}
+      // These are the class names @theme/TOC uses, so Infima's active-link styling applies.
+      linkClassName={highlight ? 'table-of-contents__link toc-highlight' : styles.headingLink}
+      linkActiveClassName={highlight ? 'table-of-contents__link--active' : undefined}
+    />
+  );
+}
 
-      <div
-        className={styles.bar}
-        role="progressbar"
-        aria-valuenow={hydrated ? totalDone : 0}
-        aria-valuemin={0}
-        aria-valuemax={totalPages}
-        aria-label="Overall tutorial progress"
-      >
-        <div className={styles.barFill} style={{ width: hydrated ? `${percent}%` : '0%' }} />
-      </div>
+/** Overall progress bar. Shown in both variants, including while the mobile one is collapsed. */
+function ProgressBar({ hydrated, totalDone, totalPages, percent }) {
+  return (
+    <div
+      className={styles.bar}
+      role="progressbar"
+      aria-valuenow={hydrated ? totalDone : 0}
+      aria-valuemin={0}
+      aria-valuemax={totalPages}
+      aria-label="Overall tutorial progress"
+    >
+      <div className={styles.barFill} style={{ width: hydrated ? `${percent}%` : '0%' }} />
+    </div>
+  );
+}
 
+/** The navigable part: every module, then the current module's pages and headings. */
+function TrackerNav({ hydrated, modules, currentModule, highlight }) {
+  return (
+    <>
       <details className={styles.modules}>
         <summary className={styles.summary}>
-          <span className={styles.summaryLabel}>
-            {currentModule ? currentModule.label : 'All modules'}
-          </span>
-          <span className={styles.summaryHint}>All modules</span>
+          {currentModule ? currentModule.label : 'All modules'}
         </summary>
         <ul className={styles.moduleList}>
           {modules.map((module) => (
@@ -76,10 +91,10 @@ export default function TutorialTracker({ currentPageId }) {
                 {module.label}
               </span>
               {module.upcoming ? (
-                <span className={styles.badge}>Coming soon</span>
+                <span className={styles.badge}>Soon</span>
               ) : (
                 <span className={styles.moduleCount}>
-                  {hydrated ? `${module.done}/${module.total}` : `${module.total}`}
+                  {hydrated ? `${module.done}/${module.total}` : module.total}
                 </span>
               )}
             </li>
@@ -88,7 +103,7 @@ export default function TutorialTracker({ currentPageId }) {
       </details>
 
       {currentModule && (
-        <ol className={styles.pageList}>
+        <ul className={styles.pageList}>
           {currentModule.pages.map((page) => (
             <li key={page.id}>
               <Link
@@ -102,10 +117,71 @@ export default function TutorialTracker({ currentPageId }) {
                 <span className={styles.pageTitle}>{page.title}</span>
                 {page.done && <span className={styles.srOnly}>(complete)</span>}
               </Link>
+              {page.isCurrent && <PageHeadings highlight={highlight} />}
             </li>
           ))}
-        </ol>
+        </ul>
       )}
+    </>
+  );
+}
+
+/**
+ * Tutorial progress tracker. Replaces the table of contents on tutorial pages, with the
+ * current page's headings nested inline so it serves both jobs.
+ *
+ * Desktop renders it in the right-hand column, styled like @theme/TOC. Mobile renders it
+ * above the content and collapses the navigation behind a toggle, the same way the theme's
+ * own TOCCollapsible does — the progress bar stays visible either way, since a progress
+ * tracker that hides your progress is not much of one.
+ */
+export default function TutorialTracker({ currentPageId, variant = 'desktop' }) {
+  const outline = useTutorialOutline(currentPageId);
+  const { hydrated, modules, currentModule, totalPages, totalDone, percent } = outline;
+  const { collapsed, toggleCollapsed } = useCollapsible({ initialState: true });
+
+  warnUnknownPage(currentPageId);
+
+  const isDesktop = variant === 'desktop';
+  const countLabel = hydrated ? `${totalDone}/${totalPages}` : `${totalPages} pages`;
+
+  if (isDesktop) {
+    return (
+      <aside className={clsx(styles.tracker, styles.trackerDesktop)} aria-label="Tutorial progress">
+        <div className={styles.header}>
+          <span className={styles.eyebrow}>Tutorial</span>
+          <span className={styles.count} aria-busy={!hydrated}>
+            {countLabel}
+          </span>
+        </div>
+        <ProgressBar {...{ hydrated, totalDone, totalPages, percent }} />
+        <TrackerNav {...{ hydrated, modules, currentModule }} highlight />
+      </aside>
+    );
+  }
+
+  return (
+    <aside
+      className={clsx(styles.tracker, styles.trackerMobile, !collapsed && styles.trackerMobileExpanded)}
+      aria-label="Tutorial progress"
+    >
+      <button
+        type="button"
+        className={clsx('clean-btn', styles.toggle, !collapsed && styles.toggleExpanded)}
+        onClick={toggleCollapsed}
+        aria-expanded={!collapsed}
+      >
+        <span className={styles.eyebrow}>Tutorial</span>
+        <span className={styles.count} aria-busy={!hydrated}>
+          {countLabel}
+        </span>
+      </button>
+
+      <ProgressBar {...{ hydrated, totalDone, totalPages, percent }} />
+
+      <Collapsible lazy collapsed={collapsed} className={styles.collapsibleContent}>
+        <TrackerNav {...{ hydrated, modules, currentModule }} highlight={false} />
+      </Collapsible>
     </aside>
   );
 }
