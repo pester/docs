@@ -81,7 +81,28 @@ const config = {
           'bash',
           'powershell',
           'yaml'
-        ]
+        ],
+        // Declaring magicComments replaces the defaults, so the built-in highlight directives
+        // are repeated here. The diff directives mark lines added or removed relative to the
+        // previous version of a snippet — used by the tutorial when it evolves a file.
+        // Styling lives in src/css/custom.css.
+        magicComments: [
+          {
+            className: 'theme-code-block-highlighted-line',
+            line: 'highlight-next-line',
+            block: { start: 'highlight-start', end: 'highlight-end' },
+          },
+          {
+            className: 'code-block-diff-add-line',
+            line: 'diff-add',
+            block: { start: 'diff-add-start', end: 'diff-add-end' },
+          },
+          {
+            className: 'code-block-diff-remove-line',
+            line: 'diff-remove',
+            block: { start: 'diff-remove-start', end: 'diff-remove-end' },
+          },
+        ],
       },
       // Please note that the Algolia DocSearch crawler only runs once every 24 hours.
       // Configuration options below described at https://docusaurus.io/docs/search.
@@ -167,6 +188,9 @@ const config = {
         // The follow-along tutorial lives in its own docs instance at /tutorial so it stays
         // single-sourced. Content in /docs is copied verbatim into versioned_docs/ at every
         // version cut, which would freeze and duplicate the tutorial per Pester version.
+
+        // "id" below MUST match TUTORIAL_PLUGIN_ID in src/tutorial/tutorialData.js.
+        // This is used to determine when to override the TableOfContents (TOC) with the combined tutorial tracker.
         id: 'tutorial',
         path: 'tutorial',
         routeBasePath: 'tutorial',

@@ -217,3 +217,65 @@ table {
   padding: 10px;
   vertical-align: middle;
 }
+/**
+ * Diff highlighting in code blocks.
+ *
+ * Driven by the `diff-add` / `diff-remove` magic comments configured in
+ * docusaurus.config.js, e.g. in a powershell block:
+ *
+ *   # diff-add
+ *   [switch] $Force
+ *
+ * The negative margin lets the highlight span the full width of the block, matching how
+ * Docusaurus styles its own highlighted lines. The +/- marker sits in the block's left
+ * padding so it never shifts the code, and means the change is not signalled by colour alone.
+ */
+.code-block-diff-add-line,
+.code-block-diff-remove-line {
+  position: relative;
+  display: block;
+  margin: 0 calc(var(--ifm-pre-padding) * -1);
+  padding: 0 var(--ifm-pre-padding);
+  border-left: 3px solid transparent;
+}
+
+.code-block-diff-add-line::before,
+.code-block-diff-remove-line::before {
+  position: absolute;
+  left: 0.4rem;
+  font-weight: 700;
+  opacity: 0.7;
+}
+
+.code-block-diff-add-line {
+  background-color: rgba(46, 160, 67, 0.15);
+  border-left-color: #2ea043;
+}
+
+.code-block-diff-add-line::before {
+  content: '+';
+  color: #2ea043;
+}
+
+.code-block-diff-remove-line {
+  background-color: rgba(248, 81, 73, 0.15);
+  border-left-color: #f85149;
+}
+
+.code-block-diff-remove-line::before {
+  content: '-';
+  color: #f85149;
+}
+
+[data-theme='dark'] .code-block-diff-add-line {
+  background-color: rgba(63, 185, 80, 0.18);
+  border-left-color: #3fb950;
+}
+
+[data-theme='dark'] .code-block-diff-add-line::before {
+  color: #3fb950;
+}
+
+[data-theme='dark'] .code-block-diff-remove-line {
+  background-color: rgba(248, 81, 73, 0.18);
+}
