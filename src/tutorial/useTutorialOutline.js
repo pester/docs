@@ -29,6 +29,8 @@ export function useTutorialOutline(currentPageId) {
         id: module.id,
         label: module.label,
         upcoming: Boolean(module.upcoming),
+        // Entry point for the module, so its label can be a link straight to page one.
+        permalink: modulePages[0]?.permalink,
         pages: modulePages,
         total: modulePages.length,
         done: modulePages.filter((p) => p.done).length,

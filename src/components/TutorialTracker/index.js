@@ -87,9 +87,20 @@ function TrackerNav({ hydrated, modules, currentModule, highlight }) {
         <ul className={styles.moduleList}>
           {modules.map((module) => (
             <li key={module.id} className={styles.moduleItem}>
-              <span className={clsx(styles.moduleLabel, module.isCurrent && styles.moduleLabelCurrent)}>
-                {module.label}
-              </span>
+              {/* Linking the label to page one makes jumping between modules a single tap,
+                  which matters most on mobile where the list is behind a toggle. */}
+              {module.permalink ? (
+                <Link
+                  to={module.permalink}
+                  className={clsx(styles.moduleLabel, styles.moduleLink, module.isCurrent && styles.moduleLabelCurrent)}
+                >
+                  {module.label}
+                </Link>
+              ) : (
+                <span className={clsx(styles.moduleLabel, module.isCurrent && styles.moduleLabelCurrent)}>
+                  {module.label}
+                </span>
+              )}
               {module.upcoming ? (
                 <span className={styles.badge}>Soon</span>
               ) : (
