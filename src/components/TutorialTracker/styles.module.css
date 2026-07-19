@@ -124,7 +124,7 @@
 .barFill {
   height: 100%;
   border-radius: inherit;
-  background: var(--ifm-color-primary);
+  background: var(--tut-accent);
   /* Animates 0% -> real value once progress loads, so the placeholder reads as intentional. */
   transition: width 400ms ease;
 }
@@ -175,7 +175,7 @@
 }
 
 .moduleLink:hover {
-  color: var(--ifm-color-primary);
+  color: var(--tut-accent);
   text-decoration: none;
 }
 
@@ -215,12 +215,12 @@
 }
 
 .pageLink:hover {
-  color: var(--ifm-color-primary);
+  color: var(--tut-accent);
   text-decoration: none;
 }
 
 .pageLinkCurrent {
-  color: var(--ifm-color-primary);
+  color: var(--tut-accent);
   font-weight: 600;
 }
 
@@ -240,9 +240,9 @@
 }
 
 .markerDone {
-  border-color: var(--ifm-color-primary);
-  background: var(--ifm-color-primary);
-  color: #fff;
+  border-color: var(--tut-marker-bg);
+  background: var(--tut-marker-bg);
+  color: var(--tut-marker-fg);
 }
 
 .icon {
@@ -281,7 +281,7 @@
 
 .headings :global(.table-of-contents__link:hover),
 .headings :global(.table-of-contents__link--active) {
-  color: var(--ifm-color-primary);
+  color: var(--tut-accent);
   text-decoration: none;
 }
 
@@ -293,7 +293,7 @@
 }
 
 .headingLink:hover {
-  color: var(--ifm-color-primary);
+  color: var(--tut-accent);
   text-decoration: none;
 }
 
@@ -317,6 +317,12 @@
   --tut-border-strong: var(--ifm-color-emphasis-400);
   --tut-track: var(--ifm-color-emphasis-200);
   --tut-muted: var(--ifm-color-emphasis-700);
+  /* Accent for active and hovered links. The dark value follows the same rule custom.css
+     applies to --ifm-link-color and .table-of-contents__link--active: the base primary is
+     too dark to read against a dark background. */
+  --tut-accent: var(--ifm-color-primary);
+  --tut-marker-bg: var(--ifm-color-primary);
+  --tut-marker-fg: #fff;
 }
 
 :global([data-theme='dark']) {
@@ -325,4 +331,8 @@
   --tut-border-strong: var(--ifm-color-emphasis-400);
   --tut-track: var(--ifm-color-emphasis-300);
   --tut-muted: var(--ifm-color-emphasis-600);
+  --tut-accent: var(--ifm-color-primary-lightest);
+  --tut-marker-bg: var(--ifm-color-primary-lightest);
+  /* Dark tick on the lighter marker — white on #3eadff is too low contrast. */
+  --tut-marker-fg: #10161d;
 }
