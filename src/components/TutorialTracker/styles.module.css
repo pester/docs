@@ -1,0 +1,236 @@
+/**
+ * Tutorial progress tracker.
+ *
+ * Follows the --tut-* local custom property idiom used by src/pages/styles.module.css:
+ * declare a light/dark pair at the bottom, consume with var().
+ */
+
+.tracker {
+  margin-bottom: 2rem;
+  padding: 1rem 1.25rem 1.25rem;
+  border: 1px solid var(--tut-border);
+  border-radius: 10px;
+  background: var(--tut-surface);
+}
+
+/* ---- header */
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.headerText {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.eyebrow {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--tut-muted);
+}
+
+.count {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.percent {
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--ifm-color-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- progress bar */
+
+.bar {
+  height: 6px;
+  margin-top: 0.75rem;
+  border-radius: 999px;
+  background: var(--tut-track);
+  overflow: hidden;
+}
+
+.barFill {
+  height: 100%;
+  border-radius: inherit;
+  background: var(--ifm-color-primary);
+  /* Animates 0% -> real value once progress loads, so the placeholder reads as intentional. */
+  transition: width 400ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .barFill {
+    transition: none;
+  }
+}
+
+/* ---- module disclosure */
+
+.modules {
+  margin-top: 1rem;
+  border-top: 1px solid var(--tut-border);
+  padding-top: 0.75rem;
+}
+
+.summary {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  list-style-position: outside;
+}
+
+.summaryLabel {
+  font-weight: 600;
+}
+
+.summaryHint {
+  font-size: 0.8rem;
+  color: var(--tut-muted);
+}
+
+.moduleList {
+  margin: 0.75rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.moduleItem {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  font-size: 0.875rem;
+}
+
+.moduleLabel {
+  color: var(--tut-muted);
+}
+
+.moduleLabelCurrent {
+  color: inherit;
+  font-weight: 600;
+}
+
+.moduleCount {
+  color: var(--tut-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.badge {
+  padding: 0.05rem 0.45rem;
+  border-radius: 999px;
+  background: var(--tut-track);
+  color: var(--tut-muted);
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* ---- pages in the current module */
+
+.pageList {
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: tut-page;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.pageLink {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.35rem 0.5rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  color: var(--ifm-font-color-base);
+  text-decoration: none;
+}
+
+.pageLink:hover {
+  background: var(--tut-track);
+  color: var(--ifm-font-color-base);
+  text-decoration: none;
+}
+
+.pageLinkCurrent {
+  background: var(--tut-current-bg);
+  font-weight: 600;
+}
+
+.marker {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid var(--tut-border-strong);
+  border-radius: 50%;
+  color: transparent;
+}
+
+.markerDone {
+  border-color: var(--ifm-color-primary);
+  background: var(--ifm-color-primary);
+  color: #fff;
+}
+
+.icon {
+  display: block;
+}
+
+.pageTitle {
+  min-width: 0;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---- theme tokens */
+
+:global(:root) {
+  --tut-surface: #f8f9fb;
+  --tut-border: var(--ifm-color-emphasis-200);
+  --tut-border-strong: var(--ifm-color-emphasis-300);
+  --tut-track: var(--ifm-color-emphasis-200);
+  --tut-current-bg: rgba(0, 114, 198, 0.1);
+  --tut-muted: var(--ifm-color-emphasis-700);
+}
+
+:global([data-theme='dark']) {
+  --tut-surface: rgba(255, 255, 255, 0.03);
+  --tut-border: var(--ifm-color-emphasis-300);
+  --tut-border-strong: var(--ifm-color-emphasis-400);
+  --tut-track: var(--ifm-color-emphasis-300);
+  --tut-current-bg: rgba(2, 148, 255, 0.16);
+  --tut-muted: var(--ifm-color-emphasis-600);
+}

@@ -1,0 +1,130 @@
+---
+id: private-functions
+title: Testing private functions
+sidebar_label: Private functions
+description: Reach non-exported module functions with InModuleScope, and understand why it should be your last resort rather than your default
+---
+
+`ConvertTo-AstronomicalUnit` and `Test-PlanetName` are not exported. Calling them from a test the ordinary way does not work:
+
+```powershell
+ConvertTo-AstronomicalUnit -Kilometre 149597870.7
+```
+
+```
+The term 'ConvertTo-AstronomicalUnit' is not recognized as a name of a cmdlet, function, script file, or executable program.
+```
+
+That is not a bug — it is the module doing its job. Private functions are private. But sometimes you still want a test pointed directly at one, and Pester gives you a way in.
+
+## Should you, though?
+
+Before the mechanics, the honest answer about when to use this.
+
+Private functions are already tested by your public tests. Every `Get-PlanetDistance` test you wrote on the previous page ran `Test-PlanetName` and `ConvertTo-AstronomicalUnit` too. Testing through the public surface is the better default: it tests the behaviour users depend on, and it lets you restructure your internals freely without rewriting tests.
+
+Reaching inside earns its keep when a helper has meaningful logic of its own — edge cases, rounding, parsing, boundaries — that would need a contrived public call to reach. `ConvertTo-AstronomicalUnit` qualifies: its rounding behaviour is worth pinning down directly rather than inferring from a distance lookup.
+
+:::warning Prefer testing through your public functions
+The official guidance in [Unit testing within modules](../../docs/usage/modules) is blunt about this: `InModuleScope` "prevents you from properly testing your published functions, does not ensure that your functions are actually published and slows down test discovery by loading the module. Aim to avoid it altogether ... or at least limit it to inside the `It` block."
+
+That last clause is the practical rule. Keep `InModuleScope` inside individual `It` blocks, never wrapped around your `Describe`.
+:::
+
+## InModuleScope
+
+`InModuleScope` runs a script block as if it were code inside the module, so everything private is in reach:
+
+```powershell title="Planetarium/Private/ConvertTo-AstronomicalUnit.Tests.ps1"
+BeforeAll {
+    Import-Module $PSScriptRoot/../Planetarium.psd1 -Force
+}
+
+Describe 'ConvertTo-AstronomicalUnit' {
+    It 'Is not exported from the module' {
+        Get-Command -Module Planetarium -Name 'ConvertTo-AstronomicalUnit' -ErrorAction SilentlyContinue |
+            Should-BeNull
+    }
+
+    It 'Converts one astronomical unit of kilometres to 1' {
+        InModuleScope Planetarium {
+            ConvertTo-AstronomicalUnit -Kilometre 149597870.7 | Should-Be 1
+        }
+    }
+
+    It 'Rounds to three decimal places' {
+        InModuleScope Planetarium {
+            ConvertTo-AstronomicalUnit -Kilometre 57909050 | Should-Be 0.387
+        }
+    }
+}
+```
+
+Note the shape: each `InModuleScope` sits *inside* an `It`, wrapping only the code that needs module access.
+
+The first test is the odd one out, and it is deliberate. It asserts the function is **not** exported, from outside the module scope — an executable statement that this helper is meant to stay private. If someone later moves the file into `Public/`, that test fails and asks them whether they meant to.
+
+## Passing values in
+
+A script block handed to `InModuleScope` does not inherit your test's variables. This does not work:
+
+```powershell
+$name = 'Earth'
+InModuleScope Planetarium {
+    Test-PlanetName -Name $name | Should-BeTrue   # $name is empty in here
+}
+```
+
+Use `-Parameters` to hand values across the boundary. Combined with `-ForEach`, it makes short work of table-driven cases:
+
+```powershell title="Planetarium/Private/Test-PlanetName.Tests.ps1"
+BeforeAll {
+    Import-Module $PSScriptRoot/../Planetarium.psd1 -Force
+}
+
+Describe 'Test-PlanetName' {
+    It 'Accepts <_>' -ForEach @('Mercury', 'Earth', 'Neptune') {
+        InModuleScope Planetarium -Parameters @{ Name = $_ } {
+            Test-PlanetName -Name $Name | Should-BeTrue
+        }
+    }
+
+    It 'Rejects Pluto' {
+        InModuleScope Planetarium {
+            Test-PlanetName -Name 'Pluto' | Should-BeFalse
+        }
+    }
+}
+```
+
+`-ForEach` runs the `It` once per item, and `<_>` in the test name is replaced with the current value — so this produces three separately named, separately reported tests rather than one loop that stops at the first failure. [Data driven tests](../../docs/usage/data-driven-tests) goes further with this.
+
+`-Parameters @{ Name = $_ }` passes the current item in, where it arrives as `$Name`.
+
+:::tip Things you create inside `InModuleScope` do not persist
+Variables and functions defined inside the script block disappear when it ends. If you need one to outlive the block, use the `script:` scope modifier.
+:::
+
+## Running it
+
+```powershell
+Invoke-Pester -Path ./Planetarium
+```
+
+```
+Tests Passed: 15, Failed: 0, Skipped: 0, Inconclusive: 0, NotRun: 0
+```
+
+Fifteen tests: five for `Get-Planet`, three for `Get-PlanetDistance`, three for `ConvertTo-AstronomicalUnit` and four for `Test-PlanetName` — the `-ForEach` block counting as three.
+
+<TutorialChecklist items={[
+  {id: 'why-private-fails', label: 'I understand why a private function cannot be called from a test directly'},
+  {id: 'prefer-public', label: 'I can explain why testing through public functions is the better default'},
+  {id: 'inmodulescope', label: 'I used InModuleScope inside It blocks, not around Describe'},
+  {id: 'not-exported-test', label: 'I wrote a test asserting the helper is not exported'},
+  {id: 'parameters', label: 'I used -Parameters to pass a value into an InModuleScope block'},
+  {id: 'foreach', label: 'I used -ForEach with <_> to generate one test per case'},
+  {id: 'fifteen', label: 'My suite reports 15 passing tests'},
+]} />
+
+The module is covered. Last page of this chapter: making Pester tell you what you want to know.

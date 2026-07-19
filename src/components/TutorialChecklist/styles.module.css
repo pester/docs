@@ -1,0 +1,80 @@
+/**
+ * End-of-page tutorial checklist. Reuses the --tut-* tokens declared by
+ * src/components/TutorialTracker/styles.module.css.
+ */
+
+.checklist {
+  margin-top: 3rem;
+  padding: 1.25rem 1.5rem 1.5rem;
+  border: 1px solid var(--tut-border);
+  border-left: 4px solid var(--ifm-color-primary);
+  border-radius: 8px;
+  background: var(--tut-surface);
+}
+
+.checklistComplete {
+  border-left-color: var(--ifm-color-success);
+}
+
+.header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.title {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.count {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--tut-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.items {
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  padding: 0.4rem 0.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  line-height: 1.5;
+}
+
+.item:hover {
+  background: var(--tut-track);
+}
+
+.itemChecked {
+  color: var(--tut-muted);
+}
+
+.input {
+  flex: 0 0 auto;
+  /* Nudge the box onto the first line's optical centre. */
+  margin-top: 0.25rem;
+  width: 1rem;
+  height: 1rem;
+  accent-color: var(--ifm-color-primary);
+  cursor: pointer;
+}
+
+.done {
+  margin: 1rem 0 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--ifm-color-success);
+}

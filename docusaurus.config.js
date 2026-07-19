@@ -51,6 +51,13 @@ const config = {
             position: 'right'
           },
           {
+            type: 'docSidebar',
+            label: 'Tutorial',
+            docsPluginId: 'tutorial',
+            sidebarId: 'tutorial',
+            position: 'right'
+          },
+          {
             type: 'doc',
             label: 'Commands',
             docId: 'commands/Add-ShouldOperator',
@@ -152,6 +159,24 @@ const config = {
         copyright: `Copyright Pester Team © 2019-present`,
       },
     }),
+  plugins: [
+    [
+      '@docusaurus/plugin-content-docs',
+      /** @type {import('@docusaurus/plugin-content-docs').Options} */
+      ({
+        // The follow-along tutorial lives in its own docs instance at /tutorial so it stays
+        // single-sourced. Content in /docs is copied verbatim into versioned_docs/ at every
+        // version cut, which would freeze and duplicate the tutorial per Pester version.
+        id: 'tutorial',
+        path: 'tutorial',
+        routeBasePath: 'tutorial',
+        sidebarPath: './sidebarsTutorial.js',
+        editUrl: 'https://github.com/pester/docs/edit/main',
+        // Do not set disableVersioning here. It throws for an instance with no versions file.
+        // Omitting it gives a single implicit version and no version dropdown, which is what we want.
+      }),
+    ],
+  ],
   presets: [
     [
       '@docusaurus/preset-classic',
