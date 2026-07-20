@@ -9,6 +9,8 @@ import { TUTORIAL_PLUGIN_ID } from '@site/src/tutorial/tutorialData';
  * Mobile counterpart of the desktop TOC replacement. Both variants are always in the DOM —
  * CSS decides which is visible — so the mobile one renders its headings without active-link
  * tracking to avoid two components competing over the same highlight classes.
+ *
+ * Note: this is an unsafe swizzle. Check it when @docusaurus/theme-classic is upgraded.
  */
 export default function DocItemTOCMobileWrapper(props) {
   const { plugin } = useRouteContext();

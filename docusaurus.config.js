@@ -51,16 +51,16 @@ const config = {
             position: 'right'
           },
           {
+            type: 'doc',
+            label: 'Commands',
+            docId: 'commands/Add-ShouldOperator',
+            position: 'right'
+          },
+          {
             type: 'docSidebar',
             label: 'Tutorial',
             docsPluginId: 'tutorial',
             sidebarId: 'tutorial',
-            position: 'right'
-          },
-          {
-            type: 'doc',
-            label: 'Commands',
-            docId: 'commands/Add-ShouldOperator',
             position: 'right'
           },
           {
