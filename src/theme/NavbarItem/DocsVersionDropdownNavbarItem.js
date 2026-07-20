@@ -19,6 +19,6 @@ export default function DocsVersionDropdownNavbarItemWrapper(props) {
     );
   }
 
-  // Hide version dropdown everywhere else, ex. home page and unversioned tutorial plugin.
+  // Hide version dropdown everywhere else, like home page and unversioned tutorial plugin.
   return null;
 }
