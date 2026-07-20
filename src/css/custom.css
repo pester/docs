@@ -131,7 +131,8 @@
   font-size: 19px;
 }
 
-.navbar__link:hover {
+.navbar__link:hover,
+.navbar__link--active {
   text-decoration: underline;
 }
 
