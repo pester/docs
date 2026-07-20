@@ -22,6 +22,8 @@ export function useTutorialOutline(currentPageId) {
 
   return useMemo(() => {
     const written = (sidebar?.items ?? [])
+      // Start from root "Tutorial" category
+      .filter((item) => item.type === 'category' && item.label === 'Tutorial')[0]?.items
       .filter((item) => item.type === 'category')
       .map((category) => {
         const modulePages = category.items

@@ -48,12 +48,14 @@ const config = {
             type: 'doc',
             label: 'Docs',
             docId: 'quick-start',
+            sidebarId: 'docs',
             position: 'right'
           },
           {
             type: 'doc',
             label: 'Commands',
             docId: 'commands/Add-ShouldOperator',
+            sidebarId: 'commands',
             position: 'right'
           },
           {
@@ -198,7 +200,7 @@ const config = {
         editUrl: 'https://github.com/pester/docs/edit/main',
         // The progress tracker already shows the module, the page and where both sit in the
         // tutorial, so breadcrumbs would only repeat it.
-        breadcrumbs: false,
+        breadcrumbs: true,
         // Do not set disableVersioning here. It throws for an instance with no versions file.
         // Omitting it gives a single implicit version and no version dropdown, which is what we want.
       }),

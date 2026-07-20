@@ -1,11 +1,6 @@
 /**
- * Copyright (c) 2017-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- * PlEASE NOTE:
- * The API pages for pester-docs are generated using the
+ * NOTE:
+ * The Commands-pages for pester-docs are generated using the
  * Alt3.Docusaurus.Powershell module. It takes the Get-Help
  * information produced by the Pester module and uses it to
  * 1) generate .mdx files with the required Docusaurus (markdown)
@@ -22,60 +17,79 @@
 
 import commands from "./docs/commands/docusaurus.sidebar.js";
 
-module.exports = {
-  docs: {
-    Introduction: [
-      "quick-start",
-      "introduction/installation",
-    ],
-    Usage: [
-      "usage/file-placement-and-naming",
-      "usage/importing-tested-functions",
-      "usage/test-file-structure",
-      "usage/discovery-and-run",
-      "usage/parallel",
-      "usage/data-driven-tests",
-      "usage/setup-and-teardown",
-      "usage/tags",
-      "usage/skip",
-      "usage/mocking",
-      "usage/modules",
-      "usage/testdrive",
-      "usage/testregistry",
-      "usage/test-results",
-      "usage/code-coverage",
-      "usage/configuration",
-      "usage/output",
-      "usage/result-object",
-      "usage/vscode",
-      "usage/troubleshooting",
-    ],
-    "Assertions": [
-      "assertions/should-command",
-      "assertions/should-beequivalent",
-      "assertions/soft-assertions",
-      "assertions/assertions",
-      "assertions/custom-assertions",
-    ],
-    "Migration Guides": [
-      "migrations/v5-to-v6",
-      "migrations/v4-to-v5",
-      "migrations/breaking-changes-in-v5",
-      "migrations/v3-to-v4",
-    ],
-    "Additional Resources": [
-      "additional-resources/articles",
-      "additional-resources/courses",
-      "additional-resources/misc",
-      "additional-resources/projects",
-      "additional-resources/videos",
-    ],
-    "Contributing": [
-      "contributing/introduction",
-      "contributing/reporting-issues",
-      "contributing/feature-requests",
-      "contributing/pull-requests",
-    ],
-    "Command Reference": commands
-  }
+/** @type {import('@docusaurus/plugin-content-docs').SidebarsConfig} */
+const sidebars = {
+  docs: [
+    {
+      type: 'category',
+      label: 'Documentation',
+      collapsible: false,
+      items: [
+        {
+          "Introduction": [
+            "quick-start",
+            "introduction/installation",
+          ],
+          "Usage": [
+            "usage/file-placement-and-naming",
+            "usage/importing-tested-functions",
+            "usage/test-file-structure",
+            "usage/discovery-and-run",
+            "usage/parallel",
+            "usage/data-driven-tests",
+            "usage/setup-and-teardown",
+            "usage/tags",
+            "usage/skip",
+            "usage/mocking",
+            "usage/modules",
+            "usage/testdrive",
+            "usage/testregistry",
+            "usage/test-results",
+            "usage/code-coverage",
+            "usage/configuration",
+            "usage/output",
+            "usage/result-object",
+            "usage/vscode",
+            "usage/troubleshooting",
+          ],
+          "Assertions": [
+            "assertions/should-command",
+            "assertions/should-beequivalent",
+            "assertions/soft-assertions",
+            "assertions/assertions",
+            "assertions/custom-assertions",
+          ],
+          "Migration Guides": [
+            "migrations/v5-to-v6",
+            "migrations/v4-to-v5",
+            "migrations/breaking-changes-in-v5",
+            "migrations/v3-to-v4",
+          ],
+          "Additional Resources": [
+            "additional-resources/articles",
+            "additional-resources/courses",
+            "additional-resources/misc",
+            "additional-resources/projects",
+            "additional-resources/videos",
+          ],
+          "Contributing": [
+            "contributing/introduction",
+            "contributing/reporting-issues",
+            "contributing/feature-requests",
+            "contributing/pull-requests",
+          ],
+        }
+      ],
+    }
+  ],
+  commands: [
+    {
+      type: 'category',
+      label: 'Command Reference',
+      items: commands,
+      collapsible: false,
+    },
+  ],
 };
+
+export default sidebars;
