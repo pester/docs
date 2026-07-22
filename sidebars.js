@@ -21,6 +21,8 @@ import commands from "./docs/commands/docusaurus.sidebar.js";
 const sidebars = {
   docs: [
     {
+      // Root category used to identify the root node in the breadcrumbs,
+      // can be removed once https://github.com/facebook/docusaurus/issues/6953 is fixed to avoid extra indent
       type: 'category',
       label: 'Documentation',
       collapsible: false,
@@ -84,6 +86,8 @@ const sidebars = {
   ],
   commands: [
     {
+      // Root category used to identify the root node in the breadcrumbs,
+      // can be removed once https://github.com/facebook/docusaurus/issues/6953 is fixed to avoid extra indent
       type: 'category',
       label: 'Command Reference',
       items: commands,

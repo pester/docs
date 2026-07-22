@@ -17,6 +17,8 @@
 const sidebars = {
   tutorial: [
     {
+      // Root category used to identify the root node in the breadcrumbs,
+      // can be removed once https://github.com/facebook/docusaurus/issues/6953 is fixed to avoid extra indent
       type: 'category',
       label: 'Tutorial',
       collapsible: false,
