@@ -84,7 +84,7 @@ Tests Passed: 20, Failed: 0, Skipped: 0, Inconclusive: 0, NotRun: 0
 
 Twenty tests: the original fifteen, plus five that no longer care what is in `planets.csv`.
 
-There is also `Should-NotInvoke` for asserting a command was *not* called — useful for "it did not overwrite the file", which is a test you will write in the next module.
+There is also `Should-NotInvoke`, the mirror image, for asserting a command was *not* called — "it did not delete anything", "it did not retry". It takes the same `-ModuleName` and `-ParameterFilter` parameters.
 
 <TutorialChecklist items={[
   {id: 'should-invoke', label: 'I asserted the data source is read exactly once with Should-Invoke -Exactly'},

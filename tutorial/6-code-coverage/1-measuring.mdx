@@ -34,7 +34,7 @@ Invoke-Pester -Configuration $config
 Tests completed in 870ms
 Tests Passed: 24, Failed: 0, Skipped: 0, Inconclusive: 0, NotRun: 0
 Processing code coverage result.
-Covered 100% / 75%. 40 analyzed Commands in 7 Files.
+Covered 100% / 75%. 36 analyzed Commands in 7 Files.
 ```
 
 Read that last line carefully — it trips people up. **`100%` is what you achieved; `75%` is the target you are being measured against.** The target is `CodeCoverage.CoveragePercentTarget`, which defaults to 75.
@@ -115,11 +115,19 @@ Tests Passed: 24, Failed: 0, Skipped: 0, Inconclusive: 0, NotRun: 0
 
 Still all green. Every existing test writes to a fresh path in TestDrive, so none of them hits the new branch — and none of them fails. Nothing in that output hints that you just shipped an untested code path.
 
-Coverage does:
+Coverage does, and at `Detailed` verbosity it names the line:
 
 ```
-Covered 95.00% / 75%. 44 analyzed Commands in 7 Files.
+Covered 95% / 75%. 40 analyzed Commands in 7 Files.
+Missed commands:
+
+File                                       Class Function            Line Command
+----                                       ----- --------            ---- -------
+Planetarium/Public/Export-PlanetReport.ps1       Export-PlanetReport   19 throw "'$Path' already exists. Use -Force to …
+Planetarium/Public/Export-PlanetReport.ps1       Export-PlanetReport   19 throw "'$Path' already exists. Use -Force to …
 ```
+
+File, function, line number and the source text of what never ran. That table is the whole reason to turn coverage on.
 
 <TutorialChecklist items={[
   {id: 'enabled', label: 'I enabled code coverage and read the achieved-versus-target percentages'},

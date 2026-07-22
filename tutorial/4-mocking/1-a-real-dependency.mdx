@@ -53,7 +53,11 @@ Two things here are load-bearing.
 
 **`$PSScriptRoot` resolves to the folder of the file that defines the function** — `Private/` — even though the function is dot-sourced into the module. That is what makes `../Data/planets.csv` correct regardless of the directory the user happens to be in when they call your module.
 
-**The `ForEach-Object` block re-types the data.** `Import-Csv` returns every column as a string, so without this `Order` would be `'3'` rather than `3`, and the astronomical-unit arithmetic would be doing string division. Your existing tests would catch it — `$planet.Order | Should-Be 3` fails against `'3'`, which is exactly the kind of thing the type in Pester's failure message is there to reveal.
+**The `ForEach-Object` block re-types the data.** `Import-Csv` returns every column as a string, so without this `Order` would be `'3'` rather than `3`.
+
+Your existing tests would *not* catch that. `$planet.Order | Should-Be 3` passes against `'3'`, because `Should-Be` compares values and PowerShell converts the string first. Delete the `ForEach-Object` block and all fifteen tests stay green while the module quietly hands out strings.
+
+That is a gap worth closing, and it needs an assertion about the type rather than the value. You will write it on the next page, once mocking makes it possible to feed the function strings on purpose.
 
 ## Simplifying Get-Planet
 

@@ -39,7 +39,8 @@ The tutorial is split into modules, and each module into pages. You are on the f
 | Module | What it covers |
 | --- | --- |
 | **Introduction** | What you need installed before you start |
-| **Testing our module** | Building Planetarium and testing it end to end |
+| **Testing a module** | Building Planetarium and testing it end to end |
+| **Organising tests** | Grouping tests, shared setup, and choosing what runs |
 | **Mocking** | Replacing the data source your code depends on |
 | **Working with files** | Isolating file operations with `TestDrive` |
 | **Code coverage** | Finding the code your tests never touch |
@@ -63,11 +64,11 @@ The checklists are for you, not for us. They are worth taking seriously precisel
 
 You should be comfortable writing basic PowerShell — functions, parameters, `Get-ChildItem`, piping things around. You do not need to have written a test before, in PowerShell or anywhere else. Every Pester concept is introduced when it first becomes necessary rather than up front.
 
-If you have used Pester v4 and are coming back, be aware this tutorial teaches Pester v6 and a fair amount has changed. The [migration guide](../../docs/migrations/v5-to-v6) is the faster read for that.
+If you are coming back to Pester after a while, note that this tutorial teaches Pester v6 and a fair amount has changed. Coming from v5, read [v5 to v6](../../docs/migrations/v5-to-v6); coming from v4 or earlier, start with [v4 to v5](../../docs/migrations/v4-to-v5) — the jump from v4 is the larger of the two.
 
 <TutorialChecklist items={[
   {id: 'know-what-building', label: 'I know what the Planetarium module is and why the tutorial builds it'},
-  {id: 'know-structure', label: 'I know the tutorial is split into modules and pages, and which ones are written so far'},
+  {id: 'know-structure', label: 'I know the tutorial is split into modules and pages, and roughly what each module covers'},
   {id: 'know-progress', label: 'I understand that my progress is stored in this browser only'},
 ]} />
 

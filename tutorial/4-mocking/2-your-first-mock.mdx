@@ -4,7 +4,7 @@ title: Your first mock
 description: Replace a module's internal data source with Mock -ModuleName so tests control their own data instead of depending on a file on disk
 ---
 
-Your tests currently depend on the contents of `planets.csv`. Add a planet to that file and `Returns all eight planets by default` starts failing — a test about filtering, broken by a data edit.
+Your tests currently depend on the contents of `planets.csv`. Add a planet to that file and `Returns all eight planets` starts failing — a test about filtering, broken by a data edit.
 
 A mock replaces a command for the duration of a test. Instead of `Get-PlanetData` reading a file, it returns whatever you tell it to.
 
@@ -79,7 +79,11 @@ Describe 'Get-PlanetData' {
 }
 ```
 
-This is the test that pins down the re-typing from the previous page. Feeding in strings — `'3'`, not `3` — and asserting the types that come out is the only way to prove the conversion happens, and it is impossible to write without a mock, because the real CSV would make it pass either way.
+This is the test that closes the gap left at the end of the previous page. Feeding in strings — `'3'`, not `3` — and then asserting on the types that come out is what proves the conversion happens. `Should-HaveType` is the assertion that can do it: `Should-Be` would pass either way, because it compares values and lets PowerShell convert.
+
+The mock is what makes the input certain. `Import-Csv` happens to return strings today, so this test would pass without it — but only by accident of the current storage format. Swap the CSV for JSON, which preserves numbers, and an unmocked version of this test would go green without the conversion ever running. Mocking the input pins the test to the behaviour rather than to the file format.
+
+Delete the `ForEach-Object` block from `Get-PlanetData` and run the suite: this is now the one test that fails.
 
 `InModuleScope` is here because the test calls the private `Get-PlanetData` directly. The mock still uses `-ModuleName`, since it must be installed into the module regardless of where the call is made from.
 

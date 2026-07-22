@@ -1,6 +1,6 @@
 ---
 id: output
-title: Output
+title: Configuring the run
 description: Control what Pester prints with New-PesterConfiguration, inspect the result object in code and write a test result file for other tools to read
 ---
 
@@ -171,6 +171,6 @@ A failing test does not, on its own, make `Invoke-Pester` return an error — so
 
 ## What you have built
 
-Starting from an empty folder, you now have a PowerShell module with a manifest, a loader, public and private functions, and fifteen tests covering all of it — exported behaviour, error cases, wildcard filtering and internal helpers — plus a script that gates on failures and emits a results file.
+Starting from an empty folder, you now have a PowerShell module with a manifest, a loader, public and private functions, and fifteen tests covering all of it — exported behaviour, error cases, wildcard filtering and internal helpers — plus a script that runs them all and emits a results file.
 
-The remaining modules pick up from exactly here. The planet data moves out of the function and into a file, which finally gives you a dependency worth mocking. `Export-PlanetReport` arrives and needs `TestDrive` to test without leaving debris. Code coverage finds a branch none of these tests touch. And the whole thing ends up running on three operating systems on every push.
+The remaining modules pick up from exactly here. The next one reorganises the tests you already have, so the suite stays readable as it grows. Then the planet data moves out of the function and into a file, which finally gives you a dependency worth mocking. `Export-PlanetReport` arrives and needs `TestDrive` to test without leaving debris. Code coverage finds a branch none of these tests touch. And the whole thing ends up running on three operating systems on every push.

@@ -1,0 +1,151 @@
+---
+id: grouping-tests
+title: Grouping with Context
+description: Group related tests with Context, learn when each of BeforeAll, BeforeEach, AfterEach and AfterAll runs, and explain a failing assertion with -Because
+---
+
+Fifteen tests, four files, and every file is a flat list of `It` blocks. That is fine at fifteen. It stops being fine somewhere around fifty, when "which of these tests are about wildcards again?" becomes a real question.
+
+This page is about structure. No new behaviour gets tested — the suite still reports fifteen at the end — but it will be easier to read for the rest of the tutorial.
+
+## Context
+
+`Context` groups related tests inside a `Describe`. It takes a name and a script block, exactly like `Describe` does, and it can hold its own setup.
+
+The convention worth adopting: **`Describe` names the thing, `Context` names the situation.** Describe `Get-Planet`; Context "when called without a name".
+
+Restructure `Get-Planet.Tests.ps1`:
+
+```powershell title="Planetarium/Public/Get-Planet.Tests.ps1"
+BeforeAll {
+    Import-Module $PSScriptRoot/../Planetarium.psd1 -Force
+}
+
+Describe 'Get-Planet' {
+    Context 'When called without a name' {
+        It 'Returns all eight planets' {
+            (Get-Planet).Count | Should-Be 8
+        }
+
+        It 'Returns them in order from the sun' {
+            $names = (Get-Planet).Name
+            $names[0] | Should-Be 'Mercury'
+            $names[-1] | Should-Be 'Neptune'
+        }
+    }
+
+    Context 'When filtering by name' {
+        It 'Returns a single planet for an exact name' {
+            $planet = Get-Planet -Name 'Earth'
+            $planet.Name | Should-Be 'Earth'
+            $planet.Order | Should-Be 3
+        }
+
+        It 'Supports wildcards' {
+            (Get-Planet -Name 'M*').Name | Should-BeCollection @('Mercury', 'Mars')
+        }
+
+        It 'Returns nothing for an unknown planet' {
+            Get-Planet -Name 'Pluto' | Should-BeNull
+        }
+    }
+}
+```
+
+```powershell
+./test.ps1
+```
+
+```
+Describing Get-Planet
+ Context When called without a name
+   [+] Returns all eight planets 7ms
+   [+] Returns them in order from the sun 5ms
+ Context When filtering by name
+   [+] Returns a single planet for an exact name 6ms
+   [+] Supports wildcards 17ms
+   [+] Returns nothing for an unknown planet 1ms
+```
+
+Same five tests, now indented under the situation they belong to.
+
+Notice what happened to the names. `Returns all eight planets by default` became `Returns all eight planets` — the "by default" moved into the Context, where it belongs. A test name should not have to restate its own conditions once a `Context` states them.
+
+## The setup and teardown family
+
+You have been using `BeforeAll` since the first test. It has three siblings, and the difference is *how often* they run:
+
+| Block | Runs |
+| --- | --- |
+| `BeforeAll` | Once, before the first test in its block |
+| `BeforeEach` | Before every test in its block |
+| `AfterEach` | After every test in its block |
+| `AfterAll` | Once, after the last test in its block |
+
+All four can go in a `Describe` or a `Context`, and they apply to everything nested inside. That is why the single `BeforeAll` at the top of your file — importing the module — is still doing its job for tests that now live two levels deep.
+
+The ordering is easiest to believe when you watch it. Drop this in a scratch file and run it:
+
+```powershell title="scratch/Ordering.Tests.ps1"
+Describe 'Ordering' {
+    BeforeAll { Write-Host 'BeforeAll' }
+    BeforeEach { Write-Host '  BeforeEach' }
+    AfterEach { Write-Host '  AfterEach' }
+    AfterAll { Write-Host 'AfterAll' }
+
+    It 'first' { }
+    It 'second' { }
+}
+```
+
+```
+BeforeAll
+Describing Ordering
+  BeforeEach
+  AfterEach
+  [+] first 23ms
+  BeforeEach
+  AfterEach
+  [+] second 1ms
+AfterAll
+```
+
+`BeforeAll` runs once no matter how many tests follow; `BeforeEach` and `AfterEach` run once per test, bracketing each one.
+
+The `[+]` lines look out of place — each appears *after* its own `AfterEach` rather than between the two. That is a reporting artifact, not an ordering one: Pester prints a test's result line only once the test is completely finished, and `AfterEach` is part of finishing. The `Write-Host` output is the honest record of the order.
+
+Delete that file once you have seen it — it is a demonstration, not part of the suite.
+
+:::tip Which one to reach for
+Use `BeforeAll` for anything expensive or read-only — importing a module, loading fixture data. Use `BeforeEach` when a test would otherwise inherit state from the test before it.
+
+Planetarium does not need `BeforeEach` yet, because every test builds what it needs and changes nothing. When `Export-PlanetReport` arrives in a later module and each test wants a fresh file path, that is exactly the case `BeforeEach` exists for.
+:::
+
+## Explaining a failure with -Because
+
+Every `Should-*` assertion takes a `-Because` parameter. The text is folded into the failure message:
+
+```powershell
+(Get-Planet).Count | Should-Be 8 -Because 'the solar system has eight planets'
+```
+
+```
+[-] Returns all eight planets 77ms
+ Expected [int] 8, because the solar system has eight planets, but got [int] 9.
+```
+
+It earns its place when the expected value is a magic number whose origin is not obvious from the test. `Should-Be 8` says what; `-Because 'the solar system has eight planets'` says why, to whoever is reading a red build at an unhelpful hour.
+
+It is noise on an assertion that already explains itself, so use it sparingly rather than everywhere.
+
+<TutorialChecklist items={[
+  {id: 'context', label: 'I restructured Get-Planet.Tests.ps1 into two Context blocks'},
+  {id: 'naming', label: 'I can explain why Describe names the thing and Context names the situation'},
+  {id: 'family', label: 'I know when each of BeforeAll, BeforeEach, AfterEach and AfterAll runs'},
+  {id: 'ordering', label: 'I ran the ordering demonstration and saw BeforeEach fire once per test'},
+  {id: 'because', label: 'I know what -Because adds to a failure message'},
+  {id: 'still-fifteen', label: 'My suite still reports 15 passing tests'},
+]} />
+
+Next: running only some of them.

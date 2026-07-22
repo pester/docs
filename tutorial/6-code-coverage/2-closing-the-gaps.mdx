@@ -1,48 +1,39 @@
 ---
 id: closing-the-gaps
 title: Closing the gaps
-description: Read the missed-command list from the result object, write the tests it points at, and produce a coverage report file for CI to consume
+description: Read the missed-command table, write the tests it points at, and produce a coverage report file for CI to consume
 ---
 
-Coverage says 95%. It will also tell you exactly which line it means.
+Coverage says 95%, and the run has already told you which line it means.
 
-## Finding the missed lines
-
-The percentage is on screen; the detail is on the result object, so ask for it with `Run.PassThru`.
-
-This one is a throwaway — run it in the console rather than adding it to `test.ps1`:
-
-```powershell
-$config = New-PesterConfiguration
-$config.Run.Path = './Planetarium'
-$config.Run.PassThru = $true
-$config.CodeCoverage.Enabled = $true
-$config.CodeCoverage.Path = './Planetarium'
-$config.Output.Verbosity = 'None'
-
-$result = Invoke-Pester -Configuration $config
-
-'Coverage: {0:N2}%' -f $result.CodeCoverage.CoveragePercent
-$result.CodeCoverage.CommandsMissed |
-    ForEach-Object { '  {0}:{1}  {2}' -f (Split-Path $_.File -Leaf), $_.Line, $_.Command }
-```
-
-:::tip Why `PassThru` does not belong in `test.ps1`
-With `Run.PassThru` set, `Invoke-Pester` returns the result object — and anything a script returns without capturing gets printed. Leave it on in `test.ps1` and every run ends in a wall of formatted object properties after the test output. Keep it for the runs where you actually want the object.
-:::
+## Reading the missed commands
 
 ```
-Coverage: 95.00%
 Missed commands:
-  Export-PlanetReport.ps1:19  throw "'$Path' already exists. Use -Force to overwrite it."
-  Export-PlanetReport.ps1:19  throw "'$Path' already exists. Use -Force to overwrite it."
+
+File                                       Class Function            Line Command
+----                                       ----- --------            ---- -------
+Planetarium/Public/Export-PlanetReport.ps1       Export-PlanetReport   19 throw "'$Path' already exists. Use -Force to …
+Planetarium/Public/Export-PlanetReport.ps1       Export-PlanetReport   19 throw "'$Path' already exists. Use -Force to …
 ```
 
-File, line number and the actual source text of what never ran. No hunting.
+This table is printed for you whenever coverage is on and `Output.Verbosity` is `Detailed` — which `test.ps1` already sets. There is nothing extra to run.
 
 The line appears twice because Pester counts commands rather than lines, and that statement contains more than one — the `throw` and the string expansion inside it. Two entries, one gap.
 
-`CommandsMissed` is the single most useful thing in the coverage result. Printing it beats reading a percentage, because a percentage tells you that you have a problem while this tells you where it is.
+This table is the single most useful thing coverage gives you. Reading it beats reading the percentage, because a percentage tells you that you have a problem while this tells you where it is.
+
+:::tip Getting at the same data in code
+The table is formatted for you. If you want the values themselves — for a build gate, a summary comment, a custom report — set `Run.PassThru` and read `$result.CodeCoverage.CommandsMissed`, which carries `File`, `Line` and `Command` per entry.
+
+`Run.PassThru` is perfectly safe to keep in `test.ps1`, as long as you **assign** the result:
+
+```powershell
+$result = Invoke-Pester -Configuration $config
+```
+
+An *uncaptured* result object is what causes trouble: anything a script leaves on the pipeline gets printed, so every run would end in a wall of formatted properties.
+:::
 
 ## Writing the missing tests
 
@@ -74,25 +65,16 @@ The second test asserts *content*, not just that no error occurred. Writing `Ear
 
 ## Back to green
 
-Run the throwaway again:
-
-```
-Coverage: 100.00%
-Missed: 0
-```
-
-And the suite itself:
-
 ```powershell
 ./test.ps1
 ```
 
 ```
 Tests Passed: 26, Failed: 0, Skipped: 0, Inconclusive: 0, NotRun: 0
-Covered 100% / 75%. 44 analyzed Commands in 7 Files.
+Covered 100% / 75%. 40 analyzed Commands in 7 Files.
 ```
 
-Twenty-six tests, no uncovered commands.
+Twenty-six tests, and no missed-commands table at all — when nothing is missed, Pester prints only the summary line.
 
 ## A report file for CI
 
@@ -112,7 +94,7 @@ $config.CodeCoverage.OutputPath = './coverage.xml'
   <sessioninfo id="this" start="1784497576207" ...
 ```
 
-The default format is **JaCoCo**, which most coverage services understand. `Cobertura` is the other option via `CodeCoverage.OutputFormat`. Note that `CoverageGutters` was removed in v6 — if you are copying a v5 config, that value will now be rejected.
+The default format is **JaCoCo**, which most coverage services understand. `Cobertura` is the other option, via `CodeCoverage.OutputFormat`.
 
 Add it to `.gitignore` alongside the test results:
 
@@ -126,19 +108,19 @@ coverage.xml
 The habit worth forming is not "keep the number high". It is:
 
 1. Run coverage after adding a feature, not on a schedule.
-2. Read `CommandsMissed`, not the percentage.
+2. Read the missed commands, not the percentage.
 3. For each missed line, decide honestly — is this a gap, or code that does not need a test?
 4. Write tests for the gaps. Leave the rest.
 
 Sometimes the right answer to an uncovered line is deleting it. Coverage is good at surfacing code that no longer has a reason to exist, and `[ExcludeFromCodeCoverage()]` before a `param()` block is there for the genuine exceptions.
 
 <TutorialChecklist items={[
-  {id: 'commands-missed', label: 'I printed CommandsMissed and found the exact uncovered line'},
+  {id: 'commands-missed', label: 'I read the missed-commands table and found the exact uncovered line'},
   {id: 'wrote-tests', label: 'I wrote the two tests covering the -Force guard'},
   {id: 'wildcard', label: 'I understand why the expected exception message needs a leading wildcard'},
   {id: 'back-to-100', label: 'My suite reports 26 tests and 100% coverage'},
   {id: 'coverage-file', label: 'I generated coverage.xml and gitignored it'},
-  {id: 'habit', label: 'I can explain why reading CommandsMissed beats chasing the percentage'},
+  {id: 'habit', label: 'I can explain why reading the missed commands beats chasing the percentage'},
 ]} />
 
 Last module: running all of this automatically on every push.

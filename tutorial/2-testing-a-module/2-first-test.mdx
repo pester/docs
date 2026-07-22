@@ -152,7 +152,13 @@ Tests completed in 355ms
 Tests Passed: 0, Failed: 1, Skipped: 0, Inconclusive: 0, NotRun: 0
 ```
 
-Pester reports the types as well as the values — `[int] 9` rather than just `9`. That detail earns its keep the day you assert `Should-Be 8` against the *string* `'8'` and cannot see why a test comparing two things that look identical is failing.
+Pester reports the types as well as the values — `[int] 9` rather than just `9`, and `[string] 'abc'` when the actual value is text. That detail is what tells you whether a failure is a wrong value or the wrong kind of thing entirely.
+
+:::note `Should-Be` compares values, not types
+`'8' | Should-Be 8` **passes**. PowerShell converts the string to a number before comparing, and `Should-Be` lets it. That is usually what you want — you rarely care whether a count arrived as `[int]` or `[long]`.
+
+When the type genuinely is the thing you are testing, `Should-HaveType` asserts it directly. You will use it in the mocking module to prove that data read from a file comes back as numbers rather than strings.
+:::
 
 Put the `8` back and confirm you are green again before moving on.
 

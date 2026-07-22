@@ -25,7 +25,7 @@ jobs:
 
       - name: Install Pester
         shell: pwsh
-        run: Install-Module Pester -MinimumVersion 6.0.0 -Force -Scope CurrentUser
+        run: Install-Module Pester -MinimumVersion 6.0.0 -Force -SkipPublisherCheck -Scope CurrentUser
 
       - name: Run tests
         shell: pwsh
@@ -47,13 +47,13 @@ Three details are doing real work.
 
 **`shell: pwsh`** on every PowerShell step. The default shell on `ubuntu-latest` is bash, and PowerShell 7 is preinstalled but not the default. Omit this and the step tries to run PowerShell as bash. On Windows runners the default is `powershell` — Windows PowerShell 5.1 — which is a *different* shell from `pwsh`, so being explicit avoids a second, subtler version of the same problem.
 
-**`-Scope CurrentUser`** on the install. The runner user is not an administrator, and an all-users install needs elevation.
+**`-Scope CurrentUser`** on the install. The runner user is not an administrator, and an all-users install needs elevation. `-SkipPublisherCheck` is there for the Windows runner, which ships the Microsoft-signed Pester 3.4.0 you met in the prerequisites — without it, installing over a module signed by a different publisher is refused.
 
 **`if: always()`** on the upload. Without it, the artifact step is skipped whenever a previous step fails — which is precisely when you most want the test results. This one line is the difference between a red build you can diagnose from the artifact and one you have to reproduce locally.
 
 ## Testing on more than one platform
 
-A PowerShell module that claims Windows PowerShell 5.1 support should be tested on it. A matrix runs the same job several times:
+Your module claims to run on Windows, Linux and macOS. A matrix runs the same job once per operating system:
 
 ```yaml title=".github/workflows/test.yml"
 jobs:
@@ -70,7 +70,7 @@ jobs:
 
       - name: Install Pester
         shell: pwsh
-        run: Install-Module Pester -MinimumVersion 6.0.0 -Force -Scope CurrentUser
+        run: Install-Module Pester -MinimumVersion 6.0.0 -Force -SkipPublisherCheck -Scope CurrentUser
 
       - name: Run tests
         shell: pwsh
@@ -89,6 +89,25 @@ jobs:
 `fail-fast: false` matters here. The default cancels every other job the moment one fails, so a Windows-only bug would abort the Linux and macOS runs and hide whether the failure is platform-specific. Turning it off costs a few runner minutes and tells you far more.
 
 The artifact name has to include `${{ matrix.os }}` — three jobs uploading to the same artifact name is an error.
+
+:::warning This matrix still only tests PowerShell 7
+`shell: pwsh` is PowerShell 7 on every runner, Windows included. So three operating systems, one PowerShell version.
+
+Your manifest says `PowerShellVersion = '5.1'`, and nothing above has tested that claim. Windows PowerShell 5.1 is a genuinely different engine, and it is where the surprises live. To cover it, add a second dimension and let the Windows job run under `powershell` — the built-in 5.1 shell:
+
+```yaml
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        shell: [pwsh]
+        include:
+          - os: windows-latest
+            shell: powershell
+```
+
+Then use `shell: ${{ matrix.shell }}` on the PowerShell steps, and add `${{ matrix.shell }}` to the artifact name so the two Windows jobs do not collide. If you would rather not support 5.1, the honest alternative is to raise `PowerShellVersion` in the manifest.
+:::
 
 :::note This is where the cross-platform bugs show up
 `Join-Path` and `$TestDrive` have been quietly protecting you. Hard-coded `\` separators, case-sensitivity assumptions, and `C:\temp` paths all work on your machine and fail on Linux. A matrix is how you find them, and it is the main reason this module is worth doing even for a small module.
