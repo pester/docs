@@ -5,6 +5,7 @@ import Link from '@docusaurus/Link';
 import CodeBlock from '@theme/CodeBlock';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import useBaseUrl from '@docusaurus/useBaseUrl';
+import { useLayoutDoc } from '@docusaurus/plugin-content-docs/client';
 import styles from './styles.module.css';
 
 const GITHUB_URL = 'https://github.com/pester/pester';
@@ -151,6 +152,18 @@ function GitHubStars() {
   );
 }
 
+/**
+ * Path to a doc in Docs in whichever version the reader last browsed,
+ * or latest if first visit/never changed or the docId doesn't exist in the older user-preferred version.
+ *
+ * A docId that doesn't exist in any version will throw during build.
+ */
+function useDocPath(docId) {
+  // null is only returned for drafts, which exist in development builds.
+  // 'default' == pluginId for Docs/Commands
+  return useLayoutDoc(docId, 'default')?.path;
+}
+
 function Hero() {
   const heroImg = useBaseUrl('img/home/hero-terminal.png');
   return (
@@ -174,7 +187,7 @@ function Hero() {
         </p>
 
         <div className={styles.heroButtons}>
-          <Link className={clsx('button button--lg', styles.primaryButton)} to={useBaseUrl('docs/quick-start')}>
+          <Link className={clsx('button button--lg', styles.primaryButton)} to={useDocPath('quick-start')}>
             Get Started
           </Link>
           <GitHubStars />
@@ -352,10 +365,10 @@ function CallToAction() {
         <h2 className={styles.ctaTitle}>Ready to write your first test?</h2>
         <p className={styles.ctaLead}>Install Pester and go from zero to a green test in minutes.</p>
         <div className={styles.heroButtons}>
-          <Link className={clsx('button button--lg', styles.primaryButton)} to={useBaseUrl('docs/quick-start')}>
+          <Link className={clsx('button button--lg', styles.primaryButton)} to={useDocPath('quick-start')}>
             Get Started
           </Link>
-          <Link className={clsx('button button--lg', styles.secondaryButton)} to={useBaseUrl('docs/introduction/installation')}>
+          <Link className={clsx('button button--lg', styles.secondaryButton)} to={useDocPath('introduction/installation')}>
             Installation guide
           </Link>
         </div>
