@@ -18,7 +18,7 @@ $config.Output.Verbosity = 'Detailed'
 Invoke-Pester -Configuration $config
 ```
 
-This is how Pester v6 is configured. The v4-era parameters — `-Script`, `-OutputFile`, `-OutputFormat`, `-EnableExit`, `-CodeCoverage` — were removed, and everything they did now lives on this object. `-Path` survives as a convenience for quick runs.
+This is how Pester v6 is configured. `Invoke-Pester` offers a few convenience parameters like `-Path` and `-Output` for quick runs, but most features and customizations will require the configuration option.
 
 Discovering what is available is easiest from the object itself, since every setting carries its own description:
 
@@ -34,6 +34,11 @@ The full list is in [Configuration](../../docs/usage/configuration).
 
 `Normal` is the default and reports per file — right for a suite you expect to pass:
 
+```powershell
+$config.Output.Verbosity = 'Normal'
+Invoke-Pester -Configuration $config
+```
+
 ```
 Running tests from 4 files.
 [+] /home/you/pester-tutorial/Planetarium/Private/ConvertTo-AstronomicalUnit.Tests.ps1 311ms
@@ -45,6 +50,11 @@ Tests Passed: 15, Failed: 0, Skipped: 0, Inconclusive: 0, NotRun: 0
 ```
 
 `Detailed` reports every individual test, grouped by `Describe`:
+
+```powershell
+$config.Output.Verbosity = 'Detailed'
+Invoke-Pester -Configuration $config
+```
 
 ```
 Pester v6.0.0
@@ -151,11 +161,7 @@ Invoke-Pester -Configuration $config
 ./test.ps1
 ```
 
-**This is how you run the suite for the rest of the tutorial.** Every later module adds to this file rather than starting a new one, and the additions are shown as diffs so you can see exactly what changed.
-
-It is named `test.ps1` rather than `build.ps1` because running tests is all it does — nothing here compiles, packages or publishes.
-
-When you are iterating on one file, `Invoke-Pester -Path ./Planetarium/Public/Get-Planet.Tests.ps1` is still the quicker loop. `./test.ps1` is for "is everything still green".
+This is how you run the full suite for the rest of the tutorial, which later modules will extend on. When you are iterating on one file, `Invoke-Pester -Path ./Planetarium/Public/Get-Planet.Tests.ps1` is still the quicker loop. `./test.ps1` is for "is everything still green".
 
 :::note This script does not fail yet
 A failing test does not, on its own, make `Invoke-Pester` return an error — so depending on how this script is invoked, a pipeline can report success over a suite full of red. The [CI module](../ci/test-script) fixes that with one more line, once there is a pipeline to fix it for.

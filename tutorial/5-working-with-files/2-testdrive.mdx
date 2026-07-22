@@ -55,7 +55,7 @@ Describe 'Export-PlanetReport' {
 ```
 
 ```powershell
-Invoke-Pester -Path ./Planetarium/Public/Export-PlanetReport.Tests.ps1
+Invoke-Pester -Path ./Planetarium/Public/Export-PlanetReport.Tests.ps1 -Output Detailed
 ```
 
 ```
@@ -70,7 +70,7 @@ Tests Passed: 4, Failed: 0, Skipped: 0, Inconclusive: 0, NotRun: 0
 
 Four real files were written and four are already gone. Check `git status` — nothing.
 
-There is no `Should-Exist` in Pester v6, so file existence is asserted with `Test-Path` piped into `Should-BeTrue` or `Should-BeFalse`. The first test asserts the file is absent *before* the call as well as present after: without that, a leftover file from an earlier run could make the test pass on its own.
+The first test asserts the file is absent *before* the call as well as present after. Without that, a leftover file from an earlier run could make the test pass on its own.
 
 ## Scoping
 

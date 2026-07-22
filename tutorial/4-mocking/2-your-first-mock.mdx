@@ -89,6 +89,10 @@ Delete the `ForEach-Object` block from `Get-PlanetData` and run the suite: this 
 
 Run the file:
 
+```powershell
+Invoke-Pester -Path ./Planetarium/Public/Get-Planet.Mocking.Tests.ps1 -Output Detailed
+```
+
 ```
 Describing Get-Planet with mocked data
   [+] Returns whatever the data source provides 73ms
