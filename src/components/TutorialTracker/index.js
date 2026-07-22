@@ -164,7 +164,7 @@ export default function TutorialTracker({ currentPageId, variant = 'desktop' }) 
     return (
       <aside className={clsx(styles.tracker, styles.trackerDesktop)} aria-label="Tutorial progress">
         <div className={styles.header}>
-          <span className={styles.eyebrow}>Tutorial</span>
+          <span className={styles.eyebrow}>Tutorial Progress</span>
           <span className={styles.count} aria-busy={!hydrated}>
             {countLabel}
           </span>
@@ -186,7 +186,7 @@ export default function TutorialTracker({ currentPageId, variant = 'desktop' }) 
         onClick={toggleCollapsed}
         aria-expanded={!collapsed}
       >
-        <span className={styles.eyebrow}>Tutorial</span>
+        <span className={styles.eyebrow}>Tutorial Progress</span>
         <span className={styles.count} aria-busy={!hydrated}>
           {countLabel}
         </span>
