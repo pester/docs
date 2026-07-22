@@ -112,7 +112,17 @@ The habit worth forming is not "keep the number high". It is:
 3. For each missed line, decide honestly — is this a gap, or code that does not need a test?
 4. Write tests for the gaps. Leave the rest.
 
-Sometimes the right answer to an uncovered line is deleting it. Coverage is good at surfacing code that no longer has a reason to exist, and `[ExcludeFromCodeCoverage()]` before a `param()` block is there for the genuine exceptions.
+Sometimes the right answer to an uncovered line is deleting it. Coverage is good at surfacing code that no longer has a reason to exist.
+
+For the genuine exceptions there is an attribute that keeps a function out of the report entirely:
+
+```powershell
+function Get-Something {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage()]
+    param()
+    # ...
+}
+```
 
 <TutorialChecklist items={[
   {id: 'commands-missed', label: 'I read the missed-commands table and found the exact uncovered line'},
