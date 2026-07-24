@@ -1,0 +1,78 @@
+---
+id: prerequisites
+title: Prerequisites
+description: Install Pester 6, confirm the version you are actually running and set up an editor before starting the tutorial
+---
+
+Before building anything, let's make sure the tools are in place. This page is short, but the version check at the end matters more than it looks — a surprising number of confusing Pester problems turn out to be "you are running an older version than you think".
+
+## PowerShell
+
+Pester v6 runs on:
+
+- **Windows PowerShell 5.1**, or
+- **PowerShell 7.4 or newer**
+
+Check what you have:
+
+```powershell
+$PSVersionTable.PSVersion
+```
+
+If you are on PowerShell 7 but older than 7.4, install a current release from [the PowerShell repository](https://github.com/PowerShell/PowerShell). This tutorial works on Windows, macOS and Linux.
+
+## Installing Pester
+
+Install from the PowerShell Gallery:
+
+```powershell
+Install-Module -Name Pester -Force
+```
+
+On Windows you may already have Pester 3.4.0 installed — it ships with the operating system. That version cannot be updated in place, and it is different enough from v6 that following this tutorial with it will not work. If `Install-Module` complains about an existing installation, the [installation guide](../../docs/introduction/installation) covers the exact commands to get around it.
+
+## Confirming the version
+
+This is the step worth doing carefully. Importing the module and asking it what it is beats trusting what you think you installed:
+
+```powershell
+Import-Module Pester -PassThru
+```
+
+```
+ModuleType Version    PreRelease Name
+---------- -------    ---------- ----
+Script     6.0.0                 Pester
+```
+
+If the version shown starts with a `6`, you are ready.
+
+:::warning An old Pester can be loaded without you asking
+PowerShell loads a module automatically the first time you call one of its commands, and it picks the highest version it can find — but if an older Pester is *already* loaded in your session, it stays loaded. If the version above is not what you expect, open a fresh PowerShell session and check again before doing anything else.
+:::
+
+## An editor
+
+Any editor will do, but [Visual Studio Code](https://code.visualstudio.com/) with the [PowerShell extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.PowerShell) gives you the best experience: it discovers your tests as you write them and lets you run or debug a single test without leaving the file.
+
+The [VS Code page](../../docs/usage/vscode) has the setup details. It is genuinely optional — everything in this tutorial is done from the terminal and works the same way regardless of what you type it in.
+
+## A folder to work in
+
+Create somewhere to build the module and move into it:
+
+```powershell
+New-Item -Path ./pester-tutorial -ItemType Directory
+Set-Location ./pester-tutorial
+```
+
+Every path in this tutorial is relative to that folder.
+
+<TutorialChecklist items={[
+  {id: 'powershell-version', label: 'I have Windows PowerShell 5.1 or PowerShell 7.4+, and I checked with $PSVersionTable'},
+  {id: 'pester-installed', label: 'I installed Pester from the PowerShell Gallery'},
+  {id: 'version-confirmed', label: 'Import-Module Pester -PassThru shows me a version 6 module'},
+  {id: 'working-folder', label: 'I created a working folder and my prompt is inside it'},
+]} />
+
+That is the setup done. Next you will create the Planetarium module itself.

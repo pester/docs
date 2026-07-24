@@ -1,0 +1,182 @@
+---
+id: output
+title: Configuring the run
+description: Control what Pester prints with New-PesterConfiguration, inspect the result object in code and write a test result file for other tools to read
+---
+
+So far every run has used `Invoke-Pester -Path`, which is fine for one file and limiting for everything else. This page covers the configuration object, the three audiences for Pester's output, and how to get the right one for each.
+
+## The configuration object
+
+`New-PesterConfiguration` returns a settings object you fill in and hand to `Invoke-Pester`:
+
+```powershell
+$config = New-PesterConfiguration
+$config.Run.Path = './Planetarium'
+$config.Output.Verbosity = 'Detailed'
+
+Invoke-Pester -Configuration $config
+```
+
+This is how Pester v6 is configured. `Invoke-Pester` offers a few convenience parameters like `-Path` and `-Output` for quick runs, but most features and customizations will require the configuration option.
+
+Discovering what is available is easiest from the object itself, since every setting carries its own description:
+
+```powershell
+$config.Output
+```
+
+The full list is in [Configuration](../../docs/usage/configuration).
+
+## Verbosity
+
+`Output.Verbosity` decides how much you see. The useful values are `None`, `Normal`, `Detailed` and `Diagnostic`.
+
+`Normal` is the default and reports per file — right for a suite you expect to pass:
+
+```powershell
+$config.Output.Verbosity = 'Normal'
+Invoke-Pester -Configuration $config
+```
+
+```
+Running tests from 4 files.
+[+] /home/you/pester-tutorial/Planetarium/Private/ConvertTo-AstronomicalUnit.Tests.ps1 311ms
+[+] /home/you/pester-tutorial/Planetarium/Private/Test-PlanetName.Tests.ps1 45ms
+[+] /home/you/pester-tutorial/Planetarium/Public/Get-Planet.Tests.ps1 87ms
+[+] /home/you/pester-tutorial/Planetarium/Public/Get-PlanetDistance.Tests.ps1 48ms
+Tests completed in 502ms
+Tests Passed: 15, Failed: 0, Skipped: 0, Inconclusive: 0, NotRun: 0
+```
+
+`Detailed` reports every individual test, grouped by `Describe`:
+
+```powershell
+$config.Output.Verbosity = 'Detailed'
+Invoke-Pester -Configuration $config
+```
+
+```
+Pester v6.0.0
+
+Running tests from 4 files.
+
+Running tests from '/home/you/pester-tutorial/Planetarium/Private/ConvertTo-AstronomicalUnit.Tests.ps1'
+Describing ConvertTo-AstronomicalUnit
+  [+] Is not exported from the module 42ms
+  [+] Converts one astronomical unit of kilometres to 1 19ms
+  [+] Rounds to three decimal places 3ms
+
+Running tests from '/home/you/pester-tutorial/Planetarium/Private/Test-PlanetName.Tests.ps1'
+Describing Test-PlanetName
+  [+] Accepts Mercury 16ms
+  [+] Accepts Earth 2ms
+  [+] Accepts Neptune 2ms
+  [+] Rejects Pluto 2ms
+...
+Tests completed in 536ms
+Tests Passed: 15, Failed: 0, Skipped: 0, Inconclusive: 0, NotRun: 0
+```
+
+This is the view that makes your test *names* matter. Read those three `Accepts` lines — that is the `-ForEach` block from the previous page, and `<_>` is why each case is named after its own data instead of appearing three times as `Accepts <_>`.
+
+Reach for `Diagnostic` when a test is behaving impossibly and you need to see Pester's discovery and mock decisions. It is a firehose; do not start there.
+
+## The result object
+
+Printed output is for humans. When you need the numbers in code — a release gate, a summary comment, a custom report — ask for the result object instead:
+
+```powershell
+$config = New-PesterConfiguration
+$config.Run.Path = './Planetarium'
+$config.Run.PassThru = $true
+
+$result = Invoke-Pester -Configuration $config
+
+"Result: $($result.Result)"
+"Passed: $($result.PassedCount)  Failed: $($result.FailedCount)  Total: $($result.TotalCount)"
+"Duration: $($result.Duration)"
+```
+
+```
+Result: Passed
+Passed: 15  Failed: 0  Total: 15
+Duration: 00:00:00.4371584
+```
+
+`Run.PassThru` is what makes `Invoke-Pester` return anything — without it you get output on screen and nothing you can act on.
+
+Every test is reachable through `$result.Tests`, which is how you build your own reporting:
+
+```powershell
+$result.Tests |
+    Where-Object Result -eq 'Failed' |
+    Select-Object Name, @{ Name = 'Error'; Expression = { $_.ErrorRecord.Exception.Message } }
+```
+
+[The result object](../../docs/usage/result-object) documents the full structure.
+
+## Test result files
+
+The third audience is other tools. CI systems do not read console output — they read a test results file, and use it to render the run and annotate failures.
+
+```powershell
+$config = New-PesterConfiguration
+$config.Run.Path = './Planetarium'
+$config.TestResult.Enabled = $true
+$config.TestResult.OutputPath = './testResults.xml'
+
+Invoke-Pester -Configuration $config
+```
+
+```xml title="testResults.xml"
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<test-results xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="nunit_schema_2.5.xsd" name="Pester" total="15" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2026-07-19" time="18:56:44">
+  <environment machine-name="a6967ea17ed8" platform="Linux" ... />
+```
+
+The default format is `NUnitXml`, which nearly every CI system understands. `JUnitXml` and `NUnit3` are also available via `TestResult.OutputFormat`. See [Test results](../../docs/usage/test-results) for which to pick.
+
+Add the file to your `.gitignore` — it is a build artifact:
+
+```
+testResults.xml
+```
+
+## Putting it together
+
+Retyping that configuration every time gets old fast. Save it as `test.ps1` in the root of your working folder — the one containing `Planetarium`:
+
+```powershell title="test.ps1"
+$config = New-PesterConfiguration
+$config.Run.Path = './Planetarium'
+$config.Output.Verbosity = 'Detailed'
+$config.TestResult.Enabled = $true
+$config.TestResult.OutputPath = './testResults.xml'
+
+Invoke-Pester -Configuration $config
+```
+
+```powershell
+./test.ps1
+```
+
+This is how you run the full suite for the rest of the tutorial, which later modules will extend on. When you are iterating on one file, `Invoke-Pester -Path ./Planetarium/Public/Get-Planet.Tests.ps1` is still the quicker loop. `./test.ps1` is for "is everything still green".
+
+:::note This script does not fail yet
+A failing test does not, on its own, make `Invoke-Pester` return an error — so depending on how this script is invoked, a pipeline can report success over a suite full of red. The [CI module](../ci/test-script) fixes that with one more line, once there is a pipeline to fix it for.
+:::
+
+<TutorialChecklist items={[
+  {id: 'config-object', label: 'I can build a configuration with New-PesterConfiguration and pass it to Invoke-Pester'},
+  {id: 'verbosity', label: 'I ran the suite at Normal and Detailed verbosity and can describe the difference'},
+  {id: 'passthru', label: 'I used Run.PassThru to get the result object and read counts from it'},
+  {id: 'test-results', label: 'I generated a testResults.xml file and gitignored it'},
+  {id: 'script', label: 'I saved test.ps1 and know it is how I run the suite from here on'},
+]} />
+
+## What you have built
+
+Starting from an empty folder, you now have a PowerShell module with a manifest, a loader, public and private functions, and fifteen tests covering all of it — exported behaviour, error cases, wildcard filtering and internal helpers — plus a script that runs them all and emits a results file.
+
+The remaining modules pick up from exactly here. The next one reorganises the tests you already have, so the suite stays readable as it grows. Then the planet data moves out of the function and into a file, which finally gives you a dependency worth mocking. `Export-PlanetReport` arrives and needs `TestDrive` to test without leaving debris. Code coverage finds a branch none of these tests touch. And the whole thing ends up running on three operating systems on every push.

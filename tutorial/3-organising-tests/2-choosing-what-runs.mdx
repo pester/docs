@@ -1,0 +1,164 @@
+---
+id: choosing-what-runs
+title: Choosing what runs
+description: Label tests with -Tag and filter on them, skip tests conditionally, and use BeforeDiscovery to build the data that -ForEach and -Skip need
+---
+
+Running everything is the right default. It stops being practical the moment part of your suite is slow, or platform-specific, or only meaningful against a real database.
+
+Pester gives you two different tools for that, and the difference matters: **tags** decide what gets selected to run, **skip** marks a test as deliberately not run.
+
+## Tagging tests
+
+`-Tag` goes on `Describe`, `Context` or `It`, and is inherited by everything inside. Your two private-function files are a natural group — they reach into the module with `InModuleScope`, and they are the tests you would drop first if you only wanted to check the public surface:
+
+```powershell title="Planetarium/Private/ConvertTo-AstronomicalUnit.Tests.ps1"
+# diff-remove
+Describe 'ConvertTo-AstronomicalUnit' {
+# diff-add
+Describe 'ConvertTo-AstronomicalUnit' -Tag 'Internal' {
+```
+
+```powershell title="Planetarium/Private/Test-PlanetName.Tests.ps1"
+# diff-remove
+Describe 'Test-PlanetName' {
+# diff-add
+Describe 'Test-PlanetName' -Tag 'Internal' {
+```
+
+Now you can run the public surface on its own:
+
+```powershell
+Invoke-Pester -Path ./Planetarium -ExcludeTagFilter 'Internal'
+```
+
+```
+Tests Passed: 8, Failed: 0, Skipped: 0, Inconclusive: 0, NotRun: 7
+```
+
+Or only the internals:
+
+```powershell
+Invoke-Pester -Path ./Planetarium -TagFilter 'Internal'
+```
+
+```
+Tests Passed: 7, Failed: 0, Skipped: 0, Inconclusive: 0, NotRun: 8
+```
+
+The same two filters exist on the configuration object as `Filter.Tag` and `Filter.ExcludeTag`, which is how you would set them in `test.ps1` or from a CI variable.
+
+:::note `NotRun` is not `Skipped`
+Read those totals again: the filtered-out tests are counted as **NotRun**, and `Skipped` stays at zero.
+
+Pester discovers every test either way — that is how it knows there are fifteen — then runs only the ones your filter selected. `NotRun` means "not selected". `Skipped` means "selected, then deliberately passed over", which is the next section. Keeping them in separate columns means a filtered run cannot quietly hide a test you thought was executing.
+:::
+
+Tags people reach for in practice: `Slow`, `Integration`, `Unit`, `WindowsOnly`. The useful test is whether you would ever want to run with the tag, or without it — a tag nobody filters on is just a comment.
+
+## Skipping tests
+
+`-Skip` marks a test as not to be run, while keeping it visible in the output:
+
+```powershell
+It 'Talks to the real API' -Skip {
+    # not written yet
+}
+```
+
+```
+[!] Talks to the real API 1ms
+```
+
+`[!]` rather than `[+]` or `[-]`, and the summary counts it under `Skipped`. That visibility is the entire point: a skipped test nags, whereas a commented-out test is invisible and eventually forgotten.
+
+Where it gets useful is a **condition**:
+
+```powershell
+It 'Uses the Windows registry' -Skip:(-not $IsWindows) {
+    # ...
+}
+```
+
+On Windows this runs; everywhere else it reports as skipped instead of failing. That is how a cross-platform suite handles the parts that genuinely cannot run everywhere — and it is what keeps the CI matrix in the last module green on all three operating systems.
+
+Both `-Skip` examples above are illustrations rather than tests to add — Planetarium has nothing that needs skipping yet. The next section does change a real file.
+
+## BeforeDiscovery
+
+Here is the catch, and it is the one thing on this page that trips people up.
+
+`-Skip:(-not $IsWindows)` is evaluated when Pester *discovers* your tests, not when it runs them. Same for the `-ForEach` list you wrote back in the private-functions page. So a variable set in `BeforeAll` is no good to either of them — `BeforeAll` has not run yet.
+
+`BeforeDiscovery` is the block that runs during discovery, and it exists precisely for building the data those parameters need:
+
+```powershell title="Planetarium/Private/Test-PlanetName.Tests.ps1"
+# diff-add-start
+BeforeDiscovery {
+    $KnownPlanets = @('Mercury', 'Earth', 'Neptune')
+}
+# diff-add-end
+
+BeforeAll {
+    Import-Module $PSScriptRoot/../Planetarium.psd1 -Force
+}
+
+Describe 'Test-PlanetName' -Tag 'Internal' {
+    # diff-remove
+    It 'Accepts <_>' -ForEach @('Mercury', 'Earth', 'Neptune') {
+    # diff-add
+    It 'Accepts <_>' -ForEach $KnownPlanets {
+        InModuleScope Planetarium -Parameters @{ Name = $_ } {
+            Test-PlanetName -Name $Name | Should-BeTrue
+        }
+    }
+
+    It 'Rejects Pluto' {
+        InModuleScope Planetarium {
+            Test-PlanetName -Name 'Pluto' | Should-BeFalse
+        }
+    }
+}
+```
+
+```powershell
+./test.ps1
+```
+
+```
+Describing Test-PlanetName
+  [+] Accepts Mercury 16ms
+  [+] Accepts Earth 2ms
+  [+] Accepts Neptune 2ms
+  [+] Rejects Pluto 2ms
+```
+
+Identical results — three separately named tests, same as before. What changed is that the list now has a name and a home, so it can grow, be read from a file, or be shared between several `It` blocks.
+
+That is the everyday use of `BeforeDiscovery`: **generating tests from data.** One test per file in a folder, one per row of a fixture, one per supported culture.
+
+:::warning A variable from `BeforeDiscovery` is not available inside your tests
+`BeforeDiscovery` runs in the discovery pass and `It` bodies run in the run pass, and variables do not survive the trip. `$KnownPlanets` is empty if you reference it inside an `It`.
+
+The way across is the data itself. `-ForEach` hands each item to the test as `$_`, and when you pass hashtables their keys arrive as named variables — available in `BeforeAll` too, not just in `It`:
+
+```powershell
+Context 'Earth' -ForEach @(@{ Planet = 'Earth'; Order = 3 }) {
+    BeforeAll { $expected = "$Planet is number $Order" }
+    It 'knows its order' { $expected | Should-Be 'Earth is number 3' }
+}
+```
+
+If you want the full picture of which code runs in which pass, [Discovery and run](../../docs/usage/discovery-and-run) is the page to read — it is the model that explains most surprising Pester behaviour.
+:::
+
+<TutorialChecklist items={[
+  {id: 'tagged', label: 'I tagged the two private-function files with -Tag Internal'},
+  {id: 'filtered', label: 'I ran the suite with -ExcludeTagFilter and with -TagFilter'},
+  {id: 'notrun', label: 'I can explain the difference between NotRun and Skipped'},
+  {id: 'skip', label: 'I know how to skip a test, and how to skip it conditionally'},
+  {id: 'discovery', label: 'I moved the -ForEach list into BeforeDiscovery and the tests still pass'},
+  {id: 'boundary', label: 'I understand why a BeforeDiscovery variable is not visible inside an It block'},
+]} />
+
+Next module: the planet data moves into a file, and your tests get their first real dependency.

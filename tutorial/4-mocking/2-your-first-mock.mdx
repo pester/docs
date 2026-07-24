@@ -1,0 +1,122 @@
+---
+id: your-first-mock
+title: Your first mock
+description: Replace a module's internal data source with Mock -ModuleName so tests control their own data instead of depending on a file on disk
+---
+
+Your tests currently depend on the contents of `planets.csv`. Add a planet to that file and `Returns all eight planets` starts failing — a test about filtering, broken by a data edit.
+
+A mock replaces a command for the duration of a test. Instead of `Get-PlanetData` reading a file, it returns whatever you tell it to.
+
+## Mocking inside a module
+
+```powershell title="Planetarium/Public/Get-Planet.Mocking.Tests.ps1"
+BeforeAll {
+    Import-Module $PSScriptRoot/../Planetarium.psd1 -Force
+}
+
+Describe 'Get-Planet with mocked data' {
+    BeforeAll {
+        Mock -ModuleName Planetarium Get-PlanetData {
+            @(
+                [PSCustomObject] @{ Name = 'Aiur';     Order = 1; DistanceFromSunKm = 100000000 }
+                [PSCustomObject] @{ Name = 'Shakuras'; Order = 2; DistanceFromSunKm = 200000000 }
+            )
+        }
+    }
+
+    It 'Returns whatever the data source provides' {
+        (Get-Planet).Name | Should-BeCollection @('Aiur', 'Shakuras')
+    }
+
+    It 'Filters the mocked data the same way' {
+        (Get-Planet -Name 'A*').Name | Should-Be 'Aiur'
+    }
+}
+```
+
+```powershell
+Invoke-Pester -Path ./Planetarium/Public/Get-Planet.Mocking.Tests.ps1
+```
+
+```
+Tests Passed: 2, Failed: 0, Skipped: 0, Inconclusive: 0, NotRun: 0
+```
+
+The planets are obviously fictional, and that is the point. These tests assert that `Get-Planet` returns and filters *whatever its data source gives it* — which is the actual behaviour of the function. The real solar system is data, not logic, and it is not this test's job.
+
+## Why `-ModuleName` is required
+
+This is the detail that costs people the most time.
+
+`Get-Planet` runs inside the module's own scope. When it calls `Get-PlanetData`, PowerShell resolves that name *within the module*, and a mock defined in your test file lives outside it. Without `-ModuleName`, your mock sits somewhere the module will never look, and the real function runs — your test passes or fails for reasons unrelated to the mock you thought you installed.
+
+`-ModuleName Planetarium` injects the mock into the module's scope, where the call actually resolves.
+
+:::warning A mock without `-ModuleName` fails silently
+Nothing errors. The mock is simply never used, and the real command runs instead. If a mock appears to have no effect, this is the first thing to check.
+:::
+
+Note also what you did *not* have to do: no `InModuleScope` wrapper. `-ModuleName` reaches the private `Get-PlanetData` without dragging your whole test inside the module — which is exactly the preference the [modules guide](../../docs/usage/modules) recommends over `InModuleScope`.
+
+## Mocking a built-in command
+
+You can mock commands you did not write, including PowerShell's own. Here the target is `Import-Csv`, one layer deeper:
+
+```powershell title="Planetarium/Public/Get-Planet.Mocking.Tests.ps1"
+Describe 'Get-PlanetData' {
+    It 'Converts the CSV strings into numbers' {
+        Mock -ModuleName Planetarium Import-Csv {
+            @([PSCustomObject] @{ Name = 'Aiur'; Order = '3'; DistanceFromSunKm = '149597870.7' })
+        }
+
+        InModuleScope Planetarium {
+            $planet = Get-PlanetData
+            $planet.Order | Should-HaveType ([int])
+            $planet.DistanceFromSunKm | Should-HaveType ([double])
+        }
+    }
+}
+```
+
+This is the test that closes the gap left at the end of the previous page. Feeding in strings — `'3'`, not `3` — and then asserting on the types that come out is what proves the conversion happens. `Should-HaveType` is the assertion that can do it: `Should-Be` would pass either way, because it compares values and lets PowerShell convert.
+
+The mock is what makes the input certain. `Import-Csv` happens to return strings today, so this test would pass without it — but only by accident of the current storage format. Swap the CSV for JSON, which preserves numbers, and an unmocked version of this test would go green without the conversion ever running. Mocking the input pins the test to the behaviour rather than to the file format.
+
+Delete the `ForEach-Object` block from `Get-PlanetData` and run the suite: this is now the one test that fails.
+
+`InModuleScope` is here because the test calls the private `Get-PlanetData` directly. The mock still uses `-ModuleName`, since it must be installed into the module regardless of where the call is made from.
+
+Run the file:
+
+```powershell
+Invoke-Pester -Path ./Planetarium/Public/Get-Planet.Mocking.Tests.ps1 -Output Detailed
+```
+
+```
+Describing Get-Planet with mocked data
+  [+] Returns whatever the data source provides 73ms
+  [+] Filters the mocked data the same way 5ms
+
+Describing Get-PlanetData
+  [+] Converts the CSV strings into numbers 16ms
+```
+
+## Which layer to mock
+
+You have now mocked at two depths, and the choice matters:
+
+- **`Get-PlanetData`** — mocking your own seam. Tests stay readable, and they survive a change of storage format. Switch the CSV to JSON and these tests do not care. Prefer this.
+- **`Import-Csv`** — mocking the plumbing. Necessary when the thing under test *is* the plumbing, as with the type conversion above, but it welds your test to the current implementation. Move to JSON and this test breaks even though the behaviour did not change.
+
+The rule of thumb: mock the seam you own, as close to the thing under test as you can get.
+
+<TutorialChecklist items={[
+  {id: 'first-mock', label: 'I mocked Get-PlanetData and wrote tests that control their own data'},
+  {id: 'modulename', label: 'I can explain why -ModuleName is required and what happens without it'},
+  {id: 'no-inmodulescope', label: 'I understand why -ModuleName is preferable to wrapping tests in InModuleScope'},
+  {id: 'builtin', label: 'I mocked Import-Csv to prove the CSV strings get converted to numbers'},
+  {id: 'which-layer', label: 'I can explain the trade-off between mocking my own seam and mocking the plumbing'},
+]} />
+
+Next: asserting that the mock was actually called, and the way Pester v6 refuses to guess.

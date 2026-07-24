@@ -1,0 +1,174 @@
+---
+id: first-test
+title: Running your first test
+description: Use New-Fixture to scaffold a function and its test file, watch the test fail, then implement Get-Planet and watch it pass
+---
+
+You are going to write the test before the function exists. Not out of dogma — it is just the fastest way to see what Pester actually does, because a test that fails for the right reason tells you more than one that passes.
+
+## Scaffolding with New-Fixture
+
+Pester ships a command that creates a function and its test file as a matching pair:
+
+```powershell
+New-Fixture -Name Get-Planet -Path ./Planetarium/Public
+```
+
+```
+    Directory: /home/you/pester-tutorial/Planetarium/Public
+
+UnixMode   User Group          LastWriteTime         Size Name
+--------   ---- -----          -------------         ---- ----
+-rw-r--r-- you  you      07/19/2026 18:45             94  Get-Planet.ps1
+-rw-r--r-- you  you      07/19/2026 18:45            195  Get-Planet.Tests.ps1
+```
+
+Two files. Here is the function:
+
+```powershell title="Planetarium/Public/Get-Planet.ps1"
+function Get-Planet {
+    throw [NotImplementedException]'Get-Planet is not implemented.'
+}
+```
+
+And the test:
+
+```powershell title="Planetarium/Public/Get-Planet.Tests.ps1"
+BeforeAll {
+    . $PSCommandPath.Replace('.Tests.ps1', '.ps1')
+}
+
+Describe "Get-Planet" {
+    It "Returns expected output" {
+        Get-Planet | Should -Be "YOUR_EXPECTED_VALUE"
+    }
+}
+```
+
+That is the anatomy of every Pester test file:
+
+- **`BeforeAll`** runs setup before the tests in its block. Here it loads the code under test by dot-sourcing the `.ps1` next to it — `$PSCommandPath` is the test file's own path, and `.Replace('.Tests.ps1', '.ps1')` turns it into the function's path.
+- **`Describe`** groups related tests and names the thing being tested.
+- **`It`** is a single test. The name should read as a sentence describing behaviour.
+- **`Should`** is the assertion.
+
+:::warning Loading code belongs inside `BeforeAll`, not at the top of the file
+Pester reads every test file twice — once to discover what tests exist, then again to run them. Code at the top level of the file runs during *both* passes. Putting your dot-source or `Import-Module` inside `BeforeAll` keeps it in the run pass, where it belongs. [Discovery and run](../../docs/usage/discovery-and-run) explains what this two-phase model buys you.
+:::
+
+## Watching it fail
+
+Run it:
+
+```powershell
+Invoke-Pester -Path ./Planetarium/Public
+```
+
+```
+Running tests from 1 files.
+[-] Get-Planet.Returns expected output 29ms
+ NotImplementedException: Get-Planet is not implemented.
+ at Get-Planet, /home/you/pester-tutorial/Planetarium/Public/Get-Planet.ps1:2
+ at <ScriptBlock>, /home/you/pester-tutorial/Planetarium/Public/Get-Planet.Tests.ps1:7
+Tests completed in 333ms
+Tests Passed: 0, Failed: 1, Skipped: 0, Inconclusive: 0, NotRun: 0
+```
+
+`[-]` marks a failed test. Read the two `at` lines from the bottom up: line 7 of the test file called the function, and line 2 of the function threw. That is the correct failure — the scaffold is wired up properly and the function genuinely does not work yet.
+
+## Implementing the function
+
+Replace the generated function with something real:
+
+```powershell title="Planetarium/Public/Get-Planet.ps1"
+function Get-Planet {
+    [CmdletBinding()]
+    param (
+        [string] $Name = '*'
+    )
+
+    $planets = @(
+        [PSCustomObject] @{ Name = 'Mercury'; Order = 1; DistanceFromSunKm = 57909050 }
+        [PSCustomObject] @{ Name = 'Venus';   Order = 2; DistanceFromSunKm = 108208000 }
+        [PSCustomObject] @{ Name = 'Earth';   Order = 3; DistanceFromSunKm = 149598023 }
+        [PSCustomObject] @{ Name = 'Mars';    Order = 4; DistanceFromSunKm = 227939200 }
+        [PSCustomObject] @{ Name = 'Jupiter'; Order = 5; DistanceFromSunKm = 778570000 }
+        [PSCustomObject] @{ Name = 'Saturn';  Order = 6; DistanceFromSunKm = 1433530000 }
+        [PSCustomObject] @{ Name = 'Uranus';  Order = 7; DistanceFromSunKm = 2872460000 }
+        [PSCustomObject] @{ Name = 'Neptune'; Order = 8; DistanceFromSunKm = 4495060000 }
+    )
+
+    $planets | Where-Object Name -Like $Name
+}
+```
+
+Now the test needs to assert something true. Replace the `It` block:
+
+```powershell title="Planetarium/Public/Get-Planet.Tests.ps1"
+BeforeAll {
+    . $PSCommandPath.Replace('.Tests.ps1', '.ps1')
+}
+
+Describe 'Get-Planet' {
+    It 'Returns all eight planets by default' {
+        (Get-Planet).Count | Should-Be 8
+    }
+}
+```
+
+```powershell
+Invoke-Pester -Path ./Planetarium/Public
+```
+
+```
+Running tests from 1 files.
+[+] /home/you/pester-tutorial/Planetarium/Public/Get-Planet.Tests.ps1 305ms
+Tests completed in 313ms
+Tests Passed: 1, Failed: 0, Skipped: 0, Inconclusive: 0, NotRun: 0
+```
+
+`[+]` and one passing test. Red to green.
+
+## A note on the assertion
+
+You may have noticed the generated test used `Should -Be` and we switched to `Should-Be`. Both are real, both work, and the hyphen is the entire difference in appearance.
+
+:::note You will see both `Should-Be` and `Should -Be`
+`Should-Be` is a command in its own right, added in Pester v6, and is [the recommended way to assert in v6](../../docs/assertions/should-command). `Should -Be` is the older operator style — `Should` with a `-Be` parameter — and it is what nearly all existing Pester code, blog posts and Stack Overflow answers use, including the file `New-Fixture` generates.
+
+They coexist in v6 and you can mix them freely, even in one file. This tutorial uses the newer `Should-Be` style throughout.
+:::
+
+## Reading a failure
+
+Failures are the output you will spend the most time with, so break one on purpose. Change the expected count to `9` and run again:
+
+```
+Running tests from 1 files.
+[-] Get-Planet.Returns all eight planets by default 70ms
+ Expected [int] 9, but got [int] 8.
+ at (Get-Planet).Count | Should-Be 9, /home/you/pester-tutorial/Planetarium/Public/Get-Planet.Tests.ps1:7
+Tests completed in 355ms
+Tests Passed: 0, Failed: 1, Skipped: 0, Inconclusive: 0, NotRun: 0
+```
+
+Pester reports the types as well as the values — `[int] 9` rather than just `9`, and `[string] 'abc'` when the actual value is text. That detail is what tells you whether a failure is a wrong value or the wrong kind of thing entirely.
+
+:::note `Should-Be` compares values, not types
+`'8' | Should-Be 8` **passes**. PowerShell converts the string to a number before comparing, and `Should-Be` lets it. That is usually what you want — you rarely care whether a count arrived as `[int]` or `[long]`.
+
+When the type genuinely is the thing you are testing, `Should-HaveType` asserts it directly. You will use it in the mocking module to prove that data read from a file comes back as numbers rather than strings.
+:::
+
+Put the `8` back and confirm you are green again before moving on.
+
+<TutorialChecklist items={[
+  {id: 'new-fixture', label: 'I used New-Fixture to scaffold Get-Planet.ps1 and Get-Planet.Tests.ps1'},
+  {id: 'anatomy', label: 'I can explain what BeforeAll, Describe, It and Should each do'},
+  {id: 'red', label: 'I ran the test and saw it fail with NotImplementedException'},
+  {id: 'green', label: 'I implemented Get-Planet and got the test passing'},
+  {id: 'assertion-styles', label: 'I know that Should-Be and Should -Be are both valid in v6'},
+  {id: 'read-failure', label: 'I broke the test deliberately and can read the expected-versus-actual message'},
+]} />
+
+One passing test against a dot-sourced file. Next, testing it the way it will actually be used — as a module.

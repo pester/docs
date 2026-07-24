@@ -79,6 +79,8 @@
   --ifm-navbar-shadow: none;
   --ifm-navbar-link-color: #fff;
   --ifm-navbar-link-hover-color: var(--ifm-navbar-link-color);
+  /* Hover overlay shared by the navbar links and the colour-mode toggle. */
+    --nav-hover-overlay: rgb(0, 0, 0, 0.2);
   --ifm-code-font-size: 90%;
   --ifm-font-weight-semibold: 600;
   --ifm-font-size-base: 16px;
@@ -110,12 +112,12 @@
 }
 
 /* color mode toggle styling  */
-.navbar button[title*='light mode'] {
+.navbar button[class*='toggleButton'] {
   color: #fff;
 }
 
-.navbar button[title*='light mode']:hover {
-  background: rgb(255, 255, 255, 0.2);
+.navbar button[class*='toggleButton']:hover {
+  background: var(--nav-hover-overlay);
 }
 
 /* navbar styling */
@@ -131,8 +133,27 @@
   font-size: 19px;
 }
 
-.navbar__link:hover {
-  text-decoration: underline;
+/* Add a hover overlay to the navbar links on desktop. Default effect is active color which matches our navbar color. */
+.navbar__link.navbar__item {
+  position: relative;
+  transition: background-color var(--ifm-transition-fast) var(--ifm-transition-timing-default);
+}
+
+.navbar__link.navbar__item:hover {
+  background-color: var(--nav-hover-overlay);
+  border-radius: var(--ifm-global-radius);
+}
+
+/* Adds a border below the active navbar item (sidebar) on desktop. */
+.navbar__link.navbar__item.navbar__link--active::before {
+  content: '';
+  position: absolute;
+  right: var(--ifm-navbar-item-padding-horizontal);
+  bottom: 2px;
+  left: var(--ifm-navbar-item-padding-horizontal);
+  height: 2px;
+  border-radius: 2px;
+  background-color: currentColor;
 }
 
 .navbar-sidebar .menu__link,
@@ -216,4 +237,89 @@ table {
   max-width: 400px;
   padding: 10px;
   vertical-align: middle;
+}
+/**
+ * Diff highlighting in code blocks.
+ *
+ * Driven by the `diff-add` / `diff-remove` magic comments configured in
+ * docusaurus.config.js, e.g. in a powershell block:
+ *
+ *   # diff-add
+ *   [switch] $Force
+ *
+ * The negative margin lets the highlight span the full width of the block, matching how
+ * Docusaurus styles its own highlighted lines. The +/- marker sits in the block's left
+ * padding so it never shifts the code, and means the change is not signalled by colour alone.
+ */
+pre>code {
+  --diff-gutter: 0.3rem;
+  --diff-border: 3px;
+  --diff-inset: calc(var(--ifm-pre-padding) + var(--diff-gutter));
+}
+
+/* Numbered blocks lay their lines out as a table and zero their own side padding, so they are
+   left alone. The custom properties above stay declared for them either way, so a diff line
+   inside one still resolves its insets. */
+pre>code:not([class*='codeBlockLinesWithNumbering']) {
+  padding-left: var(--diff-inset);
+}
+.code-block-diff-add-line,
+.code-block-diff-remove-line {
+  position: relative;
+  display: block;
+  margin-right: calc(var(--ifm-pre-padding) * -1);
+    margin-left: calc(var(--diff-inset) * -1);
+    padding-right: var(--ifm-pre-padding);
+    padding-left: calc(var(--diff-inset) - var(--diff-border));
+    border-left: var(--diff-border) solid transparent;
+}
+
+/*
+  Boxed across the whole gutter and centred, so the glyph is evenly spaced whatever its width.
+
+  left is 0, not --diff-border: an absolutely positioned box resolves its offsets against the
+  padding box of the positioned ancestor, and that box already starts after the border. Insetting
+  by the border again pushed the marker exactly 3px right of centre.
+*/
+.code-block-diff-add-line::before,
+.code-block-diff-remove-line::before {
+  position: absolute;
+  left: 0;
+    width: calc(var(--diff-inset) - var(--diff-border));
+    text-align: center;
+  font-weight: 700;
+  opacity: 0.7;
+}
+
+.code-block-diff-add-line {
+  background-color: rgba(46, 160, 67, 0.15);
+  border-left-color: #2ea043;
+}
+
+.code-block-diff-add-line::before {
+  content: '+';
+  color: #2ea043;
+}
+
+.code-block-diff-remove-line {
+  background-color: rgba(248, 81, 73, 0.15);
+  border-left-color: #f85149;
+}
+
+.code-block-diff-remove-line::before {
+  content: '-';
+  color: #f85149;
+}
+
+[data-theme='dark'] .code-block-diff-add-line {
+  background-color: rgba(63, 185, 80, 0.18);
+  border-left-color: #3fb950;
+}
+
+[data-theme='dark'] .code-block-diff-add-line::before {
+  color: #3fb950;
+}
+
+[data-theme='dark'] .code-block-diff-remove-line {
+  background-color: rgba(248, 81, 73, 0.18);
 }

@@ -1,0 +1,189 @@
+---
+id: public-functions
+title: Testing public functions
+description: Switch from dot-sourcing to importing the module so your tests exercise the same public surface your users get, and add a function that depends on private helpers
+---
+
+The test you have works, but it is testing something slightly different from what your users will run. It dot-sources one `.ps1` file directly. Your users import a module. This page closes that gap.
+
+## Why dot-sourcing is not enough
+
+Dot-sourcing `Get-Planet.ps1` loads that one file and nothing else. That means your test suite cannot tell you:
+
+- whether `Get-Planet` is actually **exported** — a function missing from `FunctionsToExport` passes every dot-sourced test and is invisible to users
+- whether the function works when its **private helpers** are loaded alongside it, which is the only way it ever runs in reality
+
+Importing the module instead fixes both. The test then calls the function through the same front door your users do, and a broken export becomes a test failure instead of a support ticket.
+
+## Importing the module
+
+Change the `BeforeAll` in your test file:
+
+```powershell title="Planetarium/Public/Get-Planet.Tests.ps1"
+BeforeAll {
+    # diff-remove
+    . $PSCommandPath.Replace('.Tests.ps1', '.ps1')
+    # diff-add
+    Import-Module $PSScriptRoot/../Planetarium.psd1 -Force
+}
+```
+
+`$PSScriptRoot` is the folder holding the test file, so `../Planetarium.psd1` walks up from `Public/` to the manifest. Import the **manifest**, not the `.psm1` — the manifest is what your users get, and it is the thing that carries `FunctionsToExport`.
+
+:::tip `-Force` is not optional here
+Without it, a module already loaded in your session stays loaded, and you will spend a genuinely upsetting amount of time wondering why your fix changed nothing.
+:::
+
+## Filling out the tests
+
+With the module imported, write tests for the behaviour that actually matters:
+
+```powershell title="Planetarium/Public/Get-Planet.Tests.ps1"
+BeforeAll {
+    Import-Module $PSScriptRoot/../Planetarium.psd1 -Force
+}
+
+Describe 'Get-Planet' {
+    It 'Returns all eight planets by default' {
+        (Get-Planet).Count | Should-Be 8
+    }
+
+    It 'Returns the planets in order from the sun' {
+        $names = (Get-Planet).Name
+        $names[0] | Should-Be 'Mercury'
+        $names[-1] | Should-Be 'Neptune'
+    }
+
+    It 'Returns a single planet when given an exact name' {
+        $planet = Get-Planet -Name 'Earth'
+        $planet.Name | Should-Be 'Earth'
+        $planet.Order | Should-Be 3
+    }
+
+    It 'Supports wildcards' {
+        (Get-Planet -Name 'M*').Name | Should-BeCollection @('Mercury', 'Mars')
+    }
+
+    It 'Returns nothing for an unknown planet' {
+        Get-Planet -Name 'Pluto' | Should-BeNull
+    }
+}
+```
+
+Three assertions worth calling out:
+
+`Should-BeCollection` is not the same as `Should-Be`. Pester v6 splits value assertions from collection assertions: `Should-Be` compares one thing to one thing, `Should-BeCollection` compares sizes and then items. Reach for the collection one whenever the actual value is a list.
+
+`Should-BeNull` covers the "found nothing" case. It is easy to skip this test and easy to regret it — a filter that silently returns everything when it matches nothing is a classic bug.
+
+Multiple assertions in one `It` are fine. The test stops at the first failure, so keep them related, as they are here.
+
+Run it:
+
+```powershell
+Invoke-Pester -Path ./Planetarium/Public
+```
+
+```
+Tests Passed: 5, Failed: 0, Skipped: 0, Inconclusive: 0, NotRun: 0
+```
+
+## A function with dependencies
+
+Now add a function that leans on the private side of the module. First the two helpers:
+
+```powershell title="Planetarium/Private/ConvertTo-AstronomicalUnit.ps1"
+function ConvertTo-AstronomicalUnit {
+    param (
+        [Parameter(Mandatory)]
+        [double] $Kilometre
+    )
+
+    [math]::Round($Kilometre / 149597870.7, 3)
+}
+```
+
+```powershell title="Planetarium/Private/Test-PlanetName.ps1"
+function Test-PlanetName {
+    param (
+        [string] $Name
+    )
+
+    $known = 'Mercury', 'Venus', 'Earth', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune'
+    $Name -in $known
+}
+```
+
+Then the public function that uses both:
+
+```powershell title="Planetarium/Public/Get-PlanetDistance.ps1"
+function Get-PlanetDistance {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory)]
+        [string] $Name
+    )
+
+    if (-not (Test-PlanetName -Name $Name)) {
+        throw "Unknown planet '$Name'."
+    }
+
+    $planet = Get-Planet -Name $Name
+    ConvertTo-AstronomicalUnit -Kilometre $planet.DistanceFromSunKm
+}
+```
+
+This is where importing the module pays off. `Get-PlanetDistance` calls two functions that live in other files. Dot-sourcing `Get-PlanetDistance.ps1` on its own would fail immediately with "The term 'Test-PlanetName' is not recognized". Importing the module loads everything together, exactly as it runs in production.
+
+## Testing it
+
+```powershell title="Planetarium/Public/Get-PlanetDistance.Tests.ps1"
+BeforeAll {
+    Import-Module $PSScriptRoot/../Planetarium.psd1 -Force
+}
+
+Describe 'Get-PlanetDistance' {
+    It 'Reports Earth as one astronomical unit from the sun' {
+        Get-PlanetDistance -Name 'Earth' | Should-Be 1
+    }
+
+    It 'Reports Mercury as closer to the sun than Earth' {
+        Get-PlanetDistance -Name 'Mercury' | Should-BeLessThan 1
+    }
+
+    It 'Throws for a planet it does not know' {
+        { Get-PlanetDistance -Name 'Pluto' } | Should-Throw -ExceptionMessage "Unknown planet 'Pluto'."
+    }
+}
+```
+
+The error-case test is the interesting one. Note the braces: `{ Get-PlanetDistance -Name 'Pluto' }` is a **script block**, not a call. You are handing Pester the code to run, so it can catch what comes out. Without the braces the exception would escape and fail the test before `Should-Throw` ever saw it.
+
+`-ExceptionMessage` pins down *which* error you expect. Leaving it off would pass on any exception at all, including a typo in the function name — so a test that asserts "it throws" often ends up asserting nothing useful.
+
+:::warning Do not test a missing mandatory parameter this way
+It is tempting to add `{ Get-PlanetDistance } | Should-Throw` to check `-Name` is required. Do not. A missing mandatory parameter makes PowerShell *prompt* rather than throw, and your test run will hang there forever waiting for input that is never coming — which in CI means a build that times out with no useful output.
+:::
+
+Run the whole module:
+
+```powershell
+Invoke-Pester -Path ./Planetarium
+```
+
+```
+Tests Passed: 8, Failed: 0, Skipped: 0, Inconclusive: 0, NotRun: 0
+```
+
+Eight passing tests across two files. For more on module-aware testing, [Unit testing within modules](../../docs/usage/modules) is the reference companion to this page.
+
+<TutorialChecklist items={[
+  {id: 'why-import', label: 'I can explain why importing the module beats dot-sourcing a single file'},
+  {id: 'import-manifest', label: 'My tests import the .psd1 manifest with -Force in BeforeAll'},
+  {id: 'collection', label: 'I know when to use Should-BeCollection instead of Should-Be'},
+  {id: 'dependencies', label: 'I added Get-PlanetDistance and its two private helpers'},
+  {id: 'should-throw', label: 'I can write a Should-Throw test and explain why the script block braces are required'},
+  {id: 'all-green', label: 'Invoke-Pester -Path ./Planetarium reports 8 passing tests'},
+]} />
+
+Both private helpers are now covered only indirectly, through the public function that happens to call them. Next: testing them head-on.

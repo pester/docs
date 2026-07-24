@@ -1,0 +1,106 @@
+---
+id: testdrive
+title: Isolating files with TestDrive
+description: Use Pester's TestDrive to give every test file a disposable filesystem that cleans itself up, then assert on the files your code actually wrote
+---
+
+Pester gives every test file its own temporary directory, cleans it up afterwards, and names it randomly so parallel runs cannot collide. It is called **TestDrive**, and it needs no setup at all — it is simply there.
+
+## Two ways to reach it
+
+- **`TestDrive:\`** — a PowerShell drive, for use with PowerShell commands.
+- **`$TestDrive`** — the same location as a plain filesystem path.
+
+Prefer `$TestDrive` with `Join-Path`. `TestDrive:\` only exists inside PowerShell, so the moment a path reaches a .NET method or an external executable it breaks — and `Export-PlanetReport` hands its path to `Set-Content`, which is fine, right up until someone changes it to `[System.IO.File]::WriteAllLines`.
+
+## Testing the report
+
+```powershell title="Planetarium/Public/Export-PlanetReport.Tests.ps1"
+BeforeAll {
+    Import-Module $PSScriptRoot/../Planetarium.psd1 -Force
+}
+
+Describe 'Export-PlanetReport' {
+    It 'Creates the report file' {
+        $path = Join-Path $TestDrive 'report.txt'
+
+        Test-Path -Path $path | Should-BeFalse
+        Export-PlanetReport -Path $path
+        Test-Path -Path $path | Should-BeTrue
+    }
+
+    It 'Writes one line per planet' {
+        $path = Join-Path $TestDrive 'all.txt'
+
+        Export-PlanetReport -Path $path
+
+        (Get-Content -Path $path).Count | Should-Be 8
+    }
+
+    It 'Writes the name and the distance in astronomical units' {
+        $path = Join-Path $TestDrive 'earth.txt'
+
+        Export-PlanetReport -Path $path -Name 'Earth'
+
+        Get-Content -Path $path | Should-Be 'Earth    1 AU'
+    }
+
+    It 'Throws when no planet matches' {
+        $path = Join-Path $TestDrive 'nothing.txt'
+
+        { Export-PlanetReport -Path $path -Name 'Pluto' } |
+            Should-Throw -ExceptionMessage "No planets matched 'Pluto'."
+    }
+}
+```
+
+```powershell
+Invoke-Pester -Path ./Planetarium/Public/Export-PlanetReport.Tests.ps1 -Output Detailed
+```
+
+```
+Describing Export-PlanetReport
+  [+] Creates the report file 45ms
+  [+] Writes one line per planet 8ms
+  [+] Writes the name and the distance in astronomical units 4ms
+  [+] Throws when no planet matches 24ms
+Tests completed in 362ms
+Tests Passed: 4, Failed: 0, Skipped: 0, Inconclusive: 0, NotRun: 0
+```
+
+Four real files were written and four are already gone. Check `git status` — nothing.
+
+The first test asserts the file is absent *before* the call as well as present after. Without that, a leftover file from an earlier run could make the test pass on its own.
+
+## Scoping
+
+TestDrive is not one directory for the whole run. The rules that matter day to day:
+
+1. A clean drive is created **per test file**, at the first top-level `Describe` or `Context`.
+2. Files made in a block are visible to everything nested inside it.
+3. On leaving a block, files created *during* that block are removed.
+4. When the file finishes, the whole drive goes.
+
+So each `It` above got the same drive but wrote a distinct filename. They could safely have reused one name — but distinct names make a failure easier to read, since the filename tells you which test wrote it.
+
+:::warning Modifications to inherited files are not undone
+Cleanup works by tracking which paths existed when a block was entered. Create a file in `Describe`, change it inside a `Context`, and the change survives after the `Context` ends — the file already existed, so it is excluded from that block's cleanup.
+
+The practical rule: create files in the block that uses them. Sharing a mutable file down the tree is how you get tests that pass alone and fail together, or that depend on execution order.
+:::
+
+## What this bought you
+
+Compare against the alternatives from the previous page. No `AfterEach` to forget. No fixed paths to collide. No cleanup skipped because a test threw halfway. Nothing left behind when a test fails — and a failing test is precisely when stale files do the most damage.
+
+The parallel-safety is not theoretical either: the directory name is randomised specifically so several Pester processes can run at once, which is what your CI will do the moment the suite gets slow enough to shard.
+
+<TutorialChecklist items={[
+  {id: 'testdrive-basics', label: 'I know the difference between TestDrive:\\ and $TestDrive, and which to prefer'},
+  {id: 'wrote-tests', label: 'I wrote the four Export-PlanetReport tests and they pass'},
+  {id: 'no-debris', label: 'I confirmed the test run left no files behind in the repo'},
+  {id: 'assert-existence', label: 'I know how to assert a file exists without a Should-Exist assertion'},
+  {id: 'scoping', label: 'I can explain when TestDrive cleans up, and why modifications to inherited files survive'},
+]} />
+
+Next module: finding out which parts of the module your tests never touch.

@@ -1,0 +1,75 @@
+---
+id: welcome
+title: Welcome
+description: A follow-along tutorial that takes a sample PowerShell module from no tests at all to a fully tested module with mocks, isolated file operations and code coverage
+---
+
+Most Pester documentation is written as reference material — you arrive knowing what you want, and you look it up. This tutorial is the other thing. It is a single story, told in order, where you build one real PowerShell module and test it from nothing to done.
+
+You will type every command yourself. Nothing is hidden behind a "download the finished sample" link.
+
+## What you will build
+
+The module is called **Planetarium**. It is small enough to keep in your head and awkward enough to be interesting:
+
+```
+Planetarium/
+├── Planetarium.psd1
+├── Planetarium.psm1
+├── Data/
+│   └── planets.csv
+├── Public/
+│   ├── Get-Planet.ps1
+│   ├── Get-PlanetDistance.ps1
+│   └── Export-PlanetReport.ps1
+└── Private/
+    ├── ConvertTo-AstronomicalUnit.ps1
+    ├── Get-PlanetData.ps1
+    └── Test-PlanetName.ps1
+```
+
+It has public functions that users call, private helpers that they should not, a data file worth faking and a function that writes reports to disk. Each of those is a testing problem with its own chapter.
+
+You will not build it all at once. It starts as an empty folder and grows a piece at a time, with tests arriving alongside each piece.
+
+## How the tutorial is organised
+
+The tutorial is split into modules, and each module into pages. You are on the first page of the first module now.
+
+| Module | What it covers |
+| --- | --- |
+| **Introduction** | What you need installed before you start |
+| **Testing a module** | Building Planetarium and testing it end to end |
+| **Organising tests** | Grouping tests, shared setup, and choosing what runs |
+| **Mocking** | Replacing the data source your code depends on |
+| **Working with files** | Isolating file operations with `TestDrive` |
+| **Code coverage** | Finding the code your tests never touch |
+| **Setting up CI** | Running the whole thing on every push |
+
+They are meant to be done in order — each one builds on the module the previous one left behind.
+
+## Tracking your progress
+
+Every page in this tutorial opens with a progress panel and ends with a checklist.
+
+Tick every box in a page's checklist and that page is marked complete. The panel at the top of the page updates immediately and shows you where you are in the module and in the tutorial overall.
+
+:::note Your progress stays in this browser
+Progress is saved to your browser's local storage. Nothing is sent anywhere and there is no account to create — but that also means your progress will not follow you to another browser or another machine, and clearing site data will reset it.
+:::
+
+The checklists are for you, not for us. They are worth taking seriously precisely because nobody is checking: if you cannot honestly tick "I can explain why the test failed", the next page will be harder than it needs to be.
+
+## What you should already know
+
+You should be comfortable writing basic PowerShell — functions, parameters, `Get-ChildItem`, piping things around. You do not need to have written a test before, in PowerShell or anywhere else. Every Pester concept is introduced when it first becomes necessary rather than up front.
+
+If you are coming back to Pester after a while, note that this tutorial teaches Pester v6 and a fair amount has changed. Coming from v5, read [v5 to v6](../../docs/migrations/v5-to-v6); coming from v4 or earlier, start with [v4 to v5](../../docs/migrations/v4-to-v5) — the jump from v4 is the larger of the two.
+
+<TutorialChecklist items={[
+  {id: 'know-what-building', label: 'I know what the Planetarium module is and why the tutorial builds it'},
+  {id: 'know-structure', label: 'I know the tutorial is split into modules and pages, and roughly what each module covers'},
+  {id: 'know-progress', label: 'I understand that my progress is stored in this browser only'},
+]} />
+
+Next up: getting Pester installed and confirming the version you are running.

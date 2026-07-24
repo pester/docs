@@ -1,0 +1,138 @@
+---
+id: verifying-calls
+title: Verifying calls
+description: Assert that a mocked command was called with Should-Invoke, target specific calls with -ParameterFilter, and understand why a mock that matches nothing throws
+---
+
+A mock lets you control what a command returns. `Should-Invoke` lets you assert it was called at all — which is how you test behaviour that leaves no return value behind.
+
+## Should-Invoke
+
+Add a third test to the `Get-Planet with mocked data` block, below the two you already have:
+
+```powershell title="Planetarium/Public/Get-Planet.Mocking.Tests.ps1"
+Describe 'Get-Planet with mocked data' {
+    # ... BeforeAll and the two existing It blocks ...
+
+    It 'Filters the mocked data the same way' {
+        (Get-Planet -Name 'A*').Name | Should-Be 'Aiur'
+    }
+
+    # diff-add-start
+    It 'Reads the data source exactly once per call' {
+        Get-Planet | Out-Null
+
+        Should-Invoke Get-PlanetData -ModuleName Planetarium -Times 1 -Exactly
+    }
+    # diff-add-end
+}
+```
+
+The mock itself is already there — it is the `Mock -ModuleName Planetarium Get-PlanetData` in that block's `BeforeAll`. `Should-Invoke` does not install anything; it asks a question about a mock that is already installed.
+
+`-Exactly` is doing real work. `-Times 1` on its own means "at least once", so a function that read the file three times would pass. With `-Exactly` this test would catch a refactor that accidentally re-reads the CSV per planet — a bug that is invisible in the return value and obvious in the call count.
+
+The `-ModuleName` rule from the previous page applies here too: you are asking about a mock that lives in the module's scope, so you have to say so.
+
+:::tip Assert on calls only when the call is the behaviour
+`Should-Invoke` is the right tool for "it wrote to the log", "it retried twice", "it did not delete anything". It is the wrong tool for things you can check by looking at the result. Asserting on both the return value and the exact call sequence tends to produce tests that fail every time you tidy up the implementation, without ever catching a real bug.
+:::
+
+## Targeting specific calls
+
+`-ParameterFilter` narrows a mock to calls whose arguments match. This one goes in the second block, `Describe 'Get-PlanetData'`, next to the type-conversion test from the previous page:
+
+```powershell title="Planetarium/Public/Get-Planet.Mocking.Tests.ps1"
+Describe 'Get-PlanetData' {
+    # ... the 'Converts the CSV strings into numbers' test ...
+
+    # diff-add-start
+    It 'Reads the CSV shipped with the module' {
+        Mock -ModuleName Planetarium Import-Csv {
+            @([PSCustomObject] @{ Name = 'Aiur'; Order = '1'; DistanceFromSunKm = '100' })
+        } -ParameterFilter { $Path -like '*planets.csv' }
+
+        InModuleScope Planetarium { (Get-PlanetData).Name | Should-Be 'Aiur' }
+
+        Should-Invoke Import-Csv -ModuleName Planetarium -Times 1 -Exactly
+    }
+    # diff-add-end
+}
+```
+
+Inside the filter, parameters are available as variables — `$Path` is whatever was passed as `-Path`. The mock only applies when the filter returns true, so this one says: intercept reads of `planets.csv`, and nothing else.
+
+That doubles as an assertion. If the module ever reads a different file, the filter stops matching — and the next section is what happens then.
+
+## Mocks do not fall through
+
+A mock with a `-ParameterFilter` only applies to calls that match it. If a call reaches a mocked command and *nothing* matches, Pester throws rather than guessing — it will not quietly run the real command behind your back.
+
+Better to see that error now, while you know exactly what caused it, than the first time it surprises you in a suite you did not write. Break the filter on purpose — change `planets` to `moons` in the test you just added:
+
+```powershell title="Planetarium/Public/Get-Planet.Mocking.Tests.ps1"
+    It 'Reads the CSV shipped with the module' {
+        Mock -ModuleName Planetarium Import-Csv {
+            @([PSCustomObject] @{ Name = 'Aiur'; Order = '1'; DistanceFromSunKm = '100' })
+        # diff-remove
+        } -ParameterFilter { $Path -like '*planets.csv' }
+        # diff-add
+        } -ParameterFilter { $Path -like '*moons.csv' }
+
+        # ... rest of the test unchanged ...
+    }
+```
+
+```powershell
+Invoke-Pester -Path ./Planetarium/Public/Get-Planet.Mocking.Tests.ps1 -Output Detailed
+```
+
+```
+Describing Get-PlanetData
+  [+] Converts the CSV strings into numbers 49ms
+  [-] Reads the CSV shipped with the module 29ms
+   RuntimeException: No mock for command 'Import-Csv' matched the call: none of the parameter filters matched, and there is no default mock to fall back to. Add a default mock (e.g. `Mock Import-Csv { ... }`) or adjust an existing -ParameterFilter.
+   The following parameter filters were evaluated and did not match:
+       { $Path -like '*moons.csv' }  bound parameters: Path = /home/you/pester-tutorial/Planetarium/Private/../Data/planets.csv
+```
+
+Read the last line: it shows the filter that was evaluated *and* the arguments it was evaluated against. The filter wanted `*moons.csv`, the actual path ends in `planets.csv` — the mismatch is right there, with no guessing required.
+
+The alternative would be far worse: a test that silently read the real file, often still passed, and left you trusting a mock that was never used.
+
+### Giving a mock a fallback
+
+Sometimes you genuinely want "handle this specific case, and everything else generically". Say so explicitly by adding a second mock with no `-ParameterFilter` — an unfiltered mock matches any call, so it becomes the fallback:
+
+```powershell
+Mock Get-Thing { 'default' }                             # everything else
+Mock Get-Thing { 'one' } -ParameterFilter { $Id -eq 1 }  # the specific case
+```
+
+That one is an illustration, not something to add to Planetarium — there is no `Get-Thing`. Your `Import-Csv` mock should intercept exactly one file, so leaving it filtered and unmatched-is-an-error is the behaviour you want.
+
+**Change `moons` back to `planets` before moving on.**
+
+## Running the suite
+
+```powershell
+./test.ps1
+```
+
+```
+Tests Passed: 20, Failed: 0, Skipped: 0, Inconclusive: 0, NotRun: 0
+```
+
+Twenty tests: the original fifteen, plus five that no longer care what is in `planets.csv`.
+
+There is also `Should-NotInvoke`, the mirror image, for asserting a command was *not* called — "it did not delete anything", "it did not retry". It takes the same `-ModuleName` and `-ParameterFilter` parameters.
+
+<TutorialChecklist items={[
+  {id: 'should-invoke', label: 'I asserted the data source is read exactly once with Should-Invoke -Exactly'},
+  {id: 'when-to-assert', label: 'I can explain when asserting on calls is right and when it makes tests brittle'},
+  {id: 'parameter-filter', label: 'I used -ParameterFilter to target a specific call'},
+  {id: 'no-fallthrough', label: 'I triggered the no-matching-mock error and can read what it reports'},
+  {id: 'default-mock', label: 'I know how to add a default mock alongside a filtered one'},
+]} />
+
+Next module: a function that writes files, and how to test it without leaving debris on your disk.
