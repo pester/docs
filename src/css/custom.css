@@ -80,7 +80,7 @@
   --ifm-navbar-link-color: #fff;
   --ifm-navbar-link-hover-color: var(--ifm-navbar-link-color);
   /* Hover overlay shared by the navbar links and the colour-mode toggle. */
-    --nav-hover-overlay: rgb(0, 0, 0, 0.2);
+  --nav-hover-overlay: rgb(0, 0, 0, 0.2);
   --ifm-code-font-size: 90%;
   --ifm-font-weight-semibold: 600;
   --ifm-font-size-base: 16px;
@@ -116,8 +116,10 @@
   color: #fff;
 }
 
-.navbar button[class*='toggleButton']:hover {
-  background: var(--nav-hover-overlay);
+@media (hover: hover) {
+  .navbar button[class*='toggleButton']:hover {
+      background: var(--nav-hover-overlay);
+  }
 }
 
 /* navbar styling */
@@ -139,9 +141,11 @@
   transition: background-color var(--ifm-transition-fast) var(--ifm-transition-timing-default);
 }
 
-.navbar__link.navbar__item:hover {
-  background-color: var(--nav-hover-overlay);
-  border-radius: var(--ifm-global-radius);
+@media (hover: hover) {
+  .navbar__link.navbar__item:hover {
+      background-color: var(--nav-hover-overlay);
+      border-radius: var(--ifm-global-radius);
+  }
 }
 
 /* Adds a border below the active navbar item (sidebar) on desktop. */
