@@ -12,13 +12,13 @@ This page is about structure. No new behaviour gets tested — the suite still r
 
 `Context` groups related tests inside a `Describe`. It takes a name and a script block, exactly like `Describe` does, and it can hold its own setup.
 
-The convention worth adopting: **`Describe` names the thing, `Context` names the situation.** Describe `Get-Planet`; Context "when called without a name".
+The convention worth adopting: **`Describe` names the thing, `Context` names the situation. `It` names what we're testing**
 
 Restructure `Get-Planet.Tests.ps1`:
 
 ```powershell title="Planetarium/Public/Get-Planet.Tests.ps1"
 BeforeAll {
-    Import-Module $PSScriptRoot/../Planetarium.psd1 -Force
+    Import-Module "$PSScriptRoot/../Planetarium.psd1" -Force
 }
 
 Describe 'Get-Planet' {
@@ -69,7 +69,7 @@ Describing Get-Planet
 
 Same five tests, now indented under the situation they belong to.
 
-Notice what happened to the names. `Returns all eight planets by default` became `Returns all eight planets` — the "by default" moved into the Context, where it belongs. A test name should not have to restate its own conditions once a `Context` states them.
+Notice what happened to the names. `Returns all eight planets by default` became `Returns all eight planets` — the "by default" is now implied. A test name should not have to restate its own conditions once a `Context` states them.
 
 ## The setup and teardown family
 
@@ -114,16 +114,16 @@ Describing Ordering
 AfterAll
 ```
 
-`BeforeAll` runs once no matter how many tests follow; `BeforeEach` and `AfterEach` run once per test, bracketing each one.
+`BeforeAll` and `AfterAll` ran once each, no matter how many tests follow; `BeforeEach` and `AfterEach` ran once per test.
 
-The `[+]` lines look out of place — each appears *after* its own `AfterEach` rather than between the two. That is a reporting artifact, not an ordering one: Pester prints a test's result line only once the test is completely finished, and `AfterEach` is part of finishing. The `Write-Host` output is the honest record of the order.
+The `[+]` lines look out of place — each appears *after* its own `AfterEach` rather than between the two. That is a reporting artifact, not an ordering one: Pester prints a test's result line only once the test is completely finished, and `AfterEach` is part of finishing.
 
 Delete that file once you have seen it — it is a demonstration, not part of the suite.
 
 :::tip Which one to reach for
 Use `BeforeAll` for anything expensive or read-only — importing a module, loading fixture data. Use `BeforeEach` when a test would otherwise inherit state from the test before it.
 
-Planetarium does not need `BeforeEach` yet, because every test builds what it needs and changes nothing. When `Export-PlanetReport` arrives in a later module and each test wants a fresh file path, that is exactly the case `BeforeEach` exists for.
+Planetarium does not need `BeforeEach` yet, because every test builds what it needs and changes nothing. You will use `BeforeEach` in a later module when working with files.
 :::
 
 ## Explaining a failure with -Because
@@ -139,7 +139,7 @@ Every `Should-*` assertion takes a `-Because` parameter. The text is folded into
  Expected [int] 8, because the solar system has eight planets, but got [int] 9.
 ```
 
-It earns its place when the expected value is a magic number whose origin is not obvious from the test. `Should-Be 8` says what; `-Because 'the solar system has eight planets'` says why, to whoever is reading a red build at an unhelpful hour.
+It earns its place when the expected value is a magic number whose origin is not obvious from the test. `Should-Be 8` says what; `-Because 'the solar system has eight planets'` says why, to whoever is troubleshooting the error in the future.
 
 It is noise on an assertion that already explains itself, so use it sparingly rather than everywhere.
 
@@ -152,4 +152,4 @@ It is noise on an assertion that already explains itself, so use it sparingly ra
   {id: 'still-fifteen', label: 'My suite still reports 15 passing tests'},
 ]} />
 
-Next: running only some of them.
+Next: running a selection of tests.

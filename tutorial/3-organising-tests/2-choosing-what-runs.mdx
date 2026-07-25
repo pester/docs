@@ -6,11 +6,11 @@ description: Label tests with -Tag and filter on them, skip tests conditionally,
 
 Running everything is the right default. It stops being practical the moment part of your suite is slow, or platform-specific, or only meaningful against a real database.
 
-Pester gives you two different tools for that, and the difference matters: **tags** decide what gets selected to run, **skip** marks a test as deliberately not run.
+Pester gives you different tools for that, and the difference matters: **filters** decide what gets selected to run, **skip** marks a test as deliberately not run.
 
 ## Tagging tests
 
-`-Tag` goes on `Describe`, `Context` or `It`, and is inherited by everything inside. Your two private-function files are a natural group — they reach into the module with `InModuleScope`, and they are the tests you would drop first if you only wanted to check the public surface:
+The most used filter in Pester is tags. `-Tag` goes on `Describe`, `Context` or `It`, and is inherited by everything inside. Your two private-function files are a natural group — they reach into the module with `InModuleScope`, and they are the tests you would drop first if you only wanted to check the public surface:
 
 ```powershell title="Planetarium/Private/ConvertTo-AstronomicalUnit.Tests.ps1"
 # diff-remove
@@ -54,7 +54,7 @@ Read those totals again: the filtered-out tests are counted as **NotRun**, and `
 Pester discovers every test either way — that is how it knows there are fifteen — then runs only the ones your filter selected. `NotRun` means "not selected". `Skipped` means "selected, then deliberately passed over", which is the next section. Keeping them in separate columns means a filtered run cannot quietly hide a test you thought was executing.
 :::
 
-Tags people reach for in practice: `Slow`, `Integration`, `Unit`, `WindowsOnly`. The useful test is whether you would ever want to run with the tag, or without it — a tag nobody filters on is just a comment.
+Typical tags used in projects are `Slow`, `Integration`, `Unit`, `WindowsOnly` etc. The useful test is whether you would ever want to run with the tag, or without it — a tag nobody filters on is just a comment.
 
 ## Skipping tests
 
@@ -72,7 +72,7 @@ It 'Talks to the real API' -Skip {
 
 `[!]` rather than `[+]` or `[-]`, and the summary counts it under `Skipped`. That visibility is the entire point: a skipped test nags, whereas a commented-out test is invisible and eventually forgotten.
 
-Where it gets useful is a **condition**:
+It becomes very useful when combined with a **condition**:
 
 ```powershell
 It 'Uses the Windows registry' -Skip:(-not $IsWindows) {
@@ -82,7 +82,7 @@ It 'Uses the Windows registry' -Skip:(-not $IsWindows) {
 
 On Windows this runs; everywhere else it reports as skipped instead of failing. That is how a cross-platform suite handles the parts that genuinely cannot run everywhere — and it is what keeps the CI matrix in the last module green on all three operating systems.
 
-Both `-Skip` examples above are illustrations rather than tests to add — Planetarium has nothing that needs skipping yet. The next section does change a real file.
+Both `-Skip` examples above are illustrations rather than tests to add — Planetarium has nothing that needs skipping yet.
 
 ## BeforeDiscovery
 
@@ -100,7 +100,7 @@ BeforeDiscovery {
 # diff-add-end
 
 BeforeAll {
-    Import-Module $PSScriptRoot/../Planetarium.psd1 -Force
+    Import-Module "$PSScriptRoot/../Planetarium.psd1" -Force
 }
 
 Describe 'Test-PlanetName' -Tag 'Internal' {
@@ -161,4 +161,4 @@ If you want the full picture of which code runs in which pass, [Discovery and ru
   {id: 'boundary', label: 'I understand why a BeforeDiscovery variable is not visible inside an It block'},
 ]} />
 
-Next module: the planet data moves into a file, and your tests get their first real dependency.
+Next we'll be testing code without it's dependency.

@@ -84,7 +84,7 @@ Reach for `Diagnostic` when a test is behaving impossibly and you need to see Pe
 
 ## The result object
 
-Printed output is for humans. When you need the numbers in code — a release gate, a summary comment, a custom report — ask for the result object instead:
+Printed output is for humans. When you want to process the result in code, for a release gate, a summary comment, a custom report — ask for the result object instead:
 
 ```powershell
 $config = New-PesterConfiguration
@@ -110,15 +110,14 @@ Every test is reachable through `$result.Tests`, which is how you build your own
 
 ```powershell
 $result.Tests |
-    Where-Object Result -eq 'Failed' |
-    Select-Object Name, @{ Name = 'Error'; Expression = { $_.ErrorRecord.Exception.Message } }
+    Select-Object Name, Result, @{ Name = 'Error'; Expression = { $_.ErrorRecord.Exception.Message } }
 ```
 
 [The result object](../../docs/usage/result-object) documents the full structure.
 
 ## Test result files
 
-The third audience is other tools. CI systems do not read console output — they read a test results file, and use it to render the run and annotate failures.
+The third audience is other tools like CI systems and automated reporting solutions. They prefer test results file in popular formats, which they can use to annotate failures and render reports.
 
 ```powershell
 $config = New-PesterConfiguration

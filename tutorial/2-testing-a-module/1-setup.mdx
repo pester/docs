@@ -15,20 +15,21 @@ New-Item -Path ./Planetarium/Public -ItemType Directory -Force
 New-Item -Path ./Planetarium/Private -ItemType Directory -Force
 ```
 
-That gives you the two folders that matter:
+That gives you the three folders that matter:
 
-- **`Public/`** — functions your users call. These get exported.
-- **`Private/`** — helpers that only the module itself uses. These do not.
+- **`Planetarium/`** - the module's root folder.
+- **`Planetarium/Public/`** — functions your users call. These get exported.
+- **`Planetarium/Private/`** — helpers that only the module itself uses, hidden from the users.
 
 That split is the whole reason this module is interesting to test. Public functions are easy to reach from a test. Private ones, by design, are not — that is a page of its own later.
 
 ## The loader
 
-The `.psm1` file is the module's root. Ours does not define any functions itself; it finds the `.ps1` files and dot-sources them.
+The `.psm1` file is the module's root script, executed when your import the module. Ours does not define any functions itself; it finds the `.ps1` files, one per function, and dot-sources them.
 
 ```powershell title="Planetarium/Planetarium.psm1"
-$public = @(Get-ChildItem -Path $PSScriptRoot/Public/*.ps1 -Exclude *.Tests.ps1 -ErrorAction SilentlyContinue)
-$private = @(Get-ChildItem -Path $PSScriptRoot/Private/*.ps1 -Exclude *.Tests.ps1 -ErrorAction SilentlyContinue)
+$public = @(Get-ChildItem -Path "$PSScriptRoot/Public/*.ps1" -Exclude *.Tests.ps1 -ErrorAction SilentlyContinue)
+$private = @(Get-ChildItem -Path "$PSScriptRoot/Private/*.ps1" -Exclude *.Tests.ps1 -ErrorAction SilentlyContinue)
 
 foreach ($file in @($public + $private)) {
     . $file.FullName
@@ -41,7 +42,7 @@ Two details are worth pausing on.
 
 `Export-ModuleMember -Function @($public.BaseName)` exports everything in `Public/` and nothing in `Private/`. The folder a file sits in is what decides whether it is part of your public surface — there is no attribute or naming convention doing it.
 
-`-Exclude *.Tests.ps1` matters because of where we are about to put our tests. Pester's convention is that test files sit next to the code they test, so `Public/` will shortly contain both `Get-Planet.ps1` and `Get-Planet.Tests.ps1`. Without that exclusion the loader would dot-source your test files into the module — and then export them.
+`-Exclude *.Tests.ps1` allows us to place the tests files next to the code. Without that exclusion the loader would dot-source your test files into the module — and then export them.
 
 :::warning Test files next to your code need excluding from the loader
 If you skip `-Exclude *.Tests.ps1`, your tests get loaded as part of the module. This tends to fail in confusing ways rather than obvious ones, because your `Describe` blocks run at import time. If you would rather keep tests entirely separate, a mirrored `tests/` folder is the other convention Pester supports — see [file placement and naming](../../docs/usage/file-placement-and-naming).
@@ -66,27 +67,31 @@ Open the generated file and find the `FunctionsToExport` line:
 FunctionsToExport = '*'
 ```
 
-This is a second gate in front of `Export-ModuleMember`. A function has to pass *both* to be visible to your users. Leaving it as `'*'` means the manifest waves everything through and the `.psm1` makes the real decision, which is what we want while functions are still being added.
+This is a second gate in front of `Export-ModuleMember`. A function has to pass **both** to be visible to your users. Leaving it as `'*'` means the manifest waves everything through and the `.psm1` makes the real decision, which is what we want while functions are still being added.
 
-:::tip When a function you exported is not there
-`FunctionsToExport` is the first thing to check. If it is set to an explicit list — or worse, to `@()` — then adding a function to `Public/` will not make it appear, no matter what `Export-ModuleMember` says.
+:::tip Update before publishing a module
+Using `FunctionsToExport = '*'` is convenient while developing, but should be change to a array of public function names before publishing. This is required for best performance and auto-import.
+
+For this module: `FunctionsToExport = @('Get-Planet','Get-PlanetDistance','Export-PlanetReport').
 :::
 
 ## Checking it imports
 
-Nothing is in the module yet, but it should still load cleanly:
+Nothing is in the module yet, but we can still try to load it:
 
 ```powershell
 Import-Module ./Planetarium/Planetarium.psd1 -Force -PassThru
 ```
 
 ```
+Export-ModuleMember: Cannot bind parameter 'Function' to the target. Exception setting "Function": "Cannot process argument because the value of argument "pattern" is null. Change the value of argument "pattern" to a non-null value."
+
 ModuleType Version    PreRelease Name
 ---------- -------    ---------- ----
 Script     0.1.0                 Planetarium
 ```
 
-An empty module that imports without error is exactly what you want right now. If instead you get an error, it is almost certainly a typo in the `.psm1` path handling — fix it before moving on, because every page from here imports this module.
+The error above is expected for now, as there's no functions files in the `Public` folder yet.
 
 :::note Why `-Force` appears on every import in this tutorial
 PowerShell will not re-import a module it already has loaded. Without `-Force` you would keep testing the version of the code you imported the first time, and edits would appear to have no effect. This will bite you at least once anyway; now you will know what it is.

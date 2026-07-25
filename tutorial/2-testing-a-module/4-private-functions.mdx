@@ -36,7 +36,7 @@ That last clause is the practical rule. Keep `InModuleScope` inside individual `
 
 ```powershell title="Planetarium/Private/ConvertTo-AstronomicalUnit.Tests.ps1"
 BeforeAll {
-    Import-Module $PSScriptRoot/../Planetarium.psd1 -Force
+    Import-Module "$PSScriptRoot/../Planetarium.psd1" -Force
 }
 
 Describe 'ConvertTo-AstronomicalUnit' {
@@ -78,7 +78,7 @@ Use `-Parameters` to hand values across the boundary. Combined with `-ForEach`, 
 
 ```powershell title="Planetarium/Private/Test-PlanetName.Tests.ps1"
 BeforeAll {
-    Import-Module $PSScriptRoot/../Planetarium.psd1 -Force
+    Import-Module "$PSScriptRoot/../Planetarium.psd1" -Force
 }
 
 Describe 'Test-PlanetName' {
@@ -96,7 +96,7 @@ Describe 'Test-PlanetName' {
 }
 ```
 
-`-ForEach` runs the `It` once per item, and `<_>` in the test name is replaced with the current value — so this produces three separately named, separately reported tests rather than one loop that stops at the first failure. [Data driven tests](../../docs/usage/data-driven-tests) goes further with this.
+`-ForEach` runs the `It` once per item, and `<_>` in the test name is replaced with the current value (`$_`) — so this produces three separately named, separately reported tests rather than one loop that stops at the first failure. [Data driven tests](../../docs/usage/data-driven-tests) goes further with this.
 
 `-Parameters @{ Name = $_ }` passes the current item in, where it arrives as `$Name`.
 
@@ -126,4 +126,4 @@ Fifteen tests: five for `Get-Planet`, three for `Get-PlanetDistance`, three for 
   {id: 'fifteen', label: 'My suite reports 15 passing tests'},
 ]} />
 
-The module is covered. Last page of this chapter: making Pester tell you what you want to know.
+Next up: customizing Pester's output.

@@ -4,9 +4,9 @@ title: Giving the module a dependency
 description: Move the planet data out of the function and into a CSV file shipped with the module, creating a real dependency worth isolating in tests
 ---
 
-There is nothing to mock yet. `Get-Planet` holds its data in a hard-coded array, so it has no dependencies and always behaves identically. That is convenient and unrealistic — real functions read files, call APIs and query databases.
+`Get-Planet` holds its data in a hard-coded array, so it has no dependencies and always behaves identically. That is convenient and unrealistic — real functions read files, call APIs and query databases.
 
-This page moves the data into a file. The next two pages deal with the consequences.
+This page moves the data into a file. The next two pages will then deal with the consequences.
 
 ## Moving the data into a file
 

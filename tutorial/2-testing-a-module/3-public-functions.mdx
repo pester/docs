@@ -24,7 +24,7 @@ BeforeAll {
     # diff-remove
     . $PSCommandPath.Replace('.Tests.ps1', '.ps1')
     # diff-add
-    Import-Module $PSScriptRoot/../Planetarium.psd1 -Force
+    Import-Module "$PSScriptRoot/../Planetarium.psd1" -Force
 }
 ```
 
@@ -40,7 +40,7 @@ With the module imported, write tests for the behaviour that actually matters:
 
 ```powershell title="Planetarium/Public/Get-Planet.Tests.ps1"
 BeforeAll {
-    Import-Module $PSScriptRoot/../Planetarium.psd1 -Force
+    Import-Module "$PSScriptRoot/../Planetarium.psd1" -Force
 }
 
 Describe 'Get-Planet' {
@@ -133,13 +133,13 @@ function Get-PlanetDistance {
 }
 ```
 
-This is where importing the module pays off. `Get-PlanetDistance` calls two functions that live in other files. Dot-sourcing `Get-PlanetDistance.ps1` on its own would fail immediately with "The term 'Test-PlanetName' is not recognized". Importing the module loads everything together, exactly as it runs in production.
+This is where importing the module pays off. `Get-PlanetDistance` calls two functions that live in other files. Dot-sourcing `Get-PlanetDistance.ps1` on its own would fail immediately with `The term 'Test-PlanetName' is not recognized`. Importing the module loads everything together, exactly as it runs in production.
 
 ## Testing it
 
 ```powershell title="Planetarium/Public/Get-PlanetDistance.Tests.ps1"
 BeforeAll {
-    Import-Module $PSScriptRoot/../Planetarium.psd1 -Force
+    Import-Module "$PSScriptRoot/../Planetarium.psd1" -Force
 }
 
 Describe 'Get-PlanetDistance' {
@@ -157,7 +157,7 @@ Describe 'Get-PlanetDistance' {
 }
 ```
 
-The error-case test is the interesting one. Note the braces: `{ Get-PlanetDistance -Name 'Pluto' }` is a **script block**, not a call. You are handing Pester the code to run, so it can catch what comes out. Without the braces the exception would escape and fail the test before `Should-Throw` ever saw it.
+The error-case test is the interesting one. Note the braces: `{ Get-PlanetDistance -Name 'Pluto' }` is a **scriptblock**, not a call. You are handing Pester the code to run, so it can catch what comes out. Without the braces the exception would escape and fail the test before `Should-Throw` ever saw it.
 
 `-ExceptionMessage` pins down *which* error you expect. Leaving it off would pass on any exception at all, including a typo in the function name — so a test that asserts "it throws" often ends up asserting nothing useful.
 

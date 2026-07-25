@@ -33,7 +33,7 @@ On Windows you may already have Pester 3.4.0 installed — it ships with the ope
 
 ## Confirming the version
 
-This is the step worth doing carefully. Importing the module and asking it what it is beats trusting what you think you installed:
+Import the module using `-PassThru` so we can verify the version you have available.
 
 ```powershell
 Import-Module Pester -PassThru
@@ -53,9 +53,9 @@ PowerShell loads a module automatically the first time you call one of its comma
 
 ## An editor
 
-Any editor will do, but [Visual Studio Code](https://code.visualstudio.com/) with the [PowerShell extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.PowerShell) gives you the best experience: it discovers your tests as you write them and lets you run or debug a single test without leaving the file.
+You'll need a text editor to edit the scripts and test files. This tutorial will use the terminal to run tests, so any text editor will work.
 
-The [VS Code page](../../docs/usage/vscode) has the setup details. It is genuinely optional — everything in this tutorial is done from the terminal and works the same way regardless of what you type it in.
+For new users, we recommend [Visual Studio Code](https://code.visualstudio.com/) with the [PowerShell extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.PowerShell) for the best experience: it discovers your tests as you write them and lets you run or debug a single test without leaving the file. See [VS Code page](../../docs/usage/vscode) for more details.
 
 ## A folder to work in
 
@@ -71,7 +71,7 @@ Every path in this tutorial is relative to that folder.
 <TutorialChecklist items={[
   {id: 'powershell-version', label: 'I have Windows PowerShell 5.1 or PowerShell 7.4+, and I checked with $PSVersionTable'},
   {id: 'pester-installed', label: 'I installed Pester from the PowerShell Gallery'},
-  {id: 'version-confirmed', label: 'Import-Module Pester -PassThru shows me a version 6 module'},
+  {id: 'version-confirmed', label: 'Import-Module Pester -PassThru shows version 6.*'},
   {id: 'working-folder', label: 'I created a working folder and my prompt is inside it'},
 ]} />
 
