@@ -56,7 +56,7 @@ export default function TutorialChecklist({ items, title = 'Before you move on' 
         })}
       </ul>
 
-      {complete && <p className={styles.done}>Page complete. Your progress is saved in this browser.</p>}
+      {complete && <p className={styles.done}>Page complete.</p>}
     </section>
   );
 }
