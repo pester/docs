@@ -17,7 +17,7 @@ Prefer `$TestDrive` with `Join-Path`. `TestDrive:\` only exists inside PowerShel
 
 ```powershell title="Planetarium/Public/Export-PlanetReport.Tests.ps1"
 BeforeAll {
-    Import-Module $PSScriptRoot/../Planetarium.psd1 -Force
+    Import-Module "$PSScriptRoot/../Planetarium.psd1" -Force
 }
 
 Describe 'Export-PlanetReport' {
@@ -81,12 +81,12 @@ TestDrive is not one directory for the whole run. The rules that matter day to d
 3. On leaving a block, files created *during* that block are removed.
 4. When the file finishes, the whole drive goes.
 
-So each `It` above got the same drive but wrote a distinct filename. They could safely have reused one name — but distinct names make a failure easier to read, since the filename tells you which test wrote it.
+Each `It` test above generated unique filenames but in the same folder. Once the last test in the `Describe` block was done, all four files were cleaned up.
 
 :::warning Modifications to inherited files are not undone
 Cleanup works by tracking which paths existed when a block was entered. Create a file in `Describe`, change it inside a `Context`, and the change survives after the `Context` ends — the file already existed, so it is excluded from that block's cleanup.
 
-The practical rule: create files in the block that uses them. Sharing a mutable file down the tree is how you get tests that pass alone and fail together, or that depend on execution order.
+Create files in the block or test that needs it and avoid reuse when possible. You don't want test to depend on execution order, where one test might break another.
 :::
 
 ## What this bought you
@@ -103,4 +103,4 @@ The parallel-safety is not theoretical either: the directory name is randomised 
   {id: 'scoping', label: 'I can explain when TestDrive cleans up, and why modifications to inherited files survive'},
 ]} />
 
-Next module: finding out which parts of the module your tests never touch.
+Next module: finding out which parts of the module you're not testing.

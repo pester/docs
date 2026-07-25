@@ -90,7 +90,7 @@ Here is the catch, and it is the one thing on this page that trips people up.
 
 `-Skip:(-not $IsWindows)` is evaluated when Pester *discovers* your tests, not when it runs them. Same for the `-ForEach` list you wrote back in the private-functions page. So a variable set in `BeforeAll` is no good to either of them — `BeforeAll` has not run yet.
 
-`BeforeDiscovery` is the block that runs during discovery, and it exists precisely for building the data those parameters need:
+`BeforeDiscovery` is the block that runs during discovery, and it exists precisely for building the data those parameters need. Let's try it out:
 
 ```powershell title="Planetarium/Private/Test-PlanetName.Tests.ps1"
 # diff-add-start

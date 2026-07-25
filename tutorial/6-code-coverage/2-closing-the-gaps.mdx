@@ -4,7 +4,7 @@ title: Closing the gaps
 description: Read the missed-command table, write the tests it points at, and produce a coverage report file for CI to consume
 ---
 
-Coverage says 95%, and the run has already told you which line it means.
+Coverage says 95% coverage, and the run has already told you which lines to look at.
 
 ## Reading the missed commands
 
@@ -17,22 +17,21 @@ Planetarium/Public/Export-PlanetReport.ps1       Export-PlanetReport   19 throw 
 Planetarium/Public/Export-PlanetReport.ps1       Export-PlanetReport   19 throw "'$Path' already exists. Use -Force to …
 ```
 
-This table is printed for you whenever coverage is on and `Output.Verbosity` is `Detailed` — which `test.ps1` already sets. There is nothing extra to run.
+This table is printed for you whenever coverage is on and `Output.Verbosity` is set to `Detailed`, which `test.ps1` already does.
 
-The line appears twice because Pester counts commands rather than lines, and that statement contains more than one — the `throw` and the string expansion inside it. Two entries, one gap.
+The line appears twice because Pester counts `throw` keyword as one command, and the message string as another. This is a special case for `throw`.
 
-This table is the single most useful thing coverage gives you. Reading it beats reading the percentage, because a percentage tells you that you have a problem while this tells you where it is.
+Now we know which code we need to test next.
 
 :::tip Getting at the same data in code
-The table is formatted for you. If you want the values themselves — for a build gate, a summary comment, a custom report — set `Run.PassThru` and read `$result.CodeCoverage.CommandsMissed`, which carries `File`, `Line` and `Command` per entry.
-
-`Run.PassThru` is perfectly safe to keep in `test.ps1`, as long as you **assign** the result:
+You can create your own report using the result object (`Run.PassThru`) and processing the data in `$result.CodeCoverage.CommandsMissed`.
 
 ```powershell
+$config.Run.PassThru = $true
 $result = Invoke-Pester -Configuration $config
+# StartColumn will confirm the two missed commands above are in fact different. One entry for `throw` and one for the message string
+$result.CodeCoverage.CommandsMissed | Format-Table Function, Line, StartColumn, Command    
 ```
-
-An *uncaptured* result object is what causes trouble: anything a script leaves on the pipeline gets printed, so every run would end in a wall of formatted properties.
 :::
 
 ## Writing the missing tests
@@ -57,9 +56,9 @@ The uncovered branch has two behaviours worth pinning: it refuses by default, an
     }
 ```
 
-Both call `Export-PlanetReport` twice: once to create the file, once against the now-existing path. This is exactly the scenario every earlier test avoided by using a fresh filename each time — which is why the branch went uncovered.
+Both call `Export-PlanetReport` twice: once to create the file, and once more to hit the file exists error.
 
-The leading `*` in the expected message matters. The real message starts with the full TestDrive path, which is randomised per run, so matching it literally would fail. `-ExceptionMessage` accepts wildcards; match the stable part.
+The exception message starts with the filepath which is randomized per run, so a wildcard `*` is used to match the stable part and confirm it's the correct exception.
 
 The second test asserts *content*, not just that no error occurred. Writing `Earth` over an eight-planet report and then checking the file holds exactly one line proves the overwrite really happened rather than the write being skipped.
 
@@ -74,11 +73,11 @@ Tests Passed: 26, Failed: 0, Skipped: 0, Inconclusive: 0, NotRun: 0
 Covered 100% / 75%. 40 analyzed Commands in 7 Files.
 ```
 
-Twenty-six tests, and no missed-commands table at all — when nothing is missed, Pester prints only the summary line.
+Back at 100% coverage. Enjoy this rare moment.
 
 ## A report file for CI
 
-Like test results, coverage can be written to a file for other tools. Add it to `test.ps1`:
+When Code Coverage is enabled it writes a report to `./coverage.xml` by default that can be used by CI systems and other coverage reporting tools. You control the path using the `CodeCoverage.OutputPath` option - we'll just set the default explicit:
 
 ```powershell title="test.ps1"
 $config.CodeCoverage.Enabled = $true

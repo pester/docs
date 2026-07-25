@@ -85,7 +85,7 @@ This is the test that closes the gap left at the end of the previous page. Feedi
 
 The mock is what makes the input certain. `Import-Csv` happens to return strings today, so this test would pass without it — but only by accident of the current storage format. Swap the CSV for JSON, which preserves numbers, and an unmocked version of this test would go green without the conversion ever running. Mocking the input pins the test to the behaviour rather than to the file format.
 
-Delete the `ForEach-Object` block from `Get-PlanetData` and run the suite: this is now the one test that fails.
+Try deleting the `ForEach-Object` block from `Get-PlanetData` and run the suite: this is now the one test that fails. Restore it after, before continuing.
 
 `InModuleScope` is here because the test calls the private `Get-PlanetData` directly. The mock still uses `-ModuleName`, since it must be installed into the module regardless of where the call is made from.
 
