@@ -198,11 +198,6 @@ const config = {
         routeBasePath: 'tutorial',
         sidebarPath: './sidebarsTutorial.js',
         editUrl: 'https://github.com/pester/docs/edit/main',
-        // The progress tracker already shows the module, the page and where both sit in the
-        // tutorial, so breadcrumbs would only repeat it.
-        breadcrumbs: true,
-        // Do not set disableVersioning here. It throws for an instance with no versions file.
-        // Omitting it gives a single implicit version and no version dropdown, which is what we want.
       }),
     ],
   ],
