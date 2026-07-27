@@ -1,9 +1,9 @@
 ---
 id: AfterAll
 title: AfterAll
-description: Help page for the Powershell Pester "AfterAll" command
+description: Help for Pester command 'AfterAll'. Defines a series of steps to perform at the end of the current Context or Describe block.
 keywords:
-  - Powershell
+  - PowerShell
   - Pester
   - Help
   - Documentation
@@ -11,6 +11,10 @@ hide_title: false
 hide_table_of_contents: false
 custom_edit_url: null
 ---
+
+:::info This page was generated
+Contributions are welcome in [Pester-repo](https://github.com/pester/pester).
+:::
 
 ## SYNOPSIS
 
@@ -20,7 +24,7 @@ or Describe block.
 ## SYNTAX
 
 ```powershell
-AfterAll [-Scriptblock] <ScriptBlock> [<CommonParameters>]
+AfterAll [-Scriptblock] <scriptblock>
 ```
 
 ## DESCRIPTION
@@ -46,20 +50,28 @@ PS C:\> {{ Add example code here }}
 the scriptblock to execute
 
 ```yaml
-Type: ScriptBlock
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: 2
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.ScriptBlock
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: 1
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### CommonParameters
 
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable,
+-InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable,
+-ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see
+[about_CommonParameters](https://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
@@ -69,8 +81,8 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[https://pester.dev/docs/v4/commands/BeforeAll](https://pester.dev/docs/v4/commands/BeforeAll)
+- [https://pester.dev/docs/commands/BeforeAll](https://pester.dev/docs/commands/BeforeAll)
 
-## EDIT THIS PAGE
+## VERSION
 
-This page was auto-generated using Pester's comment based help. To edit the content of this page, change the corresponding help in the [pester/Pester v4](https://github.com/pester/Pester/tree/rel/4.x.x) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.
+*This page was generated using comment-based help in [Pester 4.10.1](https://github.com/pester/pester).*

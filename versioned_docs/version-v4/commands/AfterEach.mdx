@@ -1,9 +1,9 @@
 ---
 id: AfterEach
 title: AfterEach
-description: Help page for the Powershell Pester "AfterEach" command
+description: Help for Pester command 'AfterEach'. Defines a series of steps to perform at the end of every It block within the current Context or Describe block.
 keywords:
-  - Powershell
+  - PowerShell
   - Pester
   - Help
   - Documentation
@@ -11,6 +11,10 @@ hide_title: false
 hide_table_of_contents: false
 custom_edit_url: null
 ---
+
+:::info This page was generated
+Contributions are welcome in [Pester-repo](https://github.com/pester/pester).
+:::
 
 ## SYNOPSIS
 
@@ -20,7 +24,7 @@ the current Context or Describe block.
 ## SYNTAX
 
 ```powershell
-AfterEach [-Scriptblock] <ScriptBlock> [<CommonParameters>]
+AfterEach [-Scriptblock] <scriptblock>
 ```
 
 ## DESCRIPTION
@@ -28,7 +32,7 @@ AfterEach [-Scriptblock] <ScriptBlock> [<CommonParameters>]
 BeforeEach, AfterEach, BeforeAll, and AfterAll are unique in that they apply
 to the entire Context or Describe block, regardless of the order of the
 statements in the Context or Describe.
-For a full description of this
+ For a full description of this
 behavior, as well as how multiple BeforeEach or AfterEach blocks interact
 with each other, please refer to the about_BeforeEach_AfterEach help file.
 
@@ -49,20 +53,28 @@ PS C:\> {{ Add example code here }}
 the scriptblock to execute
 
 ```yaml
-Type: ScriptBlock
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: 2
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.ScriptBlock
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: 1
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### CommonParameters
 
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable,
+-InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable,
+-ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see
+[about_CommonParameters](https://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
@@ -72,8 +84,8 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[https://pester.dev/docs/v4/commands/BeforeEach](https://pester.dev/docs/v4/commands/BeforeEach)
+- [https://pester.dev/docs/commands/BeforeEach](https://pester.dev/docs/commands/BeforeEach)
 
-## EDIT THIS PAGE
+## VERSION
 
-This page was auto-generated using Pester's comment based help. To edit the content of this page, change the corresponding help in the [pester/Pester v4](https://github.com/pester/Pester/tree/rel/4.x.x) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.
+*This page was generated using comment-based help in [Pester 4.10.1](https://github.com/pester/pester).*

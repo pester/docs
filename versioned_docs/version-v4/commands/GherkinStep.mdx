@@ -1,9 +1,9 @@
 ---
 id: GherkinStep
 title: GherkinStep
-description: Help page for the Powershell Pester "GherkinStep" command
+description: Help for Pester command 'GherkinStep'. A step in a test, also known as a Given, When, or Then
 keywords:
-  - Powershell
+  - PowerShell
   - Pester
   - Help
   - Documentation
@@ -12,6 +12,10 @@ hide_table_of_contents: false
 custom_edit_url: null
 ---
 
+:::info This page was generated
+Contributions are welcome in [Pester-repo](https://github.com/pester/pester).
+:::
+
 ## SYNOPSIS
 
 A step in a test, also known as a Given, When, or Then
@@ -19,7 +23,7 @@ A step in a test, also known as a Given, When, or Then
 ## SYNTAX
 
 ```powershell
-GherkinStep [-Name] <String> [-Test] <ScriptBlock> [<CommonParameters>]
+GherkinStep [-Name] <string> [-Test] <scriptblock>
 ```
 
 ## DESCRIPTION
@@ -42,15 +46,15 @@ executed in a manner that is similar to unit tests.
 
 Given 'we have a destination folder' {
     mkdir testdrive:\target -ErrorAction SilentlyContinue
-    'testdrive:\target' | Should -Exist
+    'testdrive:\target' | Should Exist
 }
 
 When 'we call Copy-Item' {
-    { Copy-Item testdrive:\source\something.txt testdrive:\target } | Should -Not -Throw
+    { Copy-Item testdrive:\source\something.txt testdrive:\target } | Should Not Throw
 }
 
 Then 'we have a new file in the destination' {
-    'testdrive:\target\something.txt' | Should -Exist
+    'testdrive:\target\something.txt' | Should Exist
 }
 
 # Steps need to allign with feature specifications in a *.feature file
@@ -70,14 +74,13 @@ Scenario: The file exists, and the target folder exists
 
 ```powershell
 # This example shows a complex regex match that can be used for multiple lines in the feature specification
-
 # The named match is mapped to the script parameter
 
 # filename: namedregex.Step.ps1
 
-Given 'we have a (?\<name\>\S*) function' {
+Given 'we have a (?<name>\S*) function' {
     param($name)
-    "$psscriptroot\..\MyModule\*\$name.ps1" | Should -Exist
+    "$psscriptroot\..\MyModule\*\$name.ps1" | Should Exist
 }
 
 # filename: namedregex.feature
@@ -98,15 +101,20 @@ The name of a gherkin step is actually a regular expression, from which capturin
 are cast and passed to the parameters in the ScriptBlock
 
 ```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: 1
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.String
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: 0
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -Test
@@ -116,20 +124,28 @@ May accept parameters from regular expression
 capturing groups (named or not), or from tables or multiline strings.
 
 ```yaml
-Type: ScriptBlock
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: 2
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.ScriptBlock
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: 1
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### CommonParameters
 
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable,
+-InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable,
+-ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see
+[about_CommonParameters](https://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
@@ -139,8 +155,8 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[https://sites.google.com/site/unclebobconsultingllc/the-truth-about-bdd](https://sites.google.com/site/unclebobconsultingllc/the-truth-about-bdd)
+- [https://sites.google.com/site/unclebobconsultingllc/the-truth-about-bdd](https://sites.google.com/site/unclebobconsultingllc/the-truth-about-bdd)
 
-## EDIT THIS PAGE
+## VERSION
 
-This page was auto-generated using Pester's comment based help. To edit the content of this page, change the corresponding help in the [pester/Pester v4](https://github.com/pester/Pester/tree/rel/4.x.x) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.
+*This page was generated using comment-based help in [Pester 4.10.1](https://github.com/pester/pester).*

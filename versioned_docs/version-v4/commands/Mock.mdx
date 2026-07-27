@@ -1,9 +1,9 @@
 ---
 id: Mock
 title: Mock
-description: Help page for the Powershell Pester "Mock" command
+description: Help for Pester command 'Mock'. Mocks the behavior of an existing command with an alternate implementation.
 keywords:
-  - Powershell
+  - PowerShell
   - Pester
   - Help
   - Documentation
@@ -11,6 +11,10 @@ hide_title: false
 hide_table_of_contents: false
 custom_edit_url: null
 ---
+
+:::info This page was generated
+Contributions are welcome in [Pester-repo](https://github.com/pester/pester).
+:::
 
 ## SYNOPSIS
 
@@ -20,9 +24,9 @@ implementation.
 ## SYNTAX
 
 ```powershell
-Mock [[-CommandName] <String>] [[-MockWith] <ScriptBlock>] [-Verifiable] [[-ParameterFilter] <ScriptBlock>]
- [[-ModuleName] <String>] [[-RemoveParameterType] <String[]>] [[-RemoveParameterValidation] <String[]>]
- [<CommonParameters>]
+Mock [[-CommandName] <string>] [[-MockWith] <scriptblock>] [[-ParameterFilter] <scriptblock>]
+ [[-ModuleName] <string>] [[-RemoveParameterType] <string[]>]
+ [[-RemoveParameterValidation] <string[]>] [-Verifiable]
 ```
 
 ## DESCRIPTION
@@ -160,11 +164,10 @@ New-Module -Name ModuleMockExample  -ScriptBlock {
     function Hidden { "Internal Module Function" }
     function Exported { Hidden }
 
-    Export-ModuleMember -Function Exported
+Export-ModuleMember -Function Exported
 } | Import-Module -Force
 
 Describe "ModuleMockExample" {
-
     It "Hidden function is not directly accessible outside the module" {
         { Hidden } | Should -Throw
     }
@@ -190,15 +193,20 @@ mocked by using the -ModuleName parameter.
 The name of the command to be mocked.
 
 ```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 1
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.String
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: 0
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -MockWith
@@ -211,32 +219,45 @@ being mocked, and the MockWith script block can contain references to the
 mocked commands parameter variables.
 
 ```yaml
-Type: ScriptBlock
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 2
-Default value: { }
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.ScriptBlock
+DefaultValue: '{ }'
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
-### -Verifiable
+### -ModuleName
 
-When this is set, the mock will be checked when Assert-VerifiableMock is
-called.
+Optional string specifying the name of the module where this command
+is to be mocked.
+ This should be a module that _calls_ the mocked
+command; it doesn't necessarily have to be the same module which
+originally implemented the command.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.String
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: 3
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -ParameterFilter
@@ -249,35 +270,20 @@ This ScriptBlock must return a boolean value.
 See examples for usage.
 
 ```yaml
-Type: ScriptBlock
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 3
-Default value: { $True }
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ModuleName
-
-Optional string specifying the name of the module where this command
-is to be mocked.
-This should be a module that _calls_ the mocked
-command; it doesn't necessarily have to be the same module which
-originally implemented the command.
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 4
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.ScriptBlock
+DefaultValue: '{ $True }'
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: 2
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -RemoveParameterType
@@ -295,15 +301,20 @@ configuration of parameters will be ingored, including parameter validation
 described below.
 
 ```yaml
-Type: String[]
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 5
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.String[]
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: 4
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -RemoveParameterValidation
@@ -320,20 +331,50 @@ configuration of parameters will be ingored, including parameter types described
 above.
 
 ```yaml
-Type: String[]
-Parameter Sets: (All)
-Aliases:
+Type: System.String[]
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: 5
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
 
-Required: False
-Position: 6
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+### -Verifiable
+
+When this is set, the mock will be checked when Assert-VerifiableMock is
+called.
+
+```yaml
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: False
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### CommonParameters
 
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable,
+-InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable,
+-ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see
+[about_CommonParameters](https://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
@@ -343,20 +384,14 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[https://pester.dev/docs/v4/commands/Assert-MockCalled](https://pester.dev/docs/v4/commands/Assert-MockCalled)
+- [https://pester.dev/docs/commands/Assert-MockCalled](https://pester.dev/docs/commands/Assert-MockCalled)
+- [https://pester.dev/docs/commands/Assert-VerifiableMock](https://pester.dev/docs/commands/Assert-VerifiableMock)
+- [https://pester.dev/docs/commands/Describe](https://pester.dev/docs/commands/Describe)
+- [https://pester.dev/docs/commands/Context](https://pester.dev/docs/commands/Context)
+- [https://pester.dev/docs/commands/It](https://pester.dev/docs/commands/It)
+- [https://pester.dev/docs/commands/Should](https://pester.dev/docs/commands/Should)
+- [https://pester.dev/docs/usage/mocking](https://pester.dev/docs/usage/mocking)
 
-[https://pester.dev/docs/v4/commands/Assert-VerifiableMock](https://pester.dev/docs/v4/commands/Assert-VerifiableMock)
+## VERSION
 
-[https://pester.dev/docs/v4/commands/Describe](https://pester.dev/docs/v4/commands/Describe)
-
-[https://pester.dev/docs/v4/commands/Context](https://pester.dev/docs/v4/commands/Context)
-
-[https://pester.dev/docs/v4/commands/It](https://pester.dev/docs/v4/commands/It)
-
-[https://pester.dev/docs/v4/commands/Should](https://pester.dev/docs/v4/commands/Should)
-
-[https://pester.dev/docs/v4/usage/mocking](https://pester.dev/docs/v4/usage/mocking)
-
-## EDIT THIS PAGE
-
-This page was auto-generated using Pester's comment based help. To edit the content of this page, change the corresponding help in the [pester/Pester v4](https://github.com/pester/Pester/tree/rel/4.x.x) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.
+*This page was generated using comment-based help in [Pester 4.10.1](https://github.com/pester/pester).*
