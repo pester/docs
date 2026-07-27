@@ -81,17 +81,34 @@ Write-Host 'Pre-processing CommandHelp-objects' -ForegroundColor Magenta
 $commandHelp = & {
     # Workaround: Strict mode breaks PlatyPS (https://github.com/PowerShell/platyPS/issues/800)
     Set-StrictMode -Off
-    New-CommandHelp -CommandInfo (Get-Command -Module Pester -CommandType Cmdlet, Function)
+    New-CommandHelp -CommandInfo (Get-Command -Module Pester -CommandType Cmdlet, Function | Where-Object Version -eq $ModuleList.Pester)
 }
 $commandHelp | ForEach-Object {
     # Customize the description metadata for each command to include the synopsis
-    # Synopsis is guaranteed by Help.Tests.ps1 in pester/pester-repo, so not checking for "Fill in ..." placeholders
-    $_.Metadata['description'] = "Help for Pester command '$($_.Title)'. $($_.Synopsis -replace '\s+', ' ')"
+    # Synopsis is guaranteed by Help.Tests.ps1 in pester/pester-repo, but checking due to platyPS bugs.
+    if ($_.Synopsis -notmatch '^\{\{ Fill in') {
+        $_.Metadata['description'] = "Help for Pester command '$($_.Title)'. $($_.Synopsis -replace '\s+', ' ')"
+    } else {
+        $_.Metadata['description'] = "Help for Pester command '$($_.Title)'."
+    }
+
+    # Fix Commands navbar link for v4. This is first command in v4 docs
+    if ($DocsVersion -eq 'v4' -and $_.Title -eq 'Add-AssertionOperator') {
+        $_.Metadata['id'] = 'Add-ShouldOperator'    # Override id to have common docId for all versions
+        $_.Metadata['slug'] = $_.Title              # Override slug so url still matches v4 name
+    }
 }
 
 # -----------------------------------------------------------------------------
 # Use below settings to manipulate the rendered MDX files
 # -----------------------------------------------------------------------------
+
+$contributeUrl = switch ($DocsVersion) {
+    'Current' { 'https://github.com/pester/pester' }
+    'v5' { 'https://github.com/pester/Pester/tree/rel/5.x.x' }
+    'v4' { 'https://github.com/pester/Pester/tree/rel/4.x.x' }
+}
+
 $docusaurusOptions = @{
     CommandHelp     = $commandHelp
     DocsFolder      = switch ($DocsVersion) {
@@ -113,14 +130,14 @@ $docusaurusOptions = @{
         'Help'
         'Documentation'
     )
-    PrependMarkdown = @'
+    PrependMarkdown = @"
 :::info This page was generated
-Contributions are welcome in [Pester-repo](https://github.com/pester/pester).
+Contributions are welcome in [Pester$(if ($DocsVersion -ne 'Current') { " $DocsVersion" })-repo]($contributeUrl).
 :::
-'@
+"@
     AppendMarkdown  = @"
 ## VERSION
-*This page was generated using comment-based help in [Pester $($ModuleList.Pester)](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester $($ModuleList.Pester)]($contributeUrl).*
 "@
 }
 
