@@ -4,7 +4,7 @@ title: Closing the gaps
 description: Read the missed-command table, write the tests it points at, and produce a coverage report file for CI to consume
 ---
 
-Coverage says 95% coverage, and the run has already told you which lines to look at.
+Coverage stands at 95%, and the run has already told you which lines to look at.
 
 ## Reading the missed commands
 
@@ -30,15 +30,19 @@ You can create your own report using the result object (`Run.PassThru`) and proc
 $config.Run.PassThru = $true
 $result = Invoke-Pester -Configuration $config
 # StartColumn will confirm the two missed commands above are in fact different. One entry for `throw` and one for the message string
-$result.CodeCoverage.CommandsMissed | Format-Table Function, Line, StartColumn, Command    
+$result.CodeCoverage.CommandsMissed | Format-Table Function, Line, StartColumn, Command
 ```
 :::
 
 ## Writing the missing tests
 
-The uncovered branch has two behaviours worth pinning: it refuses by default, and `-Force` overrides it.
+The uncovered branch has two behaviours worth pinning: it refuses by default, and `-Force` overrides it. Add both tests at the bottom of the `Describe` block, below the four you already have:
 
 ```powershell title="Planetarium/Public/Export-PlanetReport.Tests.ps1"
+Describe 'Export-PlanetReport' {
+    # ... the four existing It blocks ...
+
+    # diff-add-start
     It 'Refuses to overwrite an existing report' {
         $path = Join-Path $TestDrive 'existing.txt'
         Export-PlanetReport -Path $path
@@ -54,6 +58,8 @@ The uncovered branch has two behaviours worth pinning: it refuses by default, an
 
         Get-Content -Path $path | Should-Be 'Earth    1 AU'
     }
+    # diff-add-end
+}
 ```
 
 Both call `Export-PlanetReport` twice: once to create the file, and once more to hit the file exists error.

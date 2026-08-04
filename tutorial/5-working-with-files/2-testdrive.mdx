@@ -86,7 +86,7 @@ Each `It` test above generated unique filenames but in the same folder. Once the
 :::warning Modifications to inherited files are not undone
 Cleanup works by tracking which paths existed when a block was entered. Create a file in `Describe`, change it inside a `Context`, and the change survives after the `Context` ends — the file already existed, so it is excluded from that block's cleanup.
 
-Create files in the block or test that needs it and avoid reuse when possible. You don't want test to depend on execution order, where one test might break another.
+Create files in the block or test that needs it and avoid reuse when possible. You don't want tests to depend on execution order, where one test might break another.
 :::
 
 ## What this bought you
@@ -99,7 +99,7 @@ The parallel-safety is not theoretical either: the directory name is randomised 
   {id: 'testdrive-basics', label: 'I know the difference between TestDrive:\\ and $TestDrive, and which to prefer'},
   {id: 'wrote-tests', label: 'I wrote the four Export-PlanetReport tests and they pass'},
   {id: 'no-debris', label: 'I confirmed the test run left no files behind in the repo'},
-  {id: 'assert-existence', label: 'I know how to assert a file exists without a Should-Exist assertion'},
+  {id: 'assert-existence', label: 'I know how to assert a file exists, using Test-Path with Should-BeTrue'},
   {id: 'scoping', label: 'I can explain when TestDrive cleans up, and why modifications to inherited files survive'},
 ]} />
 

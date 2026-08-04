@@ -25,7 +25,7 @@ That split is the whole reason this module is interesting to test. Public functi
 
 ## The loader
 
-The `.psm1` file is the module's root script, executed when your import the module. Ours does not define any functions itself; it finds the `.ps1` files, one per function, and dot-sources them.
+The `.psm1` file is the module's root script, executed when you import the module. Ours does not define any functions itself; it finds the `.ps1` files, one per function, and dot-sources them.
 
 ```powershell title="Planetarium/Planetarium.psm1"
 $public = @(Get-ChildItem -Path "$PSScriptRoot/Public/*.ps1" -Exclude *.Tests.ps1 -ErrorAction SilentlyContinue)
@@ -70,9 +70,9 @@ FunctionsToExport = '*'
 This is a second gate in front of `Export-ModuleMember`. A function has to pass **both** to be visible to your users. Leaving it as `'*'` means the manifest waves everything through and the `.psm1` makes the real decision, which is what we want while functions are still being added.
 
 :::tip Update before publishing a module
-Using `FunctionsToExport = '*'` is convenient while developing, but should be change to a array of public function names before publishing. This is required for best performance and auto-import.
+Using `FunctionsToExport = '*'` is convenient while developing, but should be changed to an array of public function names before publishing. This is required for best performance and auto-import.
 
-For this module: `FunctionsToExport = @('Get-Planet','Get-PlanetDistance','Export-PlanetReport').
+For this module: `FunctionsToExport = @('Get-Planet','Get-PlanetDistance','Export-PlanetReport')`.
 :::
 
 ## Checking it imports
@@ -91,7 +91,7 @@ ModuleType Version    PreRelease Name
 Script     0.1.0                 Planetarium
 ```
 
-The error above is expected for now, as there's no functions files in the `Public` folder yet.
+The error above is expected for now, as there are no function files in the `Public` folder yet.
 
 :::note Why `-Force` appears on every import in this tutorial
 PowerShell will not re-import a module it already has loaded. Without `-Force` you would keep testing the version of the code you imported the first time, and edits would appear to have no effect. This will bite you at least once anyway; now you will know what it is.
