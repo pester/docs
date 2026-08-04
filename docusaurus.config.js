@@ -45,16 +45,14 @@ const config = {
             position: 'left',
           },
           {
-            type: 'doc',
+            type: 'docSidebar',
             label: 'Docs',
-            docId: 'quick-start',
             sidebarId: 'docs',
             position: 'right'
           },
           {
-            type: 'doc',
+            type: 'docSidebar',
             label: 'Commands',
-            docId: 'commands/Add-ShouldOperator',
             sidebarId: 'commands',
             position: 'right'
           },

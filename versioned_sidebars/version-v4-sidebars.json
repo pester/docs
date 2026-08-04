@@ -131,7 +131,7 @@
       "items": [
         {
           "type": "doc",
-          "id": "commands/Add-ShouldOperator"
+          "id": "commands/Add-AssertionOperator"
         },
         {
           "type": "doc",
