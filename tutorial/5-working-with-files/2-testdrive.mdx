@@ -68,7 +68,7 @@ Tests completed in 362ms
 Tests Passed: 4, Failed: 0, Skipped: 0, Inconclusive: 0, NotRun: 0
 ```
 
-Four real files were written and four are already gone. Check `git status` — nothing.
+Four real files were written and four are already gone. Look in your working folder — no report files anywhere.
 
 The first test asserts the file is absent *before* the call as well as present after. Without that, a leftover file from an earlier run could make the test pass on its own.
 
@@ -98,7 +98,7 @@ The parallel-safety is not theoretical either: the directory name is randomised 
 <TutorialChecklist items={[
   {id: 'testdrive-basics', label: 'I know the difference between TestDrive:\\ and $TestDrive, and which to prefer'},
   {id: 'wrote-tests', label: 'I wrote the four Export-PlanetReport tests and they pass'},
-  {id: 'no-debris', label: 'I confirmed the test run left no files behind in the repo'},
+  {id: 'no-debris', label: 'I confirmed the test run left no files behind in my working folder'},
   {id: 'assert-existence', label: 'I know how to assert a file exists, using Test-Path with Should-BeTrue'},
   {id: 'scoping', label: 'I can explain when TestDrive cleans up, and why modifications to inherited files survive'},
 ]} />

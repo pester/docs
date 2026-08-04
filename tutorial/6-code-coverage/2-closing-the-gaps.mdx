@@ -101,12 +101,7 @@ $config.CodeCoverage.OutputPath = './coverage.xml'
 
 The default format is **JaCoCo**, which most coverage services understand. `Cobertura` is the other option, via `CodeCoverage.OutputFormat`.
 
-Add it to `.gitignore` alongside the test results:
-
-```
-testResults.xml
-coverage.xml
-```
+Like the test results file, it is a build artifact — if your project is under version control, `.gitignore` it alongside `testResults.xml`.
 
 ## Using coverage well
 
@@ -134,7 +129,7 @@ function Get-Something {
   {id: 'wrote-tests', label: 'I wrote the two tests covering the -Force guard'},
   {id: 'wildcard', label: 'I understand why the expected exception message needs a leading wildcard'},
   {id: 'back-to-100', label: 'My suite reports 26 tests and 100% coverage'},
-  {id: 'coverage-file', label: 'I generated coverage.xml and gitignored it'},
+  {id: 'coverage-file', label: 'I generated the coverage.xml report file'},
   {id: 'habit', label: 'I can explain why reading the missed commands beats chasing the percentage'},
 ]} />
 

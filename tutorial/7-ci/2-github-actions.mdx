@@ -41,6 +41,18 @@ jobs:
             coverage.xml
 ```
 
+:::note This is the point where the tutorial needs git
+Everything so far ran locally; running in CI means publishing the code to GitHub. If your working folder is not a git repository yet, turn it into one and commit your files:
+
+```bash
+git init
+git add .
+git commit -m "Planetarium module with tests"
+```
+
+Then [create a GitHub repository and push to it](https://docs.github.com/en/get-started/quickstart/create-a-repo). If you have never used git, that guide covers everything this module needs.
+:::
+
 Commit that and push. Every push to `main` and every pull request now runs your 26 tests.
 
 Three details are doing real work.

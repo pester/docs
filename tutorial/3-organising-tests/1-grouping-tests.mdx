@@ -123,7 +123,7 @@ Delete that file once you have seen it — it is a demonstration, not part of th
 :::tip Which one to reach for
 Use `BeforeAll` for anything expensive or read-only — importing a module, loading fixture data. Use `BeforeEach` when a test would otherwise inherit state from the test before it.
 
-Planetarium does not need `BeforeEach` yet, because every test builds what it needs and changes nothing. You will use `BeforeEach` in a later module when working with files.
+Planetarium never ends up needing `BeforeEach` — every test builds what it needs and changes nothing.
 :::
 
 ## Explaining a failure with -Because

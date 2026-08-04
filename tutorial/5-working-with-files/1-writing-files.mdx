@@ -65,7 +65,7 @@ Remove-Item ./report.txt
 
 Now think about what a test for this function has to do. It needs a path to write to, and afterwards that file should not still be there. Doing this by hand goes wrong quickly:
 
-- **Writing into the repo** leaves junk in `git status`, and one forgotten cleanup means a test that passes only because a previous run left the file behind.
+- **Writing into your source folder** leaves junk next to your code, and one forgotten cleanup means a test that passes only because a previous run left the file behind.
 - **Writing to a fixed temp path** breaks the moment two tests use the same name, and breaks harder when two Pester runs happen at once.
 - **Cleaning up in `AfterEach`** is correct until a test fails midway and the cleanup never runs — so the failure poisons the next run too.
 

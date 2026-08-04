@@ -136,7 +136,7 @@ Invoke-Pester -Configuration $config
 
 The default format is `NUnitXml`, which nearly every CI system understands. `JUnitXml` and `NUnit3` are also available via `TestResult.OutputFormat`. See [Test results](../../docs/usage/test-results) for which to pick.
 
-Add the file to your `.gitignore` — it is a build artifact:
+The file is a build artifact — something a run produces, not source. If you keep your projects under version control, add it to your `.gitignore`:
 
 ```
 testResults.xml
@@ -170,7 +170,7 @@ A failing test does not, on its own, make `Invoke-Pester` return an error — so
   {id: 'config-object', label: 'I can build a configuration with New-PesterConfiguration and pass it to Invoke-Pester'},
   {id: 'verbosity', label: 'I ran the suite at Normal and Detailed verbosity and can describe the difference'},
   {id: 'passthru', label: 'I used Run.PassThru to get the result object and read counts from it'},
-  {id: 'test-results', label: 'I generated a testResults.xml file and gitignored it'},
+  {id: 'test-results', label: 'I generated a testResults.xml file and know it is a build artifact'},
   {id: 'script', label: 'I saved test.ps1 and know it is how I run the suite from here on'},
 ]} />
 

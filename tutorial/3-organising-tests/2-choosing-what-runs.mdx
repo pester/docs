@@ -80,7 +80,7 @@ It 'Uses the Windows registry' -Skip:(-not $IsWindows) {
 }
 ```
 
-On Windows this runs; everywhere else it reports as skipped instead of failing. That is how a cross-platform suite handles the parts that genuinely cannot run everywhere — and it is what keeps the CI matrix in the last module green on all three operating systems.
+On Windows this runs; everywhere else it reports as skipped instead of failing. That is how a cross-platform suite handles the parts that genuinely cannot run everywhere — and it is how you would keep the CI matrix in the last module green if the module ever grew a platform-specific feature.
 
 Both `-Skip` examples above are illustrations rather than tests to add — Planetarium has nothing that needs skipping yet.
 
