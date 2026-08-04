@@ -34,7 +34,7 @@ function Export-PlanetReport {
 
 It leans on almost everything built so far: `Get-Planet` for the data, the private `ConvertTo-AstronomicalUnit` for the conversion, and the module loader to wire them together. It goes in `Public/`, so it is exported automatically.
 
-Note `@(Get-Planet -Name $Name)`. Without the array subexpression, a single match returns a bare object with no `.Count`, and the emptiness check would misbehave. This is a normal PowerShell trap rather than a Pester one, but it is the kind of thing a test catches and a quick manual check does not.
+(The `@( )` around `Get-Planet` is a PowerShell detail, not a Pester one: it guarantees `.Count` works even when a single planet comes back.)
 
 Try it:
 
@@ -67,7 +67,7 @@ Now think about what a test for this function has to do. It needs a path to writ
 
 - **Writing into your source folder** leaves junk next to your code, and one forgotten cleanup means a test that passes only because a previous run left the file behind.
 - **Writing to a fixed temp path** breaks the moment two tests use the same name, and breaks harder when two Pester runs happen at once.
-- **Cleaning up in `AfterEach`** is correct until a test fails midway and the cleanup never runs — so the failure poisons the next run too.
+- **Cleaning up in `AfterEach`** is bookkeeping you have to maintain — every file every test creates must be remembered and removed, and an interrupted run still leaves debris for the next one.
 
 Every one of these produces the same nasty class of bug: tests whose result depends on what previous runs left lying around. They pass on your machine, fail in CI, and pass again after you delete something by hand.
 
@@ -79,7 +79,6 @@ Mock the filesystem when the write itself is the behaviour. When the *content* m
 
 <TutorialChecklist items={[
   {id: 'export-fn', label: 'I added Export-PlanetReport to Public/ and ran it once by hand'},
-  {id: 'array-subexpression', label: 'I understand why Get-Planet is wrapped in @( ) before checking .Count'},
   {id: 'why-hard', label: 'I can explain why fixed paths and AfterEach cleanup are unreliable in tests'},
   {id: 'mock-vs-real', label: 'I can explain when to mock the filesystem and when to write real files'},
 ]} />

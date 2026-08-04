@@ -91,9 +91,7 @@ Create files in the block or test that needs it and avoid reuse when possible. Y
 
 ## What this bought you
 
-Compare against the alternatives from the previous page. No `AfterEach` to forget. No fixed paths to collide. No cleanup skipped because a test threw halfway. Nothing left behind when a test fails — and a failing test is precisely when stale files do the most damage.
-
-The parallel-safety is not theoretical either: the directory name is randomised specifically so several Pester processes can run at once, which is what your CI will do the moment the suite gets slow enough to shard.
+Compare against the alternatives from the previous page, point by point. Nothing lands in your source folder. The randomised directory name means two tests — or two whole Pester runs at once — never collide. And cleanup is Pester's job rather than bookkeeping in your `AfterEach`, so nothing is left behind even when a run fails or is interrupted.
 
 <TutorialChecklist items={[
   {id: 'testdrive-basics', label: 'I know the difference between TestDrive:\\ and $TestDrive, and which to prefer'},

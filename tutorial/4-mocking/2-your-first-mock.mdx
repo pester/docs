@@ -61,10 +61,14 @@ Note also what you did *not* have to do: no `InModuleScope` wrapper. `-ModuleNam
 
 ## Mocking a built-in command
 
-You can mock commands you did not write, including PowerShell's own. Here the target is `Import-Csv`, one layer deeper. Add this `Describe` block to the same test file:
+You can mock commands you did not write, including PowerShell's own. Here the target is `Import-Csv`, one layer deeper. The thing under test is now `Get-PlanetData` itself — a private helper — so the test goes in its own file next to the helper, tagged `Internal` like the other private-function tests:
 
-```powershell title="Planetarium/Public/Get-Planet.Mocking.Tests.ps1"
-Describe 'Get-PlanetData' {
+```powershell title="Planetarium/Private/Get-PlanetData.Tests.ps1"
+BeforeAll {
+    Import-Module "$PSScriptRoot/../Planetarium.psd1" -Force
+}
+
+Describe 'Get-PlanetData' -Tag 'Internal' {
     It 'Converts the CSV strings into numbers' {
         Mock -ModuleName Planetarium Import-Csv {
             @([PSCustomObject] @{ Name = 'Aiur'; Order = '3'; DistanceFromSunKm = '149597870.7' })
@@ -89,17 +93,13 @@ Try deleting the `ForEach-Object` block from `Get-PlanetData` and run the suite:
 
 `InModuleScope` is here because the test calls the private `Get-PlanetData` directly. The mock still uses `-ModuleName`, since it must be installed into the module regardless of where the call is made from.
 
-Run the file:
+Run the new file:
 
 ```powershell
-Invoke-Pester -Path ./Planetarium/Public/Get-Planet.Mocking.Tests.ps1 -Output Detailed
+Invoke-Pester -Path ./Planetarium/Private/Get-PlanetData.Tests.ps1 -Output Detailed
 ```
 
 ```
-Describing Get-Planet with mocked data
-  [+] Returns whatever the data source provides 73ms
-  [+] Filters the mocked data the same way 5ms
-
 Describing Get-PlanetData
   [+] Converts the CSV strings into numbers 16ms
 ```

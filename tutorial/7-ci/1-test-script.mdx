@@ -29,16 +29,9 @@ That is the finished script: run the tests, write both artifacts, exit non-zero 
 
 **A failing Pester test does not, by itself, fail your build.**
 
-By default `Invoke-Pester` reports failures and returns normally. Whether that becomes a red build then depends entirely on *how the script is invoked* — which is a horrible thing to leave to chance:
+By default `Invoke-Pester` reports failures and returns normally. Some CI systems notice the failure anyway; many do not. Whether your build goes red would depend on *how the script happens to be invoked* — a horrible thing to leave to chance.
 
-```powershell
-# Without Run.Exit, one failing test:
-pwsh -NoProfile -File ./test.ps1   # exit code 0 — the build goes green
-```
-
-Pester does set `$LASTEXITCODE` either way, so some runners catch it regardless. GitHub Actions is one: its `pwsh` shell appends an `exit $LASTEXITCODE` for you, so the step fails even without `Run.Exit`. Run the same script under `pwsh -File` — a scheduled task, a Makefile, most other CI systems — and the failure vanishes.
-
-`Run.Exit = $true` removes the guesswork by making the script itself exit non-zero. Prove both directions rather than trusting it:
+`Run.Exit = $true` removes the guesswork: the script itself exits non-zero when tests fail, which every CI system understands. Prove both directions rather than trusting it:
 
 ```powershell
 pwsh -NoProfile -File ./test.ps1
@@ -59,7 +52,7 @@ Tests Passed: 25, Failed: 1, Skipped: 0, Inconclusive: 0, NotRun: 0
 
 Exit code 1. *That* is what makes CI red. Put the `8` back.
 
-The code is not merely non-zero, it is **the number of failures**: five failing tests exit with `5`. Failed blocks count too, so a `BeforeAll` that throws while wrapping two tests exits with `3` — the two failed tests plus the failed block. Handy at a glance in a job list, though read the results file rather than doing arithmetic on an exit code.
+The code is in fact the **number of failures** — one failing test exits with `1`, five with `5`. Handy at a glance, though the results file is where the detail lives.
 
 :::note `Invoke-Pester -CI` is the shorthand — but not for this
 Pester has a `-CI` switch that sets exactly two things:

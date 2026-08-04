@@ -42,8 +42,8 @@ The `-ModuleName` rule from the previous page applies here too: you are asking a
 
 `-ParameterFilter` narrows a mock to calls whose arguments match, allowing you to customize responses for different calls. Let's give it a try:
 
-```powershell title="Planetarium/Public/Get-Planet.Mocking.Tests.ps1"
-Describe 'Get-PlanetData' {
+```powershell title="Planetarium/Private/Get-PlanetData.Tests.ps1"
+Describe 'Get-PlanetData' -Tag 'Internal' {
     # ... the 'Converts the CSV strings into numbers' test ...
 
     # diff-add-start
@@ -70,7 +70,7 @@ A mock with a `-ParameterFilter` only applies to calls that match it. If a call 
 
 Let's break it on purpose to see how this works. Change `planets` to `moons` in the test you just added:
 
-```powershell title="Planetarium/Public/Get-Planet.Mocking.Tests.ps1"
+```powershell title="Planetarium/Private/Get-PlanetData.Tests.ps1"
     It 'Reads the CSV shipped with the module' {
         Mock -ModuleName Planetarium Import-Csv {
             @([PSCustomObject] @{ Name = 'Aiur'; Order = '1'; DistanceFromSunKm = '100' })
@@ -84,7 +84,7 @@ Let's break it on purpose to see how this works. Change `planets` to `moons` in 
 ```
 
 ```powershell
-Invoke-Pester -Path ./Planetarium/Public/Get-Planet.Mocking.Tests.ps1 -Output Detailed
+Invoke-Pester -Path ./Planetarium/Private/Get-PlanetData.Tests.ps1 -Output Detailed
 ```
 
 ```
