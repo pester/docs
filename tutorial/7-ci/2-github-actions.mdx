@@ -41,7 +41,7 @@ jobs:
             coverage.xml
 ```
 
-:::note This is the point where the tutorial needs git
+:::note This part requires git and GitHub
 Everything so far ran locally; running in CI means publishing the code to GitHub. If your working folder is not a git repository yet, turn it into one and commit your files:
 
 ```bash
@@ -65,61 +65,67 @@ Three details are doing real work.
 
 ## Testing on more than one platform
 
-Your module claims to run on Windows, Linux and macOS. A matrix runs the same job once per operating system:
+The single job above tests less than the module claims to support. The tutorial has worked on Windows, Linux and macOS all along, and the manifest says `PowerShellVersion = '5.1'` — Windows PowerShell 5.1 is a genuinely different engine from PowerShell 7, and it is where the surprises live. A matrix runs the same job once per combination, so extend the workflow to test all of it:
 
 ```yaml title=".github/workflows/test.yml"
 jobs:
   test:
+    # diff-add-start
+    name: ${{ matrix.name }} on ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
+        shell: [pwsh]
+        name: [PowerShell 7]
+        include:
+          - os: windows-latest
+            shell: powershell
+            name: Windows PowerShell 5.1
+    # diff-add-end
 
+    # diff-remove
+    runs-on: ubuntu-latest
+    # diff-add
     runs-on: ${{ matrix.os }}
 
     steps:
       - uses: actions/checkout@v6
 
       - name: Install Pester
+        # diff-remove
         shell: pwsh
+        # diff-add
+        shell: ${{ matrix.shell }}
         run: Install-Module Pester -MinimumVersion 6.0.0 -Force -SkipPublisherCheck -Scope CurrentUser
 
       - name: Run tests
+        # diff-remove
         shell: pwsh
+        # diff-add
+        shell: ${{ matrix.shell }}
         run: ./test.ps1
 
       - name: Upload results
         if: always()
         uses: actions/upload-artifact@v7
         with:
-          name: test-results-${{ matrix.os }}
+          # diff-remove
+          name: test-results
+          # diff-add
+          name: test-results-${{ matrix.os }}-${{ matrix.shell }}
           path: |
             testResults.xml
             coverage.xml
 ```
 
+This produces four jobs. The `os` list crossed with `shell: [pwsh]` gives three — PowerShell 7 on each operating system. The `include` adds a fourth: `windows-latest` running under `powershell`, the built-in Windows PowerShell 5.1 shell. That fourth job is the one that tests what the manifest promises. (For a module of your own that does not support 5.1, drop the `include` and raise `PowerShellVersion` in the manifest instead.)
+
+The job `name` is customized to identify all combinations in the CI report, e.g. `PowerShell 7 on ubuntu-latest` and `Windows PowerShell 5.1 on windows-latest`.
+
 `fail-fast: false` matters here. The default cancels every other job the moment one fails, so a Windows-only bug would abort the Linux and macOS runs and hide whether the failure is platform-specific. Turning it off costs a few runner minutes and tells you far more.
 
-The artifact name has to include `${{ matrix.os }}` — three jobs uploading to the same artifact name is an error.
-
-:::warning This matrix still only tests PowerShell 7
-`shell: pwsh` is PowerShell 7 on every runner, Windows included. So three operating systems, one PowerShell version.
-
-Your manifest says `PowerShellVersion = '5.1'`, and nothing above has tested that claim. Windows PowerShell 5.1 is a genuinely different engine, and it is where the surprises live. To cover it, add a second dimension and let the Windows job run under `powershell` — the built-in 5.1 shell:
-
-```yaml
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        shell: [pwsh]
-        include:
-          - os: windows-latest
-            shell: powershell
-```
-
-Then use `shell: ${{ matrix.shell }}` on the PowerShell steps, and add `${{ matrix.shell }}` to the artifact name so the two Windows jobs do not collide. If you would rather not support 5.1, the honest alternative is to raise `PowerShellVersion` in the manifest.
-:::
+The artifact name now includes both matrix values. Jobs uploading to the same artifact name is an error, and `${{ matrix.os }}` alone would still collide for the two Windows jobs.
 
 :::note This is where the cross-platform bugs show up
 `Join-Path` and `$TestDrive` have been quietly protecting you. Hard-coded `\` separators, case-sensitivity assumptions, and `C:\temp` paths all work on your machine and fail on Linux. A matrix is how you find them, and it is the main reason this module is worth doing even for a small module.
@@ -144,7 +150,7 @@ Starting from an empty folder, you have built a PowerShell module with a manifes
 - A data source replaced by mocks so tests own their data
 - File operations isolated in `TestDrive`, leaving nothing behind
 - 100% coverage, arrived at by reading `CommandsMissed` rather than chasing a number
-- A test script that fails correctly, running on three operating systems on every push
+- A test script that fails correctly, running on three operating systems — and on Windows PowerShell 5.1 — on every push
 
 The reference documentation goes deeper on everything here: [mocking](../../docs/usage/mocking), [TestDrive](../../docs/usage/testdrive), [code coverage](../../docs/usage/code-coverage), [configuration](../../docs/usage/configuration) and [the result object](../../docs/usage/result-object). If you write assertions you wish existed, [custom assertions](../../docs/assertions/custom-assertions) is the next thing worth reading.
 
@@ -152,6 +158,6 @@ The reference documentation goes deeper on everything here: [mocking](../../docs
   {id: 'workflow', label: 'I added .github/workflows/test.yml and pushed it'},
   {id: 'shell-pwsh', label: 'I can explain why every PowerShell step needs shell: pwsh'},
   {id: 'always', label: 'I understand why the upload step needs if: always()'},
-  {id: 'matrix', label: 'I extended the workflow to a matrix and know why fail-fast: false helps'},
+  {id: 'matrix', label: 'I extended the matrix to three operating systems plus Windows PowerShell 5.1, and know why fail-fast: false helps'},
   {id: 'finished', label: 'My suite runs green in CI'},
 ]} />
