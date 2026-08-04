@@ -5,3 +5,6 @@
 
 # Redirect versioned URLs for latest (e.g. /docs/v6 -> /docs)
 /docs/v6/*              /docs/:splat    302
+
+# The tutorial has no landing page - send the bare URL to its first page
+/tutorial               /tutorial/introduction/welcome  302
