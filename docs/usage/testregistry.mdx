@@ -37,7 +37,7 @@ Describe "Get-InstallPath" {
     }
 
     It 'reads the install path from the registry' {
-        Get-InstallPath -Path "TestRegistry:\TestLocation" -Key "InstallPath" | Should -Be "C:\Program Files\MyApplication"
+        Get-InstallPath -Path "TestRegistry:\TestLocation" -Key "InstallPath" | Should-Be "C:\Program Files\MyApplication"
     }
 }
 ```
