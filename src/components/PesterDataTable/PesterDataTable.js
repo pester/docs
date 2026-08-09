@@ -1,18 +1,33 @@
 import React from "react";
-import { flexRender, useReactTable, getCoreRowModel, getSortedRowModel } from '@tanstack/react-table'
+import {
+  createSortedRowModel,
+  rowSortingFeature,
+  sortFn_alphanumeric,
+  sortFn_text,
+  tableFeatures,
+  useTable,
+} from '@tanstack/react-table'
 import "./style.css";
+
+const features = tableFeatures({
+  rowSortingFeature,
+  sortedRowModel: createSortedRowModel(),
+  sortFns: {
+    alphanumeric: sortFn_alphanumeric,
+    text: sortFn_text,
+  },
+});
 
 // our pester.dev specific react-table
 const PesterDataTable = ({
   columns,
   data,
 }) => {
-  const table = useReactTable(
+  const table = useTable(
     {
+      features,
       columns,
       data,
-      getCoreRowModel: getCoreRowModel(),
-      getSortedRowModel: getSortedRowModel(),
     },
   );
 
@@ -31,7 +46,7 @@ const PesterDataTable = ({
                 style={{ cursor: "pointer" }}
                 onClick={header.column.getToggleSortingHandler()}
               >
-                {flexRender(header.column.columnDef.header, header.getContext())}
+                <table.FlexRender header={header} />
                 <span>{{
                   asc: ' ▲',
                   desc: ' ▼',
@@ -45,17 +60,14 @@ const PesterDataTable = ({
         {table.getRowModel().rows.map((row, i) => {
           return (
             <tr key={row.id} role="row">
-              {row.getVisibleCells().map(cell => {
+              {row.getAllCells().map(cell => {
                 return (
                   <td
                     key={cell.id}
                     role="cell"
                     className={cell.column.columnDef.className}
                   >
-                    {flexRender(
-                      cell.column.columnDef.cell,
-                      cell.getContext()
-                    )}
+                    <table.FlexRender cell={cell} />
                   </td>
                 );
               })}
