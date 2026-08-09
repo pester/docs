@@ -26,7 +26,7 @@
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "^3.10.2",
-    "@docusaurus/types": "^3.10.1"
+    "@docusaurus/types": "^3.10.2"
   },
   "resolutions": {
     "serialize-javascript": "7.0.7",
@@ -43,5 +43,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "packageManager": "pnpm@10.34.5"
 }
