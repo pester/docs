@@ -1,6 +1,6 @@
 version: 2
 updates:
-  # JavaScript/TypeScript dependencies (package.json + yarn.lock).
+  # JavaScript/TypeScript dependencies (package.json + pnpm-lock.yaml).
   # Grouped so security and version updates arrive as a few PRs instead of
   # one failing run per transitive advisory.
   - package-ecosystem: "npm"

@@ -3,12 +3,16 @@
 	"tasks": [
 		{
 			"label": "Start Docusaurus with polling",
-			"command": "yarn",
-			"type": "process",
-			// Polling for devcontainer support
+      "command": "pnpm",
+      "type": "process",
 			"args": [
 				"start",
-				"--poll"
+        // Allow access from outside the devcontainer
+        "--host",
+        "0.0.0.0",
+        // Polling every 1000ms for file watching in devcontainer
+        "--poll",
+        "1000"
 			],
 			"problemMatcher": []
 		}
