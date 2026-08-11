@@ -2,11 +2,13 @@
 // README at: https://github.com/devcontainers/templates/tree/main/src/javascript-node
 {
   "name": "Pester Docs",
-  "image": "mcr.microsoft.com/devcontainers/javascript-node:1-20-bullseye",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:5-24-trixie",
 
   // Features to add to the dev container. More info: https://containers.dev/features.
   "features": {
-    "ghcr.io/devcontainers/features/powershell:1": {}
+    "ghcr.io/devcontainers/features/powershell:2": { },
+    // Remove when typescript-node:5-26-trixie is released in September 2026
+    "ghcr.io/devcontainers/features/node": { "version": "26" }
   },
 
   // Windows users should clone repo in container volume or using WSL2

@@ -23,7 +23,7 @@ Asserts that the provided [timespan] is slower than the expected [timespan].
 ## SYNTAX
 
 ```powershell
-Should-BeSlowerThan [[-Actual] <Object>] [[-Expected] <Object>] [-Because <String>] [<CommonParameters>]
+Should-BeSlowerThan [[-Actual] <Object>] [-Expected] <Object> [-Because <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -84,7 +84,7 @@ Type: Object
 Parameter Sets: (All)
 Aliases:
 
-Required: False
+Required: True
 Position: 1
 Default value: None
 Accept pipeline input: False
@@ -133,4 +133,4 @@ See https://pester.dev/docs/assertions/soft-assertions for more about soft asser
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 6.0.0-rc5](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.1.0](https://github.com/pester/pester).*

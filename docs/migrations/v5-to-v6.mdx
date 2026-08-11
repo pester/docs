@@ -73,7 +73,7 @@ In v5 a run had two global phases: Pester discovered **every** file first, build
 
 **Symptom.** A test file that relied on something *another* file set up at discovery time fails — for example a module imported at the top of one file, or `-ForEach` data that a different file defined. Under parallel each file is discovered in its own runspace, so it definitely won't see the other file's state.
 
-**Fix.** Make each test file self-contained: do its own discovery-time setup in `BeforeDiscovery`, and import the modules it needs. When you need shared bootstrap for every file, use `Run.BeforeContainer` or a `Pester.BeforeContainer.ps1` file.
+**Fix.** Make each test file self-contained: do its own discovery-time setup in `BeforeDiscovery`, and import the modules it needs. When you need shared bootstrap for every file, put it in a `Pester.BeforeContainer.ps1` file in the repository root.
 
 ```powershell
 # Each file does its own discovery-time setup instead of
@@ -288,7 +288,7 @@ None of these are required to upgrade — your v5 suite keeps working without th
 
 ### Run test files in parallel
 
-The per-file model lets v6 run whole test files concurrently, each in its own runspace, which can cut the wall-clock time of a large suite. It is opt-in and still experimental — enable it with `Run.Parallel = $true`. Files that need shared bootstrap can use `Run.BeforeContainer` (or a `Pester.BeforeContainer.ps1` in the repository root) so each worker starts from a known state. See [Parallel execution](../usage/parallel) for the requirements, sequential fallbacks, and the `#pester:no-parallel` opt-out.
+The per-file model lets v6 run whole test files concurrently, each in its own runspace, which can cut the wall-clock time of a large suite. It is opt-in and still experimental — enable it with `Run.Parallel = $true`. Files that need shared bootstrap can use a `Pester.BeforeContainer.ps1` in the repository root, so each worker starts from a known state. See [Parallel execution](../usage/parallel) for the requirements, sequential fallbacks, and the `#pester:no-parallel` opt-out.
 
 ### Show which test is currently running
 
