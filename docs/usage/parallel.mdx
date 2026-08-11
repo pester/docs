@@ -38,19 +38,16 @@ Invoke-Pester -Configuration $config
 
 ## Shared per-file setup
 
-Each worker starts from a clean runspace, so anything the parent session would normally provide (imported modules, dot-sourced helpers) is not available unless you set it up. `Run.BeforeContainer` takes one or more script blocks that run before every test file is discovered and run, in both sequential and parallel runs:
+Each worker starts from a clean runspace, so anything the parent session would normally provide (imported modules, dot-sourced helpers) is not available unless you set it up.
 
-```powershell
-$config = New-PesterConfiguration
-$config.Run.Path = './tests'
-$config.Run.Parallel = $true
-$config.Run.BeforeContainer = { . './setup.ps1' }   # import modules, dot-source shared setup
-Invoke-Pester -Configuration $config
+Pester looks for a single `Pester.BeforeContainer.ps1` in the repository root (`Run.RepoRoot`, found from the nearest `.git` directory) and dot-sources it before every test file is discovered and run, in both sequential and parallel runs:
+
+```powershell title="Pester.BeforeContainer.ps1"
+Import-Module "$PSScriptRoot/src/MyModule.psm1" -Force
+. "$PSScriptRoot/tests/helpers.ps1"
 ```
 
-One script block is usually enough, since it can dot-source as many files as needed.
-
-If you don't set `Run.BeforeContainer`, Pester looks for a single `Pester.BeforeContainer.ps1` in the repository root (`Run.RepoRoot`, found from the nearest `.git` directory) and dot-sources it when present. That gives you a per-repo bootstrap with no configuration. Setting `Run.BeforeContainer` overrides the convention file.
+That gives you a per-repo bootstrap with no configuration at all. One file is usually enough, since it can import modules and dot-source as many other files as needed.
 
 ## Opting a file out
 
@@ -71,7 +68,6 @@ Parallel execution needs PowerShell 7+ and a file-based run (`Run.Path`). When a
 
 - on Windows PowerShell 5.1,
 - for `ScriptBlock` / `Container` inputs (anything that isn't a file),
-- when `CodeCoverage` is enabled (coverage is always collected on the sequential path),
 - when `Run.SkipRemainingOnFailure = 'Run'` (a cross-file stop-on-failure can't span runspaces),
 - and when every file opts out with `#pester:no-parallel`.
 
@@ -79,6 +75,10 @@ Parallel execution needs PowerShell 7+ and a file-based run (`Run.Path`). When a
 
 Within a parallel run each worker runs silently, and the parent replays every file's output in discovery order, emitting the same plugin-event sequence as a serial run. Console output, the `TestResult` report (produced once from the merged result tree), and IDE adapters such as the VS Code adapter behave the same in both modes. Only the concurrency differs.
 
+## Code coverage
+
+Code coverage is collected in parallel runs. Each worker measures the same locations, the parent merges the per-worker results with the coverage of any `#pester:no-parallel` files it ran itself, and reports a single set of numbers. Turning on `Run.Parallel` does not cost you your coverage report.
+
 :::note Reserved for follow-ups
-Code coverage in parallel (collect per worker, merge in the parent) currently falls back to the sequential path. For mixed runs where only some files opt out, those files' IDE-adapter events currently arrive after the parallel batch. Console output and results are unaffected.
+For mixed runs where only some files opt out, those files' IDE-adapter events currently arrive after the parallel batch. Console output and results are unaffected.
 :::

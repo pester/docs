@@ -1,0 +1,7 @@
+# Netlify build settings. Kept in the repo instead of the Netlify UI so they are
+# versioned and reviewed with the rest of the code. This file wins over the UI.
+# Node version comes from .nvmrc. Redirects come from static/_redirects.
+
+[build]
+  command = "pnpm build"
+  publish = "build"
