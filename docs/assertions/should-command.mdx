@@ -444,8 +444,8 @@ All `Should-*` assertions are listed below, grouped by the kind of check they pe
 
 #### String
 
-- [`Should-BeString`](../commands/Should-BeString.mdx) — Asserts that the actual value is equal to the expected string. Supports `-CaseSensitive`, `-IgnoreWhitespace` and `-TrimWhitespace`.
-- [`Should-NotBeString`](../commands/Should-NotBeString.mdx) — Asserts that the actual value is not equal to the expected string.
+- [`Should-BeString`](../commands/Should-BeString.mdx) — Asserts that the actual value is equal to the expected string. Supports `-CaseSensitive`, `-IgnoreWhitespace`, `-TrimWhitespace` and `-NormalizeLineEnding`.
+- [`Should-NotBeString`](../commands/Should-NotBeString.mdx) — Asserts that the actual value is not equal to the expected string. Supports the same switches as `Should-BeString`.
 - [`Should-BeEmptyString`](../commands/Should-BeEmptyString.mdx) — Asserts that the input is an empty string.
 - [`Should-NotBeEmptyString`](../commands/Should-NotBeEmptyString.mdx) — Asserts that the input is a string that is not `$null` or empty.
 - [`Should-NotBeWhiteSpaceString`](../commands/Should-NotBeWhiteSpaceString.mdx) — Asserts that the input is a string that is not `$null`, empty, or whitespace only.
@@ -480,6 +480,9 @@ All `Should-*` assertions are listed below, grouped by the kind of check they pe
 #### Exception
 
 - [`Should-Throw`](../commands/Should-Throw.mdx) — Asserts that a script block throws an exception.
+:::tip Missing Should-NotThrow?
+Use `& { ... }` to invoke the scriptblock, call the function or assert on the result. Any unexpected errors will fail the test.
+:::
 
 #### Mock
 
@@ -490,6 +493,30 @@ All `Should-*` assertions are listed below, grouped by the kind of check they pe
 
 - [`Should-HaveParameter`](../commands/Should-HaveParameter.mdx) — Asserts that a command has the expected parameter, and optionally checks its type, default value, aliases, parameter set, mandatory status, and argument completer.
 - [`Should-NotHaveParameter`](../commands/Should-NotHaveParameter.mdx) — Asserts that a command does not have the given parameter.
+
+### Writing your own
+
+The set is not closed. A `Should-*` assertion is an ordinary function, and [`New-ShouldAssertion`](../commands/New-ShouldAssertion) gives yours the same building blocks a built-in one has: pipeline input collection, value formatting, the input-shape hints above, and the failure path that makes soft assertions and mock parameter filters work.
+
+```powershell
+function Should-BeAwesome {
+    [CmdletBinding()]
+    param (
+        [Parameter(Position = 1, ValueFromPipeline)] $Actual,
+        [Parameter(Position = 0)]                    $Expected = 'Awesome',
+        [string] $Because
+    )
+
+    $assert = New-ShouldAssertion -Caller $PSCmdlet -Actual $Actual -Buffer $Input
+    $Actual = $assert.Actual()
+
+    if ($Actual -ne $Expected) {
+        $assert.Fail('Expected <expected>,<because> but got <actual>.', @{ Expected = $Expected; Because = $Because })
+    }
+}
+```
+
+See [Writing your own assertions (v6)](./writing-assertions) for the full walkthrough.
 
 ### Choosing your assertion syntax
 

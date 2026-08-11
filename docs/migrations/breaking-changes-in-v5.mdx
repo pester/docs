@@ -14,7 +14,7 @@ description: Pester v5 included an all-new runtime which lead to some breaking c
 - PowerShell 2 is no longer supported
 - Legacy syntax `Should Be` (without `-`) is removed, see [Migrating from Pester v3 to v4](./v3-to-v4)
 - Mocks are scoped based on their placement, not in whole `Describe` / `Context`. The count also depends on their placement. See [mock scoping](../usage/mocking#mocks-are-scoped-based-on-their-placement)
-- `Assert-VerifiableMocks` was removed, see [Should -Invoke](../usage/mocking#should--invoke)
+- `Assert-VerifiableMocks` was removed, see [Should-Invoke](../usage/mocking#should-invoke)
 - All code placed in the body of `Describe` outside of `It`, `BeforeAll`, `BeforeEach`, `AfterAll`, `AfterEach` will run during discovery and it's state might or might not be available to the test code, see [Discovery and Run](../usage/discovery-and-run)
 - `-Output` parameter has reduced options to `None`, `Normal`, `Detailed` and `Diagnostic`. `-Show` alias is removed
 - `-PesterOption` switch is removed

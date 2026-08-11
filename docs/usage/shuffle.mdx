@@ -1,0 +1,81 @@
+---
+title: Shuffled test order
+description: Pester v6 can shuffle the order test files, blocks and tests run in, so hidden dependencies between tests surface instead of staying lucky. The order is driven by a seed, so a failing run can be repeated exactly.
+---
+
+:::warning Experimental
+Shuffling is experimental in Pester v6. Treat `Run.Shuffle` as opt-in. The option names, the directive name, and the behavior may still change before it is declared stable.
+:::
+
+Tests that quietly depend on running in a fixed order are a common source of "passes on my machine". A test that only works because an earlier test left a file, a variable, or a mock behind keeps passing until someone adds, removes, or renames a test.
+
+`Run.Shuffle` reorders the run so those dependencies show up as failures.
+
+## Enabling shuffling
+
+Set `Run.Shuffle` to `$true`:
+
+```powershell
+$config = New-PesterConfiguration
+$config.Run.Path = './tests'
+$config.Run.Shuffle = $true
+Invoke-Pester -Configuration $config
+```
+
+Pester reorders:
+
+- the test files,
+- the blocks (`Describe` and `Context`) inside a file,
+- the blocks and tests (`It`) inside a block.
+
+Items are only ever reordered **within their own level**. A test never jumps out of its `Context`, and a `Context` never jumps out of its `Describe`, so the setup and teardown that wrap it still wrap it. `BeforeAll` and `AfterAll` also still run around the real first and last item of each block, whichever item that turns out to be.
+
+## Repeating a shuffled run
+
+Every shuffled run is driven by a seed. When `Run.ShuffleSeed` is left at its default of `0`, Pester picks a new seed for the run and prints it at the start:
+
+```
+Shuffling execution order using seed 1738685315. Set 'Run.ShuffleSeed = 1738685315' to repeat this order.
+```
+
+Set that seed to replay the same order:
+
+```powershell
+$config = New-PesterConfiguration
+$config.Run.Path = './tests'
+$config.Run.Shuffle = $true
+$config.Run.ShuffleSeed = 1738685315
+Invoke-Pester -Configuration $config
+```
+
+You don't have to read the seed off the screen. The seed that was actually used is on the result object, so you can capture it after a run:
+
+```powershell
+$r = Invoke-Pester -Configuration $config -PassThru
+$r.Configuration.Run.ShuffleSeed.Value   # 1738685315, even when you did not set one
+```
+
+That is the practical loop for CI: run shuffled, and when the build goes red, take the seed out of the log or the result and reproduce the exact order locally.
+
+## Opting a file out
+
+Some files are ordered on purpose, for example when sibling `It` blocks build up mock history that adds up across the file. A file keeps its declaration order with a `#pester:no-shuffle` directive, the same way a file opts out of parallel execution:
+
+```powershell title="Deploy.Tests.ps1"
+#pester:no-shuffle
+
+Describe 'Deploy' {
+    It 'builds'  { }
+    It 'deploys' { }
+}
+```
+
+The directive is parsed like `#requires`: it is matched only inside a real comment token, never inside a string or here-string, and it may appear anywhere in the file. `# pester:no-shuffle` with a space works too.
+
+Blocks and tests in a marked file keep declaration order even when `Run.Shuffle` is on. The file itself still takes part in the file order shuffle, only its contents are pinned.
+
+## Notes and limits
+
+- Shuffling changes only the order. It does not re-run anything, and it does not isolate tests from each other, so a test that writes to shared state still writes to shared state.
+- In a [parallel run](./parallel) each worker shuffles its own slice of files, so the cross-file order is not globally reproducible from the seed. The order inside each file is.
+- A `#pester:no-shuffle` file is not automatically a `#pester:no-parallel` file. The two directives are independent, mark a file with both when it needs both.

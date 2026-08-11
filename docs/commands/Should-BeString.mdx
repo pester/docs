@@ -24,7 +24,7 @@ Asserts that the actual value is equal to the expected value.
 
 ```powershell
 Should-BeString [[-Actual] <Object>] [-Expected] <String> [-Because <String>] [-CaseSensitive]
- [-IgnoreWhitespace] [-TrimWhitespace] [<CommonParameters>]
+ [-IgnoreWhitespace] [-TrimWhitespace] [-NormalizeLineEnding] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -49,6 +49,14 @@ This assertion will pass, because the actual value is equal to the expected valu
 ```
 
 This assertion will fail, because the actual value is not equal to the expected value.
+
+### EXAMPLE 3
+
+```powershell
+"" | Should-BeString ""
+```
+
+This assertion will pass, because an empty string is allowed as the expected value.
 
 ## PARAMETERS
 
@@ -148,6 +156,24 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -NormalizeLineEnding
+
+Normalizes line endings before comparison, so that `\r\n`, `\r`, and the Unicode line separator are all treated as `\n`.
+Use this to compare multi-line strings across platforms without failing on line-ending style.
+Unlike `-IgnoreWhitespace`, the newlines and their positions are kept, so indentation and blank lines are still compared.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### CommonParameters
 
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
@@ -174,4 +200,4 @@ See https://pester.dev/docs/assertions/soft-assertions for more about soft asser
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 6.0.0-rc5](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.1.0](https://github.com/pester/pester).*

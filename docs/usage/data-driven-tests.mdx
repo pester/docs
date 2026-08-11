@@ -25,7 +25,7 @@ Describe "Get-Emoji" {
         @{ Name = "cactus"; Expected = '🌵'}
         @{ Name = "giraffe"; Expected = '🦒'}
     ) {
-        Get-Emoji -Name $name | Should -Be $expected
+        Get-Emoji -Name $name | Should-Be $expected
     }
 }
 ```
@@ -39,11 +39,11 @@ The code above will generate tests that are equivalent to this:
 ```powershell
 Describe "Get-Emoji" {
     It "Returns 🌵 (cactus)" {
-        Get-Emoji -Name cactus | Should -Be '🌵'
+        Get-Emoji -Name cactus | Should-Be '🌵'
     }
 
     It "Returns 🦒 (giraffe)" {
-        Get-Emoji -Name giraffe | Should -Be '🦒'
+        Get-Emoji -Name giraffe | Should-Be '🦒'
     }
 }
 ```
@@ -60,7 +60,7 @@ Describe "Get-Emoji" {
         @{ Name = "penguin"; Expected = '🐧'}
         @{ Name = "smiling face with smiling eyes"; Expected = '😊'}
     ) {
-        Get-Emoji -Name $name | Should -Be $expected
+        Get-Emoji -Name $name | Should-Be $expected
     }
 }
 ```
@@ -75,11 +75,11 @@ Describe "Get-Emoji <name>" -ForEach @(
     @{ Name = "giraffe"; Symbol = '🦒'; Kind = 'Animal' }
 ) {
     It "Returns <symbol>"  {
-        Get-Emoji -Name $name | Should -Be $symbol
+        Get-Emoji -Name $name | Should-Be $symbol
     }
 
     It "Has kind <kind>" {
-        Get-Emoji -Name $name | Get-EmojiKind | Should -Be $kind
+        Get-Emoji -Name $name | Get-EmojiKind | Should-Be $kind
     }
 }
 ```
@@ -89,21 +89,21 @@ Which is equivalent to writing:
 ```powershell
 Describe "Get-Emoji cactus" {
     It "Returns 🌵" {
-        Get-Emoji -Name cactus | Should -Be '🌵'
+        Get-Emoji -Name cactus | Should-Be '🌵'
     }
 
     It "Has kind Plant" {
-        Get-Emoji -Name cactus | Get-EmojiKind | Should -Be 'Plant'
+        Get-Emoji -Name cactus | Get-EmojiKind | Should-Be 'Plant'
     }
 }
 
 Describe "Get-Emoji giraffe" {
     It "Returns 🦒" {
-        Get-Emoji -Name giraffe | Should -Be '🦒'
+        Get-Emoji -Name giraffe | Should-Be '🦒'
     }
 
     It "Has kind Animal" {
-        Get-Emoji -Name giraffe | Get-EmojiKind | Should -Be 'Animal'
+        Get-Emoji -Name giraffe | Get-EmojiKind | Should-Be 'Animal'
     }
 }
 ```
@@ -133,17 +133,17 @@ Describe "Get-Emoji <name>" -ForEach @(
     }
 ) {
     It "Returns <symbol>"  {
-        Get-Emoji -Name $name | Should -Be $symbol
+        Get-Emoji -Name $name | Should-Be $symbol
     }
 
     It "Has kind <kind>" {
-        Get-Emoji -Name $name | Get-EmojiKind | Should -Be $kind
+        Get-Emoji -Name $name | Get-EmojiKind | Should-Be $kind
     }
 
     Context "Runes (each character in multibyte emoji)" -ForEach $runes {
         It "Has rune <rune> on index <index>" {
             $actual = @((Get-Emoji -Name $name).EnumerateRunes())
-            $actual[$index].Value | Should -Be $rune
+            $actual[$index].Value | Should-Be $rune
         }
     }
 }
@@ -156,19 +156,19 @@ Describe "Get-Emoji <name>" -ForEach @(
 ```powershell
 Describe "Get-FruitBasket" {
     It "Contains <_>" -ForEach '🍎','🍌','🥝','🥑','🍇','🍐' {
-        Get-FruitBasket | Should -Contain $_
+        Get-FruitBasket | Should-ContainCollection $_
     }
 }
 
 Describe "Get-FruitBasket" {
     Context "Fruit <_>" -ForEach '🍎','🍌','🥝','🥑','🍇','🍐' {
         It "Contains <_> by default" {
-            Get-FruitBasket | Should -Contain $_
+            Get-FruitBasket | Should-ContainCollection $_
         }
 
         It "Can remove <_> from the basket" {
             Remove-FruitBasket -Item $_
-            Get-FruitBasket | Should -Not -Contain $_
+            Get-FruitBasket | Should-NotContainCollection $_
         }
     }
     AfterAll {
@@ -597,7 +597,7 @@ $name = "Jakub"
 
 Describe "d" {
     It "My name is: $name" {
-        $name | Should -be "Jakub"
+        $name | Should-Be "Jakub"
     }
 }
 ```
@@ -607,8 +607,8 @@ Running tests from 1 files.
 Running tests from 'C:\p\g.Tests.ps1'
 Describing d
   [-] My name is: Jakub 106ms
-   Expected 'Jakub', but got $null.
-   at $name | Should -be "Jakub", C:\p\g.Tests.ps1:5
+   Expected [string] 'Jakub', but got [null] $null.
+   at $name | Should-Be "Jakub", C:\p\g.Tests.ps1:5
 Tests completed in 436ms
 Tests Passed: 0, Failed: 1, Skipped: 0, Inconclusive: 0, NotRun: 0
 ```

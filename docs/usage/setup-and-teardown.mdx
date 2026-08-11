@@ -36,11 +36,11 @@ Describe "API validation" {
     }
 
     It "response has Name = 'Pikachu'" {
-        $response.Name | Should -Be 'Pikachu'
+        $response.Name | Should-Be 'Pikachu'
     }
 
     It "response has Type = 'electric'" {
-        $response.Type | Should -Be 'electric'
+        $response.Type | Should-Be 'electric'
     }
 }
 ```
@@ -210,7 +210,7 @@ Describe "describe 1" {
     }
 
     It "acceptance test 1" -Tag "Acceptance" {
-        1 | Should -Be 1
+        1 | Should-Be 1
     }
 
     AfterAll {
@@ -242,7 +242,7 @@ Describe "d" {
     }
 
     It "Check a" {
-        $a | Should -Be "BeforeAll"
+        $a | Should-Be "BeforeAll"
     }
 
     AfterAll {

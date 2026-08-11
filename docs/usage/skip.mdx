@@ -11,27 +11,27 @@ description: Skipping tests can be useful in many scenarios or when certain cond
 Describe "describe1" {
     Context "with one skipped test" {
         It "test 1" -Skip {
-            1 | Should -Be 2
+            1 | Should-Be 2
         }
 
         It "test 2" {
-            1 | Should -Be 1
+            1 | Should-Be 1
         }
     }
 
     Describe "that is skipped" -Skip {
         It "test 3" {
-            1 | Should -Be 2
+            1 | Should-Be 2
         }
     }
 
     Context "that is skipped and has skipped test" -Skip {
         It "test 3" -Skip {
-            1 | Should -Be 2
+            1 | Should-Be 2
         }
 
         It "test 3" {
-            1 | Should -Be 2
+            1 | Should-Be 2
         }
     }
 }
@@ -69,15 +69,15 @@ $sb = {
         }
 
         It 'First Test' -Skip:$SkipFirst {
-            1 | Should -Be 1
+            1 | Should-Be 1
         }
 
         It 'Second Test' -Skip:($skipSecond -eq 1) {
-            1 | Should -Be 1
+            1 | Should-Be 1
         }
 
         It 'Third Test' {
-            1 | Should -Be 1
+            1 | Should-Be 1
         }
     }
 }

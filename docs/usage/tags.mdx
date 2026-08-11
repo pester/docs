@@ -5,6 +5,10 @@ description: Use tags on tests and blocks to categorize code and easily choose w
 
 The tag parameter is now available on `Describe`, `Context` and `It` and it is possible to filter tags on any level. You can then use `-TagFilter` and `-ExcludeTagFilter` to run just the tests that you want.
 
+:::tip See which tags are on which test
+Set [`Output.ShowTags`](./output#showing-tags) to print the tags next to each `Describe`, `Context` and `It` in the console output, so you can see what your filter is actually matching.
+:::
+
 Here you can see an example of a test suite that has acceptance tests and unit tests. Some of the tests are slow, some are flaky, and some only work on Linux. Pester makes running all reliable Windows-compatible acceptance tests as simple as:
 
 
@@ -18,34 +22,34 @@ Describe "Get-Beer" {
     Context "acceptance tests" -Tag "Acceptance" {
 
         It "acceptance test 1" -Tag "Slow", "Flaky" {
-            1 | Should -Be 1
+            1 | Should-Be 1
         }
 
         It "acceptance test 2" {
-            1 | Should -Be 1
+            1 | Should-Be 1
         }
 
         It "acceptance test 3" -Tag "WindowsOnly" {
-            1 | Should -Be 1
+            1 | Should-Be 1
         }
 
         It "acceptance test 4" -Tag "Slow" {
-            1 | Should -Be 1
+            1 | Should-Be 1
         }
 
         It "acceptance test 5" -Tag "LinuxOnly" {
-            1 | Should -Be 1
+            1 | Should-Be 1
         }
     }
 
     Context "unit tests" {
 
         It "unit test 1" {
-            1 | Should -Be 1
+            1 | Should-Be 1
         }
 
         It "unit test 2" -Tag "LinuxOnly" {
-            1 | Should -Be 1
+            1 | Should-Be 1
         }
 
     }
