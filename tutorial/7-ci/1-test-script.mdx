@@ -1,0 +1,106 @@
+---
+id: test-script
+title: A test script that fails the build
+description: Turn the Pester configuration into a reusable script that produces artifacts and, critically, exits non-zero when tests fail
+---
+
+`test.ps1` has been growing since the output module: it runs the suite, prints detailed results and writes both artifacts. It needs one more line before a pipeline can rely on it — the one that makes it fail.
+
+## The missing line
+
+```powershell title="test.ps1"
+$config = New-PesterConfiguration
+$config.Run.Path = './Planetarium'
+# diff-add
+$config.Run.Exit = $true
+$config.Output.Verbosity = 'Detailed'
+$config.TestResult.Enabled = $true
+$config.TestResult.OutputPath = './testResults.xml'
+$config.CodeCoverage.Enabled = $true
+$config.CodeCoverage.Path = './Planetarium'
+$config.CodeCoverage.OutputPath = './coverage.xml'
+
+Invoke-Pester -Configuration $config
+```
+
+That is the finished script: run the tests, write both artifacts, exit non-zero if anything failed.
+
+## Why the exit code is the important line
+
+**A failing Pester test does not, by itself, fail your build.**
+
+By default `Invoke-Pester` reports failures and returns normally. Some CI systems notice the failure anyway; many do not. Whether your build goes red would depend on *how the script happens to be invoked* — a horrible thing to leave to chance.
+
+`Run.Exit = $true` removes the guesswork: the script itself exits non-zero when tests fail, which every CI system understands. Prove both directions rather than trusting it:
+
+```powershell
+pwsh -NoProfile -File ./test.ps1
+$LASTEXITCODE
+```
+
+```
+Tests Passed: 26, Failed: 0, Skipped: 0, Inconclusive: 0, NotRun: 0
+0
+```
+
+Now break something on purpose — change a `Should-Be 8` to `Should-Be 9` — and run it again:
+
+```
+Tests Passed: 25, Failed: 1, Skipped: 0, Inconclusive: 0, NotRun: 0
+1
+```
+
+Exit code 1. *That* is what makes CI red. Put the `8` back.
+
+The code is in fact the **number of failures** — one failing test exits with `1`, five with `5`. Handy at a glance, though the results file is where the detail lives.
+
+:::note `Invoke-Pester -CI` is the shorthand — but not for this
+Pester has a `-CI` switch that sets exactly two things:
+
+```powershell
+TestResult.Enabled = $true
+Run.Exit = $true
+```
+
+It does **not** enable code coverage. Since this script wants coverage too — along with control over the output paths and verbosity — it sets those options directly instead. If you only need test results and a correct exit code, `Invoke-Pester -Path ./Planetarium -CI` is the one-liner version of most of this page.
+:::
+
+## It still works locally
+
+You have been running this script since the output module, and adding `Run.Exit` does not change that:
+
+```powershell
+./test.ps1
+$LASTEXITCODE
+```
+
+`Run.Exit` is safe interactively. It ends the script rather than your session, and leaves `$LASTEXITCODE` behind so you can check the result.
+
+Running the identical script locally and in CI removes an entire genre of problem — the one where a build fails remotely and cannot be reproduced because CI was doing something subtly different.
+
+## Artifacts
+
+Two files come out of every run:
+
+- `testResults.xml` — NUnit format, per-test results
+- `coverage.xml` — JaCoCo format, coverage data
+
+Both are build output, so keep them out of version control:
+
+```
+testResults.xml
+coverage.xml
+```
+
+They exist for the machine that runs the build, not for you. The next page hands them to GitHub.
+
+<TutorialChecklist items={[
+  {id: 'script', label: 'My test.ps1 matches the finished script at the top of this page'},
+  {id: 'exit-code', label: 'I can explain why a failing Pester test does not fail the build on its own'},
+  {id: 'run-exit', label: 'I used Run.Exit and know the exit code is the number of failures'},
+  {id: 'verified-both', label: 'I checked $LASTEXITCODE is 0 when passing and non-zero when a test fails'},
+  {id: 'ci-switch', label: 'I know what Invoke-Pester -CI does and why this script does not use it'},
+  {id: 'artifacts', label: 'The script writes testResults.xml and coverage.xml, and both are gitignored'},
+]} />
+
+Next: setting up your CI pipeline to run our test automatically.

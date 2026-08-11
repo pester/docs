@@ -1,124 +1,133 @@
 {
   "docs": [
     {
-      "collapsed": true,
       "type": "category",
-      "label": "Introduction",
+      "label": "Documentation",
+      "collapsible": false,
       "items": [
         {
-          "type": "doc",
-          "id": "quick-start"
+          "collapsed": true,
+          "type": "category",
+          "label": "Introduction",
+          "items": [
+            {
+              "type": "doc",
+              "id": "quick-start"
+            },
+            {
+              "type": "doc",
+              "id": "introduction/installation"
+            },
+            {
+              "type": "doc",
+              "id": "introduction/powershell-core-limitations"
+            }
+          ]
         },
         {
-          "type": "doc",
-          "id": "introduction/installation"
+          "collapsed": true,
+          "type": "category",
+          "label": "Usage",
+          "items": [
+            {
+              "type": "doc",
+              "id": "usage/assertions"
+            },
+            {
+              "type": "doc",
+              "id": "usage/mocking"
+            },
+            {
+              "type": "doc",
+              "id": "usage/modules"
+            },
+            {
+              "type": "doc",
+              "id": "usage/testdrive"
+            },
+            {
+              "type": "doc",
+              "id": "usage/testregistry"
+            },
+            {
+              "type": "doc",
+              "id": "usage/test-results"
+            },
+            {
+              "type": "doc",
+              "id": "usage/code-coverage"
+            }
+          ]
         },
         {
-          "type": "doc",
-          "id": "introduction/powershell-core-limitations"
+          "collapsed": true,
+          "type": "category",
+          "label": "Migration Guides",
+          "items": [
+            {
+              "type": "doc",
+              "id": "migrations/v3-to-v4"
+            }
+          ]
+        },
+        {
+          "collapsed": true,
+          "type": "category",
+          "label": "Additional Resources",
+          "items": [
+            {
+              "type": "doc",
+              "id": "additional-resources/articles"
+            },
+            {
+              "type": "doc",
+              "id": "additional-resources/courses"
+            },
+            {
+              "type": "doc",
+              "id": "additional-resources/misc"
+            },
+            {
+              "type": "doc",
+              "id": "additional-resources/projects"
+            },
+            {
+              "type": "doc",
+              "id": "additional-resources/videos"
+            }
+          ]
+        },
+        {
+          "collapsed": true,
+          "type": "category",
+          "label": "Contributing",
+          "items": [
+            {
+              "type": "doc",
+              "id": "contributing/introduction"
+            },
+            {
+              "type": "doc",
+              "id": "contributing/reporting-issues"
+            },
+            {
+              "type": "doc",
+              "id": "contributing/feature-requests"
+            },
+            {
+              "type": "doc",
+              "id": "contributing/pull-requests"
+            }
+          ]
         }
       ]
-    },
+    }
+  ],
+  "commands": [
     {
-      "collapsed": true,
-      "type": "category",
-      "label": "Usage",
-      "items": [
-        {
-          "type": "doc",
-          "id": "usage/assertions"
-        },
-        {
-          "type": "doc",
-          "id": "usage/mocking"
-        },
-        {
-          "type": "doc",
-          "id": "usage/modules"
-        },
-        {
-          "type": "doc",
-          "id": "usage/testdrive"
-        },
-        {
-          "type": "doc",
-          "id": "usage/testregistry"
-        },
-        {
-          "type": "doc",
-          "id": "usage/test-results"
-        },
-        {
-          "type": "doc",
-          "id": "usage/code-coverage"
-        }
-      ]
-    },
-    {
-      "collapsed": true,
-      "type": "category",
-      "label": "Migration Guides",
-      "items": [
-        {
-          "type": "doc",
-          "id": "migrations/v3-to-v4"
-        }
-      ]
-    },
-    {
-      "collapsed": true,
-      "type": "category",
-      "label": "Additional Resources",
-      "items": [
-        {
-          "type": "doc",
-          "id": "additional-resources/articles"
-        },
-        {
-          "type": "doc",
-          "id": "additional-resources/courses"
-        },
-        {
-          "type": "doc",
-          "id": "additional-resources/misc"
-        },
-        {
-          "type": "doc",
-          "id": "additional-resources/projects"
-        },
-        {
-          "type": "doc",
-          "id": "additional-resources/videos"
-        }
-      ]
-    },
-    {
-      "collapsed": true,
-      "type": "category",
-      "label": "Contributing",
-      "items": [
-        {
-          "type": "doc",
-          "id": "contributing/introduction"
-        },
-        {
-          "type": "doc",
-          "id": "contributing/reporting-issues"
-        },
-        {
-          "type": "doc",
-          "id": "contributing/feature-requests"
-        },
-        {
-          "type": "doc",
-          "id": "contributing/pull-requests"
-        }
-      ]
-    },
-    {
-      "collapsed": true,
       "type": "category",
       "label": "Command Reference",
+      "collapsible": false,
       "items": [
         {
           "type": "doc",

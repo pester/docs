@@ -20,7 +20,7 @@ BeforeAll {
 
 Describe "Get-Emoji" {
     It "Returns 🌵 (cactus)" {
-        Get-Emoji -Name cactus | Should -Be '🌵'
+        Get-Emoji -Name cactus | Should-Be '🌵'
     }
 }
 ```
@@ -45,11 +45,11 @@ BeforeAll {
 Describe "Get-Emoji" {
     Context "Lookup by whole name" {
         It "Returns 🌵 (cactus)" {
-            Get-Emoji -Name cactus | Should -Be '🌵'
+            Get-Emoji -Name cactus | Should-Be '🌵'
         }
 
         It "Returns 🦒 (giraffe)" {
-            Get-Emoji -Name giraffe | Should -Be '🦒'
+            Get-Emoji -Name giraffe | Should-Be '🦒'
         }
     }
 
@@ -60,15 +60,15 @@ Describe "Get-Emoji" {
             }
 
             It "Returns ✏️ (pencil)" {
-                $emojis | Should -Contain "✏️"
+                $emojis | Should-ContainCollection "✏️"
             }
 
             It "Returns 🐧 (penguin)" {
-                $emojis | Should -Contain "🐧"
+                $emojis | Should-ContainCollection "🐧"
             }
 
             It "Returns 😔 (pensive)" {
-                $emojis | Should -Contain "😔"
+                $emojis | Should-ContainCollection "😔"
             }
         }
 
@@ -78,15 +78,15 @@ Describe "Get-Emoji" {
             }
 
             It "Returns 🙂 (slightly smiling face)" {
-                $emojis | Should -Contain "🙂"
+                $emojis | Should-ContainCollection "🙂"
             }
 
             It "Returns 😁 (beaming face with smiling eyes)" {
-                $emojis | Should -Contain "😁"
+                $emojis | Should-ContainCollection "😁"
             }
 
             It "Returns 😊 (smiling face with smiling eyes)" {
-                $emojis | Should -Contain "😊"
+                $emojis | Should-ContainCollection "😊"
             }
         }
     }
@@ -120,7 +120,7 @@ Describe "Get-Emoji" {
             @{ Name = "cactus"; Expected = '🌵'}
             @{ Name = "giraffe"; Expected = '🦒'}
         ) {
-            Get-Emoji -Name $name | Should -Be $expected
+            Get-Emoji -Name $name | Should-Be $expected
         }
     }
 
@@ -135,7 +135,7 @@ Describe "Get-Emoji" {
                 @{ Name = "penguin"; Expected = '🐧'}
                 @{ Name = "pensive"; Expected = '😔'}
             ) {
-                $emojis | Should -Contain $expected
+                $emojis | Should-ContainCollection $expected
             }
         }
 
@@ -149,7 +149,7 @@ Describe "Get-Emoji" {
                 @{ Name = "beaming face with smiling eyes"; Expected = '😁'}
                 @{ Name = "smiling face with smiling eyes"; Expected = '😊'}
             ) {
-                $emojis | Should -Contain $expected
+                $emojis | Should-ContainCollection $expected
             }
         }
     }
