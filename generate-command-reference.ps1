@@ -224,11 +224,46 @@ function Repair-ExampleFences {
     return ($result -join $eol)
 }
 
+function Repair-RelatedLinks {
+    <#
+        A .LINK block that holds more than one entry is rendered as a single link
+        with an empty url, for example
+
+            - [Invoke-Pester
+            https://kevinmarquette.github.io/2017-03-17-...]()
+
+        Invoke-Gherkin in Pester 4.10.1 writes its help that way. Split such a link
+        into one entry per line, and expand a bare command name to its pester.dev url
+        so it matches the urls the other .LINK entries already use.
+    #>
+    param([string] $Content)
+
+    $eol = if ($Content -match "`r`n") { "`r`n" } else { "`n" }
+
+    [regex]::Replace(
+        $Content,
+        '(?m)^-[ ]\[([\s\S]*?)\]\(\)[ ]*$',
+        {
+            param($m)
+            $entries = $m.Groups[1].Value -split "`r?`n" |
+                ForEach-Object { $_.Trim() } |
+                Where-Object { $_ }
+
+            ($entries | ForEach-Object {
+                $target = if ($_ -match '^https?://') { $_ } else { "https://pester.dev/docs/commands/$_" }
+                "- [$target]($target)"
+            }) -join $eol
+        }
+    )
+}
+
 # -----------------------------------------------------------------------------
 # Post-process the generated MDX:
 #  * Repair the mismatched code fences PlatyPS emits for .EXAMPLE blocks that
 #    contain their own Markdown fences (see Repair-ExampleFences) so the MDX
 #    compiles.
+#  * Split multi-entry .LINK blocks that render as one link with an empty url
+#    (see Repair-RelatedLinks) so the links are not dead.
 # -----------------------------------------------------------------------------
 Write-Host 'Post-processing generated MDX files' -ForegroundColor Magenta
 $commandsFolder = Join-Path -Path $docusaurusOptions.DocsFolder -ChildPath $docusaurusOptions.Sidebar
@@ -237,6 +272,8 @@ Get-ChildItem -Path $commandsFolder -Filter '*.mdx' | ForEach-Object {
     # Fix mismatched code fences inside the EXAMPLES section
     # TODO: Remove? Not really needed. Only fixed two earlier typos in pester/pester repo.
     $updated = Repair-ExampleFences -Content $content
+    # Fix RELATED LINKS entries that lost their url
+    $updated = Repair-RelatedLinks -Content $updated
     if ($updated -ne $content) {
         Set-Content -LiteralPath $_.FullName -Value $updated -NoNewline -Encoding utf8
     }
