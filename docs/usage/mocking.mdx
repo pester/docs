@@ -304,8 +304,10 @@ Mock Get-Thing { "one" } -ParameterFilter { $Id -eq 1 }  # specific case
 
 ### Global mocks
 
-:::warning Experimental
+:::warning Experimental, and we want your feedback
 `Mock.Global` is experimental. The option name and the behavior may still change before it is declared stable.
+
+We would like this to become the default in Pester v7, and the feedback from v6 is what decides that. For most suites we expect turning it on to change nothing at all. If it does change a result for you, or if it changes nothing, please [tell us](https://github.com/pester/Pester/issues/new/choose). Both answers are useful.
 :::
 
 A normal mock only applies to calls made from the scope where it is defined, or from the module named with `-ModuleName`. To be certain that a command like `Invoke-WebRequest` is never called by any code under test, you have to know every module that might call it and mock it in each one.
