@@ -302,6 +302,48 @@ Mock Get-Thing { "default" }                             # handles everything el
 Mock Get-Thing { "one" } -ParameterFilter { $Id -eq 1 }  # specific case
 ```
 
+### Global mocks
+
+:::warning Experimental
+`Mock.Global` is experimental. The option name and the behavior may still change before it is declared stable.
+:::
+
+A normal mock only applies to calls made from the scope where it is defined, or from the module named with `-ModuleName`. To be certain that a command like `Invoke-WebRequest` is never called by any code under test, you have to know every module that might call it and mock it in each one.
+
+With `Mock.Global` a mock applies to calls of the command from any module or script in the runspace:
+
+```powershell
+$config = New-PesterConfiguration
+$config.Run.Path = './tests'
+$config.Mock.Global = $true
+Invoke-Pester -Configuration $config
+```
+
+The mock itself is written exactly as it is today, one mock now covers every caller:
+
+```powershell
+Describe 'Get-Data' {
+    It 'does not reach the network' {
+        Mock Invoke-WebRequest { '<html />' }
+
+        Get-Data                    # a function in another module that calls Invoke-WebRequest
+
+        Should -Invoke Invoke-WebRequest -Times 1
+    }
+}
+```
+
+A common use is making sure a command never really runs. Mock it to throw, and combine that with `-ParameterFilter` so only the calls you care about are blocked while the rest reach the real command:
+
+```powershell
+# block deleting anything outside TestDrive, from any code under test
+Mock Remove-Item { throw 'blocked' } -ParameterFilter { $Path -notlike "$TestDrive*" }
+```
+
+The mock is removed when the test or block that defined it ends, like any other mock, and it is tied to the run that created it, so it cannot leak into a nested Pester-in-Pester run.
+
+With the option on, `-ModuleName` is only a hint used to resolve the command, not a scope, so existing mocks keep working unchanged.
+
 ### Mock history
 
 When a `Should -Invoke` assertion fails, Pester v6 prints the recorded mock history for the command. It lists every recorded call and marks whether each one matched your parameter filter, so you can see why a filter did or didn't match without adding your own `Write-Host` debugging.

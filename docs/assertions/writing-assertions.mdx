@@ -1,0 +1,172 @@
+---
+id: writing-assertions
+title: Writing your own assertions (v6)
+description: How to write your own Should-* assertion in Pester v6 using New-ShouldAssertion, so it collects pipeline input, formats values and fails exactly like a built-in assertion.
+---
+
+The [`Should-*` assertions](./should-command) that ship with Pester v6 are ordinary PowerShell functions. So are yours. There is no operator to register and no 32 operator limit: you write a function named `Should-Something`, and as long as it is loaded, users call it like any built-in assertion.
+
+The part that is not obvious is everything a built-in assertion does *around* the actual comparison: collecting the value whether it came from the pipeline or from `-Actual`, formatting values the way Pester formats them, printing the hint when someone pipes a collection into a value assertion, and routing the failure through the path that makes [soft assertions](./soft-assertions) and mock `-ParameterFilter` work.
+
+[`New-ShouldAssertion`](../commands/New-ShouldAssertion) gives you all of that.
+
+:::tip Looking for the v5 syntax?
+This page is about the `Should-*` assertions in v6. To extend the classic `Should -Be` syntax with `Add-ShouldOperator`, see [Custom assertions (v5)](./custom-assertions).
+:::
+
+## A minimal assertion
+
+Call `New-ShouldAssertion` once at the top of your function, passing your own `$PSCmdlet`, your `-Actual` parameter and `$Input`. Then ask it for the value and call `Fail()` when the check does not hold:
+
+```powershell title="MyAssertions.psm1"
+function Should-BeAwesome {
+    [CmdletBinding()]
+    param (
+        [Parameter(Position = 1, ValueFromPipeline)] $Actual,
+        [Parameter(Position = 0)]                    $Expected = 'Awesome',
+        [string] $Because
+    )
+
+    $assert = New-ShouldAssertion -Caller $PSCmdlet -Actual $Actual -Buffer $Input
+    $Actual = $assert.Actual()
+
+    if ($Actual -ne $Expected) {
+        $assert.Fail('Expected <expected>,<because> but got <actual>.', @{ Expected = $Expected; Because = $Because })
+    }
+}
+```
+
+There is nothing to call when the assertion passes. A passing assertion simply returns without calling `Fail()`.
+
+It is then used, and fails, like a built-in one:
+
+```powershell
+'Awesome' | Should-BeAwesome              # passes
+'meh'     | Should-BeAwesome -Because 'the docs promised' 'Awesome'
+# Expected 'Awesome', because the docs promised, but got 'meh'.
+```
+
+:::note Pass `$Input` even when you don't expect pipeline input
+`-Actual` and `$Input` are both passed in every time. Whichever one the user actually used, the other is empty or `$null`, and `Actual()` returns the right value. This is also what lets Pester tell the two call styles apart when it words the hint.
+:::
+
+## The three parameters
+
+| Parameter | What to pass | Why |
+|---|---|---|
+| `-Caller` | your assertion's `$PSCmdlet` | reaches the caller's session state, so soft assertions, `-ErrorAction` and mock parameter filters resolve against the real caller |
+| `-Actual` | your `-Actual` parameter | the value when it was passed by parameter |
+| `-Buffer` | `$Input` | the values when they arrived by pipeline |
+
+## Failure messages
+
+`Fail(message)` takes the message template, and optionally a hashtable of data. The template can contain these tokens:
+
+| Token | Replaced with |
+|---|---|
+| `<expected>` | the formatted `Expected` value from the data |
+| `<actual>` | the formatted actual value |
+| `<expectedType>` | the type of the expected value |
+| `<actualType>` | the type of the actual value |
+| `<because>` | the `Because` reason, worded and punctuated for you |
+| `<key>` | any other key you put in the data hashtable |
+
+`Expected`, `Actual`, `Because` and `Hint` are reserved keys with the meanings above. Every other key becomes a `<key>` token, which is how you get extra values into a message:
+
+```powershell
+$assert.Fail('Expected <expected> items,<because> but got <actual> in <collection>.',
+    @{ Expected = $Expected; Actual = $count; Because = $Because; Collection = $items })
+```
+
+Whether `Fail()` throws immediately or records the failure and lets the test continue is decided by the caller's `-ErrorAction` or by `Should.ErrorAction`, exactly like a built-in assertion. You do not handle that yourself.
+
+## Input shapes with `-As`
+
+PowerShell unwraps the pipeline, so `1 | Should-Be` and `@(1) | Should-Be` arrive identically. Assertions therefore have to decide whether a single piped item means a value or a one item collection. `-As` makes that choice, and it also selects the wording of the diagnostic hint printed when the assertion fails:
+
+| `-As` | Input handling | Use for |
+|---|---|---|
+| `Scalar` (default) | unrolls a single piped item | value assertions like `Should-Be` |
+| `ExactType` | unrolls a single piped item | value assertions that also compare the type |
+| `Collection` | keeps the input as a collection | collection assertions like `Should-BeCollection` |
+| `CollectionItems` | keeps the input as a collection | collection assertions that report on individual items |
+| `None` | unrolls a single piped item, no input hint | structural comparison like `Should-BeEquivalent`, where there is no input-shape mistake to hint about |
+
+```powershell
+$assert = New-ShouldAssertion -Caller $PSCmdlet -Actual $Actual -Buffer $Input -As Collection
+```
+
+## Overriding the hint
+
+By default a failure carries Pester's input-shape hint, the one that points out that a collection was piped into a value assertion. When your assertion knows something more specific about why it failed, pass a `Hint` in the data and it replaces the default. It is printed in the standard `Hint: <text>` form:
+
+```powershell
+$assert.Fail('Expected an exception with message <expected>, but got <actual>.', @{
+    Expected = $Expected
+    Actual   = $message
+    Hint     = "-ExceptionMessage matches using wildcards (-like). Escape [ ] * ? to match them literally."
+})
+```
+
+This is how [`Should-Throw`](../commands/Should-Throw) explains that an `-ExceptionMessage` filter failed only because of unescaped wildcard characters.
+
+## The rest of the helper
+
+Beyond `Actual()` and `Fail()`, the object has a few methods for the less common cases:
+
+- `Hint()` returns the diagnostic input hint, or `$null`, when you want to inspect it before deciding how to fail.
+- `Format(value)` formats a value the way Pester formats values in assertion messages.
+- `EnsureScalar(expected)` returns the value unchanged, or throws when it is a collection. Use it to guard an assertion that only makes sense against a single value.
+- `IsCollection(value)` tells you whether Pester treats a value as a collection.
+
+## Sharing logic between assertions
+
+When several of your assertions share the same comparison, factor it into a helper and thread the *calling* assertion's `$PSCmdlet` and `$Input` through. Nothing keys off the assertion's name, everything keys off the `$PSCmdlet` you pass as `-Caller`, so the hint, the pipeline detection and the `-ErrorAction` decision stay identical no matter how many wrappers sit in between:
+
+```powershell
+function Invoke-MyEquals {
+    param ([System.Management.Automation.PSCmdlet] $Cmdlet, $Actual, $Buffer, $Expected)
+
+    $assert = New-ShouldAssertion -Caller $Cmdlet -Actual $Actual -Buffer $Buffer
+    $value = $assert.Actual()
+    if ($value -ne $Expected) {
+        $assert.Fail('Expected <expected> but got <actual>.', @{ Expected = $Expected })
+    }
+}
+
+function Should-Equal {
+    [CmdletBinding()]
+    param ([Parameter(ValueFromPipeline)] $Actual, [Parameter(Position = 0)] $Expected)
+    end { Invoke-MyEquals -Cmdlet $PSCmdlet -Actual $Actual -Buffer $Input -Expected $Expected }
+}
+```
+
+## Good practices
+
+- Name the function `Should-<Something>` so it reads like the built-in assertions and is easy to find.
+- Accept `-Because` and pass it in the data, so users can explain why the assertion should hold.
+- Put `-Actual` at `Position = 1` and the expected value at `Position = 0`, matching the built-in assertions.
+- Provide comment based help with a synopsis and examples, so `Get-Help` works on your assertion.
+- Test your assertion, including its failure. A failed `Should-*` assertion produces an error record with the `FullyQualifiedErrorId` set to `PesterAssertionFailed`.
+
+## Using it in tests
+
+Import the module that defines your assertions, then use them like any other:
+
+```powershell title="demo.tests.ps1"
+BeforeAll {
+    Import-Module "$PSScriptRoot/MyAssertions.psm1" -DisableNameChecking
+}
+
+Describe 'Should-BeAwesome' {
+    It 'passes for the awesome' {
+        'Awesome' | Should-BeAwesome
+    }
+
+    It 'fails for the lame' {
+        { 'meh' | Should-BeAwesome } | Should-Throw -ErrorId 'PesterAssertionFailed'
+    }
+}
+```
+
+Custom assertions also work inside a mock `-ParameterFilter` with no extra work, because they go through the same failure path as the built-in ones.

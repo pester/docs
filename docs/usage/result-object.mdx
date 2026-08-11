@@ -250,7 +250,7 @@ Files marked this way run **sequentially, in the parent session, after the paral
 
 ### Each file is discovered in isolation
 
-Under parallel, each file is discovered and run in its own clean runspace, so it does **not** see state another file created at discovery time. A file that relied on another file's setup will fail - typically surfacing as a failed container (`Run.FailedContainers`) or a discovery error in the container's `ErrorRecord`. Make each file self-contained, and use `Run.BeforeContainer` (or a `Pester.BeforeContainer.ps1` in the repo root) for shared bootstrap that must run before every file. See [Discovery and Run](./discovery-and-run) and the [v5 to v6 migration guide](../migrations/v5-to-v6#discovery-and-run-now-happen-per-file).
+Under parallel, each file is discovered and run in its own clean runspace, so it does **not** see state another file created at discovery time. A file that relied on another file's setup will fail - typically surfacing as a failed container (`Run.FailedContainers`) or a discovery error in the container's `ErrorRecord`. Make each file self-contained, and use a `Pester.BeforeContainer.ps1` in the repo root for shared bootstrap that must run before every file. See [Discovery and Run](./discovery-and-run) and the [v5 to v6 migration guide](../migrations/v5-to-v6#discovery-and-run-now-happen-per-file).
 
 ## Stable vs. internal properties
 
