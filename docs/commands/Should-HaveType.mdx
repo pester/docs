@@ -23,13 +23,16 @@ Asserts that the input is of the expected type.
 ## SYNTAX
 
 ```powershell
-Should-HaveType [[-Actual] <Object>] [-Expected] <Type> [-Because <String>] [<CommonParameters>]
+Should-HaveType [[-Actual] <Object>] [-Expected] <Object> [-Because <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
 
 This assertion uses `-is` to verify that the actual value is assignable to the expected type.
 Derived types and implemented interfaces also satisfy the check.
+
+When the expected type is given as a name that does not resolve to a loaded .NET type, the assertion falls back to matching against the actual value's `PSTypeNames`.
+This allows asserting against PowerShell custom types, such as objects tagged with a `PSTypeName` or extended with `Add-Member -TypeName`.
 
 ## EXAMPLES
 
@@ -41,6 +44,15 @@ Derived types and implemented interfaces also satisfy the check.
 ```
 
 These assertions will pass, because the actual value is of the expected type.
+
+### EXAMPLE 2
+
+```powershell
+$actual = [PSCustomObject]@{ PSTypeName = 'MyApp.Person'; Name = 'Jane' }
+$actual | Should-HaveType 'MyApp.Person'
+```
+
+This assertion will pass, because 'MyApp.Person' is not a loaded .NET type, so the actual value's PSTypeNames are checked instead.
 
 ## PARAMETERS
 
@@ -63,9 +75,10 @@ Accept wildcard characters: False
 ### -Expected
 
 The expected type.
+Provide a `[Type]`, a type name that resolves to a loaded .NET type, or a custom type name to match against the actual value's `PSTypeNames`.
 
 ```yaml
-Type: Type
+Type: Object
 Parameter Sets: (All)
 Aliases:
 
@@ -116,4 +129,4 @@ See https://pester.dev/docs/assertions/soft-assertions for more about soft asser
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 6.0.0-rc5](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.1.0](https://github.com/pester/pester).*
