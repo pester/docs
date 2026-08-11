@@ -18,7 +18,7 @@ This page is about the `Should-*` assertions in v6. To extend the classic `Shoul
 
 Call `New-ShouldAssertion` once at the top of your function, passing your own `$PSCmdlet`, your `-Actual` parameter and `$Input`. Then ask it for the value and call `Fail()` when the check does not hold:
 
-```powershell title="MyAssertions.psm1"
+```powershell title="MyAssertions.ps1"
 function Should-BeAwesome {
     [CmdletBinding()]
     param (
@@ -143,11 +143,58 @@ function Should-Equal {
 
 ## Good practices
 
-- Name the function `Should-<Something>` so it reads like the built-in assertions and is easy to find.
+- Name the function `Should-<Something>` so it reads like the built-in assertions and is easy to find. When you ship it in a module, see [Shipping your assertions in a module](#shipping-your-assertions-in-a-module) below, because `Should` is not an approved verb.
 - Accept `-Because` and pass it in the data, so users can explain why the assertion should hold.
 - Put `-Actual` at `Position = 1` and the expected value at `Position = 0`, matching the built-in assertions.
 - Provide comment based help with a synopsis and examples, so `Get-Help` works on your assertion.
 - Test your assertion, including its failure. A failed `Should-*` assertion produces an error record with the `FullyQualifiedErrorId` set to `PesterAssertionFailed`.
+
+## Shipping your assertions in a module
+
+`Should` is not an approved PowerShell verb. A test file that defines or dot-sources a `Should-*` function is fine, but a **module** that exports one makes `Import-Module` print this to everyone who uses it:
+
+```
+WARNING: The names of some imported commands from the module 'MyAssertions' include unapproved
+verbs that might make them less discoverable.
+```
+
+A module manifest with an explicit `FunctionsToExport` does not suppress it, and `Import-Module -DisableNameChecking` only moves the problem to your users, who then have to remember the switch and lose name checking for everything else in that import.
+
+Instead, **name the function with the approved `Assert` verb and export a `Should-*` alias**. Aliases are not verb checked, so the module imports quietly and users still call it by the name that reads like an assertion:
+
+```powershell title="MyAssertions.psm1"
+function Assert-BeAwesome {
+    [CmdletBinding()]
+    param (
+        [Parameter(Position = 1, ValueFromPipeline)] $Actual,
+        [Parameter(Position = 0)]                    $Expected = 'Awesome',
+        [string] $Because
+    )
+
+    $assert = New-ShouldAssertion -Caller $PSCmdlet -Actual $Actual -Buffer $Input
+    $Actual = $assert.Actual()
+
+    if ($Actual -ne $Expected) {
+        $assert.Fail('Expected <expected>,<because> but got <actual>.', @{ Expected = $Expected; Because = $Because })
+    }
+}
+
+Set-Alias -Name Should-BeAwesome -Value Assert-BeAwesome
+Export-ModuleMember -Function Assert-BeAwesome -Alias Should-BeAwesome
+```
+
+And in the manifest:
+
+```powershell title="MyAssertions.psd1"
+FunctionsToExport = @('Assert-BeAwesome')
+AliasesToExport   = @('Should-BeAwesome')
+```
+
+Nothing in Pester keys off the name of the assertion, everything keys off the `$PSCmdlet` you pass as `-Caller`, so the assertion behaves identically whether it is called as `Assert-BeAwesome` or through the `Should-BeAwesome` alias.
+
+:::note Why doesn't Pester itself warn?
+Pester exports `Should-Be` and friends without a warning because it adds `Should` to PowerShell's internal verb list from its own compiled assembly when it loads. That is not something a script module can do, so use the alias instead.
+:::
 
 ## Using it in tests
 
@@ -155,7 +202,7 @@ Import the module that defines your assertions, then use them like any other:
 
 ```powershell title="demo.tests.ps1"
 BeforeAll {
-    Import-Module "$PSScriptRoot/MyAssertions.psm1" -DisableNameChecking
+    Import-Module "$PSScriptRoot/MyAssertions.psd1"
 }
 
 Describe 'Should-BeAwesome' {
