@@ -23,7 +23,7 @@ Compares the actual value to a boolean $true. It converts input values to boolea
 ## SYNTAX
 
 ```powershell
-Should-BeTruthy [[-Actual] <Object>] [[-Because] <string>]
+Should-BeTruthy [[-Actual] <Object>] [-Because <string>]
 ```
 
 ## DESCRIPTION
@@ -89,7 +89,7 @@ SupportsWildcards: false
 Aliases: []
 ParameterSets:
 - Name: (All)
-  Position: 1
+  Position: Named
   IsRequired: false
   ValueFromPipeline: false
   ValueFromPipelineByPropertyName: false
@@ -129,4 +129,4 @@ See https://pester.dev/docs/assertions/soft-assertions for more about soft asser
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 6.0.0](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.1.0](https://github.com/pester/pester).*

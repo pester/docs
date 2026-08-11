@@ -23,13 +23,15 @@ Asserts that the input is not of the expected type.
 ## SYNTAX
 
 ```powershell
-Should-NotHaveType [-Expected] <type> [[-Actual] <Object>] [-Because <string>]
+Should-NotHaveType [-Expected] <Object> [[-Actual] <Object>] [-Because <string>]
 ```
 
 ## DESCRIPTION
 
 This assertion uses `-is` to verify that the actual value is not assignable to the expected type.
 Derived types and implemented interfaces still count as the expected type.
+
+When the expected type is given as a name that does not resolve to a loaded .NET type, the assertion falls back to matching against the actual value's `PSTypeNames`, so PowerShell custom types are supported too.
 
 ## EXAMPLES
 
@@ -89,9 +91,10 @@ HelpMessage: ''
 ### -Expected
 
 The expected type.
+Provide a `[Type]`, a type name that resolves to a loaded .NET type, or a custom type name to match against the actual value's `PSTypeNames`.
 
 ```yaml
-Type: System.Type
+Type: System.Object
 DefaultValue: ''
 SupportsWildcards: false
 Aliases: []
@@ -137,4 +140,4 @@ See https://pester.dev/docs/assertions/soft-assertions for more about soft asser
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 6.0.0](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.1.0](https://github.com/pester/pester).*

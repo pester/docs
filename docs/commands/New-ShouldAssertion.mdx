@@ -1,0 +1,251 @@
+---
+id: New-ShouldAssertion
+title: New-ShouldAssertion
+description: Help for Pester command 'New-ShouldAssertion'. Creates the assertion helper object used to author custom `Should-*` assertions.
+keywords:
+  - PowerShell
+  - Pester
+  - Help
+  - Documentation
+hide_title: false
+hide_table_of_contents: false
+custom_edit_url: null
+---
+
+:::info This page was generated
+Contributions are welcome in [Pester-repo](https://github.com/pester/pester).
+:::
+
+## SYNOPSIS
+
+Creates the assertion helper object used to author custom `Should-*` assertions.
+
+## SYNTAX
+
+```powershell
+New-ShouldAssertion [-Caller] <PSCmdlet> [[-Actual] <Object>] [[-Buffer] <Object[]>] [-As <string>]
+```
+
+## DESCRIPTION
+
+`New-ShouldAssertion` returns a small helper object (conventionally stored in `$assert`)
+that gives a custom assertion the same building blocks the built-in `Should-*` assertions
+use: pipeline input collection, consistent value formatting, diagnostic input hints, and
+the shared failure path that powers soft assertions.
+
+Call it once at the top of your assertion, passing the assertion's own `$PSCmdlet`, its
+`-Actual` value and `$Input`, then use the returned object's methods:
+
+- `Actual()` returns the value to assert on, collected from either the pipeline or the
+  `-Actual` parameter.
+The `-As` parameter (`Scalar` (default), `ExactType`, `Collection`
+  or `CollectionItems`) selects both unrolling and the wording of the input hint.
+- `Fail(message [, data])` reports a failure.
+`message` may contain `<expected>`,
+  `<actual>`, `<expectedType>`, `<actualType>`, `<because>` and any `<key>` present in
+  `data`.
+`data` is a hashtable whose `Expected`, `Actual`, `Because` and `Hint` entries
+  are treated specially; all other entries become message tokens.
+`Hint` overrides the
+  default input hint with your own text, appended as `Hint: <text>`.
+Whether this throws
+  immediately or records the failure and continues (a soft assertion) is decided by the
+  caller's `-ErrorAction` or the `Should.ErrorAction` configuration, exactly like the
+  built-in assertions.
+- `Hint()` returns the diagnostic input hint (or `$null`), for assertions that need to
+  inspect it before deciding how to fail.
+- `Format(value)` formats a value the same way Pester does in assertion messages.
+- `EnsureScalar(expected)` returns `expected` unchanged, or throws when it is a collection,
+  guarding assertions that only make sense against a single value.
+- `IsCollection(value)` returns whether a value is treated as a collection.
+
+A passing result is implicit: an assertion passes simply by returning without calling `Fail()`.
+There is nothing to call at the end, and custom assertions still work inside a mock
+`-ParameterFilter` automatically.
+
+## EXAMPLES
+
+### EXAMPLE 1
+
+```powershell
+function Should-BeAwesome {
+    [CmdletBinding()]
+    param (
+        [Parameter(ValueFromPipeline)] $Actual,
+        [Parameter(Position = 0)]      $Expected = 'Awesome',
+        [string] $Because
+    )
+    end {
+        $assert = New-ShouldAssertion -Caller $PSCmdlet -Actual $Actual -Buffer $Input
+        $Actual = $assert.Actual()
+
+      if ($Actual -ne $Expected) {
+            $assert.Fail(
+                'Expected <expected>,<because> but got <actual>.',
+                @{ Expected = $Expected; Because = $Because })
+        }
+    }
+}
+
+'lame' | Should-BeAwesome
+```
+
+Defines and uses a custom assertion.
+Because it goes through the shared failure path, it
+supports `-Because`, soft assertions via `-ErrorAction`, and mock parameter filters for free.
+
+### EXAMPLE 2
+
+```powershell
+# A shared helper backing several of your own assertions. Thread the calling assertion's own
+# $PSCmdlet and $Input into New-ShouldAssertion so pipeline detection, the input hint and the
+# soft/hard -ErrorAction decision all resolve against the real assertion -- no matter how many
+# wrapper layers sit in between.
+function Invoke-MyEquals {
+    param ([System.Management.Automation.PSCmdlet] $Cmdlet, $Actual, $Buffer, $Expected)
+
+$assert = New-ShouldAssertion -Caller $Cmdlet -Actual $Actual -Buffer $Buffer
+    $value = $assert.Actual()
+    if ($value -ne $Expected) {
+        $assert.Fail('Expected <expected> but got <actual>.', @{ Expected = $Expected })
+    }
+}
+
+function Should-Equal {
+    [CmdletBinding()]
+    param ([Parameter(ValueFromPipeline)] $Actual, [Parameter(Position = 0)] $Expected)
+    end { Invoke-MyEquals -Cmdlet $PSCmdlet -Actual $Actual -Buffer $Input -Expected $Expected }
+}
+```
+
+Factors common assertion logic into one helper reused by several `Should-*` assertions.
+Nothing
+keys off the assertion's *name*, so the helper does not need to know which assertion called it;
+everything keys off the single `$PSCmdlet` you pass as `-Caller`.
+Passing the user-facing
+assertion's `$PSCmdlet` and `$Input` down keeps the input hint, pipeline detection and
+`-ErrorAction` behaviour identical to an unwrapped assertion, at any wrapping depth.
+
+## PARAMETERS
+
+### -Actual
+
+The assertion's `-Actual` value.
+Pass it even when the value usually arrives from the
+pipeline; it is `$null` in that case and the pipeline `$Input` is used instead.
+
+```yaml
+Type: System.Object
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
+
+### -As
+
+How the input is collected: `Scalar` (default) and `ExactType` unroll a single piped value,
+`Collection` and `CollectionItems` keep it as a collection.
+The value also selects the
+wording of the diagnostic hint shown when the assertion fails; use `None` for an assertion
+that compares the whole input structurally (like `Should-BeEquivalent`) and so has no
+input-shape gotcha to hint about.
+
+```yaml
+Type: System.String
+DefaultValue: Scalar
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
+
+### -Buffer
+
+The assertion function's `$Input`.
+Holds the values received from the pipeline.
+Pass
+`$Input` even when the assertion is usually called with `-Actual`; it is empty in that case.
+
+```yaml
+Type: System.Object[]
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: 2
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
+
+### -Caller
+
+The `$PSCmdlet` of the assertion function.
+Used to reach the caller's session state (so
+soft assertions and the mock parameter filter behave correctly) and to recover the
+original pipeline input for hints.
+
+```yaml
+Type: System.Management.Automation.PSCmdlet
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: 0
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
+
+### CommonParameters
+
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable,
+-InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable,
+-ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see
+[about_CommonParameters](https://go.microsoft.com/fwlink/?LinkID=113216).
+
+## INPUTS
+
+## OUTPUTS
+
+### ShouldAssertion
+
+## NOTES
+
+## RELATED LINKS
+
+- [https://pester.dev/docs/commands/New-ShouldAssertion](https://pester.dev/docs/commands/New-ShouldAssertion)
+- [https://pester.dev/docs/assertions](https://pester.dev/docs/assertions)
+- [https://pester.dev/docs/commands/Should-Be](https://pester.dev/docs/commands/Should-Be)
+
+## VERSION
+
+*This page was generated using comment-based help in [Pester 6.1.0](https://github.com/pester/pester).*

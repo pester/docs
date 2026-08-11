@@ -31,6 +31,7 @@ module.exports = [
     'commands/New-MockObject',
     'commands/New-PesterConfiguration',
     'commands/New-PesterContainer',
+    'commands/New-ShouldAssertion',
     'commands/Set-ItResult',
     'commands/Should-All',
     'commands/Should-Any',

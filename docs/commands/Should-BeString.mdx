@@ -24,7 +24,7 @@ Asserts that the actual value is equal to the expected value.
 
 ```powershell
 Should-BeString [-Expected] <string> [[-Actual] <Object>] [-Because <string>] [-CaseSensitive]
- [-IgnoreWhitespace] [-TrimWhitespace]
+ [-IgnoreWhitespace] [-TrimWhitespace] [-NormalizeLineEnding]
 ```
 
 ## DESCRIPTION
@@ -49,6 +49,14 @@ This assertion will pass, because the actual value is equal to the expected valu
 ```
 
 This assertion will fail, because the actual value is not equal to the expected value.
+
+### EXAMPLE 3
+
+```powershell
+"" | Should-BeString ""
+```
+
+This assertion will pass, because an empty string is allowed as the expected value.
 
 ## PARAMETERS
 
@@ -157,6 +165,29 @@ AcceptedValues: []
 HelpMessage: ''
 ```
 
+### -NormalizeLineEnding
+
+Normalizes line endings before comparison, so that `\r\n`, `\r`, and the Unicode line separator are all treated as `\n`.
+Use this to compare multi-line strings across platforms without failing on line-ending style.
+Unlike `-IgnoreWhitespace`, the newlines and their positions are kept, so indentation and blank lines are still compared.
+
+```yaml
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: False
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
+
 ### -TrimWhitespace
 
 Trims whitespace at the start and end of the string.
@@ -208,4 +239,4 @@ See https://pester.dev/docs/assertions/soft-assertions for more about soft asser
 
 ## VERSION
 
-*This page was generated using comment-based help in [Pester 6.0.0](https://github.com/pester/pester).*
+*This page was generated using comment-based help in [Pester 6.1.0](https://github.com/pester/pester).*
