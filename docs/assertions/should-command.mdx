@@ -480,6 +480,9 @@ All `Should-*` assertions are listed below, grouped by the kind of check they pe
 #### Exception
 
 - [`Should-Throw`](../commands/Should-Throw.mdx) — Asserts that a script block throws an exception.
+:::tip Missing Should-NotThrow?
+Use `& { ... }` to invoke the scriptblock, call the function or assert on the result. Any unexpected errors will fail the test.
+:::
 
 #### Mock
 
