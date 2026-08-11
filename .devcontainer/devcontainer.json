@@ -12,7 +12,7 @@
   },
 
   // Windows users should clone repo in container volume or using WSL2
-  // If not, uncomment this to fix poor yarn/npm performance
+  // If not, uncomment this to fix poor pnpm/npm performance
   // "mounts": [
   //   "source=pester-docs-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume"
   // ],
@@ -23,7 +23,7 @@
   ],
 
   // Use 'postCreateCommand' to run commands after the container is created.
-  "postCreateCommand": "yarn install",
+  "postCreateCommand": "pnpm install",
 
   // Configure tool-specific properties.
   "customizations": {

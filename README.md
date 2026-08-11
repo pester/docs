@@ -22,28 +22,28 @@ To submit an update:
 
 The website is built using:
 
-- [Docusaurus 2](https://v2.docusaurus.io/), a modern static website generator written in React
+- [Docusaurus](https://docusaurus.io/), a modern static website generator written in React
 - [Alt3.Docusaurus.Powershell](https://docusaurus-powershell.netlify.com/), a Powershell Get-Help to markdown generator
 
 ### Requirements
 
 - [Node.js](https://nodejs.org/en/download/)
-- [Yarn](https://yarnpkg.com/en/)
+- [pnpm](https://pnpm.io/)
 
 ### Installation
 
 To install all required dependencies and start a local development server:
 
 ```bash
-yarn
-yarn start
+pnpm install
+pnpm start
 ```
 
 ## Website Customization
 
 Because the website is using Docusaurus as the underlying technology:
 
-- please refer to the [Docusaurus 2 Documentation](https://v2.docusaurus.io/) for usage information
+- please refer to the [Docusaurus Documentation](https://docusaurus.io/) for usage information
   and available customization options
 - please report technical issues at the [Docusaurus Repository](https://github.com/facebook/docusaurus/issues)
 
@@ -59,18 +59,21 @@ simply update the correlating `.json` configuration file as can be seen in
 
 ### Bumping Docusaurus
 
-To upgrade docusaurus to a more recent version:
+Dependabot is used to update dependencies regularly. If you need to upgrade manually, follow these steps:
 
 1. Edit `package.json`
 2. Manually bump the version number of these dependency packages:
     ```json
-    @docusaurus/core": "^2.2.0",
-    @docusaurus/preset-classic": "^2.2.0",
+    "@docusaurus/core": "^3.10.2",
+    "@docusaurus/faster": "^3.10.2",
+    "@docusaurus/preset-classic": "^3.10.2",
+    "@docusaurus/module-type-aliases": "^3.10.2",
+    "@docusaurus/types": "^3.10.2"
     ```
-3. Run `yarn install`
+3. Run `pnpm install`
 4. Submit a pull request with (only) these updated files:
    - `package.json`
-   - `yarn.lock`
+   - `pnpm-lock.yaml`
 
 ## Code of Conduct
 
