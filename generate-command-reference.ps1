@@ -119,10 +119,10 @@ $docusaurusOptions = @{
     SideBar         = 'commands'
     EditUrl         = 'null' # prevent the `Edit this Page` button from appearing
     Exclude         = @(
-        'Get-MockDynamicParameter'
-        'Invoke-Mock'
-        'SafeGetCommand'
-        'Set-DynamicParameterVariable'
+        'Get-MockDynamicParameter'      # v4 only
+        'Invoke-Mock'                   # v4 only
+        'SafeGetCommand'                # v4 only
+        'Set-DynamicParameterVariable'  # v4 only
     )
     MetaKeywords    = @(
         'PowerShell'
