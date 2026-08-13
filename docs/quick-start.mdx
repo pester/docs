@@ -231,7 +231,7 @@ Describe 'Get-Planet' {
 ```
 ### BeforeAll
 
-Now that we split the tests into groups we might want to share some common code among those tests. To do this we `BeforeAll` block that will run at the start of the block that contains it, or at the start of the file if not contained in any block. In our example we used it to define the tested function.
+Now that we split the tests into groups we might want to share some common code among those tests. To do this we use a `BeforeAll` block that will run at the start of the block that contains it, or at the start of the file if not contained in any block. In our example we used it to define the tested function.
 
 There is also `AfterAll` block that will run at the end of the block, and `BeforeEach / AfterEach` that will run before every test in the given block.
 
