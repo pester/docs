@@ -235,7 +235,6 @@ Now that we split the tests into groups we might want to share some common code 
 
 There is also `AfterAll` block that will run at the end of the block, and `BeforeEach / AfterEach` that will run before every test in the given block.
 
-
 ## Splitting to tests and function
 
 Until now we had just a single file that contained both our tests and the function that's being tested. In real life you want the tested function to be separated from its tests. This way you can run the function, without running the tests with it.
@@ -326,4 +325,4 @@ Tests are written into `It` blocks and grouped by `Describe` or `Context` into g
 
 `Invoke-Pester` can then be used to run the tests in a given test file, and `-Output Detailed` can be used to show every test in the output, no matter if it passed or failed. Otherwise only failed tests, or whole files (when everything passed) are shown.
 
-To learn more, for example how to run multiple test files in one run, continue to the [Usage](usage/file-placement-and-naming) section.
+To learn more (for example how to run multiple test files in one run), continue to the [Usage](usage/file-placement-and-naming) section.
