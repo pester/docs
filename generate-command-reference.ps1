@@ -250,7 +250,7 @@ function Repair-RelatedLinks {
                 Where-Object { $_ }
 
             ($entries | ForEach-Object {
-                $target = if ($_ -match '^https?://') { $_ } else { "https://pester.dev/docs/commands/$_" }
+                $target = if ($_ -match '^https?://') { $_ } else { "https://pester.dev/docs/$DocsVersion/commands/$_" }
                 "- [$target]($target)"
             }) -join $eol
         }
@@ -262,18 +262,24 @@ function Repair-RelatedLinks {
 #  * Repair the mismatched code fences PlatyPS emits for .EXAMPLE blocks that
 #    contain their own Markdown fences (see Repair-ExampleFences) so the MDX
 #    compiles.
-#  * Split multi-entry .LINK blocks that render as one link with an empty url
+#  * Split multi-entry .LINK blocks in v4 that render as one link with an empty url
 #    (see Repair-RelatedLinks) so the links are not dead.
 # -----------------------------------------------------------------------------
 Write-Host 'Post-processing generated MDX files' -ForegroundColor Magenta
 $commandsFolder = Join-Path -Path $docusaurusOptions.DocsFolder -ChildPath $docusaurusOptions.Sidebar
 Get-ChildItem -Path $commandsFolder -Filter '*.mdx' | ForEach-Object {
     $content = Get-Content -LiteralPath $_.FullName -Raw
+
     # Fix mismatched code fences inside the EXAMPLES section
     # TODO: Remove? Not really needed. Only fixed two earlier typos in pester/pester repo.
     $updated = Repair-ExampleFences -Content $content
-    # Fix RELATED LINKS entries that lost their url
-    $updated = Repair-RelatedLinks -Content $updated
+
+    if ($DocsVersion -eq 'v4' -and $_.BaseName -eq 'Invoke-Gherkin') {
+        # Fix RELATED LINKS in Invoke-Gherkin. For every other version, fix source.
+        # Remove if 4.10.2 is ever released
+        $updated = Repair-RelatedLinks -Content $updated
+    }
+
     if ($updated -ne $content) {
         Set-Content -LiteralPath $_.FullName -Value $updated -NoNewline -Encoding utf8
     }
