@@ -250,7 +250,10 @@ function Repair-RelatedLinks {
                 Where-Object { $_ }
 
             ($entries | ForEach-Object {
-                $target = if ($_ -match '^https?://') { $_ } else { "https://pester.dev/docs/$DocsVersion/commands/$_" }
+                $target = if ($_ -match '^https?://') { $_ }
+                elseif ($DocsVersion -like 'v*') { "https://pester.dev/docs/$DocsVersion/commands/$_" }
+                else { "https://pester.dev/docs/commands/$_" }
+
                 "- [$target]($target)"
             }) -join $eol
         }
