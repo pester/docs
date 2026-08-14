@@ -29,7 +29,7 @@ with Visual Studio Code, and it can of course be integrated into a build script 
 Pester contains a powerful set of Mocking capabilities that allow tests to replace the behavior of any
 command inside of a piece of PowerShell code being tested. See [Mocking with Pester](./usage/mocking).
 
-Pester can produce artifacts such as Test Results file and can be used for generating
+Pester can produce artifacts such as
 [Code Coverage](./usage/code-coverage) and [Test Result](./usage/test-results) files for reporting
 results in CI pipeline.
 
@@ -43,7 +43,7 @@ Import-Module Pester -PassThru
 
 ModuleType Version    PreRelease Name
 ---------- -------    ---------- ----
-Script     6.0.0                 Pester
+Script     6.1.0                 Pester
 ```
 
 Full installation guide is available in [installation](introduction/installation).
@@ -52,7 +52,7 @@ Full installation guide is available in [installation](introduction/installation
 
 To start using Pester, create a new file called `Get-Planet.Tests.ps1`. `Get-Planet` is the name of the function
 we will be testing. Feel free to replace that with your own function name. The file name is important because Pester
-uses a naming convention, all `*.Tests.ps1` files will be inspected for tests.
+uses a naming convention: all `*.Tests.ps1` files will be inspected for tests.
 
 Inside of the file paste this code:
 
@@ -96,7 +96,7 @@ Tests completed in 179ms
 Tests Passed: 1, Failed: 0, Skipped: 0, Inconclusive: 0, NotRun: 0
 ```
 
-Looking at the last line of output you can see that we ran 1 test and it Passed. Good job, you just ran your first Pester test! 🥳🥳🥳
+Looking at the last line of output you can see that we ran 1 test and it passed. Good job, you just ran your first Pester test! 🥳🥳🥳
 
 ### Understanding our test
 
@@ -193,10 +193,10 @@ The error is: `Expected [int] 1, but got [int] 8.`, this again reflects exactly 
 ### How tests break
 
 If you look closer on how we broke the test, you can see that there are two distinct ways to break it.
-- The first was that the tested function did not work correctly, this is a good way to break the test.
+- The first was that the tested function did not work correctly; this is a good way to break the test.
 - The second one is when the function works correctly, but the test is incorrect. This is a bad way to break the test.
 
-Being able to distinguish between those two is important, when your test breaks keep in mind that either the function, or the tests might be broken. What you usually do is that you look at what changed more recently. If the test is new, and the function existed for a while, you first blame the test. When the test was passing before, but it is not anymore, you first blame the tested function.
+Being able to distinguish between those two is important. When your test breaks keep in mind that either the function, or the tests might be broken. What you usually do is that you look at what changed more recently. If the test is new, and the function existed for a while, you first blame the test. When the test was passing before, but it is not anymore, you first blame the tested function.
 
 ## Other keywords
 
@@ -231,10 +231,9 @@ Describe 'Get-Planet' {
 ```
 ### BeforeAll
 
-Now that we split the tests into groups we might want to share some common code among those tests. To do this we `BeforeAll` block that will run at the start of the block that contains it, or at the start of the file if not contained in any block. In our example we used it to define the tested function.
+Now that we split the tests into groups we might want to share some common code among those tests. To do this we use a `BeforeAll` block that will run at the start of the block that contains it, or at the start of the file if not contained in any block. In our example we used it to define the tested function.
 
 There is also `AfterAll` block that will run at the end of the block, and `BeforeEach / AfterEach` that will run before every test in the given block.
-
 
 ## Splitting to tests and function
 
