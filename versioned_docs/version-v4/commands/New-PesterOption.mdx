@@ -1,9 +1,9 @@
 ---
 id: New-PesterOption
 title: New-PesterOption
-description: Help page for the Powershell Pester "New-PesterOption" command
+description: Help for Pester command 'New-PesterOption'. Creates an object that contains advanced options for Invoke-Pester
 keywords:
-  - Powershell
+  - PowerShell
   - Pester
   - Help
   - Documentation
@@ -12,6 +12,10 @@ hide_table_of_contents: false
 custom_edit_url: null
 ---
 
+:::info This page was generated
+Contributions are welcome in [Pester v4-repo](https://github.com/pester/Pester/tree/rel/4.x.x).
+:::
+
 ## SYNOPSIS
 
 Creates an object that contains advanced options for Invoke-Pester
@@ -19,8 +23,8 @@ Creates an object that contains advanced options for Invoke-Pester
 ## SYNTAX
 
 ```powershell
-New-PesterOption [-IncludeVSCodeMarker] [[-TestSuiteName] <String>] [-Experimental] [-ShowScopeHints]
- [[-ScriptBlockFilter] <Hashtable[]>] [<CommonParameters>]
+New-PesterOption [[-TestSuiteName] <string>] [[-ScriptBlockFilter] <hashtable[]>]
+ [-IncludeVSCodeMarker] [-Experimental] [-ShowScopeHints]
 ```
 
 ## DESCRIPTION
@@ -44,71 +48,47 @@ will be named "Tests - Set A".
 
 ## PARAMETERS
 
+### -Experimental
+
+Enables experimental features of Pester to be enabled.
+
+```yaml
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: False
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
+
 ### -IncludeVSCodeMarker
 
 When this switch is set, an extra line of output will be written to the console for test failures, making it easier
 for VSCode's parser to provide highlighting / tooltips on the line where the error occurred.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -TestSuiteName
-
-When generating NUnit XML output, this controls the name assigned to the root "test-suite" element.
-Defaults to "Pester".
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 1
-Default value: Pester
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Experimental
-
-Enables experimental features of Pester to be enabled.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ShowScopeHints
-
-EXPERIMENTAL: Enables debugging output for debugging tranisition among scopes.
-(Experimental flag needs to be used to enable this.)
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: False
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -ScriptBlockFilter
@@ -117,26 +97,79 @@ Filters scriptblock based on the path and line number.
 This is intended for integration with external tools so we don't rely on names (strings) that can have expandable variables in them.
 
 ```yaml
-Type: Hashtable[]
-Parameter Sets: (All)
-Aliases:
+Type: System.Collections.Hashtable[]
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
 
-Required: False
-Position: 2
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+### -ShowScopeHints
+
+EXPERIMENTAL: Enables debugging output for debugging tranisition among scopes.
+(Experimental flag needs to be used to enable this.)
+
+```yaml
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: False
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
+
+### -TestSuiteName
+
+When generating NUnit XML output, this controls the name assigned to the root "test-suite" element.
+ Defaults to "Pester".
+
+```yaml
+Type: System.String
+DefaultValue: Pester
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: 0
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### CommonParameters
 
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable,
+-InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable,
+-ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see
+[about_CommonParameters](https://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
 ### None
 
-### You cannot pipe input to this command.
+You cannot pipe input to this command.
+
 ## OUTPUTS
 
 ### System.Management.Automation.PSObject
@@ -145,8 +178,8 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[https://pester.dev/docs/v4/commands/Invoke-Pester](https://pester.dev/docs/v4/commands/Invoke-Pester)
+- [https://pester.dev/docs/commands/Invoke-Pester](https://pester.dev/docs/commands/Invoke-Pester)
 
-## EDIT THIS PAGE
+## VERSION
 
-This page was auto-generated using Pester's comment based help. To edit the content of this page, change the corresponding help in the [pester/Pester v4](https://github.com/pester/Pester/tree/rel/4.x.x) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.
+*This page was generated using comment-based help in [Pester 4.10.1](https://github.com/pester/Pester/tree/rel/4.x.x).*

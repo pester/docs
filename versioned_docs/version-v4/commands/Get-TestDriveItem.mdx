@@ -1,9 +1,9 @@
 ---
 id: Get-TestDriveItem
 title: Get-TestDriveItem
-description: Help page for the Powershell Pester "Get-TestDriveItem" command
+description: Help for Pester command 'Get-TestDriveItem'. The Get-TestDriveItem cmdlet gets the item in Pester test drive.
 keywords:
-  - Powershell
+  - PowerShell
   - Pester
   - Help
   - Documentation
@@ -12,6 +12,10 @@ hide_table_of_contents: false
 custom_edit_url: null
 ---
 
+:::info This page was generated
+Contributions are welcome in [Pester v4-repo](https://github.com/pester/Pester/tree/rel/4.x.x).
+:::
+
 ## SYNOPSIS
 
 The Get-TestDriveItem cmdlet gets the item in Pester test drive.
@@ -19,7 +23,7 @@ The Get-TestDriveItem cmdlet gets the item in Pester test drive.
 ## SYNTAX
 
 ```powershell
-Get-TestDriveItem [[-Path] <String>]
+Get-TestDriveItem [[-Path] <string>]
 ```
 
 ## DESCRIPTION
@@ -55,15 +59,20 @@ Wildcards are permitted.
 This parameter is required, but the parameter name ("Path") is optional.
 
 ```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 1
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.String
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: 0
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ## INPUTS
@@ -74,8 +83,8 @@ Accept wildcard characters: False
 
 ## RELATED LINKS
 
-[https://pester.dev/docs/v4/usage/testdrive](https://pester.dev/docs/v4/usage/testdrive)
+- [https://pester.dev/docs/usage/testdrive](https://pester.dev/docs/usage/testdrive)
 
-## EDIT THIS PAGE
+## VERSION
 
-This page was auto-generated using Pester's comment based help. To edit the content of this page, change the corresponding help in the [pester/Pester v4](https://github.com/pester/Pester/tree/rel/4.x.x) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.
+*This page was generated using comment-based help in [Pester 4.10.1](https://github.com/pester/Pester/tree/rel/4.x.x).*

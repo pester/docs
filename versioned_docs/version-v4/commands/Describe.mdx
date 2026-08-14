@@ -1,9 +1,9 @@
 ---
 id: Describe
 title: Describe
-description: Help page for the Powershell Pester "Describe" command
+description: Help for Pester command 'Describe'. Creates a logical group of tests.
 keywords:
-  - Powershell
+  - PowerShell
   - Pester
   - Help
   - Documentation
@@ -12,6 +12,10 @@ hide_table_of_contents: false
 custom_edit_url: null
 ---
 
+:::info This page was generated
+Contributions are welcome in [Pester v4-repo](https://github.com/pester/Pester/tree/rel/4.x.x).
+:::
+
 ## SYNOPSIS
 
 Creates a logical group of tests.
@@ -19,7 +23,7 @@ Creates a logical group of tests.
 ## SYNTAX
 
 ```powershell
-Describe [-Name] <String> [-Tag <String[]>] [[-Fixture] <ScriptBlock>] [<CommonParameters>]
+Describe [-Name] <string> [[-Fixture] <scriptblock>] [-Tag <string[]>]
 ```
 
 ## DESCRIPTION
@@ -28,7 +32,7 @@ Creates a logical group of tests.
 All Mocks, TestDrive and TestRegistry contents
 defined within a Describe block are scoped to that Describe; they
 will no longer be present when the Describe block exits.
-A Describe
+ A Describe
 block may contain any number of Context and It blocks.
 
 ## EXAMPLES
@@ -38,7 +42,6 @@ block may contain any number of Context and It blocks.
 ```powershell
 function Add-Numbers($a, $b) {
     return $a + $b
-
 }
 
 Describe "Add-Numbers" {
@@ -66,43 +69,6 @@ Describe "Add-Numbers" {
 
 ## PARAMETERS
 
-### -Name
-
-The name of the test group.
-This is often an expressive phrase describing
-the scenario being tested.
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: 1
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Tag
-
-Optional parameter containing an array of strings.
-When calling Invoke-Pester,
-it is possible to specify a -Tag parameter which will only execute Describe blocks
-containing the same Tag.
-
-```yaml
-Type: String[]
-Parameter Sets: (All)
-Aliases: Tags
-
-Required: False
-Position: Named
-Default value: @()
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -Fixture
 
 The actual test script.
@@ -114,20 +80,76 @@ Assertions are
 typically performed by the Should command within the It blocks.
 
 ```yaml
-Type: ScriptBlock
-Parameter Sets: (All)
-Aliases:
+Type: System.Management.Automation.ScriptBlock
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
 
-Required: False
-Position: 2
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+### -Name
+
+The name of the test group.
+This is often an expressive phrase describing
+the scenario being tested.
+
+```yaml
+Type: System.String
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: 0
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
+
+### -Tag
+
+Optional parameter containing an array of strings.
+ When calling Invoke-Pester,
+it is possible to specify a -Tag parameter which will only execute Describe blocks
+containing the same Tag.
+
+```yaml
+Type: System.String[]
+DefaultValue: '@()'
+SupportsWildcards: false
+Aliases:
+- Tags
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### CommonParameters
 
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable,
+-InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable,
+-ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see
+[about_CommonParameters](https://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
@@ -137,18 +159,13 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[https://pester.dev/docs/v4/commands/It](https://pester.dev/docs/v4/commands/It)
+- [https://pester.dev/docs/commands/It](https://pester.dev/docs/commands/It)
+- [https://pester.dev/docs/commands/Context](https://pester.dev/docs/commands/Context)
+- [https://pester.dev/docs/commands/Invoke-Pester](https://pester.dev/docs/commands/Invoke-Pester)
+- [https://pester.dev/docs/commands/Should](https://pester.dev/docs/commands/Should)
+- [https://pester.dev/docs/usage/mocking](https://pester.dev/docs/usage/mocking)
+- [https://pester.dev/docs/usage/testdrive](https://pester.dev/docs/usage/testdrive)
 
-[https://pester.dev/docs/v4/commands/Context](https://pester.dev/docs/v4/commands/Context)
+## VERSION
 
-[https://pester.dev/docs/v4/commands/Invoke-Pester](https://pester.dev/docs/v4/commands/Invoke-Pester)
-
-[https://pester.dev/docs/v4/commands/Should](https://pester.dev/docs/v4/commands/Should)
-
-[https://pester.dev/docs/v4/usage/mocking](https://pester.dev/docs/v4/usage/mocking)
-
-[https://pester.dev/docs/v4/usage/testdrive](https://pester.dev/docs/v4/usage/testdrive)
-
-## EDIT THIS PAGE
-
-This page was auto-generated using Pester's comment based help. To edit the content of this page, change the corresponding help in the [pester/Pester v4](https://github.com/pester/Pester/tree/rel/4.x.x) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.
+*This page was generated using comment-based help in [Pester 4.10.1](https://github.com/pester/Pester/tree/rel/4.x.x).*

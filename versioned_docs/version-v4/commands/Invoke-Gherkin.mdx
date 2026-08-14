@@ -1,9 +1,9 @@
 ---
 id: Invoke-Gherkin
 title: Invoke-Gherkin
-description: Help page for the Powershell Pester "Invoke-Gherkin" command
+description: Help for Pester command 'Invoke-Gherkin'. Invokes Pester to run all tests defined in .feature files
 keywords:
-  - Powershell
+  - PowerShell
   - Pester
   - Help
   - Documentation
@@ -11,6 +11,10 @@ hide_title: false
 hide_table_of_contents: false
 custom_edit_url: null
 ---
+
+:::info This page was generated
+Contributions are welcome in [Pester v4-repo](https://github.com/pester/Pester/tree/rel/4.x.x).
+:::
 
 ## SYNOPSIS
 
@@ -21,17 +25,17 @@ Invokes Pester to run all tests defined in .feature files
 ### Default (Default)
 
 ```powershell
-Invoke-Gherkin [[-Path] <String>] [[-ScenarioName] <String[]>] [-EnableExit] [[-Tag] <String[]>]
- [-ExcludeTag <String[]>] [-CodeCoverage <Object[]>] [-Strict] [-OutputFile <String>] [-OutputFormat <String>]
- [-Quiet] [-PesterOption <Object>] [-Show <OutputTypes>] [-PassThru] [<CommonParameters>]
+Invoke-Gherkin [[-Path] <string>] [[-ScenarioName] <string[]>] [-EnableExit] [[-Tag] <string[]>]
+ [-ExcludeTag <string[]>] [-CodeCoverage <Object[]>] [-Strict] [-OutputFile <string>]
+ [-OutputFormat <string>] [-Quiet] [-PesterOption <Object>] [-Show <OutputTypes>] [-PassThru]
 ```
 
 ### RetestFailed
 
 ```powershell
-Invoke-Gherkin [-FailedLast] [[-Path] <String>] [[-ScenarioName] <String[]>] [-EnableExit] [[-Tag] <String[]>]
- [-ExcludeTag <String[]>] [-CodeCoverage <Object[]>] [-Strict] [-OutputFile <String>] [-OutputFormat <String>]
- [-Quiet] [-PesterOption <Object>] [-Show <OutputTypes>] [-PassThru] [<CommonParameters>]
+Invoke-Gherkin [[-Path] <string>] [[-ScenarioName] <string[]>] [-EnableExit] [[-Tag] <string[]>]
+ -FailedLast [-ExcludeTag <string[]>] [-CodeCoverage <Object[]>] [-Strict] [-OutputFile <string>]
+ [-OutputFormat <string>] [-Quiet] [-PesterOption <Object>] [-Show <OutputTypes>] [-PassThru]
 ```
 
 ## DESCRIPTION
@@ -105,111 +109,10 @@ Runs all *.feature specifications in the current directory, and generates a cove
 
 ## PARAMETERS
 
-### -FailedLast
-
-Rerun only the scenarios which failed last time
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: RetestFailed
-Aliases:
-
-Required: True
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Path
-
-This parameter indicates which feature files should be tested.
-
-Aliased to 'Script' for compatibility with Pester, but does not support hashtables, since feature files don't take parameters.
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases: Script, relative_path
-
-Required: False
-Position: 1
-Default value: $Pwd
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ScenarioName
-
-When set, invokes testing of scenarios which match this name.
-
-Aliased to 'Name' and 'TestName' for compatibility with Pester.
-
-```yaml
-Type: String[]
-Parameter Sets: (All)
-Aliases: Name, TestName
-
-Required: False
-Position: 2
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -EnableExit
-
-Will cause Invoke-Gherkin to exit with a exit code equal to the number of failed tests once all tests have been run.
-Use this to "fail" a build when any tests fail.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 3
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Tag
-
-Filters Scenarios and Features and runs only the ones tagged with the specified tags.
-
-```yaml
-Type: String[]
-Parameter Sets: (All)
-Aliases: Tags
-
-Required: False
-Position: 5
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ExcludeTag
-
-Informs Invoke-Gherkin to not run blocks tagged with the tags specified.
-
-```yaml
-Type: String[]
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -CodeCoverage
 
 Instructs Pester to generate a code coverage report in addition to running tests.
-You may pass either hashtables or strings to this parameter.
+ You may pass either hashtables or strings to this parameter.
 
 If strings are used, they must be paths (wildcards allowed) to source files, and all commands in the files are analyzed for code coverage.
 
@@ -224,33 +127,84 @@ If only EndLine is present, all lines in the script file up to and including End
 Both Function and Path (as well as simple strings passed instead of hashtables) may contain wildcards.
 
 ```yaml
-Type: Object[]
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: @()
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Object[]
+DefaultValue: '@()'
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
-### -Strict
+### -EnableExit
 
-Makes Pending and Skipped tests to Failed tests.
-Useful for continuous integration where you need
-to make sure all tests passed.
+Will cause Invoke-Gherkin to exit with a exit code equal to the number of failed tests once all tests have been run.
+Use this to "fail" a build when any tests fail.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: False
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: 2
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
 
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
+### -ExcludeTag
+
+Informs Invoke-Gherkin to not run blocks tagged with the tags specified.
+
+```yaml
+Type: System.String[]
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
+
+### -FailedLast
+
+Rerun only the scenarios which failed last time
+
+```yaml
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: False
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: RetestFailed
+  Position: Named
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -OutputFile
@@ -259,15 +213,20 @@ The path to write a report file to.
 If this path is not provided, no log will be generated.
 
 ```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.String
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -OutputFormat
@@ -275,33 +234,70 @@ Accept wildcard characters: False
 The format for output (LegacyNUnitXml or NUnitXml), defaults to NUnitXml
 
 ```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: NUnitXml
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.String
+DefaultValue: NUnitXml
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
-### -Quiet
+### -PassThru
 
-Disables the output Pester writes to screen.
-No other output is generated unless you specify PassThru,
-or one of the Output parameters.
+Returns a custom object (PSCustomObject) that contains the test results.
+By default, Invoke-Gherkin writes to the host program, not to the output stream (stdout).
+If you try to save the result in a variable, the variable is empty unless you
+use the PassThru parameter.
+To suppress the host output, use the Quiet parameter.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: False
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
 
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
+### -Path
+
+This parameter indicates which feature files should be tested.
+
+Aliased to 'Script' for compatibility with Pester, but does not support hashtables, since feature files don't take parameters.
+
+```yaml
+Type: System.String
+DefaultValue: $Pwd
+SupportsWildcards: false
+Aliases:
+- Script
+- relative_path
+ParameterSets:
+- Name: (All)
+  Position: 0
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -PesterOption
@@ -313,15 +309,68 @@ in which the keys are option names and the values are option values.
 For more information on the options available, see the help for New-PesterOption.
 
 ```yaml
-Type: Object
-Parameter Sets: (All)
-Aliases:
+Type: System.Object
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
 
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+### -Quiet
+
+Disables the output Pester writes to screen.
+No other output is generated unless you specify PassThru,
+or one of the Output parameters.
+
+```yaml
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: False
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
+
+### -ScenarioName
+
+When set, invokes testing of scenarios which match this name.
+
+Aliased to 'Name' and 'TestName' for compatibility with Pester.
+
+```yaml
+Type: System.String[]
+DefaultValue: ''
+SupportsWildcards: false
+Aliases:
+- Name
+- TestName
+ParameterSets:
+- Name: (All)
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -Show
@@ -343,41 +392,73 @@ This parameter does not affect the PassThru custom object or the XML output that
 is written when you use the Output parameters.
 
 ```yaml
-Type: OutputTypes
-Parameter Sets: (All)
-Aliases:
-Accepted values: None, Default, Passed, Failed, Pending, Skipped, Inconclusive, Describe, Context, Summary, Header, Fails, All
-
-Required: False
-Position: Named
-Default value: All
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: Pester.OutputTypes
+DefaultValue: All
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
-### -PassThru
+### -Strict
 
-Returns a custom object (PSCustomObject) that contains the test results.
-By default, Invoke-Gherkin writes to the host program, not to the output stream (stdout).
-If you try to save the result in a variable, the variable is empty unless you
-use the PassThru parameter.
-To suppress the host output, use the Quiet parameter.
+Makes Pending and Skipped tests to Failed tests.
+Useful for continuous integration where you need
+to make sure all tests passed.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: False
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
 
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
+### -Tag
+
+Filters Scenarios and Features and runs only the ones tagged with the specified tags.
+
+```yaml
+Type: System.String[]
+DefaultValue: ''
+SupportsWildcards: false
+Aliases:
+- Tags
+ParameterSets:
+- Name: (All)
+  Position: 4
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### CommonParameters
 
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable,
+-InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable,
+-ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see
+[about_CommonParameters](https://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
@@ -387,10 +468,10 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[https://pester.dev/docs/v4/commands/Invoke-Pester](https://pester.dev/docs/v4/commands/Invoke-Pester)
+- [https://pester.dev/docs/v4/commands/Invoke-Pester](https://pester.dev/docs/v4/commands/Invoke-Pester)
+- [https://kevinmarquette.github.io/2017-03-17-Powershell-Gherkin-specification-validation/](https://kevinmarquette.github.io/2017-03-17-Powershell-Gherkin-specification-validation/)
+- [https://kevinmarquette.github.io/2017-04-30-Powershell-Gherkin-advanced-features/](https://kevinmarquette.github.io/2017-04-30-Powershell-Gherkin-advanced-features/)
 
-[https://kevinmarquette.github.io/2017-04-30-Powershell-Gherkin-advanced-features/](https://kevinmarquette.github.io/2017-04-30-Powershell-Gherkin-advanced-features/)
+## VERSION
 
-## EDIT THIS PAGE
-
-This page was auto-generated using Pester's comment based help. To edit the content of this page, change the corresponding help in the [pester/Pester v4](https://github.com/pester/Pester/tree/rel/4.x.x) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.
+*This page was generated using comment-based help in [Pester 4.10.1](https://github.com/pester/Pester/tree/rel/4.x.x).*

@@ -1,9 +1,9 @@
 ---
 id: Should
 title: Should
-description: Help page for the Powershell Pester "Should" command
+description: Help for Pester command 'Should'. Should is a keyword what is used to define an assertion inside It block.
 keywords:
-  - Powershell
+  - PowerShell
   - Pester
   - Help
   - Documentation
@@ -11,6 +11,10 @@ hide_title: false
 hide_table_of_contents: false
 custom_edit_url: null
 ---
+
+:::info This page was generated
+Contributions are welcome in [Pester v4-repo](https://github.com/pester/Pester/tree/rel/4.x.x).
+:::
 
 ## SYNOPSIS
 
@@ -21,164 +25,156 @@ Should is a keyword what is used to define an assertion inside It block.
 ### Legacy (Default)
 
 ```powershell
-Should [[-__LegacyArg1] <Object>] [[-__LegacyArg2] <Object>] [[-__LegacyArg3] <Object>] [-ActualValue <Object>]
- [<CommonParameters>]
+Should [[-__LegacyArg1] <Object>] [[-__LegacyArg2] <Object>] [[-__LegacyArg3] <Object>]
+ [-ActualValue <Object>]
 ```
 
 ### Be
 
 ```powershell
-Should [-ActualValue <Object>] [-Be] [-Not] [-ExpectedValue <Object>] [-Because <Object>] [<CommonParameters>]
+Should [[-ExpectedValue] <Object>] [[-Because] <Object>] -Be [-ActualValue <Object>] [-Not]
 ```
 
 ### BeExactly
 
 ```powershell
-Should [-ActualValue <Object>] [-Not] [-ExpectedValue <Object>] [-Because <Object>] [-BeExactly]
- [<CommonParameters>]
+Should [[-ExpectedValue] <Object>] [[-Because] <Object>] -BeExactly [-ActualValue <Object>] [-Not]
 ```
 
 ### BeGreaterThan
 
 ```powershell
-Should [-ActualValue <Object>] [-Not] [-ExpectedValue <Object>] [-Because <Object>] [-BeGreaterThan]
- [<CommonParameters>]
+Should [[-ExpectedValue] <Object>] [[-Because] <Object>] -BeGreaterThan [-ActualValue <Object>]
+ [-Not]
 ```
 
 ### BeLessOrEqual
 
 ```powershell
-Should [-ActualValue <Object>] [-Not] [-ExpectedValue <Object>] [-Because <Object>] [-BeLessOrEqual]
- [<CommonParameters>]
+Should [[-ExpectedValue] <Object>] [[-Because] <Object>] -BeLessOrEqual [-ActualValue <Object>]
+ [-Not]
 ```
 
 ### BeIn
 
 ```powershell
-Should [-ActualValue <Object>] [-Not] [-ExpectedValue <Object>] [-Because <Object>] [-BeIn]
- [<CommonParameters>]
+Should [[-ExpectedValue] <Object>] [[-Because] <Object>] -BeIn [-ActualValue <Object>] [-Not]
 ```
 
 ### BeLessThan
 
 ```powershell
-Should [-ActualValue <Object>] [-Not] [-ExpectedValue <Object>] [-Because <Object>] [-BeLessThan]
- [<CommonParameters>]
+Should [[-ExpectedValue] <Object>] [[-Because] <Object>] -BeLessThan [-ActualValue <Object>] [-Not]
 ```
 
 ### BeGreaterOrEqual
 
 ```powershell
-Should [-ActualValue <Object>] [-Not] [-ExpectedValue <Object>] [-Because <Object>] [-BeGreaterOrEqual]
- [<CommonParameters>]
+Should [[-ExpectedValue] <Object>] [[-Because] <Object>] -BeGreaterOrEqual [-ActualValue <Object>]
+ [-Not]
 ```
 
 ### BeLike
 
 ```powershell
-Should [-ActualValue <Object>] [-Not] [-ExpectedValue <Object>] [-Because <Object>] [-BeLike]
- [<CommonParameters>]
+Should [[-ExpectedValue] <Object>] [[-Because] <Object>] -BeLike [-ActualValue <Object>] [-Not]
 ```
 
 ### BeLikeExactly
 
 ```powershell
-Should [-ActualValue <Object>] [-Not] [-ExpectedValue <Object>] [-Because <Object>] [-BeLikeExactly]
- [<CommonParameters>]
+Should [[-ExpectedValue] <Object>] [[-Because] <Object>] -BeLikeExactly [-ActualValue <Object>]
+ [-Not]
 ```
 
 ### BeNullOrEmpty
 
 ```powershell
-Should [-ActualValue <Object>] [-Not] [-Because <Object>] [-BeNullOrEmpty] [<CommonParameters>]
+Should [[-Because] <Object>] -BeNullOrEmpty [-ActualValue <Object>] [-Not]
 ```
 
 ### BeOfType
 
 ```powershell
-Should [-ActualValue <Object>] [-Not] [-Because <Object>] [-BeOfType] [-ExpectedType <Object>]
- [<CommonParameters>]
+Should [[-ExpectedType] <Object>] [[-Because] <Object>] -BeOfType [-ActualValue <Object>] [-Not]
 ```
 
 ### BeTrue
 
 ```powershell
-Should [-ActualValue <Object>] [-Not] [-Because <Object>] [-BeTrue] [<CommonParameters>]
+Should [[-Because] <Object>] -BeTrue [-ActualValue <Object>] [-Not]
 ```
 
 ### BeFalse
 
 ```powershell
-Should [-ActualValue <Object>] [-Not] [-Because <Object>] [-BeFalse] [<CommonParameters>]
+Should [[-Because] <Object>] -BeFalse [-ActualValue <Object>] [-Not]
 ```
 
 ### Contain
 
 ```powershell
-Should [-ActualValue <Object>] [-Not] [-ExpectedValue <Object>] [-Because <Object>] [-Contain]
- [<CommonParameters>]
+Should [[-ExpectedValue] <Object>] [[-Because] <Object>] -Contain [-ActualValue <Object>] [-Not]
 ```
 
 ### Exist
 
 ```powershell
-Should [-ActualValue <Object>] [-Not] [-Because <Object>] [-Exist] [<CommonParameters>]
+Should [[-Because] <Object>] -Exist [-ActualValue <Object>] [-Not]
 ```
 
 ### FileContentMatch
 
 ```powershell
-Should [-ActualValue <Object>] [-Not] [-Because <Object>] [-FileContentMatch] [-ExpectedContent <Object>]
- [<CommonParameters>]
+Should [[-ExpectedContent] <Object>] [[-Because] <Object>] -FileContentMatch [-ActualValue <Object>]
+ [-Not]
 ```
 
 ### FileContentMatchExactly
 
 ```powershell
-Should [-ActualValue <Object>] [-Not] [-Because <Object>] [-ExpectedContent <Object>]
- [-FileContentMatchExactly] [<CommonParameters>]
+Should [[-ExpectedContent] <Object>] [[-Because] <Object>] -FileContentMatchExactly
+ [-ActualValue <Object>] [-Not]
 ```
 
 ### FileContentMatchMultiline
 
 ```powershell
-Should [-ActualValue <Object>] [-Not] [-Because <Object>] [-ExpectedContent <Object>]
- [-FileContentMatchMultiline] [<CommonParameters>]
+Should [[-ExpectedContent] <Object>] [[-Because] <Object>] -FileContentMatchMultiline
+ [-ActualValue <Object>] [-Not]
 ```
 
 ### HaveCount
 
 ```powershell
-Should [-ActualValue <Object>] [-Not] [-ExpectedValue <Object>] [-Because <Object>] [-HaveCount]
- [<CommonParameters>]
+Should [[-ExpectedValue] <Object>] [[-Because] <Object>] -HaveCount [-ActualValue <Object>] [-Not]
 ```
 
 ### HaveParameter
 
 ```powershell
-Should [-ActualValue <Object>] [-Not] [-Because <Object>] [-HaveParameter] [-ParameterName <Object>]
- [-Type <Object>] [-DefaultValue <Object>] [-Mandatory] [-HasArgumentCompleter] [<CommonParameters>]
+Should [[-ParameterName] <Object>] [[-Type] <Object>] [[-DefaultValue] <Object>] [-Mandatory]
+ [-HasArgumentCompleter] [[-Because] <Object>] -HaveParameter [-ActualValue <Object>] [-Not]
 ```
 
 ### Match
 
 ```powershell
-Should [-ActualValue <Object>] [-Not] [-Because <Object>] [-Match] [-RegularExpression <Object>]
- [<CommonParameters>]
+Should [[-RegularExpression] <Object>] [[-Because] <Object>] -Match [-ActualValue <Object>] [-Not]
 ```
 
 ### MatchExactly
 
 ```powershell
-Should [-ActualValue <Object>] [-Not] [-Because <Object>] [-RegularExpression <Object>] [-MatchExactly]
- [<CommonParameters>]
+Should [[-RegularExpression] <Object>] [[-Because] <Object>] -MatchExactly [-ActualValue <Object>]
+ [-Not]
 ```
 
 ### Throw
 
 ```powershell
-Should [-ActualValue <Object>] [-Not] [-Because <Object>] [-Throw] [-ExpectedMessage <Object>]
- [-ErrorId <Object>] [-ExceptionType <Object>] [-PassThru] [<CommonParameters>]
+Should [[-ExpectedMessage] <Object>] [[-ErrorId] <Object>] [[-ExceptionType] <Object>]
+ [[-Because] <Object>] [-PassThru] -Throw [-ActualValue <Object>] [-Not]
 ```
 
 ## DESCRIPTION
@@ -210,15 +206,20 @@ PS C:\> {{ Add example code here }}
 \{\{ Fill __LegacyArg1 Description \}\}
 
 ```yaml
-Type: Object
-Parameter Sets: Legacy
-Aliases:
-
-Required: False
-Position: 1
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Object
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Legacy
+  Position: 0
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -__LegacyArg2
@@ -226,15 +227,20 @@ Accept wildcard characters: False
 \{\{ Fill __LegacyArg2 Description \}\}
 
 ```yaml
-Type: Object
-Parameter Sets: Legacy
-Aliases:
-
-Required: False
-Position: 2
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Object
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Legacy
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -__LegacyArg3
@@ -242,15 +248,20 @@ Accept wildcard characters: False
 \{\{ Fill __LegacyArg3 Description \}\}
 
 ```yaml
-Type: Object
-Parameter Sets: Legacy
-Aliases:
-
-Required: False
-Position: 3
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Object
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Legacy
+  Position: 2
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -ActualValue
@@ -258,15 +269,20 @@ Accept wildcard characters: False
 \{\{ Fill ActualValue Description \}\}
 
 ```yaml
-Type: Object
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: True (ByValue)
-Accept wildcard characters: False
+Type: System.Object
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: true
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -Be
@@ -274,15 +290,21 @@ Accept wildcard characters: False
 \{\{ Fill Be Description \}\}
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: Be
-Aliases: EQ
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases:
+- EQ
+ParameterSets:
+- Name: Be
+  Position: Named
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -Because
@@ -290,15 +312,152 @@ Accept wildcard characters: False
 \{\{ Fill Because Description \}\}
 
 ```yaml
-Type: Object
-Parameter Sets: Be, BeExactly, BeGreaterThan, BeLessOrEqual, BeIn, BeLessThan, BeGreaterOrEqual, BeLike, BeLikeExactly, BeNullOrEmpty, BeOfType, BeTrue, BeFalse, Contain, Exist, FileContentMatch, FileContentMatchExactly, FileContentMatchMultiline, HaveCount, HaveParameter, Match, MatchExactly, Throw
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Object
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Be
+  Position: 2
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeExactly
+  Position: 2
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeGreaterThan
+  Position: 2
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeLessOrEqual
+  Position: 2
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeIn
+  Position: 2
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeLessThan
+  Position: 2
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeGreaterOrEqual
+  Position: 2
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeLike
+  Position: 2
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeLikeExactly
+  Position: 2
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeNullOrEmpty
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeOfType
+  Position: 2
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeTrue
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeFalse
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: Contain
+  Position: 2
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: Exist
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: FileContentMatch
+  Position: 2
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: FileContentMatchExactly
+  Position: 2
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: FileContentMatchMultiline
+  Position: 2
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: HaveCount
+  Position: 2
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: HaveParameter
+  Position: 6
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: Match
+  Position: 2
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: MatchExactly
+  Position: 2
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: Throw
+  Position: 4
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -BeExactly
@@ -306,15 +465,21 @@ Accept wildcard characters: False
 \{\{ Fill BeExactly Description \}\}
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: BeExactly
-Aliases: CEQ
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases:
+- CEQ
+ParameterSets:
+- Name: BeExactly
+  Position: Named
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -BeFalse
@@ -322,15 +487,20 @@ Accept wildcard characters: False
 \{\{ Fill BeFalse Description \}\}
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: BeFalse
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: BeFalse
+  Position: Named
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -BeGreaterOrEqual
@@ -338,15 +508,21 @@ Accept wildcard characters: False
 \{\{ Fill BeGreaterOrEqual Description \}\}
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: BeGreaterOrEqual
-Aliases: GE
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases:
+- GE
+ParameterSets:
+- Name: BeGreaterOrEqual
+  Position: Named
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -BeGreaterThan
@@ -354,15 +530,21 @@ Accept wildcard characters: False
 \{\{ Fill BeGreaterThan Description \}\}
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: BeGreaterThan
-Aliases: GT
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases:
+- GT
+ParameterSets:
+- Name: BeGreaterThan
+  Position: Named
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -BeIn
@@ -370,15 +552,20 @@ Accept wildcard characters: False
 \{\{ Fill BeIn Description \}\}
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: BeIn
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: BeIn
+  Position: Named
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -BeLessOrEqual
@@ -386,15 +573,21 @@ Accept wildcard characters: False
 \{\{ Fill BeLessOrEqual Description \}\}
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: BeLessOrEqual
-Aliases: LE
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases:
+- LE
+ParameterSets:
+- Name: BeLessOrEqual
+  Position: Named
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -BeLessThan
@@ -402,15 +595,21 @@ Accept wildcard characters: False
 \{\{ Fill BeLessThan Description \}\}
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: BeLessThan
-Aliases: LT
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases:
+- LT
+ParameterSets:
+- Name: BeLessThan
+  Position: Named
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -BeLike
@@ -418,15 +617,20 @@ Accept wildcard characters: False
 \{\{ Fill BeLike Description \}\}
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: BeLike
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: BeLike
+  Position: Named
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -BeLikeExactly
@@ -434,15 +638,20 @@ Accept wildcard characters: False
 \{\{ Fill BeLikeExactly Description \}\}
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: BeLikeExactly
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: BeLikeExactly
+  Position: Named
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -BeNullOrEmpty
@@ -450,15 +659,20 @@ Accept wildcard characters: False
 \{\{ Fill BeNullOrEmpty Description \}\}
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: BeNullOrEmpty
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: BeNullOrEmpty
+  Position: Named
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -BeOfType
@@ -466,15 +680,21 @@ Accept wildcard characters: False
 \{\{ Fill BeOfType Description \}\}
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: BeOfType
-Aliases: HaveType
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases:
+- HaveType
+ParameterSets:
+- Name: BeOfType
+  Position: Named
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -BeTrue
@@ -482,15 +702,20 @@ Accept wildcard characters: False
 \{\{ Fill BeTrue Description \}\}
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: BeTrue
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: BeTrue
+  Position: Named
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -Contain
@@ -498,15 +723,20 @@ Accept wildcard characters: False
 \{\{ Fill Contain Description \}\}
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: Contain
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Contain
+  Position: Named
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -DefaultValue
@@ -514,15 +744,20 @@ Accept wildcard characters: False
 \{\{ Fill DefaultValue Description \}\}
 
 ```yaml
-Type: Object
-Parameter Sets: HaveParameter
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Object
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: HaveParameter
+  Position: 3
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -ErrorId
@@ -530,15 +765,20 @@ Accept wildcard characters: False
 \{\{ Fill ErrorId Description \}\}
 
 ```yaml
-Type: Object
-Parameter Sets: Throw
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Object
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Throw
+  Position: 2
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -ExceptionType
@@ -546,15 +786,20 @@ Accept wildcard characters: False
 \{\{ Fill ExceptionType Description \}\}
 
 ```yaml
-Type: Object
-Parameter Sets: Throw
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Object
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Throw
+  Position: 3
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -Exist
@@ -562,15 +807,20 @@ Accept wildcard characters: False
 \{\{ Fill Exist Description \}\}
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: Exist
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Exist
+  Position: Named
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -ExpectedContent
@@ -578,15 +828,32 @@ Accept wildcard characters: False
 \{\{ Fill ExpectedContent Description \}\}
 
 ```yaml
-Type: Object
-Parameter Sets: FileContentMatch, FileContentMatchExactly, FileContentMatchMultiline
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Object
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: FileContentMatch
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: FileContentMatchExactly
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: FileContentMatchMultiline
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -ExpectedMessage
@@ -594,15 +861,20 @@ Accept wildcard characters: False
 \{\{ Fill ExpectedMessage Description \}\}
 
 ```yaml
-Type: Object
-Parameter Sets: Throw
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Object
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Throw
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -ExpectedType
@@ -610,15 +882,20 @@ Accept wildcard characters: False
 \{\{ Fill ExpectedType Description \}\}
 
 ```yaml
-Type: Object
-Parameter Sets: BeOfType
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Object
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: BeOfType
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -ExpectedValue
@@ -626,15 +903,80 @@ Accept wildcard characters: False
 \{\{ Fill ExpectedValue Description \}\}
 
 ```yaml
-Type: Object
-Parameter Sets: Be, BeExactly, BeGreaterThan, BeLessOrEqual, BeIn, BeLessThan, BeGreaterOrEqual, BeLike, BeLikeExactly, Contain, HaveCount
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Object
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Be
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeExactly
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeGreaterThan
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeLessOrEqual
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeIn
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeLessThan
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeGreaterOrEqual
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeLike
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeLikeExactly
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: Contain
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: HaveCount
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -FileContentMatch
@@ -642,15 +984,20 @@ Accept wildcard characters: False
 \{\{ Fill FileContentMatch Description \}\}
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: FileContentMatch
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: FileContentMatch
+  Position: Named
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -FileContentMatchExactly
@@ -658,15 +1005,20 @@ Accept wildcard characters: False
 \{\{ Fill FileContentMatchExactly Description \}\}
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: FileContentMatchExactly
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: FileContentMatchExactly
+  Position: Named
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -FileContentMatchMultiline
@@ -674,15 +1026,20 @@ Accept wildcard characters: False
 \{\{ Fill FileContentMatchMultiline Description \}\}
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: FileContentMatchMultiline
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: FileContentMatchMultiline
+  Position: Named
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -HasArgumentCompleter
@@ -690,15 +1047,20 @@ Accept wildcard characters: False
 \{\{ Fill HasArgumentCompleter Description \}\}
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: HaveParameter
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: HaveParameter
+  Position: 5
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -HaveCount
@@ -706,15 +1068,20 @@ Accept wildcard characters: False
 \{\{ Fill HaveCount Description \}\}
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: HaveCount
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: HaveCount
+  Position: Named
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -HaveParameter
@@ -722,15 +1089,20 @@ Accept wildcard characters: False
 \{\{ Fill HaveParameter Description \}\}
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: HaveParameter
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: HaveParameter
+  Position: Named
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -Mandatory
@@ -738,15 +1110,20 @@ Accept wildcard characters: False
 \{\{ Fill Mandatory Description \}\}
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: HaveParameter
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: HaveParameter
+  Position: 4
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -Match
@@ -754,15 +1131,20 @@ Accept wildcard characters: False
 \{\{ Fill Match Description \}\}
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: Match
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Match
+  Position: Named
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -MatchExactly
@@ -770,15 +1152,21 @@ Accept wildcard characters: False
 \{\{ Fill MatchExactly Description \}\}
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: MatchExactly
-Aliases: CMATCH
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases:
+- CMATCH
+ParameterSets:
+- Name: MatchExactly
+  Position: Named
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -Not
@@ -786,15 +1174,152 @@ Accept wildcard characters: False
 \{\{ Fill Not Description \}\}
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: Be, BeExactly, BeGreaterThan, BeLessOrEqual, BeIn, BeLessThan, BeGreaterOrEqual, BeLike, BeLikeExactly, BeNullOrEmpty, BeOfType, BeTrue, BeFalse, Contain, Exist, FileContentMatch, FileContentMatchExactly, FileContentMatchMultiline, HaveCount, HaveParameter, Match, MatchExactly, Throw
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Be
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeExactly
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeGreaterThan
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeLessOrEqual
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeIn
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeLessThan
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeGreaterOrEqual
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeLike
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeLikeExactly
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeNullOrEmpty
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeOfType
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeTrue
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: BeFalse
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: Contain
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: Exist
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: FileContentMatch
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: FileContentMatchExactly
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: FileContentMatchMultiline
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: HaveCount
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: HaveParameter
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: Match
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: MatchExactly
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: Throw
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -ParameterName
@@ -802,15 +1327,20 @@ Accept wildcard characters: False
 \{\{ Fill ParameterName Description \}\}
 
 ```yaml
-Type: Object
-Parameter Sets: HaveParameter
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Object
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: HaveParameter
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -PassThru
@@ -818,15 +1348,20 @@ Accept wildcard characters: False
 \{\{ Fill PassThru Description \}\}
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: Throw
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Throw
+  Position: 5
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -RegularExpression
@@ -834,15 +1369,26 @@ Accept wildcard characters: False
 \{\{ Fill RegularExpression Description \}\}
 
 ```yaml
-Type: Object
-Parameter Sets: Match, MatchExactly
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Object
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Match
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: MatchExactly
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -Throw
@@ -850,15 +1396,20 @@ Accept wildcard characters: False
 \{\{ Fill Throw Description \}\}
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: Throw
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Throw
+  Position: Named
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -Type
@@ -866,22 +1417,32 @@ Accept wildcard characters: False
 \{\{ Fill Type Description \}\}
 
 ```yaml
-Type: Object
-Parameter Sets: HaveParameter
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Object
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: HaveParameter
+  Position: 2
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### CommonParameters
 
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable,
+-InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable,
+-ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see
+[about_CommonParameters](https://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
+
+### System.Object
 
 ## OUTPUTS
 
@@ -889,6 +1450,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-## EDIT THIS PAGE
+## VERSION
 
-This page was auto-generated using Pester's comment based help. To edit the content of this page, change the corresponding help in the [pester/Pester v4](https://github.com/pester/Pester/tree/rel/4.x.x) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.
+*This page was generated using comment-based help in [Pester 4.10.1](https://github.com/pester/Pester/tree/rel/4.x.x).*

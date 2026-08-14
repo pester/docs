@@ -1,9 +1,9 @@
 ---
 id: Assert-VerifiableMock
 title: Assert-VerifiableMock
-description: Help page for the Powershell Pester "Assert-VerifiableMock" command
+description: Help for Pester command 'Assert-VerifiableMock'. Checks if any Verifiable Mock has not been invoked. If so, this will throw an exception.
 keywords:
-  - Powershell
+  - PowerShell
   - Pester
   - Help
   - Documentation
@@ -12,15 +12,18 @@ hide_table_of_contents: false
 custom_edit_url: null
 ---
 
+:::info This page was generated
+Contributions are welcome in [Pester v4-repo](https://github.com/pester/Pester/tree/rel/4.x.x).
+:::
+
 ## SYNOPSIS
 
-Checks if any Verifiable Mock has not been invoked.
-If so, this will throw an exception.
+Checks if any Verifiable Mock has not been invoked. If so, this will throw an exception.
 
 ## SYNTAX
 
 ```powershell
-Assert-VerifiableMock [<CommonParameters>]
+Assert-VerifiableMock
 ```
 
 ## DESCRIPTION
@@ -66,7 +69,10 @@ This will not throw an exception because the mock was invoked.
 
 ### CommonParameters
 
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable,
+-InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable,
+-ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see
+[about_CommonParameters](https://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
@@ -76,6 +82,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-## EDIT THIS PAGE
+## VERSION
 
-This page was auto-generated using Pester's comment based help. To edit the content of this page, change the corresponding help in the [pester/Pester v4](https://github.com/pester/Pester/tree/rel/4.x.x) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.
+*This page was generated using comment-based help in [Pester 4.10.1](https://github.com/pester/Pester/tree/rel/4.x.x).*

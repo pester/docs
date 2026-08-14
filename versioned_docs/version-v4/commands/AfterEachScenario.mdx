@@ -1,9 +1,9 @@
 ---
 id: AfterEachScenario
 title: AfterEachScenario
-description: Help page for the Powershell Pester "AfterEachScenario" command
+description: Help for Pester command 'AfterEachScenario'. Defines a ScriptBlock hook to run after each scenario to set up the test environment
 keywords:
-  - Powershell
+  - PowerShell
   - Pester
   - Help
   - Documentation
@@ -11,6 +11,10 @@ hide_title: false
 hide_table_of_contents: false
 custom_edit_url: null
 ---
+
+:::info This page was generated
+Contributions are welcome in [Pester v4-repo](https://github.com/pester/Pester/tree/rel/4.x.x).
+:::
 
 ## SYNOPSIS
 
@@ -21,13 +25,13 @@ Defines a ScriptBlock hook to run after each scenario to set up the test environ
 ### All (Default)
 
 ```powershell
-AfterEachScenario [-Script] <ScriptBlock> [<CommonParameters>]
+AfterEachScenario [-Script] <scriptblock>
 ```
 
 ### Tags
 
 ```powershell
-AfterEachScenario [-Tags] <String[]> [-Script] <ScriptBlock> [<CommonParameters>]
+AfterEachScenario [-Tags] <string[]> [-Script] <scriptblock>
 ```
 
 ## DESCRIPTION
@@ -49,42 +53,61 @@ PS C:\> {{ Add example code here }}
 
 ## PARAMETERS
 
+### -Script
+
+The ScriptBlock to run for the hook
+
+```yaml
+Type: System.Management.Automation.ScriptBlock
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: All
+  Position: 0
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+- Name: Tags
+  Position: 1
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
+
 ### -Tags
 
 Optional tags.
 If set, this hook only runs for features with matching tags
 
 ```yaml
-Type: String[]
-Parameter Sets: Tags
-Aliases:
-
-Required: True
-Position: 1
-Default value: @()
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Script
-
-The ScriptBlock to run for the hook
-
-```yaml
-Type: ScriptBlock
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: 1
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.String[]
+DefaultValue: '@()'
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Tags
+  Position: 0
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### CommonParameters
 
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable,
+-InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable,
+-ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see
+[about_CommonParameters](https://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
@@ -94,12 +117,10 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[https://pester.dev/docs/v4/commands/BeforeEachScenario](https://pester.dev/docs/v4/commands/BeforeEachScenario)
+- [https://pester.dev/docs/commands/BeforeEachScenario](https://pester.dev/docs/commands/BeforeEachScenario)
+- [https://pester.dev/docs/commands/BeforeEachFeature](https://pester.dev/docs/commands/BeforeEachFeature)
+- [https://pester.dev/docs/commands/AfterEachFeature](https://pester.dev/docs/commands/AfterEachFeature)
 
-[https://pester.dev/docs/v4/commands/BeforeEachFeature](https://pester.dev/docs/v4/commands/BeforeEachFeature)
+## VERSION
 
-[https://pester.dev/docs/v4/commands/AfterEachFeature](https://pester.dev/docs/v4/commands/AfterEachFeature)
-
-## EDIT THIS PAGE
-
-This page was auto-generated using Pester's comment based help. To edit the content of this page, change the corresponding help in the [pester/Pester v4](https://github.com/pester/Pester/tree/rel/4.x.x) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.
+*This page was generated using comment-based help in [Pester 4.10.1](https://github.com/pester/Pester/tree/rel/4.x.x).*

@@ -1,7 +1,7 @@
 ---
 id: New-ShouldAssertion
 title: New-ShouldAssertion
-description: Help page for the PowerShell Pester "New-ShouldAssertion" command
+description: Help for Pester command 'New-ShouldAssertion'. Creates the assertion helper object used to author custom `Should-*` assertions.
 keywords:
   - PowerShell
   - Pester
@@ -23,8 +23,7 @@ Creates the assertion helper object used to author custom `Should-*` assertions.
 ## SYNTAX
 
 ```powershell
-New-ShouldAssertion [-Caller] <PSCmdlet> [[-Actual] <Object>] [[-Buffer] <Object[]>] [-As <String>]
- [<CommonParameters>]
+New-ShouldAssertion [-Caller] <PSCmdlet> [[-Actual] <Object>] [[-Buffer] <Object[]>] [-As <string>]
 ```
 
 ## DESCRIPTION
@@ -129,25 +128,6 @@ assertion's `$PSCmdlet` and `$Input` down keeps the input hint, pipeline detecti
 
 ## PARAMETERS
 
-### -Caller
-
-The `$PSCmdlet` of the assertion function.
-Used to reach the caller's session state (so
-soft assertions and the mock parameter filter behave correctly) and to recover the
-original pipeline input for hints.
-
-```yaml
-Type: PSCmdlet
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: 1
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -Actual
 
 The assertion's `-Actual` value.
@@ -155,34 +135,20 @@ Pass it even when the value usually arrives from the
 pipeline; it is `$null` in that case and the pipeline `$Input` is used instead.
 
 ```yaml
-Type: Object
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 2
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Buffer
-
-The assertion function's `$Input`.
-Holds the values received from the pipeline.
-Pass
-`$Input` even when the assertion is usually called with `-Actual`; it is empty in that case.
-
-```yaml
-Type: Object[]
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 3
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Object
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -As
@@ -195,20 +161,76 @@ that compares the whole input structurally (like `Should-BeEquivalent`) and so h
 input-shape gotcha to hint about.
 
 ```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
+Type: System.String
+DefaultValue: Scalar
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
 
-Required: False
-Position: Named
-Default value: Scalar
-Accept pipeline input: False
-Accept wildcard characters: False
+### -Buffer
+
+The assertion function's `$Input`.
+Holds the values received from the pipeline.
+Pass
+`$Input` even when the assertion is usually called with `-Actual`; it is empty in that case.
+
+```yaml
+Type: System.Object[]
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: 2
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
+
+### -Caller
+
+The `$PSCmdlet` of the assertion function.
+Used to reach the caller's session state (so
+soft assertions and the mock parameter filter behave correctly) and to recover the
+original pipeline input for hints.
+
+```yaml
+Type: System.Management.Automation.PSCmdlet
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: 0
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### CommonParameters
 
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable,
+-InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable,
+-ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see
+[about_CommonParameters](https://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
@@ -220,11 +242,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[https://pester.dev/docs/commands/New-ShouldAssertion](https://pester.dev/docs/commands/New-ShouldAssertion)
-
-[https://pester.dev/docs/assertions](https://pester.dev/docs/assertions)
-
-[https://pester.dev/docs/commands/Should-Be](https://pester.dev/docs/commands/Should-Be)
+- [https://pester.dev/docs/commands/New-ShouldAssertion](https://pester.dev/docs/commands/New-ShouldAssertion)
+- [https://pester.dev/docs/assertions](https://pester.dev/docs/assertions)
+- [https://pester.dev/docs/commands/Should-Be](https://pester.dev/docs/commands/Should-Be)
 
 ## VERSION
 

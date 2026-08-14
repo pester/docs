@@ -1,9 +1,9 @@
 ---
 id: It
 title: It
-description: Help page for the Powershell Pester "It" command
+description: Help for Pester command 'It'. Validates the results of a test inside of a Describe block.
 keywords:
-  - Powershell
+  - PowerShell
   - Pester
   - Help
   - Documentation
@@ -11,6 +11,10 @@ hide_title: false
 hide_table_of_contents: false
 custom_edit_url: null
 ---
+
+:::info This page was generated
+Contributions are welcome in [Pester v4-repo](https://github.com/pester/Pester/tree/rel/4.x.x).
+:::
 
 ## SYNOPSIS
 
@@ -21,19 +25,19 @@ Validates the results of a test inside of a Describe block.
 ### Normal (Default)
 
 ```powershell
-It [-Name] <String> [[-Test] <ScriptBlock>] [-TestCases <IDictionary[]>] [<CommonParameters>]
+It [-Name] <string> [[-Test] <scriptblock>] [-TestCases <IDictionary[]>]
 ```
 
 ### Pending
 
 ```powershell
-It [-Name] <String> [[-Test] <ScriptBlock>] [-TestCases <IDictionary[]>] [-Pending] [<CommonParameters>]
+It [-Name] <string> [[-Test] <scriptblock>] [-TestCases <IDictionary[]>] [-Pending]
 ```
 
 ### Skip
 
 ```powershell
-It [-Name] <String> [[-Test] <ScriptBlock>] [-TestCases <IDictionary[]>] [-Skip] [<CommonParameters>]
+It [-Name] <string> [[-Test] <scriptblock>] [-TestCases <IDictionary[]>] [-Skip]
 ```
 
 ## DESCRIPTION
@@ -62,7 +66,6 @@ command as the first tested statement in the It block.
 ```powershell
 function Add-Numbers($a, $b) {
     return $a + $b
-
 }
 
 Describe "Add-Numbers" {
@@ -93,7 +96,6 @@ Describe "Add-Numbers" {
 ```powershell
 function Add-Numbers($a, $b) {
     return $a + $b
-
 }
 
 Describe "Add-Numbers" {
@@ -104,7 +106,7 @@ Describe "Add-Numbers" {
         @{ a = 'two'; b = 'three'; expectedResult = 'twothree' }
     )
 
-    It 'Correctly adds \<a\> and \<b\> to get \<expectedResult\>' -TestCases $testCases {
+    It 'Correctly adds <a> and <b> to get <expectedResult>' -TestCases $testCases {
         param ($a, $b, $expectedResult)
 
         $sum = Add-Numbers $a $b
@@ -120,57 +122,20 @@ Describe "Add-Numbers" {
 An expressive phrase describing the expected test outcome.
 
 ```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: 1
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Test
-
-The script block that should throw an exception if the
-expectation of the test is not met.If you are following the
-AAA pattern (Arrange-Act-Assert), this typically holds the
-Assert.
-
-```yaml
-Type: ScriptBlock
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 2
-Default value: { }
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -TestCases
-
-Optional array of hashtable (or any IDictionary) objects.
-If this parameter is used,
-Pester will call the test script block once for each table in the TestCases array,
-splatting the dictionary to the test script block as input.
-If you want the name of
-the test to appear differently for each test case, you can embed tokens into the Name
-parameter with the syntax 'Adds numbers \<A\> and \<B\>' (assuming you have keys named A and B
-in your TestCases hashtables.)
-
-```yaml
-Type: IDictionary[]
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.String
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: 0
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -Pending
@@ -182,15 +147,20 @@ An empty test, that is a
 test that contains nothing except whitespace or comments is marked as Pending by default.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: Pending
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: False
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Pending
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -Skip
@@ -202,20 +172,81 @@ Use the Strict parameter
 of Invoke-Pester to force all skipped tests to fail.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: Skip
-Aliases: Ignore
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: False
+SupportsWildcards: false
+Aliases:
+- Ignore
+ParameterSets:
+- Name: Skip
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
 
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
+### -Test
+
+The script block that should throw an exception if the
+expectation of the test is not met.If you are following the
+AAA pattern (Arrange-Act-Assert), this typically holds the
+Assert.
+
+```yaml
+Type: System.Management.Automation.ScriptBlock
+DefaultValue: '{ }'
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
+
+### -TestCases
+
+Optional array of hashtable (or any IDictionary) objects.
+ If this parameter is used,
+Pester will call the test script block once for each table in the TestCases array,
+splatting the dictionary to the test script block as input.
+ If you want the name of
+the test to appear differently for each test case, you can embed tokens into the Name
+parameter with the syntax 'Adds numbers &lt;A&gt; and &lt;B&gt;' (assuming you have keys named A and B
+in your TestCases hashtables.)
+
+```yaml
+Type: System.Collections.IDictionary[]
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### CommonParameters
 
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable,
+-InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable,
+-ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see
+[about_CommonParameters](https://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
@@ -225,14 +256,11 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[https://pester.dev/docs/v4/commands/Describe](https://pester.dev/docs/v4/commands/Describe)
+- [https://pester.dev/docs/commands/Describe](https://pester.dev/docs/commands/Describe)
+- [https://pester.dev/docs/commands/Context](https://pester.dev/docs/commands/Context)
+- [https://pester.dev/docs/commands/Set-TestInconclusive](https://pester.dev/docs/commands/Set-TestInconclusive)
+- [https://pester.dev/docs/commands/Should](https://pester.dev/docs/commands/Should)
 
-[https://pester.dev/docs/v4/commands/Context](https://pester.dev/docs/v4/commands/Context)
+## VERSION
 
-[https://pester.dev/docs/v4/commands/Set-TestInconclusive](https://pester.dev/docs/v4/commands/Set-TestInconclusive)
-
-[https://pester.dev/docs/v4/commands/Should](https://pester.dev/docs/v4/commands/Should)
-
-## EDIT THIS PAGE
-
-This page was auto-generated using Pester's comment based help. To edit the content of this page, change the corresponding help in the [pester/Pester v4](https://github.com/pester/Pester/tree/rel/4.x.x) repository. See our [contribution guide](https://github.com/pester/docs#contributing) for more information.
+*This page was generated using comment-based help in [Pester 4.10.1](https://github.com/pester/Pester/tree/rel/4.x.x).*
