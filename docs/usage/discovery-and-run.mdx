@@ -186,7 +186,7 @@ In this case the `foreach` is evaluated during `Discovery` because we simply run
 The example above has one more problem, if we move the setup to `BeforeDiscovery`, we will generate the tests correctly, and the `foreach` will define `$file` variable. But we won't be able to use the `$file` variable in the `It`. We need to attach it to the `It` using `-TestCases` with a single test case:
 
 ```powershell
-BeforeDiscovery { # <- this will run during Discovery
+BeforeDiscovery { # <- this runs in the Discovery phase, before the tests below are generated
     # check all script files
     $files = Get-ChildItem *.ps1
 }
