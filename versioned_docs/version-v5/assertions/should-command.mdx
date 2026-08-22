@@ -26,11 +26,11 @@ But was:  'Pester is bad.'
 Other assertion types can be found in [Assertion Reference](.).
 
 
-### Collect all Should failures
+### Collect all Should failures (soft assertions)
 
-`Should` can now be configured to continue on failure. This will report the error to Pester, but won't fail the test immediately. Instead, all the Should failures are collected and reported at the end of the test. This allows you to put multiple assertions into one It and still get complete information on failure.
+`Should` can now be configured to continue on failure. This will report the error to Pester, but won't fail the test immediately. Instead, all the Should failures are collected and reported at the end of the test. This allows you to put multiple assertions into one It and still get complete information on failure. This is known as a **soft assertion**.
 
-This new Should behavior is opt-in and can be enabled via `Should.ErrorAction = 'Continue'` on the configuration object or via `$PesterPreference`.
+This new Should behavior is opt-in and can be enabled via `Should.ErrorAction = 'Continue'` on the configuration object or via `$PesterPreference`. Setting `-ErrorAction Stop` on a single assertion makes that one fail the test immediately even when soft assertions are enabled, which is useful to guard a precondition.
 
 ```powershell
  BeforeAll {
