@@ -1,0 +1,108 @@
+name: Check for new Pester release
+
+# Polls PSGallery for new stable Pester releases and starts the docs-update workflow
+# for every docs version that is behind. PSGallery is used as the source of truth
+# because that is where generate-command-reference.ps1 installs Pester from - a GitHub
+# release that has not been published to the gallery yet cannot be used to build docs.
+
+on:
+  schedule:
+    # Daily at 05:00 UTC. Releases are rare, so this only needs to be reasonably prompt.
+    - cron: '0 5 * * *'
+  workflow_dispatch:
+
+jobs:
+  detect:
+    name: Detect outdated docs
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      matrix: ${{ steps.detect.outputs.matrix }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Compare docs with PSGallery
+        id: detect
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          Set-StrictMode -Version Latest
+          $PSDefaultParameterValues['*:ErrorAction'] = 'Stop'
+
+          # Docs versions that follow a release line. v4 is frozen at 4.10.1 and is not checked.
+          $tracked = @(
+              @{ DocsVersion = 'Current'; Folder = 'docs'; MaximumVersion = $null }
+              @{ DocsVersion = 'v5'; Folder = 'versioned_docs/version-v5'; MaximumVersion = '5.9999.9999' }
+          )
+
+          $outdated = @()
+
+          foreach ($t in $tracked) {
+              $findParams = @{ Name = 'Pester' }
+              if ($t.MaximumVersion) { $findParams['MaximumVersion'] = $t.MaximumVersion }
+              # Find-Module skips prereleases unless -AllowPrerelease is used, so this is the latest stable release
+              $latest = (Find-Module @findParams).Version
+
+              # Every generated command page ends with the version it was generated from
+              $generated = @(Get-ChildItem -Path "$($t.Folder)/commands" -Filter '*.mdx' | ForEach-Object {
+                  if ((Get-Content -LiteralPath $_.FullName -Raw) -match 'comment-based help in \[Pester (?<v>\d+\.\d+\.\d+(?:-\w+)?)\]') {
+                      $Matches.v
+                  }
+              } | Select-Object -Unique)
+
+              if (-not $generated) {
+                  throw "Could not read the generated Pester version from $($t.Folder)/commands."
+              }
+              if ($generated.Count -gt 1) {
+                  Write-Host "::warning::$($t.DocsVersion) docs were generated from more than one Pester version: $($generated -join ', ')"
+              }
+
+              # Pick the highest version currently in the docs, so mixed content is not downgraded
+              $current = $generated | Sort-Object { [version]($_ -replace '-.*') }, { $_ } | Select-Object -Last 1
+
+              $currentBase = [version]($current -replace '-.*')
+              $latestBase = [version]$latest
+              # Update on a newer release, and also when the docs were built from a prerelease of the version that is now stable
+              $needsUpdate = ($latestBase -gt $currentBase) -or (($latestBase -eq $currentBase) -and ($current -match '-'))
+
+              if (-not $needsUpdate) {
+                  Write-Host "$($t.DocsVersion): up to date (docs $current, PSGallery $latest)"
+                  continue
+              }
+
+              # The docs-update workflow creates this branch. Skip if it already produced a
+              # pull request, including one that was closed on purpose.
+              $branch = "docs-update/$($t.DocsVersion)-v$latest"
+              $existingPr = gh pr list --repo $env:GITHUB_REPOSITORY --state all --head $branch --json number,state | ConvertFrom-Json
+              if ($existingPr) {
+                  Write-Host "$($t.DocsVersion): PSGallery has $latest, but PR #$($existingPr[0].number) ($($existingPr[0].state)) already exists for branch $branch"
+                  continue
+              }
+
+              Write-Host "$($t.DocsVersion): outdated (docs $current, PSGallery $latest)"
+              $outdated += @{ docs_version = $t.DocsVersion; pester_version = $latest }
+          }
+
+          $matrix = if ($outdated.Count -gt 0) { ConvertTo-Json -InputObject @($outdated) -Compress } else { '[]' }
+          Write-Host "matrix=$matrix"
+          "matrix=$matrix" >> $env:GITHUB_OUTPUT
+
+  update_docs:
+    name: Update ${{ matrix.docs_version }} docs
+    needs: detect
+    if: needs.detect.outputs.matrix != '[]'
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJson(needs.detect.outputs.matrix) }}
+    permissions:
+      contents: write
+      pull-requests: write
+    uses: ./.github/workflows/generate-pester-docs.yml
+    with:
+      docs_version: ${{ matrix.docs_version }}
+      pester_version: ${{ matrix.pester_version }}
