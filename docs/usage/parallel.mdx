@@ -7,7 +7,7 @@ description: Pester v6 can run test files in parallel, each file in its own runs
 Parallel execution is experimental in Pester v6. Treat `Run.Parallel` as opt-in. The directive name, configuration shape, and behavior may still change before it is declared stable.
 :::
 
-Pester v6 can run test files concurrently, one file per runspace, using the PowerShell 7+ `ForEach-Object -Parallel` engine. On a multi-core machine this can cut the wall-clock time of a large suite.
+Pester v6 can run test files concurrently, one file per runspace, on both Windows PowerShell 5.1 and PowerShell 7. On a multi-core machine this can cut the wall-clock time of a large suite.
 
 It is a configuration option, not a separate command. It builds on the [per-file Discovery and Run model](./discovery-and-run#per-file-discovery-and-run): because each file is discovered and run as a self-contained unit, files can be handed to separate runspaces and run in isolation.
 
@@ -26,7 +26,7 @@ Each file is discovered and run inside its own runspace, then the results are me
 
 ## Limiting concurrency
 
-By default Pester uses every available processor. Cap how many files run at once with `Run.ParallelThrottleLimit`, which is passed to `ForEach-Object -Parallel -ThrottleLimit`:
+By default Pester uses every available processor. Cap how many files run at once with `Run.ParallelThrottleLimit`:
 
 ```powershell
 $config = New-PesterConfiguration
@@ -35,6 +35,10 @@ $config.Run.Parallel = $true
 $config.Run.ParallelThrottleLimit = 4   # at most 4 files at a time; 0 (default) uses all processors
 Invoke-Pester -Configuration $config
 ```
+
+The throttle only does something when `Run.Parallel` is `$true`. On its own it changes nothing, a run that is not parallel has nothing to throttle.
+
+`Run.ParallelThrottleLimit = 1` is not the same as turning parallel off. The files still run through the parallel machinery, one at a time, each in its own runspace. That means you keep the isolation, and you also keep what comes with it: a breakpoint set in the session that calls `Invoke-Pester` does not hit inside a worker, because breakpoints are per runspace. To step through your tests, set `Run.Parallel` to `$false` instead.
 
 ## Shared per-file setup
 
@@ -64,9 +68,8 @@ Files marked this way run in the parent session on the normal serial path, with 
 
 ## Requirements and fallback
 
-Parallel execution needs PowerShell 7+ and a file-based run (`Run.Path`). When a run can't be parallelized, Pester falls back to a normal sequential run and prints a warning, so your tests keep working unchanged. This fallback happens:
+Parallel execution needs a file-based run (`Run.Path`). When a run can't be parallelized, Pester falls back to a normal sequential run and prints a warning, so your tests keep working unchanged. This fallback happens:
 
-- on Windows PowerShell 5.1,
 - for `ScriptBlock` / `Container` inputs (anything that isn't a file),
 - when `Run.SkipRemainingOnFailure = 'Run'` (a cross-file stop-on-failure can't span runspaces),
 - and when every file opts out with `#pester:no-parallel`.
