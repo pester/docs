@@ -10,6 +10,10 @@ import styles from './styles.module.css';
 
 const GITHUB_URL = 'https://github.com/pester/pester';
 const INSTALL_COMMAND = 'Install-Module Pester';
+// First page of the follow-along tutorial. The tutorial is a separate docs plugin instance
+// with no index page, so it is linked page-by-page rather than through /tutorial, which only
+// exists as a redirect in static/_redirects and would fail the broken-link check.
+const TUTORIAL_URL = '/tutorial/introduction/welcome';
 
 /* ------------------------------------------------------------------ icons */
 const iconProps = {
@@ -141,6 +145,22 @@ function CopyableCommand() {
   );
 }
 
+/**
+ * The tutorial button used in the hero and in the closing call to action. Labelled just
+ * "Tutorial" so it does not repeat the "Start" of the Quick Start button sitting next to it.
+ * The arrow is decorative and hidden from screen readers, which read the label on its own.
+ */
+function TutorialButton() {
+  return (
+    <Link className={clsx('button button--lg', styles.secondaryButton)} to={TUTORIAL_URL}>
+      Tutorial
+      <span className={styles.buttonArrow} aria-hidden="true">
+        →
+      </span>
+    </Link>
+  );
+}
+
 function GitHubStars() {
   return (
     <Link className={clsx('button button--lg', styles.githubButton)} to={GITHUB_URL}>
@@ -188,8 +208,9 @@ function Hero() {
 
         <div className={styles.heroButtons}>
           <Link className={clsx('button button--lg', styles.primaryButton)} to={useDocPath('quick-start')}>
-            Get Started
+            Quick Start
           </Link>
+          <TutorialButton />
           <GitHubStars />
         </div>
 
@@ -208,6 +229,75 @@ function Hero() {
         </div>
       </div>
     </header>
+  );
+}
+
+/* ---------------------------------------------------------- learning paths */
+const learningPaths = [
+  {
+    title: 'Quick Start',
+    meta: 'About 5 minutes',
+    description:
+      'The fast tour. Install Pester, write a single test file, run it, and see what a failure looks like.',
+    points: ['Install and import Pester', 'Write and run your first test', 'Read the failure output'],
+    action: 'Read the Quick Start',
+  },
+  {
+    title: 'Follow-along tutorial',
+    meta: 'Seven modules, at your own pace',
+    description:
+      'One worked example, told in order. Start with an empty folder and build a real PowerShell module with tests alongside every piece of it.',
+    points: [
+      'Test public functions and private helpers',
+      'Mock a data source and isolate file operations',
+      'Measure code coverage and run it all in CI',
+    ],
+    action: 'Start the tutorial',
+    featured: true,
+  },
+];
+
+function LearningPaths() {
+  // useDocPath is a hook and cannot run inside the loop, so the links are resolved up front.
+  // Same order as learningPaths above. Quick Start follows the reader's chosen docs version,
+  // the tutorial is not versioned and has one address.
+  const hrefs = [useDocPath('quick-start'), TUTORIAL_URL];
+
+  return (
+    <section className={styles.section}>
+      <div className={clsx('container', styles.sectionInner)}>
+        <div className={styles.sectionHead}>
+          <h2 className={styles.sectionTitle}>Two ways to start</h2>
+          <p className={styles.sectionLead}>
+            Read the short version, or build a module from scratch and test it as you go.
+          </p>
+        </div>
+
+        <div className={styles.pathGrid}>
+          {learningPaths.map((path, i) => (
+            <div key={path.title} className={clsx(styles.pathCard, path.featured && styles.pathCardFeatured)}>
+              <span className={styles.pathMeta}>{path.meta}</span>
+              <h3 className={styles.pathTitle}>{path.title}</h3>
+              <p className={styles.pathDesc}>{path.description}</p>
+              <ul className={styles.pathPoints}>
+                {path.points.map((point) => (
+                  <li key={point}>{point}</li>
+                ))}
+              </ul>
+              <Link
+                className={clsx(
+                  'button',
+                  path.featured ? 'button--primary' : styles.pathActionOutline,
+                  styles.pathAction
+                )}
+                to={hrefs[i]}>
+                {path.action}
+              </Link>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -366,8 +456,9 @@ function CallToAction() {
         <p className={styles.ctaLead}>Install Pester and go from zero to a green test in minutes.</p>
         <div className={styles.heroButtons}>
           <Link className={clsx('button button--lg', styles.primaryButton)} to={useDocPath('quick-start')}>
-            Get Started
+            Quick Start
           </Link>
+          <TutorialButton />
           <Link className={clsx('button button--lg', styles.secondaryButton)} to={useDocPath('introduction/installation')}>
             Installation guide
           </Link>
@@ -385,6 +476,7 @@ export default function Home() {
       description="Pester is the ubiquitous test and mock framework for PowerShell.">
       <Hero />
       <main>
+        <LearningPaths />
         <CodeSection />
         <Features />
         <Credibility />
