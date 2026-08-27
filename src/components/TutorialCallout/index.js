@@ -21,12 +21,12 @@ const TUTORIAL_URL = '/tutorial/introduction/welcome';
  */
 export default function TutorialCallout({
   title = 'Prefer to learn by building?',
-  children = 'This page is the fast tour. The tutorial is one worked example, told in order: an empty folder becomes a real module with tests next to every piece of it, code coverage and a CI run.',
+  children = 'This page is the short version. In the tutorial you start with an empty folder and build a real module, writing tests for each part as you add it, up to code coverage and CI.',
 }) {
   return (
     <aside className={styles.callout}>
       <div className={styles.body}>
-        <span className={styles.eyebrow}>Seven modules, at your own pace</span>
+        <span className={styles.eyebrow}>Seven parts, at your own pace</span>
         <h3 className={styles.title}>{title}</h3>
         <p className={styles.text}>{children}</p>
       </div>

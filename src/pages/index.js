@@ -238,15 +238,15 @@ const learningPaths = [
     title: 'Quick Start',
     meta: 'About 5 minutes',
     description:
-      'The fast tour. Install Pester, write a single test file, run it, and see what a failure looks like.',
+      'The short version. Install Pester, write one test file, run it, and see what a failure looks like.',
     points: ['Install and import Pester', 'Write and run your first test', 'Read the failure output'],
     action: 'Read the Quick Start',
   },
   {
     title: 'Follow-along tutorial',
-    meta: 'Seven modules, at your own pace',
+    meta: 'Seven parts, at your own pace',
     description:
-      'One worked example, told in order. Start with an empty folder and build a real PowerShell module with tests alongside every piece of it.',
+      'Start with an empty folder and build a real PowerShell module, writing tests for each part as you add it.',
     points: [
       'Test public functions and private helpers',
       'Mock a data source and isolate file operations',
