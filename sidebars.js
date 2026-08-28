@@ -28,16 +28,6 @@ const sidebars = {
       collapsible: false,
       items: [
         {
-          // Cross-plugin link. The tutorial is a separate docs instance served at /tutorial
-          // (see docusaurus.config.js), so it has no doc id we could reference from here and
-          // has to be linked by URL. It sits at the top because it is the entry point for
-          // readers who want a worked example instead of reference material.
-          type: 'link',
-          label: 'Tutorial',
-          href: '/tutorial/introduction/welcome',
-          className: 'sidebar-tutorial-link',
-        },
-        {
           "Introduction": [
             "quick-start",
             "introduction/installation",
