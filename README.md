@@ -23,7 +23,7 @@ To submit an update:
 The website is built using:
 
 - [Docusaurus](https://docusaurus.io/), a modern static website generator written in React
-- [Alt3.Docusaurus.Powershell](https://docusaurus-powershell.netlify.com/), a Powershell Get-Help to markdown generator
+- [Alt3.Docusaurus.Powershell](https://docusaurus-powershell.vercel.app), a Powershell Get-Help to markdown generator
 
 ### Requirements
 
