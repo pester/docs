@@ -25,9 +25,16 @@ If you are on PowerShell 7 but older than 7.4, install a current release from [t
 
 Install from the PowerShell Gallery:
 
+The old way using `PowerShellGet` and `PackageManagement` modules
 ```powershell
 Install-Module -Name Pester -Force
 ```
+The new way using the `Microsoft.PowerShell.PSResourceGet` module
+```powershell
+Install-PSResource -Name Pester -Force
+```
+
+Both of these options coexist, but the recommendation is to in future use the newer Install-PSResource cmdlet instead. 
 
 On Windows you may already have Pester 3.4.0 installed — it ships with the operating system. That version cannot be updated in place, and it is different enough from v6 that following this tutorial with it will not work. If `Install-Module` complains about an existing installation, the [installation guide](../../docs/introduction/installation) covers the exact commands to get around it.
 
