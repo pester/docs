@@ -37,8 +37,8 @@
   padding: 5rem 0 7rem;
   text-align: center;
   color: #fff;
-  background: radial-gradient(1200px 600px at 50% -10%, #2a93e6 0%, rgba(42, 147, 230, 0) 60%),
-    linear-gradient(160deg, #004a92 0%, #0072c6 55%, #0086dd 100%);
+  background: radial-gradient(1200px 600px at 50% -10%, var(--home-hero-glow) 0%, var(--home-hero-glow-fade) 60%),
+    linear-gradient(160deg, var(--home-hero-from) 0%, var(--home-hero-mid) 55%, var(--home-hero-to) 100%);
   clip-path: polygon(0 0, 100% 0, 100% calc(100% - 4vw), 0 100%);
 }
 .hero::before {
@@ -461,7 +461,7 @@
   text-align: center;
   padding: 5rem 0;
   color: #fff;
-  background: linear-gradient(120deg, #00508b 0%, #0072c6 100%);
+  background: linear-gradient(120deg, var(--home-cta-from) 0%, var(--home-cta-to) 100%);
 }
 .ctaTitle {
   font-size: clamp(1.8rem, 4vw, 2.6rem);
@@ -476,6 +476,13 @@
 
 /* --------------------------------------------------------------- theme vars */
 :global(:root) {
+  --home-hero-glow: rgb(42, 147, 230);
+  --home-hero-glow-fade: rgba(42, 147, 230, 0);
+  --home-hero-from: #004a92;
+  --home-hero-mid: #0072c6;
+  --home-hero-to: #0086dd;
+  --home-cta-from: #00508b;
+  --home-cta-to: #0072c6;
   --home-alt-bg: #f6f8fb;
   --home-card-bg: #ffffff;
   --home-border: #e2e8f0;
@@ -483,6 +490,13 @@
   --home-muted: #5b6b7f;
 }
 :global([data-theme='dark']) {
+  --home-hero-glow: rgb(14, 92, 156);
+  --home-hero-glow-fade: rgba(14, 92, 156, 0);
+  --home-hero-from: #002d58;
+  --home-hero-mid: #00477a;
+  --home-hero-to: #005285;
+  --home-cta-from: #00304f;
+  --home-cta-to: #00477a;
   --home-alt-bg: #12181f;
   --home-card-bg: #1a222c;
   --home-border: #2a3542;
