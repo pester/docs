@@ -1,0 +1,60 @@
+/**
+ * Tutorial callout for docs pages. Mirrors the featured card in the "Two ways to start"
+ * section on the landing page: same primary border, same eyebrow, same filled button. The
+ * text and the button sit next to each other here so the card stays short inside a page.
+ */
+
+.callout {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 2rem;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  border: 1px solid var(--ifm-color-primary);
+  border-radius: 14px;
+  background: var(--ifm-background-surface-color);
+  box-shadow: 0 18px 40px -28px rgba(0, 114, 198, 0.55);
+}
+
+.body {
+  flex: 1 1 22rem;
+}
+
+.eyebrow {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ifm-color-primary);
+}
+
+.title {
+  margin: 0 0 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.text {
+  margin: 0;
+  color: var(--ifm-color-emphasis-700);
+  line-height: 1.55;
+}
+
+.action {
+  flex: 0 0 auto;
+  font-weight: 600;
+}
+
+/* --ifm-color-primary is the same blue in both themes and sits around 3:1 on the dark
+   surface, too low for the small eyebrow. The filled button keeps it, large solid areas
+   are fine. */
+[data-theme='dark'] .eyebrow {
+  color: var(--ifm-color-primary-lightest);
+}
+
+[data-theme='dark'] .callout {
+  border-color: var(--ifm-color-primary-lightest);
+}

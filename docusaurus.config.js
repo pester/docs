@@ -128,6 +128,10 @@ const config = {
                 to: 'docs/quick-start',
               },
               {
+                label: 'Tutorial',
+                to: 'tutorial/introduction/welcome',
+              },
+              {
                 label: 'Installation',
                 to: 'docs/introduction/installation',
               },

@@ -134,6 +134,14 @@
   background: rgba(255, 255, 255, 0.14);
   color: #fff;
 }
+.buttonArrow {
+  display: inline-block;
+  margin-left: 0.5rem;
+  transition: transform var(--ifm-transition-fast) var(--ifm-transition-timing-default);
+}
+.secondaryButton:hover .buttonArrow {
+  transform: translateX(3px);
+}
 
 .installBox {
   display: inline-flex;
@@ -229,6 +237,105 @@
   color: var(--home-muted);
   font-size: 0.98rem;
   text-align: center;
+}
+
+/* ------------------------------------------------------------- learn paths */
+.pathGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+.pathCard {
+  display: flex;
+  flex-direction: column;
+  background: var(--home-card-bg);
+  border: 1px solid var(--home-border);
+  border-radius: 14px;
+  padding: 2rem;
+}
+/* The tutorial card. Marked out because it is the path readers were missing, not because
+   it is the one everybody should take. */
+.pathCardFeatured {
+  border-color: var(--ifm-color-primary);
+  box-shadow: 0 18px 40px -28px rgba(0, 114, 198, 0.55);
+}
+.pathMeta {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ifm-color-primary);
+  margin-bottom: 0.6rem;
+}
+.pathTitle {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 0.6rem;
+}
+.pathDesc {
+  color: var(--home-muted);
+  font-size: 0.98rem;
+  line-height: 1.55;
+  margin-bottom: 1.2rem;
+}
+.pathPoints {
+  list-style: none;
+  padding: 0;
+  /* margin-bottom keeps a gap when the two cards end up different heights and
+     .pathAction pushes itself to the bottom of the taller one. */
+  margin: 0 0 1.8rem;
+}
+.pathPoints li {
+  position: relative;
+  padding-left: 1.6rem;
+  margin-bottom: 0.5rem;
+  color: var(--home-muted);
+  font-size: 0.98rem;
+  line-height: 1.5;
+}
+.pathPoints li::before {
+  content: '';
+  position: absolute;
+  top: 0.6em;
+  left: 0.25rem;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ifm-color-primary);
+}
+.pathAction {
+  margin-top: auto;
+  align-self: flex-start;
+  font-weight: 600;
+}
+/* Infima's button--outline paints its text in --ifm-color-primary, which is the same blue in
+   both themes and too dark to read on the dark card. Colours are set here instead so the dark
+   theme can move to the lighter primary. */
+.pathActionOutline {
+  color: var(--ifm-color-primary);
+  background: transparent;
+  border: 1px solid var(--ifm-color-primary);
+}
+.pathActionOutline:hover {
+  color: var(--ifm-color-primary);
+  background: var(--home-icon-bg);
+}
+
+/* Same reason: the default primary is too dark against the dark card for small text and thin
+   marks. Larger, solid elements (the filled button) keep it. */
+:global([data-theme='dark']) .pathMeta,
+:global([data-theme='dark']) .pathActionOutline,
+:global([data-theme='dark']) .pathActionOutline:hover {
+  color: var(--ifm-color-primary-lightest);
+}
+:global([data-theme='dark']) .pathActionOutline {
+  border-color: var(--ifm-color-primary-lightest);
+}
+:global([data-theme='dark']) .pathCardFeatured {
+  border-color: var(--ifm-color-primary-lightest);
+}
+:global([data-theme='dark']) .pathPoints li::before {
+  background: var(--ifm-color-primary-lightest);
 }
 
 /* ------------------------------------------------------------- feature grid */
@@ -399,7 +506,8 @@
   .hero {
     padding: 3.5rem 0 5rem;
   }
-  .codeGrid {
+  .codeGrid,
+  .pathGrid {
     grid-template-columns: 1fr;
   }
   .featureGrid {
