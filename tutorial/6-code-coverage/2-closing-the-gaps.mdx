@@ -141,7 +141,7 @@ Invoke-Pester -Configuration $config
 
 The default format is **JaCoCo**, which most coverage services understand. `Cobertura` is the other option, via `CodeCoverage.OutputFormat`.
 
-Like the test results file, it is a build artifact — if your project is under version control, `.gitignore` it alongside `testResults.xml`.
+Like the test results file, it is a build artifact, and it goes into `.gitignore` alongside `testResults.xml`. The [CI module](../ci/test-script) creates that file.
 
 ## Using coverage well
 

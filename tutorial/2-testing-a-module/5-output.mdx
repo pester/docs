@@ -136,7 +136,7 @@ Invoke-Pester -Configuration $config
 
 The default format is `NUnitXml`, which nearly every CI system understands. `NUnit2.5`, `NUnit3` and `JUnitXml` are the other values for `TestResult.OutputFormat`. See [Test results](../../docs/usage/test-results) for which to pick.
 
-The file is a build artifact — something a run produces, not source. If you keep your projects under version control, add it to your `.gitignore`:
+The file is a build artifact — something a run produces, not source. If you keep your projects under version control it belongs in `.gitignore`. The CI module creates that file, for now just know the line it will need:
 
 ```
 testResults.xml
