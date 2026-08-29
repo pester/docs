@@ -173,11 +173,14 @@ It 'adds up to `<($a + $b)`>' -ForEach @(@{ a = 1; b = 2 }) { }
 
 Both were deprecated back in v5 and are now fully removed.
 
-**Symptom.**
+**Symptom.** The command is gone, but the message does not say so. Because `Assert-MockCalled` is still listed in the module manifest, PowerShell tries to auto-load `Pester` to find it and reports the load failure instead:
 
 ```
-The term 'Assert-MockCalled' is not recognized as a name of a cmdlet, function, script file, or operable program.
+The 'Assert-MockCalled' command was found in the module 'Pester', but the module could not be
+loaded due to the following error: [Should operator 'Be' is not registered]
 ```
+
+`Assert-VerifiableMock` fails the same way. Searching for the removed command name is what usually brings people here, so it is worth knowing that the error names neither the removal nor the fix.
 
 **Fix.** Use the `Should` mock assertions, see [Mocking](../usage/mocking):
 
