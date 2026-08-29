@@ -39,8 +39,41 @@ $result.CodeCoverage.CommandsMissed | Format-Table Function, Line, StartColumn, 
 The uncovered branch has two behaviours worth pinning: it refuses by default, and `-Force` overrides it. Add both tests at the bottom of the `Describe` block, below the four you already have:
 
 ```powershell title="Planetarium/Public/Export-PlanetReport.Tests.ps1"
+BeforeAll {
+    Import-Module "$PSScriptRoot/../Planetarium.psd1" -Force
+}
+
 Describe 'Export-PlanetReport' {
-    # ... the four existing It blocks ...
+    It 'Creates the report file' {
+        $path = Join-Path $TestDrive 'report.txt'
+
+        Test-Path -Path $path | Should-BeFalse
+        Export-PlanetReport -Path $path
+        Test-Path -Path $path | Should-BeTrue
+    }
+
+    It 'Writes one line per planet' {
+        $path = Join-Path $TestDrive 'all.txt'
+
+        Export-PlanetReport -Path $path
+
+        (Get-Content -Path $path).Count | Should-Be 8
+    }
+
+    It 'Writes the name and the distance in astronomical units' {
+        $path = Join-Path $TestDrive 'earth.txt'
+
+        Export-PlanetReport -Path $path -Name 'Earth'
+
+        Get-Content -Path $path | Should-Be 'Earth    1 AU'
+    }
+
+    It 'Throws when no planet matches' {
+        $path = Join-Path $TestDrive 'nothing.txt'
+
+        { Export-PlanetReport -Path $path -Name 'Pluto' } |
+            Should-Throw -ExceptionMessage "No planets matched 'Pluto'."
+    }
 
     # diff-add-start
     It 'Refuses to overwrite an existing report' {
@@ -86,10 +119,17 @@ Back at 100% coverage. Enjoy this rare moment.
 When Code Coverage is enabled it writes a report to `./coverage.xml` by default that can be used by CI systems and other coverage reporting tools. You control the path using the `CodeCoverage.OutputPath` option - we'll just set the default explicit:
 
 ```powershell title="test.ps1"
+$config = New-PesterConfiguration
+$config.Run.Path = './Planetarium'
+$config.Output.Verbosity = 'Detailed'
+$config.TestResult.Enabled = $true
+$config.TestResult.OutputPath = './testResults.xml'
 $config.CodeCoverage.Enabled = $true
 $config.CodeCoverage.Path = './Planetarium'
 # diff-add
 $config.CodeCoverage.OutputPath = './coverage.xml'
+
+Invoke-Pester -Configuration $config
 ```
 
 ```xml title="coverage.xml"

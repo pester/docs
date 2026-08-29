@@ -11,8 +11,23 @@ A mock lets you control what a command returns. `Should-Invoke` lets you assert 
 Add a third test to the `Get-Planet with mocked data` block, below the two you already have:
 
 ```powershell title="Planetarium/Public/Get-Planet.Mocking.Tests.ps1"
+BeforeAll {
+    Import-Module "$PSScriptRoot/../Planetarium.psd1" -Force
+}
+
 Describe 'Get-Planet with mocked data' {
-    # ... BeforeAll and the two existing It blocks ...
+    BeforeAll {
+        Mock -ModuleName Planetarium Get-PlanetData {
+            @(
+                [PSCustomObject] @{ Name = 'Aiur';     Order = 1; DistanceFromSunKm = 100000000 }
+                [PSCustomObject] @{ Name = 'Shakuras'; Order = 2; DistanceFromSunKm = 200000000 }
+            )
+        }
+    }
+
+    It 'Returns whatever the data source provides' {
+        (Get-Planet).Name | Should-BeCollection @('Aiur', 'Shakuras')
+    }
 
     It 'Filters the mocked data the same way' {
         (Get-Planet -Name 'A*').Name | Should-Be 'Aiur'
@@ -43,8 +58,24 @@ The `-ModuleName` rule from the previous page applies here too: you are asking a
 `-ParameterFilter` narrows a mock to calls whose arguments match, allowing you to customize responses for different calls. Let's give it a try:
 
 ```powershell title="Planetarium/Private/Get-PlanetData.Tests.ps1"
+BeforeAll {
+    Import-Module "$PSScriptRoot/../Planetarium.psd1" -Force
+}
+
 Describe 'Get-PlanetData' -Tag 'Internal' {
-    # ... the 'Converts the CSV strings into numbers' test ...
+    It 'Converts the CSV strings into numbers' {
+        Mock -ModuleName Planetarium Import-Csv {
+            @([PSCustomObject] @{ Name = 'Aiur'; Order = '3'; DistanceFromSunKm = '149597870.7' })
+        }
+
+        InModuleScope Planetarium {
+            $planet = Get-PlanetData
+            $planet.Name | Should-Be 'Aiur'
+            $planet.Order | Should-Be 3
+            $planet.Order | Should-HaveType ([int])
+            $planet.DistanceFromSunKm | Should-HaveType ([double])
+        }
+    }
 
     # diff-add-start
     It 'Reads the CSV shipped with the module' {
@@ -68,19 +99,13 @@ That doubles as an assertion. If the module ever reads a different file, the fil
 
 A mock with a `-ParameterFilter` only applies to calls that match it. If a call reaches a mocked command and *nothing* matches, Pester throws rather than guessing — it will not quietly run the real command behind your back.
 
-Let's break it on purpose to see how this works. Change `planets` to `moons` in the test you just added:
+Let's break it on purpose to see how this works. In `Planetarium/Private/Get-PlanetData.Tests.ps1`, change `planets` to `moons` on the `-ParameterFilter` of the test you just added, and leave the rest of the file alone:
 
-```powershell title="Planetarium/Private/Get-PlanetData.Tests.ps1"
-    It 'Reads the CSV shipped with the module' {
-        Mock -ModuleName Planetarium Import-Csv {
-            @([PSCustomObject] @{ Name = 'Aiur'; Order = '1'; DistanceFromSunKm = '100' })
+```powershell
         # diff-remove
         } -ParameterFilter { $Path -like '*planets.csv' }
         # diff-add
         } -ParameterFilter { $Path -like '*moons.csv' }
-
-        # ... rest of the test unchanged ...
-    }
 ```
 
 ```powershell
@@ -102,14 +127,14 @@ This behavior is new in Pester v6. Previous versions called the original command
 
 ### Giving a mock a fallback
 
-Sometimes you genuinely want "handle this specific case, and everything else generically". Say so explicitly by adding a second mock with no `-ParameterFilter` — an unfiltered mock matches any call, so it becomes the fallback:
+Sometimes you genuinely want "handle this specific case, and everything else generically". Say so explicitly by adding a second mock with no `-ParameterFilter` — an unfiltered mock matches any call, so it becomes the fallback.
+
+The next block is an illustration, not a step. Read it, do not add it to Planetarium: your `Import-Csv` mock should intercept exactly one file, so leaving it filtered and unmatched-is-an-error is the behaviour you want.
 
 ```powershell
 Mock Get-Thing { 'default' }                             # everything else
 Mock Get-Thing { 'one' } -ParameterFilter { $Id -eq 1 }  # the specific case
 ```
-
-The example above is only used for illustration. Your `Import-Csv` mock should intercept exactly one file, so leaving it filtered and unmatched-is-an-error is the behaviour you want.
 
 :::tip
 See [Mocking](../../docs/usage/mocking#pesterboundparameters) for an example of using the default mock to call the original command.
