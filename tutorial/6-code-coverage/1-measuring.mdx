@@ -40,6 +40,8 @@ Covered 100% / 75%. 36 analyzed Commands in 7 Files.
 
 Read that last line carefully — it trips people up. **`100%` is what you achieved; `75%` is the target you are being measured against.** The target is `CodeCoverage.CoveragePercentTarget`, which defaults to 75.
 
+It is a number to compare against, not a gate. Coming in under it does not fail the run and does not change the exit code, so a pipeline will not go red on coverage alone. If you want that, compare the number yourself from the result object.
+
 :::warning Make sure `CodeCoverage.Path` points to your code
 `Run.Path` says which *tests* to run; `CodeCoverage.Path` says which *code* to measure. It will default to `Run.Path` which works in this tutorial, but might return 0% coverage if you used a dedicated `tests` folder. Set both options explicitly to avoid surprises.
 :::

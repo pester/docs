@@ -54,6 +54,13 @@ Exit code 1. *That* is what makes CI red. Put the `8` back.
 
 The code is in fact the **number of failures** — one failing test exits with `1`, five with `5`. Handy at a glance, though the results file is where the detail lives.
 
+That last part depends on how the script is started. `pwsh -File` passes the code through as it is. `pwsh -command`, which is what the GitHub Actions step on the next page uses, normalizes any non-zero exit to `1`. The build still goes red either way, you just do not get the count:
+
+```
+pwsh -NoProfile -File ./test.ps1                 # 3 failures, exit code 3
+pwsh -NoProfile -command ". './test.ps1'"        # 3 failures, exit code 1
+```
+
 :::note `Invoke-Pester -CI` is the shorthand — but not for this
 Pester has a `-CI` switch that sets exactly two things:
 
@@ -85,9 +92,9 @@ Two files come out of every run:
 - `testResults.xml` — NUnit format, per-test results
 - `coverage.xml` — JaCoCo format, coverage data
 
-Both are build output, so keep them out of version control:
+Both are build output, so keep them out of version control. Create a `.gitignore` next to `test.ps1`:
 
-```
+```text title=".gitignore"
 testResults.xml
 coverage.xml
 ```

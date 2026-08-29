@@ -129,13 +129,21 @@ The artifact name now includes both matrix values. Jobs uploading to the same ar
 
 :::note This is where the cross-platform bugs show up
 `Join-Path` and `$TestDrive` have been quietly protecting you. Hard-coded `\` separators, case-sensitivity assumptions, and `C:\temp` paths all work on your machine and fail on Linux. A matrix is how you find them, and it is the main reason this module is worth doing even for a small module.
+
+Culture belongs on that list, and Planetarium has the bug right now. `'{0,-8} {1} AU' -f ...` formats with the current culture, so on a machine that uses a comma as the decimal separator the report reads `Mercury  0,387 AU`. The suite stays green anyway, because the only line it asserts on is `Earth    1 AU`, which has no decimal part. An operating system matrix does not find this one, the runners are all set to the same culture. If your code formats numbers or dates, test it under a culture that is not yours.
 :::
 
 ## Where to go from here
 
 The workflow above is a complete, working setup. Natural next steps, in rough order of value:
 
-- **Publish the test results** as a check run so failures annotate the pull request directly, using something like `dorny/test-reporter`, which reads the NUnit file you are already producing.
+- **Read the inline annotations you already get.** `Output.CIFormat` defaults to `Auto`, so on GitHub Actions Pester writes failures as workflow commands and they show up on the job without any extra step:
+
+  ```
+  ::error::[-] Returns all eight planets 26ms
+  ```
+
+- **Publish the test results** as a check run if you want failures attached to the changed lines in the pull request, using something like `dorny/test-reporter`, which reads the NUnit file you are already producing.
 - **Send `coverage.xml` to a coverage service** — the JaCoCo format is widely supported.
 - **Require the check** in branch protection, so a red build actually blocks the merge. Until you do this, CI is advisory.
 - **Cache the Pester install** if the install step becomes a meaningful share of the run time.
