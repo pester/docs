@@ -30,7 +30,7 @@ The full list is in [Configuration](../../docs/usage/configuration).
 
 ## Verbosity
 
-`Output.Verbosity` decides how much you see. The useful values are `None`, `Normal`, `Detailed` and `Diagnostic`.
+`Output.Verbosity` decides how much you see. The values are `None`, `Minimal`, `Normal`, `Detailed` and `Diagnostic`. `Minimal` is accepted but currently behaves as `Normal`, so the four worth knowing are the other ones.
 
 `Normal` is the default and reports per file — right for a suite you expect to pass:
 
@@ -41,10 +41,10 @@ Invoke-Pester -Configuration $config
 
 ```
 Running tests from 4 files.
-[+] /home/you/pester-tutorial/Planetarium/Private/ConvertTo-AstronomicalUnit.Tests.ps1 311ms
-[+] /home/you/pester-tutorial/Planetarium/Private/Test-PlanetName.Tests.ps1 45ms
-[+] /home/you/pester-tutorial/Planetarium/Public/Get-Planet.Tests.ps1 87ms
-[+] /home/you/pester-tutorial/Planetarium/Public/Get-PlanetDistance.Tests.ps1 48ms
+[+] /home/you/pester-tutorial/Planetarium/Private/ConvertTo-AstronomicalUnit.Tests.ps1 311ms (3 tests)
+[+] /home/you/pester-tutorial/Planetarium/Private/Test-PlanetName.Tests.ps1 45ms (4 tests)
+[+] /home/you/pester-tutorial/Planetarium/Public/Get-Planet.Tests.ps1 87ms (5 tests)
+[+] /home/you/pester-tutorial/Planetarium/Public/Get-PlanetDistance.Tests.ps1 48ms (3 tests)
 Tests completed in 502ms
 Tests Passed: 15, Failed: 0, Skipped: 0, Inconclusive: 0, NotRun: 0
 ```
@@ -57,7 +57,7 @@ Invoke-Pester -Configuration $config
 ```
 
 ```
-Pester v6.0.0
+Pester v6.1.0
 
 Running tests from 4 files.
 
@@ -134,7 +134,7 @@ Invoke-Pester -Configuration $config
   <environment machine-name="a6967ea17ed8" platform="Linux" ... />
 ```
 
-The default format is `NUnitXml`, which nearly every CI system understands. `JUnitXml` and `NUnit3` are also available via `TestResult.OutputFormat`. See [Test results](../../docs/usage/test-results) for which to pick.
+The default format is `NUnitXml`, which nearly every CI system understands. `NUnit2.5`, `NUnit3` and `JUnitXml` are the other values for `TestResult.OutputFormat`. See [Test results](../../docs/usage/test-results) for which to pick.
 
 The file is a build artifact — something a run produces, not source. If you keep your projects under version control, add it to your `.gitignore`:
 
