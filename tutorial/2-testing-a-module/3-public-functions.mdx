@@ -133,7 +133,15 @@ function Get-PlanetDistance {
 }
 ```
 
-This is where importing the module pays off. `Get-PlanetDistance` calls two functions that live in other files. Dot-sourcing `Get-PlanetDistance.ps1` on its own would fail immediately with `The term 'Test-PlanetName' is not recognized`. Importing the module loads everything together, exactly as it runs in production.
+This is where importing the module pays off. `Get-PlanetDistance` calls two functions that live in other files. Dot-sourcing `Get-PlanetDistance.ps1` on its own loads the function without complaint, and then every call fails, once per command it cannot find:
+
+```
+The term 'Test-PlanetName' is not recognized ...
+The term 'Get-Planet' is not recognized ...
+The term 'ConvertTo-AstronomicalUnit' is not recognized ...
+```
+
+Importing the module loads everything together, exactly as it runs in production.
 
 ## Testing it
 

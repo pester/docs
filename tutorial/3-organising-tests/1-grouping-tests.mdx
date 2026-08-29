@@ -84,7 +84,13 @@ You have been using `BeforeAll` since the first test. It has three siblings, and
 
 All four can go in a `Describe` or a `Context`, and they apply to everything nested inside. That is why the single `BeforeAll` at the top of your file — importing the module — is still doing its job for tests that now live two levels deep.
 
-The ordering is easiest to believe when you watch it. Drop this in a scratch file and run it:
+The ordering is easiest to believe when you watch it. Make a folder for the demonstration:
+
+```powershell
+New-Item -Path ./scratch -ItemType Directory -Force
+```
+
+Then drop this in it and run it:
 
 ```powershell title="scratch/Ordering.Tests.ps1"
 Describe 'Ordering' {
@@ -118,7 +124,7 @@ AfterAll
 
 The `[+]` lines look out of place — each appears *after* its own `AfterEach` rather than between the two. That is a reporting artifact, not an ordering one: Pester prints a test's result line only once the test is completely finished, and `AfterEach` is part of finishing.
 
-Delete that file once you have seen it — it is a demonstration, not part of the suite.
+Delete the `scratch` folder once you have seen it — it is a demonstration, not part of the suite.
 
 :::tip Which one to reach for
 Use `BeforeAll` for anything expensive or read-only — importing a module, loading fixture data. Use `BeforeEach` when a test would otherwise inherit state from the test before it.
@@ -128,16 +134,20 @@ Planetarium never ends up needing `BeforeEach` — every test builds what it nee
 
 ## Explaining a failure with -Because
 
-Every `Should-*` assertion takes a `-Because` parameter. The text is folded into the failure message:
+Every `Should-*` assertion takes a `-Because` parameter. Add it to the first test in `Get-Planet.Tests.ps1`:
 
 ```powershell
 (Get-Planet).Count | Should-Be 8 -Because 'the solar system has eight planets'
 ```
 
+That passes, so to see what `-Because` does you have to break it. Change the `8` to a `9` and run the suite:
+
 ```
 [-] Returns all eight planets 77ms
- Expected [int] 8, because the solar system has eight planets, but got [int] 9.
+ Expected [int] 9, because the solar system has eight planets, but got [int] 8.
 ```
+
+The text is folded into the failure message. Put the `8` back once you have seen it.
 
 It earns its place when the expected value is a magic number whose origin is not obvious from the test. `Should-Be 8` says what; `-Because 'the solar system has eight planets'` says why, to whoever is troubleshooting the error in the future.
 
