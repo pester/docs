@@ -47,12 +47,12 @@ Import-Module Pester -PassThru
 ```
 
 ```
-ModuleType Version    PreRelease Name
----------- -------    ---------- ----
-Script     6.0.0                 Pester
+ModuleType Version    PreRelease Name                                ExportedCommands
+---------- -------    ---------- ----                                ----------------
+Script     6.1.0                 Pester                              {Add-ShouldOperator, …}
 ```
 
-If the version shown starts with a `6`, you are ready.
+If the version shown starts with a `6`, you are ready. A narrow terminal prints the same information as a list instead of a table, that is PowerShell formatting rather than anything being wrong.
 
 :::warning An old Pester can be loaded without you asking
 PowerShell loads a module automatically the first time you call one of its commands, and it picks the highest version it can find — but if an older Pester is *already* loaded in your session, it stays loaded. If the version above is not what you expect, open a fresh PowerShell session and check again before doing anything else.
