@@ -53,8 +53,18 @@ This is the detail that costs people the most time.
 
 `-ModuleName Planetarium` injects the mock into the module's scope, where the call actually resolves.
 
-:::warning A mock without `-ModuleName` fails silently
-Nothing errors. The mock is simply never used, and the real command runs instead. If a mock appears to have no effect, this is the first thing to check.
+:::warning A mock without `-ModuleName` does not reach into the module
+What you get depends on where else the command is visible.
+
+For a command that also exists outside the module, like `Import-Csv`, nothing errors. The mock is simply never used, the real command runs, and the test passes or fails for reasons that have nothing to do with the mock you thought you installed.
+
+For a command that only exists inside the module, like the private `Get-PlanetData`, `Mock` cannot find it at all:
+
+```
+CommandNotFoundException: Could not find Command Get-PlanetData
+```
+
+If a mock appears to have no effect, or `Mock` cannot find a command you know is there, `-ModuleName` is the first thing to check.
 :::
 
 Note also what you did *not* have to do: no `InModuleScope` wrapper. `-ModuleName` reaches the private `Get-PlanetData` without dragging your whole test inside the module — which is exactly the preference the [modules guide](../../docs/usage/modules) recommends over `InModuleScope`.
