@@ -72,6 +72,8 @@ Four real files were written and four are already gone. Look in your working fol
 
 The first test asserts the file is absent *before* the call as well as present after. Without that, a leftover file from an earlier run could make the test pass on its own.
 
+`Test-Path` piped into `Should-BeTrue` is the way to assert on a path in v6. The new assertions have no `Should-Exist`, so if you remember `Should -Exist` from v5 this is its replacement rather than a stylistic preference.
+
 ## Scoping
 
 TestDrive is not one directory for the whole run. The rules that matter day to day:
@@ -97,7 +99,7 @@ Compare against the alternatives from the previous page, point by point. Nothing
   {id: 'testdrive-basics', label: 'I know the difference between TestDrive:\\ and $TestDrive, and which to prefer'},
   {id: 'wrote-tests', label: 'I wrote the four Export-PlanetReport tests and they pass'},
   {id: 'no-debris', label: 'I confirmed the test run left no files behind in my working folder'},
-  {id: 'assert-existence', label: 'I know how to assert a file exists, using Test-Path with Should-BeTrue'},
+  {id: 'assert-existence', label: 'I know how to assert a file exists, using Test-Path with Should-BeTrue, and why there is no Should-Exist'},
   {id: 'scoping', label: 'I can explain when TestDrive cleans up, and why modifications to inherited files survive'},
 ]} />
 

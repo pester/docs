@@ -137,6 +137,22 @@ You may have noticed the generated test used `Should -Be` and we switched to `Sh
 `Should-Be` is a command in its own right, added in Pester v6, and is [the recommended way to assert in v6](../../docs/assertions/should-command). `Should -Be` is the older operator style — `Should` with a `-Be` parameter — and it is what nearly all existing Pester code, blog posts and Stack Overflow answers use, including the file `New-Fixture` generates.
 
 They coexist in v6 and you can mix them freely, even in one file. This tutorial uses the newer `Should-Be` style throughout.
+
+The names are not a mechanical translation of the old parameters, so if you are coming from v5 these are the ones this tutorial uses, plus the few that catch people out:
+
+| v5 operator | v6 command |
+| --- | --- |
+| `Should -Be` | `Should-Be` |
+| `Should -BeOfType` | `Should-HaveType` |
+| `Should -Contain` | `Should-ContainCollection` |
+| `Should -HaveCount` | `Should-BeCollection -Count` |
+| `Should -Match` | `Should-MatchString` |
+| `Should -BeLike` | `Should-BeLikeString` |
+| `Should -BeExactly` | `Should-BeString -CaseSensitive` |
+| `Should -BeGreaterOrEqual` | `Should-BeGreaterThanOrEqual` |
+| `Should -Exist` | no equivalent, use `Test-Path` with `Should-BeTrue` |
+
+Guessing the name usually fails with a plain `CommandNotFoundException` and no suggestion, so the [Should assertions overview](../../docs/assertions/should-command) is worth a look before you start renaming a suite. The old operators are not deprecated, leaving them alone is a valid choice.
 :::
 
 ## Reading a failure

@@ -125,6 +125,10 @@ Read the last line: it shows the filter that was evaluated *and* the arguments i
 
 This behavior is new in Pester v6. Previous versions called the original command when the filter failed. Tests could still pass based on the real data, and you would trust a mock that was never used.
 
+:::note Upgrading a v5 suite
+This is the change most likely to turn an existing green suite red. Every v5 test that relied, knowingly or not, on an unmatched call falling through to the real command now fails instead. That is the point, those tests were passing for a reason nobody chose, but it is worth expecting when you upgrade rather than meeting it one test at a time. [v5 to v6](../../docs/migrations/v5-to-v6) covers the fix.
+:::
+
 ### Giving a mock a fallback
 
 Sometimes you genuinely want "handle this specific case, and everything else generically". Say so explicitly by adding a second mock with no `-ParameterFilter` — an unfiltered mock matches any call, so it becomes the fallback.
@@ -155,6 +159,8 @@ Tests Passed: 20, Failed: 0, Skipped: 0, Inconclusive: 0, NotRun: 0
 Twenty tests: the original fifteen, plus five that no longer care what is in `planets.csv`.
 
 There is also `Should-NotInvoke`, the mirror image, for asserting a command was *not* called — "it did not delete anything", "it did not retry". It takes the same `-ModuleName` and `-ParameterFilter` parameters.
+
+If you are coming from v5, `Should-Invoke` is where `Assert-MockCalled` went. It was deprecated in v5 and removed in v6, and the error you get for it does not mention either fact.
 
 <TutorialChecklist items={[
   {id: 'should-invoke', label: 'I asserted the data source is read exactly once with Should-Invoke -Exactly'},
