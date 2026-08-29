@@ -91,6 +91,8 @@
 }
 
 [data-theme='dark'] {
+  /* Same relationship as light mode: the navbar matches the middle of the hero gradient. */
+  --ifm-navbar-background-color: #00477a;
   --ifm-color-primary-light: #0089ee;
   --ifm-color-primary-lighter: #0294ff;
   --ifm-color-primary-lightest: #3eadff;
