@@ -21,6 +21,9 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
+      colorMode: {
+        respectPrefersColorScheme: true,
+      },
       // Sets og:image and twitter:image. Path is relative to /static.
       // Source for the card is static/img/social-card.svg.
       image: 'img/social-card.jpg',
