@@ -61,9 +61,9 @@ New-ModuleManifest -Path ./Planetarium/Planetarium.psd1 `
     -PowerShellVersion '5.1'
 ```
 
-Open the generated file and find the `FunctionsToExport` line:
+Open the generated file and find the `FunctionsToExport` line. This is one line out of the manifest `New-ModuleManifest` just wrote, not a file to save:
 
-```powershell title="Planetarium/Planetarium.psd1"
+```powershell
 FunctionsToExport = '*'
 ```
 

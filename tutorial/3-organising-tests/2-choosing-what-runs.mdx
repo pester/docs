@@ -12,14 +12,20 @@ Pester gives you different tools for that, and the difference matters: **filters
 
 The most used filter in Pester is tags. `-Tag` goes on `Describe`, `Context` or `It`, and is inherited by everything inside. Your two private-function files are a natural group — they reach into the module with `InModuleScope`, and they are the tests you would drop first if you only wanted to check the public surface:
 
-```powershell title="Planetarium/Private/ConvertTo-AstronomicalUnit.Tests.ps1"
+Add the tag to the `Describe` line in each of the two files, leaving the rest of each file as it is.
+
+In `Planetarium/Private/ConvertTo-AstronomicalUnit.Tests.ps1`:
+
+```powershell
 # diff-remove
 Describe 'ConvertTo-AstronomicalUnit' {
 # diff-add
 Describe 'ConvertTo-AstronomicalUnit' -Tag 'Internal' {
 ```
 
-```powershell title="Planetarium/Private/Test-PlanetName.Tests.ps1"
+In `Planetarium/Private/Test-PlanetName.Tests.ps1`:
+
+```powershell
 # diff-remove
 Describe 'Test-PlanetName' {
 # diff-add
@@ -58,6 +64,8 @@ Typical tags used in projects are `Slow`, `Integration`, `Unit`, `WindowsOnly` e
 
 ## Skipping tests
 
+Both blocks in this section are illustrations rather than tests to add, Planetarium has nothing that needs skipping yet.
+
 `-Skip` marks a test as not to be run, while keeping it visible in the output:
 
 ```powershell
@@ -81,8 +89,6 @@ It 'Uses the Windows registry' -Skip:(-not $IsWindows) {
 ```
 
 On Windows this runs; everywhere else it reports as skipped instead of failing. That is how a cross-platform suite handles the parts that genuinely cannot run everywhere — and it is how you would keep the CI matrix in the last module green if the module ever grew a platform-specific feature.
-
-Both `-Skip` examples above are illustrations rather than tests to add — Planetarium has nothing that needs skipping yet.
 
 ## BeforeDiscovery
 

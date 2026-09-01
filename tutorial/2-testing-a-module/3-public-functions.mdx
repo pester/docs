@@ -17,9 +17,9 @@ Importing the module instead fixes both. The test then calls the function throug
 
 ## Importing the module
 
-Change the `BeforeAll` in your test file:
+Change the `BeforeAll` in `Planetarium/Public/Get-Planet.Tests.ps1`, and leave the `Describe` below it alone for now:
 
-```powershell title="Planetarium/Public/Get-Planet.Tests.ps1"
+```powershell
 BeforeAll {
     # diff-remove
     . $PSCommandPath.Replace('.Tests.ps1', '.ps1')

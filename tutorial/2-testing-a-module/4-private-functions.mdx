@@ -65,7 +65,7 @@ The first test is the odd one out, and it is deliberate. It asserts the function
 
 ## Passing values in
 
-A script block handed to `InModuleScope` does not inherit your test's variables. This does not work:
+A script block handed to `InModuleScope` does not inherit your test's variables. The next block is here to show the mistake, it is not a step, and on its own outside an `It` it fails with `No modules named 'Planetarium' are currently loaded` rather than the empty `$name` it is meant to demonstrate:
 
 ```powershell
 $name = 'Earth'
