@@ -20,11 +20,11 @@
     "@docusaurus/preset-classic": "^3.10.2",
     "@docusaurus/theme-common": "^3.10.2",
     "@mdx-js/react": "^3.1.1",
-    "@tanstack/react-table": "^9.1.2",
+    "@tanstack/react-table": "^9.2.4",
     "clsx": "^2.1.1",
     "prism-react-renderer": "^2.4.1",
-    "react": "^19.2.7",
-    "react-dom": "^19.2.7"
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "^3.10.2",
